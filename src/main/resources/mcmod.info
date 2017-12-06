@@ -1,0 +1,13 @@
+[
+{
+  "modid": "blankmod",
+  "name": "Blank Mod",
+  "description": "This mod does things.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["bugfroggy"],
+  "logoFile": ""
+}
+]
