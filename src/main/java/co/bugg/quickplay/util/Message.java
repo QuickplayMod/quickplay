@@ -48,6 +48,7 @@ public class Message {
         final IChatComponent separator = new ChatComponentText(separatorText);
         final ChatStyle separatorStyle = new ChatStyle();
         separatorStyle.setColor(EnumChatFormatting.GOLD);
+        separatorStyle.setStrikethrough(true);
         separator.setChatStyle(separatorStyle);
 
         return separator;
