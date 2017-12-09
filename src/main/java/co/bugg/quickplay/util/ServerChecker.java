@@ -41,14 +41,8 @@ public class ServerChecker {
     public ServerChecker(ServerCheckerCallback callback) {
         this.callback = callback;
 
-        // Check if the player is in singleplayer
-        boolean isSingleplayer = Minecraft.getMinecraft().isSingleplayer();
-        if(!isSingleplayer) {
-
-            // Check if the player is connected to a recognized hypixel IP
-            ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();
-            String ip = (serverData == null) ? "unknown" : serverData.serverIP;
-
+        String ip = getCurrentIP();
+        if(!ip.equals("singleplayer")) {
             Pattern hypixelPattern = Pattern.compile("^(?:(?:(?:.\\.)?hypixel\\.net)|(?:209\\.222\\.115\\.\\d{1,3}))(?::\\d{1,5})?$", Pattern.CASE_INSENSITIVE);
             Matcher matcher = hypixelPattern.matcher(ip);
 
@@ -143,6 +137,22 @@ public class ServerChecker {
     public void runCallback(boolean onHypixel, String ip, VerificationMethod method) {
         callback.run(onHypixel, ip, method);
         Quickplay.INSTANCE.unregisterEventHandler(this);
+    }
+
+    /**
+     * Gets the current IP the client is connected to
+     * @return The IP the client is currently connected to
+     */
+    public static String getCurrentIP() {
+        String ip;
+        if(Minecraft.getMinecraft().isSingleplayer())
+            ip = "singleplayer";
+        else {
+            ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();
+            ip = (serverData == null) ? "unknown/null" : serverData.serverIP;
+        }
+
+        return ip;
     }
 
     public enum VerificationMethod {

@@ -1,5 +1,7 @@
 package co.bugg.quickplay.util;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.*;
 
@@ -49,5 +51,15 @@ public class Message {
         separator.setChatStyle(separatorStyle);
 
         return separator;
+    }
+
+    public static Message fromJson(JsonElement value) {
+        JsonObject obj = value.getAsJsonObject();
+        System.out.println(obj.get("message").toString());
+        return new Message(
+                IChatComponent.Serializer.jsonToComponent(obj.get("message").toString()),
+                obj.get("separators").getAsBoolean(),
+                obj.get("bypassEnabledSetting").getAsBoolean()
+        );
     }
 }

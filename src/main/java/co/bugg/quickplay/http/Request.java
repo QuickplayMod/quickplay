@@ -12,17 +12,17 @@ import java.nio.charset.StandardCharsets;
 
 public class Request {
 
-    public HttpRequestBase request;
+    public HttpRequestBase apacheRequestObj;
     public HttpRequestFactory factory;
 
-    public Request(HttpRequestBase request, HttpRequestFactory factory) {
-        this.request = request;
+    public Request(HttpRequestBase apacheRequestObj, HttpRequestFactory factory) {
+        this.apacheRequestObj = apacheRequestObj;
         this.factory = factory;
     }
 
     public WebResponse execute() {
 
-        try (CloseableHttpResponse httpResponse = (CloseableHttpResponse) factory.httpClient.execute(request)) {
+        try (CloseableHttpResponse httpResponse = (CloseableHttpResponse) factory.httpClient.execute(apacheRequestObj)) {
             int responseCode = httpResponse.getStatusLine().getStatusCode();
 
             // If the response code is a successful one

@@ -1,8 +1,15 @@
 package co.bugg.quickplay;
 
 import co.bugg.quickplay.command.CommandQuickplay;
+import co.bugg.quickplay.http.HttpRequestFactory;
+import co.bugg.quickplay.http.Request;
+import co.bugg.quickplay.http.response.ResponseAction;
+import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.MessageBuffer;
+import co.bugg.quickplay.util.ReflectionUtil;
 import co.bugg.quickplay.util.ServerChecker;
+import com.google.gson.Gson;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
@@ -16,6 +23,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,7 +47,7 @@ public class Quickplay {
     /**
      * Whether the mod is currently enabled
      */
-    public boolean enabled = true;
+    public boolean enabled = false;
     /**
      * The reason the mod has been disabled, if it is disabled
      */
@@ -64,6 +72,8 @@ public class Quickplay {
      * Buffer for sending messages to the client
      */
     public MessageBuffer messageBuffer;
+
+    public HttpRequestFactory requestFactory;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -101,6 +111,19 @@ public class Quickplay {
     public void enable() {
         if(!this.enabled) {
             this.enabled = true;
+            requestFactory = new HttpRequestFactory();
+
+            this.threadPool.submit(() -> {
+                HashMap<String, String> params = new HashMap<>();
+                requestFactory.addDebuggingParameters(params);
+
+                Request request = requestFactory.newEnableRequest(params);
+                WebResponse response = request.execute();
+
+                for(ResponseAction action : response.actions) {
+                    action.run();
+                }
+            });
 
             registerEventHandler(new QuickplayEventHandler());
 

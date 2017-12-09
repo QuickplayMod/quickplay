@@ -22,6 +22,7 @@ public class ResponseAction {
 
     public void run() {
         switch(type) {
+            default:
             case SYSTEM_OUT:
                 System.out.println(value.getAsString());
                 break;
@@ -33,9 +34,9 @@ public class ResponseAction {
                 break;
             case SEND_MESSAGE:
                 try {
-                    Message message = WebResponse.GSON.fromJson(value, Message.class);
+                    Message message = Message.fromJson(value);
                     Quickplay.INSTANCE.messageBuffer.push(message);
-                } catch (JsonSyntaxException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
