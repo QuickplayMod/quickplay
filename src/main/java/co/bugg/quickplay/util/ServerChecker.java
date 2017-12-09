@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -62,7 +61,7 @@ public class ServerChecker {
                 // Not on a recognized IP, let's check the scoreboard
                 // for "www.hypixel.net" or if /whereami is a valid command
                 // by registering this as an event handler
-                MinecraftForge.EVENT_BUS.register(this);
+                Quickplay.INSTANCE.registerEventHandler(this);
             }
         } else {
             runCallback(false, this.ip = "singleplayer", null);
@@ -143,7 +142,7 @@ public class ServerChecker {
      */
     public void runCallback(boolean onHypixel, String ip, VerificationMethod method) {
         callback.run(onHypixel, ip, method);
-        MinecraftForge.EVENT_BUS.unregister(this);
+        Quickplay.INSTANCE.unregisterEventHandler(this);
     }
 
     public enum VerificationMethod {

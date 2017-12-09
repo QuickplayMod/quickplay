@@ -1,13 +1,13 @@
 [
 {
-  "modid": "blankmod",
-  "name": "Blank Mod",
-  "description": "This mod does things.",
+  "modid": "quickplay",
+  "name": "Quickplay",
+  "description": "Quickly join games on the Hypixel Network.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://bugg.co/quickplay",
   "updateUrl": "",
   "authorList": ["bugfroggy"],
-  "logoFile": ""
+  "logoFile": "logo.png"
 }
 ]

@@ -1,6 +1,6 @@
 package co.bugg.quickplay.util;
 
-import net.minecraftforge.common.MinecraftForge;
+import co.bugg.quickplay.Quickplay;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -20,7 +20,7 @@ public class TickDelay {
         this.fn = fn;
         this.delay = ticks;
 
-        MinecraftForge.EVENT_BUS.register(this);
+        Quickplay.INSTANCE.registerEventHandler(this);
     }
 
     /**
@@ -51,6 +51,6 @@ public class TickDelay {
     }
 
     public void destroy() {
-        MinecraftForge.EVENT_BUS.unregister(this);
+        Quickplay.INSTANCE.unregisterEventHandler(this);
     }
 }
