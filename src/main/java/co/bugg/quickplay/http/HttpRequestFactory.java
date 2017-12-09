@@ -7,6 +7,7 @@ import co.bugg.quickplay.util.ReflectionUtil;
 import co.bugg.quickplay.util.ServerChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -50,6 +51,7 @@ public class HttpRequestFactory {
             HttpPost post = new HttpPost(builder.toString());
             // Add the parameters to POST body in JSON format
             post.setEntity(new StringEntity(WebResponse.GSON.toJson(params), ContentType.APPLICATION_JSON));
+            post.addHeader("Content-Type", "application/json");
 
             return new Request(post, this);
         } catch (URISyntaxException e) {
@@ -80,7 +82,9 @@ public class HttpRequestFactory {
         params.put("os", System.getProperty("os.name"));
         params.put("osVersion", System.getProperty("os.version"));
         params.put("osArch", System.getProperty("os.arch"));
-        params.put("installedMods", WebResponse.GSON.toJson(Loader.instance().getModList()));
+        // Add a JSON list of all registered mods names
+        params.put("installedMods", WebResponse.GSON.toJson(Loader.instance().getModList()
+                .stream().map(ModContainer::getName).toArray()));
 
         try {
             params.put("mcVersion", ReflectionUtil.getMCVersion());
