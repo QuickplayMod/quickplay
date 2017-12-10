@@ -1,6 +1,7 @@
 package co.bugg.quickplay;
 
 import co.bugg.quickplay.command.CommandQuickplay;
+import co.bugg.quickplay.config.AssetFactory;
 import co.bugg.quickplay.http.HttpRequestFactory;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.ResponseAction;
@@ -72,8 +73,14 @@ public class Quickplay {
      * Buffer for sending messages to the client
      */
     public MessageBuffer messageBuffer;
-
+    /**
+     * Factory for creating HTTP requests
+     */
     public HttpRequestFactory requestFactory;
+    /**
+     * Factory for creating, loading, etc. of mod assets
+     */
+    public AssetFactory assetFactory;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -112,6 +119,10 @@ public class Quickplay {
         if(!this.enabled) {
             this.enabled = true;
             requestFactory = new HttpRequestFactory();
+            assetFactory = new AssetFactory();
+
+            assetFactory.createDirectories();
+            assetFactory.registerResourcePack();
 
             this.threadPool.submit(() -> {
                 HashMap<String, String> params = new HashMap<>();

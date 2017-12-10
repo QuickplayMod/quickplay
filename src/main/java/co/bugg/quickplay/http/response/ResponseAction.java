@@ -27,10 +27,13 @@ public class ResponseAction {
                 System.out.println(value.getAsString());
                 break;
             case RESET_CONFIG:
-                // TODO
+                // TODO Reset all configuration options. Might be server-side?
                 break;
             case RELOAD_GAMES:
-                // TODO
+                // TODO Reload the JSON for all games
+                break;
+            case REFRESH_CACHE:
+                // TODO delete all cached game image files, etc.
                 break;
             case SEND_MESSAGE:
                 try {

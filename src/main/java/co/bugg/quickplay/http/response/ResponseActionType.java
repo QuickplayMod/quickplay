@@ -6,5 +6,6 @@ public enum ResponseActionType {
     DISABLE_MOD,
     ENABLE_MOD,
     SYSTEM_OUT,
-    RESET_CONFIG
+    RESET_CONFIG,
+    REFRESH_CACHE
 }
