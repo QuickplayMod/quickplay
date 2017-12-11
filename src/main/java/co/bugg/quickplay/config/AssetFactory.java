@@ -49,6 +49,13 @@ public class AssetFactory {
     public List<ResourceLocation> loadIcons(List<URL> urls) {
         createDirectories();
 
+        /*
+        TODO I feel like this method can be dealt with better somehow.
+        TODO Potentially URLs can be hashed & that can be the file name?
+        TODO I just don't like the idea of having to parse the URL to get
+        TODO the file name each time we want to load its resource.
+         */
+
         List<ResourceLocation> resourceLocations = new ArrayList<>();
 
         for(URL url : urls) {
