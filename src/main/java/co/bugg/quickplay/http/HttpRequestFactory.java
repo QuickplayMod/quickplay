@@ -8,7 +8,9 @@ import co.bugg.quickplay.util.ServerChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
@@ -17,10 +19,13 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.Map;
 
 public class HttpRequestFactory {
 
@@ -36,6 +41,21 @@ public class HttpRequestFactory {
                 .build();
     }
 
+    public String getContents(URL url) throws IOException, URISyntaxException {
+        HttpGet post = new HttpGet(url.toURI());
+
+        try(CloseableHttpResponse response = (CloseableHttpResponse) httpClient.execute(post)) {
+            if(response.getStatusLine().getStatusCode() >= 300) {
+                return null;
+            }
+
+            StringWriter writer = new StringWriter();
+            IOUtils.copy(response.getEntity().getContent(), writer, StandardCharsets.UTF_8);
+
+            return writer.toString();
+        }
+    }
+
     /**
      * Basic web request to the AnimatedCrosshair web request API
      * Should be executed in its own thread!
@@ -46,12 +66,15 @@ public class HttpRequestFactory {
     public Request newRequest(String endpoint, HashMap<String, String> params) {
 
         try {
-            URIBuilder builder = new URIBuilder("https://bugg.co/quickplay/mod/" + endpoint);
+            URIBuilder builder = new URIBuilder(endpoint);
 
             HttpPost post = new HttpPost(builder.toString());
-            // Add the parameters to POST body in JSON format
-            post.setEntity(new StringEntity(WebResponse.GSON.toJson(params), ContentType.APPLICATION_JSON));
-            post.addHeader("Content-Type", "application/json");
+
+            if(params != null) {
+                // Add the parameters to POST body in JSON format
+                post.setEntity(new StringEntity(WebResponse.GSON.toJson(params), ContentType.APPLICATION_JSON));
+                post.addHeader("Content-Type", "application/json");
+            }
 
             return new Request(post, this);
         } catch (URISyntaxException e) {
@@ -62,7 +85,7 @@ public class HttpRequestFactory {
     }
 
     public Request newEnableRequest(HashMap<String, String> params) {
-        return newRequest("enable", params);
+        return newRequest("https://bugg.co/quickplay/mod/enable", params);
     }
 
     /**

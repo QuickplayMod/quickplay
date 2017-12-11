@@ -80,5 +80,6 @@
       "type": "SYSTEM_OUT",
       "value": "Client connected to https://bugg.co/quickplay/init!"
     }
-  ]
+  ],
+  "content": {}
 }

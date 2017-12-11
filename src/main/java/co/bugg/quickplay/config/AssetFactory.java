@@ -5,34 +5,77 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.FolderResourcePack;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.util.ResourceLocation;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Factory for (down)loading & creating mod assets
+ */
 public class AssetFactory {
 
+    /**
+     * Relative to Minecraft root
+     */
     public String rootDirectory = "quickplay/";
     public String configDirectory = rootDirectory + "configs/";
     public String resourcesDirectory = rootDirectory + "resources/";
     public String assetsDirectory = resourcesDirectory + "assets/quickplay/";
 
+    /**
+     * TODO Load the mod configuration with provided name
+     * @param name Name of the config to load
+     * @return Configuration loaded
+     */
     public AConfiguration loadConfig(String name) {
         createDirectories();
 
         return new ConfigSettings();
     }
 
-    public ResourceLocation loadIcon(URL url) {
+    /**
+     * Download all icons from the specified URLs
+     * @param urls List of URLs to download from
+     * @return List of ResourceLocations for all icons
+     */
+    public List<ResourceLocation> loadIcons(List<URL> urls) {
         createDirectories();
 
-        return new ResourceLocation("todo");
+        List<ResourceLocation> resourceLocations = new ArrayList<>();
+
+        for(URL url : urls) {
+            String fileName = FilenameUtils.getName(url.getPath());
+            String path = assetsDirectory + fileName;
+            // If the file already exists, no need to download again.
+            // If the icon needs to be reset, use REFRESH_CACHE action type.
+            if(!new File(path).exists()) {
+                System.out.println("Saving file " + fileName);
+                try {
+                    String contents = Quickplay.INSTANCE.requestFactory.getContents(url);
+                    Files.write(new File(assetsDirectory + FilenameUtils.getName(url.getPath())).toPath(), contents.getBytes());
+                } catch (IOException | URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            resourceLocations.add(new ResourceLocation(fileName));
+        }
+
+        return resourceLocations;
     }
 
+    /**
+     * Create all directories & relevant metadata
+     * files for the mod to work properly
+     */
     public void createDirectories() {
         final File configDirFile = new File(configDirectory);
         final File resourcesDirFile = new File(resourcesDirectory);
@@ -61,6 +104,10 @@ public class AssetFactory {
         }
     }
 
+    /**
+     * Register the custom resource pack with Minecraft.
+     * The resource pack is used for loading in icons.
+     */
     public void registerResourcePack() {
         FolderResourcePack resourcePack = new FolderResourcePack(new File(resourcesDirectory));
 

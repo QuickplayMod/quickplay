@@ -1,44 +1,47 @@
 {
   "ok": true,
-  "games": [
-    {
-      "name": "Bed Wars",
-      "lobbyName": "bedwars",
-      "imageURL": "https://bugg.co/quickplay/images/games/BedWars-64.png",
-      "modes": [
-        {
-          "name": "Solo",
-          "command": "bedwars_eight_one",
-          "customCommand": false
-        },
-        {
-          "name": "Doubles",
-          "command": "bedwars_eight_two",
-          "customCommand": false
-        },
-        {
-          "name": "3v3v3v3",
-          "command": "bedwars_four_three",
-          "customCommand": false
-        },
-        {
-          "name": "4v4v4v4",
-          "command": "bedwars_four_four",
-          "customCommand": false
-        }
-      ]
-    },
-    {
-      "name": "Housing",
-      "lobbyName": null,
-      "image": "https://bugg.co/quickplay/images/games/Housing-64.png",
-      "modes": [
-        {
-          "name": "Home",
-          "command": "/home",
-          "customCommand": true
-        }
-      ]
-    }
-  ]
+  "actions": [],
+  "content": {
+    "games": [
+      {
+        "name": "Bed Wars",
+        "lobbyName": "bedwars",
+        "imageURL": "https://bugg.co/quickplay/images/games/BedWars-64.png",
+        "modes": [
+          {
+            "name": "Solo",
+            "command": "bedwars_eight_one",
+            "customCommand": false
+          },
+          {
+            "name": "Doubles",
+            "command": "bedwars_eight_two",
+            "customCommand": false
+          },
+          {
+            "name": "3v3v3v3",
+            "command": "bedwars_four_three",
+            "customCommand": false
+          },
+          {
+            "name": "4v4v4v4",
+            "command": "bedwars_four_four",
+            "customCommand": false
+          }
+        ]
+      },
+      {
+        "name": "Housing",
+        "lobbyName": null,
+        "image": "https://bugg.co/quickplay/images/games/Housing-64.png",
+        "modes": [
+          {
+            "name": "Home",
+            "command": "/home",
+            "customCommand": true
+          }
+        ]
+      }
+    ]
+  }
 }

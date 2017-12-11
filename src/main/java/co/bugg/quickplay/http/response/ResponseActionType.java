@@ -1,5 +1,9 @@
 package co.bugg.quickplay.http.response;
 
+/**
+ * Possible action responses from mod endpoints
+ * @see ResponseAction
+ */
 public enum ResponseActionType {
     SEND_MESSAGE,
     RELOAD_GAMES,

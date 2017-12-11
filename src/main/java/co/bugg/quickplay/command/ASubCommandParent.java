@@ -10,31 +10,36 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class ASubCommandParent implements ICommand{
+/**
+ * Parent command for all sub commands
+ */
+public abstract class ASubCommandParent implements ICommand {
+    /**
+     * All possible aliases for the command (including the main
+     * command, which is in index 0)
+     */
     final List<String> aliases = new ArrayList<>();
+    /**
+     * All sub commands under this command
+     * Default command, in case of invalid command provided
+     * or no command provided, is in index 0.
+     */
     final List<ASubCommand> subCommands = new ArrayList<>();
-    ASubCommand defaultCommand;
 
+    /**
+     * Constructor
+     * @param aliases All aliases for the command
+     */
     public ASubCommandParent(String... aliases) {
         this.aliases.addAll(Arrays.asList(aliases));
     }
 
-
     /**
      * Add the provided sub command to list of sub commands
      * @param subCommand Sub command to add
-     * @param defaultCommand Whether this is the default command
-     */
-    public void addSubCommand(ASubCommand subCommand, boolean defaultCommand) {
-        subCommands.add(subCommand);
-        if(defaultCommand) this.defaultCommand = subCommand;
-    }
-
-    /**
-     * @see this#addSubCommand(ASubCommand, boolean)
      */
     public void addSubCommand(ASubCommand subCommand) {
-        addSubCommand(subCommand, false);
+        subCommands.add(subCommand);
     }
 
     @Override
@@ -49,23 +54,26 @@ public abstract class ASubCommandParent implements ICommand{
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/" + getCommandName() + " " + defaultCommand.getName();
+        return "/" + getCommandName() + " " + subCommands.get(0).getName();
     }
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        Quickplay.INSTANCE.threadPool.submit(() -> {
-            if(args.length == 0) {
-                defaultCommand.run(new String[]{});
-            } else {
-                ASubCommand subCommand = getCommand(args[0]);
-                if(subCommand == null) {
-                    defaultCommand.run(new String[]{});
+        // Only run if there are actually sub commands available; Otherwise it's pointless
+        if(subCommands.size() > 0) {
+            Quickplay.INSTANCE.threadPool.submit(() -> {
+                if(args.length == 0) {
+                    subCommands.get(0).run(new String[]{});
                 } else {
-                    subCommand.run(removeFirstArgument(args));
+                    ASubCommand subCommand = getCommand(args[0]);
+                    if(subCommand == null) {
+                        subCommands.get(0).run(new String[]{});
+                    } else {
+                        subCommand.run(removeFirstArgument(args));
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

@@ -6,6 +6,9 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
+/**
+ * Main event handler for Quickplay
+ */
 public class QuickplayEventHandler {
 
     @SubscribeEvent

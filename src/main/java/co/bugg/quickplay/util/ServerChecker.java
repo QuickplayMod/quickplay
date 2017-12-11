@@ -155,6 +155,9 @@ public class ServerChecker {
         return ip;
     }
 
+    /**
+     * Enum for possible ways that the client was verified to be on Hypixel
+     */
     public enum VerificationMethod {
         IP,
         SCOREBOARD,

@@ -10,16 +10,34 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Basic web request
+ */
 public class Request {
 
+    /**
+     * Apache HttpComponents object for the request
+     */
     public HttpRequestBase apacheRequestObj;
+    /**
+     * Factory this request was born in
+     */
     public HttpRequestFactory factory;
 
+    /**
+     * Constructor
+     * @param apacheRequestObj Apache HttpComponents object
+     * @param factory Parent factory
+     */
     public Request(HttpRequestBase apacheRequestObj, HttpRequestFactory factory) {
         this.apacheRequestObj = apacheRequestObj;
         this.factory = factory;
     }
 
+    /**
+     * Execute the request
+     * @return response from the requested page
+     */
     public WebResponse execute() {
 
         try (CloseableHttpResponse httpResponse = (CloseableHttpResponse) factory.httpClient.execute(apacheRequestObj)) {
@@ -41,6 +59,7 @@ public class Request {
             e.printStackTrace();
         }
 
+        // Probably response code is unsuccessful
         return null;
     }
 }

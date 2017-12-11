@@ -7,25 +7,56 @@ import net.minecraft.util.*;
 
 import java.nio.CharBuffer;
 
+/**
+ * Message wrapper for commonly used chat messages
+ */
 public class Message {
+    /**
+     * Base of the message being sent
+     */
     private IChatComponent message;
+    /**
+     * Whether the message should be wrapped in "separator bars"
+     */
     private boolean separators;
+    /**
+     * Whether this message can be sent even if the mod is disabled
+     */
     private boolean bypassEnabledSetting;
 
+    /**
+     * Constructor
+     * @param message Message to be sent
+     */
     public Message(IChatComponent message) {
         this(message, false, false);
     }
 
+    /**
+     * Constructor
+     * @param message Message to be sent
+     * @param separators Whether the message should be wrapped in separators
+     */
     public Message(IChatComponent message, boolean separators) {
         this(message, separators, false);
     }
 
+    /**
+     * Constructor
+     * @param message Message to be sent
+     * @param separators Whether the message should be wrapped in separators
+     * @param bypassEnabledSetting Whether the message should bypass the mod "enabled" setting
+     */
     public Message(IChatComponent message, boolean separators, boolean bypassEnabledSetting) {
         this.message = message;
         this.separators = separators;
         this.bypassEnabledSetting = bypassEnabledSetting;
     }
 
+    /**
+     * Get a chat message that can be sent, with bars included if applicable
+     * @return IChatComponent that can be sent in chat
+     */
     public IChatComponent getMessage() {
         IChatComponent component = new ChatComponentText("");
         if(separators) component.appendSibling(getMessageSeparator()).appendText("\n");
@@ -34,10 +65,19 @@ public class Message {
         return component;
     }
 
+    /**
+     * Getter for whether the message can bypass enabled setting
+     * @return {@link #bypassEnabledSetting}
+     */
     public boolean canBypassEnabledSetting() {
         return bypassEnabledSetting;
     }
 
+    /**
+     * Get the separator that is prepended & appended to messages with "separators" as true
+     * The separators are always the width of the clients chat box (without formatting)
+     * @return Separator
+     */
     public static IChatComponent getMessageSeparator() {
         char separatorChar = new ChatComponentTranslation("quickplay.chat.separator").getUnformattedTextForChat().charAt(0);
         final int chatWidth = Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatWidth();
@@ -54,6 +94,11 @@ public class Message {
         return separator;
     }
 
+    /**
+     * Deserialize a Message object from JSON
+     * @param value JSON to be parsed
+     * @return new Message
+     */
     public static Message fromJson(JsonElement value) {
         JsonObject obj = value.getAsJsonObject();
         System.out.println(obj.get("message").toString());

@@ -2,6 +2,7 @@ package co.bugg.quickplay;
 
 import co.bugg.quickplay.command.CommandQuickplay;
 import co.bugg.quickplay.config.AssetFactory;
+import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.http.HttpRequestFactory;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.ResponseAction;
@@ -81,6 +82,10 @@ public class Quickplay {
      * Factory for creating, loading, etc. of mod assets
      */
     public AssetFactory assetFactory;
+    /**
+     * List of games
+     */
+    public List<Game> gameList = new ArrayList<>();
 
     @EventHandler
     public void init(FMLInitializationEvent event) {

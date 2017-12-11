@@ -5,9 +5,15 @@ import net.minecraft.command.ICommandSender;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+/**
+ * /quickplay command
+ */
 @ParametersAreNonnullByDefault
 public class CommandQuickplay extends ASubCommandParent {
 
+    /**
+     * Constructor
+     */
     public CommandQuickplay() {
         super("quickplay", "qp");
 
