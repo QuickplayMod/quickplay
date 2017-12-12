@@ -1,13 +1,11 @@
-package co.bugg.quickplay.command;
+package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.*;
 
-import java.nio.CharBuffer;
 import java.util.List;
 import java.util.ListIterator;
 

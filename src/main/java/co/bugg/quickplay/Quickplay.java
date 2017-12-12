@@ -1,6 +1,6 @@
 package co.bugg.quickplay;
 
-import co.bugg.quickplay.command.CommandQuickplay;
+import co.bugg.quickplay.client.command.CommandQuickplay;
 import co.bugg.quickplay.config.AssetFactory;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.http.HttpRequestFactory;
@@ -8,10 +8,7 @@ import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.ResponseAction;
 import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.MessageBuffer;
-import co.bugg.quickplay.util.ReflectionUtil;
 import co.bugg.quickplay.util.ServerChecker;
-import com.google.gson.Gson;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
@@ -22,7 +19,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +31,7 @@ import java.util.concurrent.Executors;
         name = Reference.MOD_NAME,
         version = Reference.VERSION,
         clientSideOnly = true,
-        acceptedMinecraftVersions = "[1.8.8, 1.12.2]"
+        acceptedMinecraftVersions = "[1.8.8, 1.8.9]"
 )
 public class Quickplay {
 

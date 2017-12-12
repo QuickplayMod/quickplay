@@ -1,4 +1,4 @@
-package co.bugg.quickplay.command;
+package co.bugg.quickplay.client.command;
 
 import java.util.List;
 

@@ -71,6 +71,7 @@ public class AssetFactory {
             resourceLocations.add(new ResourceLocation(file.getName()));
         }
 
+        Minecraft.getMinecraft().refreshResources();
         return resourceLocations;
     }
 

@@ -1,4 +1,4 @@
-package co.bugg.quickplay.command;
+package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.command.ICommand;
