@@ -1,6 +1,8 @@
 package co.bugg.quickplay.config;
 
 import co.bugg.quickplay.Quickplay;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.FolderResourcePack;
 import net.minecraft.client.resources.IResourcePack;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,31 +52,23 @@ public class AssetFactory {
     public List<ResourceLocation> loadIcons(List<URL> urls) {
         createDirectories();
 
-        /*
-        TODO I feel like this method can be dealt with better somehow.
-        TODO Potentially URLs can be hashed & that can be the file name?
-        TODO I just don't like the idea of having to parse the URL to get
-        TODO the file name each time we want to load its resource.
-         */
-
         List<ResourceLocation> resourceLocations = new ArrayList<>();
 
         for(URL url : urls) {
-            String fileName = FilenameUtils.getName(url.getPath());
-            String path = assetsDirectory + fileName;
+            File file = getIconFile(url);
             // If the file already exists, no need to download again.
             // If the icon needs to be reset, use REFRESH_CACHE action type.
-            if(!new File(path).exists()) {
-                System.out.println("Saving file " + fileName);
+            if(!file.exists()) {
+                System.out.println("Saving file " + file.getPath());
                 try {
                     String contents = Quickplay.INSTANCE.requestFactory.getContents(url);
-                    Files.write(new File(assetsDirectory + FilenameUtils.getName(url.getPath())).toPath(), contents.getBytes());
+                    Files.write(file.toPath(), contents.getBytes());
                 } catch (IOException | URISyntaxException e) {
                     e.printStackTrace();
                 }
             }
 
-            resourceLocations.add(new ResourceLocation(fileName));
+            resourceLocations.add(new ResourceLocation(file.getName()));
         }
 
         return resourceLocations;
@@ -144,5 +139,16 @@ public class AssetFactory {
 
         // Refresh the resources of the game
         Minecraft.getMinecraft().refreshResources();
+    }
+
+    /**
+     * Get the {@link File} for the provided icon URL
+     * URL is md5 hashed and then ".png" is appended
+     * @param url URL the icon can be found at
+     * @return A new {@link File}
+     */
+    public File getIconFile(URL url) {
+        HashCode hash = Hashing.md5().hashString(url.toString(), Charset.forName("UTF-8"));
+        return new File(assetsDirectory + hash.toString() + "." + FilenameUtils.getExtension(url.getPath()));
     }
 }
