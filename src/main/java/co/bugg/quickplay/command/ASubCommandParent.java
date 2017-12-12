@@ -90,7 +90,7 @@ public abstract class ASubCommandParent implements ICommand {
         } else {
             ASubCommand subCommand = getCommand(args[0]);
             if(subCommand != null) {
-                return subCommand.getTabCompletions();
+                return subCommand.getTabCompletions(args);
             } else {
                 getDefaultTabCompletions();
             }
