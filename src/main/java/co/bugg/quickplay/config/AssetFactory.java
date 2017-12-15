@@ -8,9 +8,10 @@ import net.minecraft.client.resources.FolderResourcePack;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -61,8 +62,29 @@ public class AssetFactory {
             if(!file.exists()) {
                 System.out.println("Saving file " + file.getPath());
                 try {
-                    String contents = Quickplay.INSTANCE.requestFactory.getContents(url);
-                    Files.write(file.toPath(), contents.getBytes());
+
+                    HttpGet get = new HttpGet(url.toURI());
+
+                    CloseableHttpResponse response = (CloseableHttpResponse) Quickplay.INSTANCE.requestFactory.httpClient.execute(get);
+                    if(response.getStatusLine().getStatusCode() < 300) {
+
+                        byte[] buffer = new byte[1024];
+
+                        InputStream is = response.getEntity().getContent();
+                        OutputStream os = new FileOutputStream(file);
+
+                        for (int length; (length = is.read(buffer)) > 0; ) {
+                            os.write(buffer, 0, length);
+                        }
+
+                        is.close();
+                        os.close();
+                        response.close();
+                    } else {
+                        System.out.println("Can't save file " + file.getPath());
+                        continue;
+                    }
+
                 } catch (IOException | URISyntaxException e) {
                     e.printStackTrace();
                 }

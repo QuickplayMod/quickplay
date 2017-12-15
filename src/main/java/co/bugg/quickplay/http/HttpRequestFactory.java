@@ -8,10 +8,7 @@ import co.bugg.quickplay.util.ServerChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
@@ -19,12 +16,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class HttpRequestFactory {
@@ -32,28 +25,17 @@ public class HttpRequestFactory {
     public HttpClient httpClient;
 
     public HttpRequestFactory() {
+        httpClient = newClient();
+    }
+
+    public HttpClient newClient() {
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
         connectionManager.setMaxTotal(100);
 
-        httpClient = HttpClients.custom()
+        return HttpClients.custom()
                 .setConnectionManager(connectionManager)
                 .setUserAgent("Minecraft Mod " + Reference.MOD_NAME + " - " + Reference.VERSION)
                 .build();
-    }
-
-    public String getContents(URL url) throws IOException, URISyntaxException {
-        HttpGet post = new HttpGet(url.toURI());
-
-        try(CloseableHttpResponse response = (CloseableHttpResponse) httpClient.execute(post)) {
-            if(response.getStatusLine().getStatusCode() >= 300) {
-                return null;
-            }
-
-            StringWriter writer = new StringWriter();
-            IOUtils.copy(response.getEntity().getContent(), writer, StandardCharsets.UTF_8);
-
-            return writer.toString();
-        }
     }
 
     /**

@@ -53,8 +53,11 @@ public class Request {
 
                 stream.close();
 
+                httpResponse.close();
                 return WebResponse.fromJson(writer.toString());
             }
+
+            httpResponse.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
