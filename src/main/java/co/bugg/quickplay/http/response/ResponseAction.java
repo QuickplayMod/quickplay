@@ -1,17 +1,12 @@
 package co.bugg.quickplay.http.response;
 
 import co.bugg.quickplay.Quickplay;
-import co.bugg.quickplay.config.AssetFactory;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.util.Message;
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
-import net.minecraft.util.IChatComponent;
 
-import java.net.URL;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -65,7 +60,6 @@ public class ResponseAction {
                         response.content.getAsJsonObject().get("games").getAsJsonArray().forEach(
                                 obj -> Quickplay.INSTANCE.gameList.add(WebResponse.GSON.fromJson(obj, Game.class)));
                     } catch(Exception e) {
-                        System.out.println("Exception!");
                         e.printStackTrace();
                     }
 
@@ -75,7 +69,15 @@ public class ResponseAction {
                 });
                 break;
             case REFRESH_CACHE:
-                // TODO delete all cached game image files, etc.
+                // Get all files in the assets directory
+                File[] files = new File(Quickplay.INSTANCE.assetFactory.assetsDirectory).listFiles();
+                // If they exist
+                if(files != null) {
+                    for(File file : files) {
+                        // Delete 'em all!!
+                        file.delete();
+                    }
+                }
                 break;
             case SEND_MESSAGE:
                 try {
