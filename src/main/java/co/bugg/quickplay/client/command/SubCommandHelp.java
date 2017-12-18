@@ -6,6 +6,7 @@ import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -23,6 +24,7 @@ public class SubCommandHelp extends ASubCommand {
                 parent,
                 "help",
                 new ChatComponentTranslation("quickplay.commands.quickplay.help.help").getUnformattedText(),
+                "[subcommand]",
                 true,
                 true,
                 100.0
@@ -31,22 +33,43 @@ public class SubCommandHelp extends ASubCommand {
 
     @Override
     public void run(String[] args) {
+        boolean separators;
         IChatComponent helpMessage = new ChatComponentText("");
 
-        for(ListIterator<ASubCommand> iterator = getParent().subCommands.listIterator(); iterator.hasNext();) {
-            ASubCommand subCommand = iterator.next();
-            if(subCommand.canDisplayInHelpMenu()) {
-                helpMessage.appendSibling(getFormattedHelpMessage(subCommand));
-                if(iterator.hasNext()) helpMessage.appendText("\n");
+        if(args.length == 0) {
+            separators = true;
+            for(ListIterator<ASubCommand> iterator = getParent().subCommands.listIterator(); iterator.hasNext();) {
+                ASubCommand subCommand = iterator.next();
+                if(subCommand.canDisplayInHelpMenu()) {
+                    helpMessage.appendSibling(getFormattedHelpMessage(subCommand));
+                    if(iterator.hasNext()) helpMessage.appendText("\n");
+                }
+            }
+        } else {
+            separators = false;
+            ASubCommand commandToDisplay = getParent().getCommand(args[0]);
+            if(commandToDisplay != null) {
+                helpMessage.appendSibling(new ChatComponentTranslation("quickplay.commands.usage"));
+                helpMessage.appendText("\n");
+                helpMessage.appendText("/" + commandToDisplay.getParent().getCommandName() + " " + commandToDisplay.getName() + " " + commandToDisplay.getUsage());
+                helpMessage.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
             }
         }
 
-        Quickplay.INSTANCE.messageBuffer.push(new Message(helpMessage, true));
+        Quickplay.INSTANCE.messageBuffer.push(new Message(helpMessage, separators));
     }
 
     @Override
     public List<String> getTabCompletions(String[] args) {
-        return null;
+        List<String> list = new ArrayList<>();
+
+        if(args.length == 0) {
+            for(ASubCommand subCommand : getParent().getSubCommands()) {
+                list.add(subCommand.getName());
+            }
+        }
+
+        return list;
     }
 
     /**

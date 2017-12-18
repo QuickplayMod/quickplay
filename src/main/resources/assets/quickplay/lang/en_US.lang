@@ -1,3 +1,4 @@
 quickplay.commands.quickplay.help.help=Display the available commands.
 quickplay.chat.separator=-
 quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
+quickplay.commands.usage=Command syntax:

@@ -12,14 +12,16 @@ public abstract class ASubCommand {
      * @param parent Parent command
      * @param name Name of this sub command
      * @param helpMessage Help message for this sub command, usually displayed in a help menu
+     * @param usage Command syntax. See {@link #usage}
      * @param displayInHelpMenu Whether this sub command can be displayed in a help menu
      * @param displayInTabList Whether this sub command can be tabbed into chat
      * @param priority TODO the priority of this sub command in help menu and tab list
      */
-    public ASubCommand(ASubCommandParent parent, String name, String helpMessage, boolean displayInHelpMenu, boolean displayInTabList, double priority) {
+    public ASubCommand(ASubCommandParent parent, String name, String helpMessage, String usage, boolean displayInHelpMenu, boolean displayInTabList, double priority) {
         this.parent = parent;
         this.name = name;
         this.helpMessage = helpMessage;
+        this.usage = usage;
         this.displayInHelpMenu = displayInHelpMenu;
         this.displayInTabList = displayInTabList;
         this.priority = priority;
@@ -37,6 +39,11 @@ public abstract class ASubCommand {
      * Help message to give information about this sub command
      */
     private String helpMessage;
+    /**
+     * Syntax or example usage of parameters for this command
+     * Example: "<game> <lobby> [yes|no]"
+     */
+    private String usage;
     /**
      * Whether this sub command can be displayed in a help menu
      */
@@ -85,6 +92,14 @@ public abstract class ASubCommand {
      */
     public String getHelpMessage() {
         return helpMessage;
+    }
+
+    /**
+     * Getter for {@link #usage}
+     * @return {@link #usage}
+     */
+    public String getUsage() {
+        return usage;
     }
 
     /**
