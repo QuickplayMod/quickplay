@@ -2,10 +2,9 @@ package co.bugg.quickplay.util.buffer;
 
 
 import co.bugg.quickplay.Quickplay;
-import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
@@ -35,7 +34,13 @@ public class ChatBuffer extends ABuffer {
 
         // Only send a message if the player exists & there is a message to send
         if(size() > 0 && player != null) {
-            player.sendChatMessage((String) pull());
+            String message = (String) pull();
+
+            // Handle as a command
+            if(message.startsWith("/"))
+                ClientCommandHandler.instance.executeCommand(player, message);
+            else
+                player.sendChatMessage((String) pull());
         }
     }
 
