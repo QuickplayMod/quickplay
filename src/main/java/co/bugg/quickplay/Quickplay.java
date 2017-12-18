@@ -7,7 +7,9 @@ import co.bugg.quickplay.http.HttpRequestFactory;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.ResponseAction;
 import co.bugg.quickplay.http.response.WebResponse;
-import co.bugg.quickplay.util.MessageBuffer;
+import co.bugg.quickplay.util.buffer.ABuffer;
+import co.bugg.quickplay.util.buffer.ChatBuffer;
+import co.bugg.quickplay.util.buffer.MessageBuffer;
 import co.bugg.quickplay.util.ServerChecker;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.ChatComponentTranslation;
@@ -71,6 +73,10 @@ public class Quickplay {
      */
     public MessageBuffer messageBuffer;
     /**
+     * Buffer for sending chat messages to the server
+     */
+    public ChatBuffer chatBuffer;
+    /**
      * Factory for creating HTTP requests
      */
     public HttpRequestFactory requestFactory;
@@ -89,9 +95,7 @@ public class Quickplay {
         // if the mod is disabled - this allows for
         // communicating important information about why
         // the mod is currently disabled, or how to fix.
-        messageBuffer = new MessageBuffer();
-        messageBuffer.run();
-
+        messageBuffer = (MessageBuffer) new MessageBuffer(100).start();
         enable();
     }
 
@@ -139,6 +143,8 @@ public class Quickplay {
 
             registerEventHandler(new QuickplayEventHandler());
 
+            chatBuffer = (ChatBuffer) new ChatBuffer(100).start();
+
             commands.add(new CommandQuickplay());
             commands.forEach(ClientCommandHandler.instance::registerCommand);
         }
@@ -152,6 +158,9 @@ public class Quickplay {
             this.enabled = false;
             eventHandlers.forEach(this::unregisterEventHandler);
             this.disabledReason = reason;
+
+            if(chatBuffer != null)
+                chatBuffer.stop();
         }
     }
 

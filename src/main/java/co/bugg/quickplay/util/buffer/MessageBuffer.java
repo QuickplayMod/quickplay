@@ -1,0 +1,42 @@
+package co.bugg.quickplay.util.buffer;
+
+
+import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.util.Message;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.util.*;
+
+import java.util.ArrayList;
+
+/**
+ * Buffer for chat messages sent to the
+ * client. Will send any messages in the
+ * buffer to the player as soon as possible.
+ */
+public class MessageBuffer extends ABuffer {
+
+    /**
+     * Constructor
+     *
+     * @param sleepTime Time in milliseconds between {@link #run()} calls. See {@link #sleepTime}
+     */
+    public MessageBuffer(int sleepTime) {
+        super(sleepTime);
+    }
+
+    /**
+     * Start sending messages in the
+     * buffer, whenever possible
+     */
+    public void run() {
+        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+
+        // Only send a message if the player exists & there is a message to send
+        if(size() > 0 && player != null) {
+            player.addChatMessage(((Message) pull()).getMessage());
+        }
+    }
+
+
+}
