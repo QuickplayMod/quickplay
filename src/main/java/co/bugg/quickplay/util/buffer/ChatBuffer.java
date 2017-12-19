@@ -38,9 +38,11 @@ public class ChatBuffer extends ABuffer {
 
             // Handle as a command
             if(message.startsWith("/"))
-                ClientCommandHandler.instance.executeCommand(player, message);
+                if(ClientCommandHandler.instance.executeCommand(player, message) == 0) {
+                    player.sendChatMessage(message);
+                }
             else
-                player.sendChatMessage((String) pull());
+                player.sendChatMessage(message);
         }
     }
 

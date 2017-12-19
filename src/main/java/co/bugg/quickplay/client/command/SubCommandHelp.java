@@ -78,7 +78,7 @@ public class SubCommandHelp extends ASubCommand {
      * @return A chat-ready formatted help message
      */
     public IChatComponent getFormattedHelpMessage(ASubCommand subCommand) {
-        final String fullCommand = "/" + subCommand.getParent().getCommandName() + " " + getName();
+        final String fullCommand = "/" + subCommand.getParent().getCommandName() + " " + subCommand.getName();
 
         final IChatComponent msg = new ChatComponentText("");
 
@@ -88,7 +88,7 @@ public class SubCommandHelp extends ASubCommand {
         final IChatComponent separator = new ChatComponentText(" - ");
         separator.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY));
 
-        final IChatComponent helpMessage = new ChatComponentText(getHelpMessage());
+        final IChatComponent helpMessage = new ChatComponentText(subCommand.getHelpMessage());
         helpMessage.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW));
 
         msg.appendSibling(command);

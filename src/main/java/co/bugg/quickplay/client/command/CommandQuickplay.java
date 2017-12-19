@@ -18,6 +18,7 @@ public class CommandQuickplay extends ASubCommandParent {
         super("quickplay", "qp");
 
         addSubCommand(new SubCommandHelp(this));
+        addSubCommand(new SubCommandLimbo(this));
     }
 
     @Override

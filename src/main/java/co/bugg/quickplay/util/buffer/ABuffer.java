@@ -91,6 +91,7 @@ public abstract class ABuffer implements Runnable {
      * @return this
      */
     public ABuffer start() {
+        this.started = true;
         Quickplay.INSTANCE.threadPool.submit(() -> {
             while(!Thread.currentThread().isInterrupted() && started) {
                 try {
