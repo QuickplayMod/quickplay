@@ -1,15 +1,12 @@
 package co.bugg.quickplay.util;
 
 import co.bugg.quickplay.Quickplay;
-import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * When online Hypixel, enabled instances of
@@ -32,10 +29,6 @@ public class InstanceWatcher {
      * How often in seconds /whereami should be executed
      */
     public int whereamiFrequency;
-    /**
-     * Whether the /whereami messages should be cancelled
-     */
-    public boolean cancelWhereamiMessages;
 
     public InstanceWatcher(int frequency) {
         whereamiFrequency = frequency;
@@ -47,37 +40,13 @@ public class InstanceWatcher {
     public void onTick(TickEvent.ClientTickEvent event) {
         if(event.phase == TickEvent.Phase.START && tick++ > whereamiFrequency * 20) {
             tick = 0;
-            sendWhereami();
-        }
-    }
-
-    @SubscribeEvent
-    public void onChat(ClientChatReceivedEvent event) {
-        String message = event.message.getFormattedText();
-        // Regex for the /whereami response
-        Pattern pattern = Pattern.compile("§bYou are currently (?:(?:in |connected to server §r§6)(limbo|(?:(?:[A-Za-z]+)?lobby(?:\\d{1,3})|(?:mega|mini)\\d{1,3}[A-Z])))§r");
-        Matcher matcher = pattern.matcher(message);
-
-        if(matcher.find()) {
-            if(cancelWhereamiMessages) {
-                event.setCanceled(true);
-                this.cancelWhereamiMessages = false;
-            }
-
-            String server = matcher.group(1);
-            if(instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(server)) {
-                instanceHistory.add(0, server);
-            }
+            runWhereami();
         }
     }
 
     @SubscribeEvent
     public void onWorldChange(WorldEvent.Load event) {
-        // This event is typically called three times, for each dimension
-        // Only send the "whereami" message if it's for the overworld
-        if(event.world.provider.getDimensionId() == 0) {
-            new TickDelay(this::sendWhereami, 30);
-        }
+        new TickDelay(this::runWhereami, 30);
     }
 
     /**
@@ -87,7 +56,7 @@ public class InstanceWatcher {
     public InstanceWatcher start() {
         Quickplay.INSTANCE.registerEventHandler(this);
         started = true;
-        sendWhereami();
+        runWhereami();
         return this;
     }
 
@@ -105,14 +74,12 @@ public class InstanceWatcher {
      * Send the /whereami message if possible
      * @return this
      */
-    public InstanceWatcher sendWhereami() {
-        if(Quickplay.INSTANCE.onHypixel) {
-            cancelWhereamiMessages = true;
-            Quickplay.INSTANCE.chatBuffer.push("/whereami");
-
-            // If a whereami message isnt found in 30 ticks, stop preparing to cancel
-            new TickDelay(() -> this.cancelWhereamiMessages = false, 30);
-        }
+    public InstanceWatcher runWhereami() {
+        new WhereamiWrapper((server) -> {
+            if(server != null && (instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(server))) {
+                instanceHistory.add(0, server);
+            }
+        });
         return this;
     }
 
@@ -123,4 +90,5 @@ public class InstanceWatcher {
     public String getCurrentServer() {
         return instanceHistory.size() > 0 ? instanceHistory.get(0) : null;
     }
+
 }
