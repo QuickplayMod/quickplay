@@ -26,9 +26,4 @@ public class QuickplayEventHandler {
         Quickplay.INSTANCE.onHypixel = false;
         Quickplay.INSTANCE.verificationMethod = null;
     }
-
-    @SubscribeEvent
-    public void onChat(ClientChatReceivedEvent event) {
-        System.out.println(IChatComponent.Serializer.componentToJson(event.message));
-    }
 }
