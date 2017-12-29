@@ -1,6 +1,7 @@
 package co.bugg.quickplay;
 
 import co.bugg.quickplay.client.command.CommandQuickplay;
+import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.config.AssetFactory;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.http.HttpRequestFactory;
@@ -8,7 +9,6 @@ import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.ResponseAction;
 import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.InstanceWatcher;
-import co.bugg.quickplay.util.buffer.ABuffer;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
 import co.bugg.quickplay.util.ServerChecker;
@@ -92,6 +92,8 @@ public class Quickplay {
 
     public InstanceWatcher instanceWatcher;
 
+    public InstanceDisplay instanceDisplay;
+
     @EventHandler
     public void init(FMLInitializationEvent event) {
         // The message buffer should remain online even
@@ -148,6 +150,7 @@ public class Quickplay {
 
             chatBuffer = (ChatBuffer) new ChatBuffer(100).start();
             instanceWatcher = new InstanceWatcher(10).start();
+            instanceDisplay = new InstanceDisplay();
 
             commands.add(new CommandQuickplay());
             commands.forEach(ClientCommandHandler.instance::registerCommand);

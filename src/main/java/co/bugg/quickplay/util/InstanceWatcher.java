@@ -75,11 +75,12 @@ public class InstanceWatcher {
      * @return this
      */
     public InstanceWatcher runWhereami() {
-        new WhereamiWrapper((server) -> {
-            if(server != null && (instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(server))) {
-                instanceHistory.add(0, server);
-            }
-        });
+        if(Quickplay.INSTANCE.onHypixel && Quickplay.INSTANCE.enabled)
+            new WhereamiWrapper((server) -> {
+                if(server != null && (instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(server))) {
+                    instanceHistory.add(0, server);
+                }
+            });
         return this;
     }
 
