@@ -1,7 +1,6 @@
 package co.bugg.quickplay.client.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 
@@ -15,8 +14,6 @@ public class MoveableHudElement extends Gui implements Serializable {
     public int height;
 
     public ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
-
-    public final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
 
     public void edit() {
         Minecraft.getMinecraft().displayGuiScreen(new MoveableHudElementEditor(this));

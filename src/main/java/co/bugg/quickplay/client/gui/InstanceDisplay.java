@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
+import net.minecraft.client.Minecraft;
 
 public class InstanceDisplay extends MoveableHudElement {
 
@@ -18,8 +19,8 @@ public class InstanceDisplay extends MoveableHudElement {
         super.render();
 
         String instance = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
-        int stringHeight = fontRenderer.FONT_HEIGHT;
-        int stringWidth = fontRenderer.getStringWidth(instance);
+        int stringHeight = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
+        int stringWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(instance);
 
         int scaledX = (int) (xRatio * width);
         int scaledY = (int) (yRatio * height);
@@ -31,6 +32,6 @@ public class InstanceDisplay extends MoveableHudElement {
                 scaledY + stringHeight + this.backgroungVerticalPadding,
                 0x40000000);
 
-        drawCenteredString(fontRenderer, instance, scaledX, scaledY, 0xFF0000);
+        drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY, 0xFF0000);
     }
 }
