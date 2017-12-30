@@ -5,3 +5,4 @@ quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
 quickplay.chat.separator=-
 quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
 quickplay.commands.usage=Command syntax:
+quickplay.config.saveerror=There was an error saving your configuration. Settings may not be saved!

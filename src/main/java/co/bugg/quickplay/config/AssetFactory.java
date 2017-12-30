@@ -29,21 +29,10 @@ public class AssetFactory {
     /**
      * Relative to Minecraft root
      */
-    public String rootDirectory = "quickplay/";
-    public String configDirectory = rootDirectory + "configs/";
-    public String resourcesDirectory = rootDirectory + "resources/";
-    public String assetsDirectory = resourcesDirectory + "assets/quickplay/";
-
-    /**
-     * TODO Load the mod configuration with provided name
-     * @param name Name of the config to load
-     * @return Configuration loaded
-     */
-    public AConfiguration loadConfig(String name) {
-        createDirectories();
-
-        return new ConfigSettings();
-    }
+    public static final String rootDirectory = "quickplay/";
+    public static final String configDirectory = rootDirectory + "configs/";
+    public static final String resourcesDirectory = rootDirectory + "resources/";
+    public static final String assetsDirectory = resourcesDirectory + "assets/quickplay/";
 
     /**
      * Download all icons from the specified URLs

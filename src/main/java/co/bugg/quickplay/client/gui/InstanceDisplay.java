@@ -3,6 +3,8 @@ package co.bugg.quickplay.client.gui;
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.Minecraft;
 
+import java.io.IOException;
+
 public class InstanceDisplay extends MoveableHudElement {
 
     int backgroundHorizontalPadding = 4;
@@ -10,8 +12,6 @@ public class InstanceDisplay extends MoveableHudElement {
 
     public InstanceDisplay() {
         super();
-        xRatio = 0.5;
-        yRatio = 0.05;
     }
 
     @Override
@@ -22,8 +22,8 @@ public class InstanceDisplay extends MoveableHudElement {
         int stringHeight = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
         int stringWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(instance);
 
-        int scaledX = (int) (xRatio * width);
-        int scaledY = (int) (yRatio * height);
+        int scaledX = (int) (Quickplay.INSTANCE.settings.instanceDisplayX * width);
+        int scaledY = (int) (Quickplay.INSTANCE.settings.instanceDisplayY * height);
 
         drawRect(scaledX - this.backgroundHorizontalPadding - stringWidth / 2,
                 scaledY - this.backgroungVerticalPadding,
@@ -33,5 +33,37 @@ public class InstanceDisplay extends MoveableHudElement {
                 0x40000000);
 
         drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY, 0xFF0000);
+    }
+
+    @Override
+    public void setxRatio(double xRatio) {
+        Quickplay.INSTANCE.settings.instanceDisplayX = xRatio;
+    }
+
+    @Override
+    public void setyRatio(double yRatio) {
+        Quickplay.INSTANCE.settings.instanceDisplayY = yRatio;
+    }
+
+    @Override
+    public double getxRatio() {
+        // TODO null pointer check
+        return Quickplay.INSTANCE.settings.instanceDisplayX;
+    }
+
+    @Override
+    public double getyRatio() {
+        // TODO null pointer check
+        return Quickplay.INSTANCE.settings.instanceDisplayY;
+    }
+
+    @Override
+    public void save() {
+        try {
+            Quickplay.INSTANCE.settings.save();
+        } catch (IOException e) {
+            System.out.println("Error saving config!");
+            e.printStackTrace();
+        }
     }
 }

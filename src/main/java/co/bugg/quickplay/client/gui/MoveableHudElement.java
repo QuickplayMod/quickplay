@@ -6,9 +6,7 @@ import net.minecraft.client.gui.ScaledResolution;
 
 import java.io.Serializable;
 
-public class MoveableHudElement extends Gui implements Serializable {
-    public double xRatio = 0;
-    public double yRatio = 0;
+public abstract class MoveableHudElement extends Gui implements Serializable {
 
     public int width;
     public int height;
@@ -24,4 +22,12 @@ public class MoveableHudElement extends Gui implements Serializable {
         width = scaledResolution.getScaledWidth();
         height = scaledResolution.getScaledHeight();
     }
+
+    public abstract void setxRatio(double ratio);
+    public abstract void setyRatio(double ratio);
+
+    public abstract double getxRatio();
+    public abstract  double getyRatio();
+
+    public abstract void save();
 }

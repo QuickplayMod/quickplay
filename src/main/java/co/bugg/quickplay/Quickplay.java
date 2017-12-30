@@ -2,16 +2,20 @@ package co.bugg.quickplay;
 
 import co.bugg.quickplay.client.command.CommandQuickplay;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
+import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.config.AssetFactory;
+import co.bugg.quickplay.config.ConfigSettings;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.http.HttpRequestFactory;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.ResponseAction;
 import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.InstanceWatcher;
+import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
 import co.bugg.quickplay.util.ServerChecker;
+import com.google.gson.JsonSyntaxException;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
@@ -23,6 +27,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,10 +94,18 @@ public class Quickplay {
      * List of games
      */
     public List<Game> gameList = new ArrayList<>();
-
+    /**
+     * InstanceWatcher that constantly watches for what Hypixel server instance the client is on
+     */
     public InstanceWatcher instanceWatcher;
-
+    /**
+     * Display of the current Hypixel instance
+     */
     public InstanceDisplay instanceDisplay;
+    /**
+     * Mods settings
+     */
+    public ConfigSettings settings;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -133,6 +146,23 @@ public class Quickplay {
 
             assetFactory.createDirectories();
             assetFactory.registerResourcePack();
+
+            try {
+                settings = (ConfigSettings) AConfiguration.load("settings.json", ConfigSettings.class);
+            } catch (IOException | JsonSyntaxException e) {
+                // Config either doesn't exist or couldn't be parsed
+                e.printStackTrace();
+                assetFactory.createDirectories();
+                settings = new ConfigSettings();
+                try {
+                    // Write the default config that we just made to save it
+                    settings.save();
+                } catch (IOException e1) {
+                    // File couldn't be saved
+                    e1.printStackTrace();
+                    Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror")));
+                }
+            }
 
             this.threadPool.submit(() -> {
                 HashMap<String, String> params = new HashMap<>();

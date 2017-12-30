@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui;
 
+import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
@@ -8,8 +9,13 @@ public class MoveableHudElementEditor extends GuiScreen {
 
     private final MoveableHudElement element;
 
+    double xRatio;
+    double yRatio;
+
     public MoveableHudElementEditor(MoveableHudElement element) {
         this.element = element;
+        this.xRatio = element.getxRatio();
+        this.yRatio = element.getyRatio();
     }
 
     @Override
@@ -41,11 +47,15 @@ public class MoveableHudElementEditor extends GuiScreen {
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         super.mouseReleased(mouseX, mouseY, state);
-        // TODO Save config
+
+        element.setxRatio(xRatio);
+        element.setyRatio(yRatio);
+        element.save();
+
     }
 
     public void moveTo(int mouseX, int mouseY) {
-        element.xRatio = (double) mouseX / (double) element.width;
-        element.yRatio = (double) mouseY / (double) element.height;
+        xRatio = (double) mouseX / (double) element.width;
+        yRatio = (double) mouseY / (double) element.height;
     }
 }
