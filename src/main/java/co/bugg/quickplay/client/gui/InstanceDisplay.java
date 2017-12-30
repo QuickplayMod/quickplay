@@ -15,15 +15,15 @@ public class InstanceDisplay extends MoveableHudElement {
     }
 
     @Override
-    public void render() {
-        super.render();
+    public void render(double x, double y) {
+        super.render(x, y);
 
         String instance = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
         int stringHeight = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
         int stringWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(instance);
 
-        int scaledX = (int) (Quickplay.INSTANCE.settings.instanceDisplayX * width);
-        int scaledY = (int) (Quickplay.INSTANCE.settings.instanceDisplayY * height);
+        int scaledX = (int) (x * width);
+        int scaledY = (int) (y * height);
 
         drawRect(scaledX - this.backgroundHorizontalPadding - stringWidth / 2,
                 scaledY - this.backgroungVerticalPadding,

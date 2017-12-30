@@ -22,7 +22,7 @@ public class MoveableHudElementEditor extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
 
-        element.render();
+        element.render(xRatio, yRatio);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
