@@ -121,12 +121,15 @@ public class ServerChecker {
 
     /**
      * Check if the scoreboard contains "www.hypixel.net"
-     * @return Whether the scoreboard contains "www.hypixel.net"
+     * @return Whether the scoreboard contains "www.hypixel.net", or false if no scoreboard
      */
     public boolean checkScoreboardForHypixel() {
         List<String> list = ScoreboardUtils.getSidebarScores(Minecraft.getMinecraft().theWorld.getScoreboard());
 
-        return list.get(0).contains("www.hypixel.net");
+        if(list != null && list.get(0) != null)
+            return list.get(0).contains("www.hypixel.net");
+        else
+            return false;
     }
 
     /**
