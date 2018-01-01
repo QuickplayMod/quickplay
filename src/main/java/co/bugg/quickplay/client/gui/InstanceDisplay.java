@@ -22,8 +22,8 @@ public class InstanceDisplay extends MoveableHudElement {
         int stringHeight = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
         int stringWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(instance);
 
-        int scaledX = (int) (x * width);
-        int scaledY = (int) (y * height);
+        int scaledX = (int) (x * screenWidth);
+        int scaledY = (int) (y * screenHeight);
 
         drawRect(scaledX - this.backgroundHorizontalPadding - stringWidth / 2,
                 scaledY - this.backgroungVerticalPadding,

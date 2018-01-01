@@ -1,6 +1,5 @@
 package co.bugg.quickplay.client.gui;
 
-import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
@@ -47,15 +46,40 @@ public class MoveableHudElementEditor extends GuiScreen {
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         super.mouseReleased(mouseX, mouseY, state);
+        save();
+    }
 
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        super.keyTyped(typedChar, keyCode);
+
+        // Move right 1 pixel
+        if(keyCode == 205) {
+            xRatio = ((xRatio * (double) element.screenWidth) + 1) / (double) element.screenWidth;
+        // Move left 1 pixel
+        } else if(keyCode == 203) {
+            xRatio = ((xRatio * (double) element.screenWidth) - 1) / (double) element.screenWidth;
+        // Move up 1 pixel
+        } else if(keyCode == 200) {
+            yRatio = ((yRatio * (double) element.screenHeight) - 1) / (double) element.screenHeight;
+        // Move down 1 pixel
+        } else if(keyCode == 208) {
+            yRatio = ((yRatio * (double) element.screenHeight) + 1) / (double) element.screenHeight;
+        }
+
+        save();
+    }
+
+
+
+    public void save() {
         element.setxRatio(xRatio);
         element.setyRatio(yRatio);
         element.save();
-
     }
 
     public void moveTo(int mouseX, int mouseY) {
-        xRatio = (double) mouseX / (double) element.width;
-        yRatio = (double) mouseY / (double) element.height;
+        xRatio = (double) mouseX / (double) element.screenWidth;
+        yRatio = (double) mouseY / (double) element.screenHeight;
     }
 }

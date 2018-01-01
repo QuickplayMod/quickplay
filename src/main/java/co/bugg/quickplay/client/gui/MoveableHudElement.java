@@ -8,8 +8,8 @@ import java.io.Serializable;
 
 public abstract class MoveableHudElement extends Gui implements Serializable {
 
-    public int width;
-    public int height;
+    public int screenWidth;
+    public int screenHeight;
 
     public ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
 
@@ -23,8 +23,8 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
 
     public void render(double x, double y) {
         scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
-        width = scaledResolution.getScaledWidth();
-        height = scaledResolution.getScaledHeight();
+        screenWidth = scaledResolution.getScaledWidth();
+        screenHeight = scaledResolution.getScaledHeight();
     }
 
     public abstract void setxRatio(double ratio);
