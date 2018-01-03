@@ -1,6 +1,8 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 
@@ -18,14 +20,21 @@ public abstract class QuickplayGui extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        for (int i = 0; i < this.buttonList.size(); ++i)
+        {
+            ((QuickplayGuiButton)this.buttonList.get(i)).drawButton(this.mc, mouseX, mouseY, opacity);
+        }
+
+        for (int j = 0; j < this.labelList.size(); ++j)
+        {
+            ((GuiLabel)this.labelList.get(j)).drawLabel(this.mc, mouseX, mouseY);
+        }
     }
 
     public void fadeIn() {
         Quickplay.INSTANCE.threadPool.submit(() -> {
             while(opacity < 1) {
                 opacity+= 0.05f;
-                System.out.println("Up");
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
@@ -39,8 +48,10 @@ public abstract class QuickplayGui extends GuiScreen {
     public void handleMouseInput() throws IOException {
         super.handleMouseInput();
 
-        if(Mouse.getDWheel() != 0)
-            mouseScrolled(Mouse.getDWheel());
+        int distance;
+        if((distance = Mouse.getDWheel()) != 0) {
+            mouseScrolled(distance);
+        }
     }
 
     public abstract void mouseScrolled(int distance);

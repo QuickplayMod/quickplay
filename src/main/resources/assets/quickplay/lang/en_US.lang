@@ -6,3 +6,5 @@ quickplay.chat.separator=-
 quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
 quickplay.commands.usage=Command syntax:
 quickplay.config.saveerror=There was an error saving your configuration. Settings may not be saved!
+quickplay.config.gui.title=Quickplay Config
+quickplay.config.gui.version=Version

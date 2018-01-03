@@ -1,19 +1,40 @@
 package co.bugg.quickplay.client.gui.config;
 
+import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.client.gui.QuickplayGui;
+import co.bugg.quickplay.client.gui.QuickplayGuiButton;
 import co.bugg.quickplay.config.AConfiguration;
+import co.bugg.quickplay.config.GuiOption;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.GuiLabel;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditConfiguration extends QuickplayGui {
     public AConfiguration config;
+    public List<ConfigElement> configElements = new ArrayList<>();
 
     public EditConfiguration(AConfiguration config) {
         this.config = config;
     }
+
+    public double headerScale;
+    public double subheaderScale;
+    public int subheaderY;
+    public double boxMargins;
+    public int topOfBox;
+    public int boxWidth;
+    public int boxHeight;
+    public int elementSize;
+    public int scrollFadeLine;
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -22,21 +43,54 @@ public class EditConfiguration extends QuickplayGui {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
 
+        // Prepend opacity to 24-bit color
         drawRect(0, 0, width, height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
         // drawRect disables blend (Grr!)
         GL11.glEnable(GL11.GL_BLEND);
 
-        double headerScale = height > 400 ? 2 : 1.5;
-        double subheaderScale = height > 400 ? 1.3 : 1;
+        /*
+         * Draw the header text
+         */
+
+        // Scale up to header size
         GL11.glScaled(headerScale, headerScale, headerScale);
-        drawCenteredString(fontRendererObj, "Quickplay Config", (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale), 0xFF3333 | ((int) (opacity * 255) << 24));
+        drawCenteredString(fontRendererObj, new ChatComponentTranslation("quickplay.config.gui.title").getUnformattedText(), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
+                       // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
+                (Quickplay.INSTANCE.settings.primaryColor.getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+        // Scale back down
         GL11.glScaled( 1 / headerScale, 1 / headerScale, 1 / headerScale);
 
+        // Scale up to subheader size
         GL11.glScaled(subheaderScale, subheaderScale, subheaderScale);
-        drawCenteredString(fontRendererObj, "Version 2.0", (int) (width / 2 / subheaderScale), (int) (height * 0.05 / subheaderScale) + (int) (fontRendererObj.FONT_HEIGHT * headerScale) + 3, 0xCCFF99 | ((int) (opacity * 255) << 24));
+        drawCenteredString(fontRendererObj, new ChatComponentTranslation("quickplay.config.gui.version").getUnformattedText() + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
+                    subheaderY,
+                       // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
+                (Quickplay.INSTANCE.settings.secondaryColor.getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+        // Scale back down
         GL11.glScaled(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        /*
+         * Draw options list background
+         */
+
+        drawRect((int) (width * boxMargins), topOfBox, (int) (width * (1 - boxMargins)), height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
+
+
+        /*
+         * Draw buttons & labels
+         */
+        for (int i = 0; i < this.buttonList.size(); ++i)
+        {
+            final QuickplayGuiButton button = (QuickplayGuiButton) this.buttonList.get(i);
+            double scrollOpacity = (button.yPosition > scrollFadeLine ? 1 : button.yPosition + ConfigElement.ELEMENT_HEIGHT < scrollFadeLine ? 0 : (ConfigElement.ELEMENT_HEIGHT - ((double) scrollFadeLine - (double) button.yPosition)) / (double) ConfigElement.ELEMENT_HEIGHT);
+            button.lastOpacity = scrollOpacity;
+            if(button.yPosition + ConfigElement.ELEMENT_HEIGHT > scrollFadeLine) button.drawButton(this.mc, mouseX, mouseY, opacity * (float) scrollOpacity);
+        }
+
+        for (int j = 0; j < this.labelList.size(); ++j)
+        {
+            ((GuiLabel)this.labelList.get(j)).drawLabel(this.mc, mouseX, mouseY);
+        }
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
@@ -44,8 +98,65 @@ public class EditConfiguration extends QuickplayGui {
 
     @Override
     public void initGui() {
+        buttonList.clear();
+        configElements.clear();
         super.initGui();
-        buttonList.add(new GuiButton(0, 20, 20, "Testing!"));
+
+        /*
+         * Calculate various sizes and positions
+         */
+
+        // Header size is responsive to screen size
+        headerScale = height > 400 ? 2 : 1.5;
+        subheaderScale = height > 400 ? 1.3 : 1;
+
+        subheaderY = // Subheader should be 3 pixels below main header
+                (int) (height * 0.05 / subheaderScale) + (int) (fontRendererObj.FONT_HEIGHT * headerScale) + (int) (3 / headerScale);
+
+        // Padding on the sides of the list (responsive)
+        boxMargins = width < 500 ? 0.1 : 0.2;
+        // +20 to the top because for some reason subheaderY + subheader height isn't actually the bottom of the subheader... fix
+        topOfBox = (int) (subheaderY + fontRendererObj.FONT_HEIGHT * subheaderScale + 20);
+
+        boxWidth = (int) (width * (1 - (boxMargins * 2)));
+        boxHeight = height - topOfBox;
+
+        elementSize = (ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS);
+
+        // If small height, sacrifice pretty fade for more button space
+        System.out.println(height);
+        scrollFadeLine = topOfBox + (height > 250 ? ConfigElement.ELEMENT_HEIGHT : 0);
+
+        /*
+         * Get the config elements that can be changed
+         */
+        Field[] fields = config.getClass().getDeclaredFields();
+        for(Field field : fields) {
+            field.setAccessible(true);
+            GuiOption guiOptionDisplay = field.getAnnotation(GuiOption.class);
+            if(guiOptionDisplay != null) {
+                try {
+                    configElements.add(new ConfigElement(field.get(config), guiOptionDisplay));
+                } catch (IllegalAccessException | IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        /*
+         * Create the necessary buttons
+         */
+
+        int nextButtonId = 0;
+        // Get the width of each button
+        int buttonWidth = 200;
+        if(boxWidth < 200 + ConfigElement.ELEMENT_MARGINS * 2)
+            buttonWidth = boxWidth - ConfigElement.ELEMENT_MARGINS * 2;
+
+        for(ConfigElement element : configElements) {
+            buttonList.add(new QuickplayGuiButton(nextButtonId, width / 2 - (ConfigElement.ELEMENT_MARGINS + buttonWidth) / 2, scrollFadeLine + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (nextButtonId)), buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name()));
+            nextButtonId++;
+        }
     }
 
     @Override
@@ -58,12 +169,18 @@ public class EditConfiguration extends QuickplayGui {
     protected void actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
         System.out.println("Action performed");
+        // Only do something if the button is visible
+        if(((QuickplayGuiButton) button).lastOpacity > 0) {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Button click"));
+        }
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         System.out.println("Mouse clicked");
+        // lastMouseY is used for dragging scrolling
+        lastMouseY = mouseY;
     }
 
     @Override
@@ -72,14 +189,52 @@ public class EditConfiguration extends QuickplayGui {
         System.out.println("Mouse released");
     }
 
+    int lastMouseY = 0;
+    int mouseYMovement = 0;
     @Override
     protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
         System.out.println("Mouse dragged");
+        mouseYMovement = lastMouseY - mouseY;
+        lastMouseY = mouseY;
+        System.out.println(mouseYMovement);
+        // Scroll should be the same direction the mouse is moving
+        if(mouseYMovement != 0) scroll(mouseYMovement * -1);
     }
 
     @Override
     public void mouseScrolled(int distance) {
         System.out.println("Mouse scrolled");
+
+        // Divide the distance by 10 as "120" px is way too much
+        final int splitDistance = distance / 10;
+        scroll(splitDistance);
+    }
+
+    public void scroll(int distance) {
+        // Scroll is animated, one pixel per 5ms
+        Quickplay.INSTANCE.threadPool.submit(() -> {
+            for (int i = 0; i < Math.abs(distance); i++) {
+
+                // Only allow scrolling if there is an element off screen
+                // If scrolling down & the last element is at all off the screen (plus 2 element margins so it looks better)
+                if((distance < 0 && buttonList.get(buttonList.size() - 1).yPosition > height - ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS * 2) ||
+                   // OR if scrolling up & the top element is currently off of the screen (above the fade line)
+                   (distance > 0 && buttonList.get(0).yPosition < scrollFadeLine + ConfigElement.ELEMENT_MARGINS)) {
+                        for (GuiButton button : buttonList) {
+                            ((QuickplayGuiButton) button).move(distance < 0 ? -1 : 1);
+                        }
+                        try {
+                            Thread.sleep(5);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            break;
+                        }
+                } else {
+                    // Already reached the bottom/top, so stop trying to scroll
+                    break;
+                }
+            }
+        });
     }
 }

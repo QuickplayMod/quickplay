@@ -32,7 +32,7 @@ public class InstanceDisplay extends MoveableHudElement {
                 scaledY + stringHeight + this.backgroungVerticalPadding,
                 0x40000000);
 
-        drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY, 0xFF0000);
+        drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY, Quickplay.INSTANCE.settings.primaryColor.getRGB());
     }
 
     @Override
