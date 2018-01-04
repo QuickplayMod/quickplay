@@ -2,6 +2,7 @@ quickplay.commands.quickplay.help.help=Display the available commands.
 quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
 quickplay.commands.quickplay.limbo.offline=You are currently not online the Hypixel Network!
 quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
+quickplay.commands.quickplay.moveinstance.deprecated=This command is deprecated. You should use "/qp config" instead!
 quickplay.chat.separator=-
 quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
 quickplay.commands.usage=Command syntax:

@@ -10,5 +10,11 @@ import java.lang.annotation.Target;
 public @interface GuiOption {
     String name();
     String helpText();
+    /*
+     * These settings are only used in integer and double options.
+     */
+    float minValue() default 0;
+    float maxValue() default 255;
+    int precision() default 2;
 
 }

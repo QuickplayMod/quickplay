@@ -33,7 +33,7 @@ public class QuickplayGuiButton extends GuiButton {
             GlStateManager.enableBlend();
             this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
             GlStateManager.enableBlend();
-            this.mouseDragged(mc, mouseX, mouseY);
+            this.mouseDragged(mc, mouseX, mouseY, opacity);
             int j = 14737632 & 0xFFFFFF | (int) (opacity * 255) << 24;
 
             if (packedFGColour != 0)
@@ -52,6 +52,10 @@ public class QuickplayGuiButton extends GuiButton {
 
             this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, j);
         }
+    }
+
+    // Things like GUI sliders need the opacity in this method in order to draw the slider handle correctly
+    protected void mouseDragged(Minecraft mc, int mouseX, int mouseY, double opacity) {
     }
 
     public synchronized void move(int distance) {

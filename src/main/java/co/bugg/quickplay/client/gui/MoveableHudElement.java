@@ -10,6 +10,7 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
 
     public int screenWidth;
     public int screenHeight;
+    public double opacity = 1;
 
     public ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
 
@@ -18,10 +19,11 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
     }
 
     public void render() {
-        this.render(getxRatio(), getyRatio());
+        this.render(getxRatio(), getyRatio(), 1);
     }
 
-    public void render(double x, double y) {
+    public void render(double x, double y, double opacity) {
+        this.opacity = opacity;
         scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
         screenWidth = scaledResolution.getScaledWidth();
         screenHeight = scaledResolution.getScaledHeight();

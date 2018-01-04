@@ -1,8 +1,6 @@
 package co.bugg.quickplay.client.gui.config;
 
-import co.bugg.quickplay.client.gui.QuickplayGuiButton;
 import co.bugg.quickplay.config.GuiOption;
-import net.minecraft.client.Minecraft;
 
 import java.awt.*;
 
@@ -12,10 +10,10 @@ public class ConfigElement {
 
     Object element;
     GuiOption optionInfo;
+    String configFieldName;
 
-    public ConfigElement(Object element, GuiOption optionInfo) {
+    public ConfigElement(Object element, GuiOption optionInfo, String configFieldName) {
         if(
-                element instanceof Integer ||
                 element instanceof Double ||
                 element instanceof Boolean ||
                 element instanceof Color ||
@@ -26,5 +24,6 @@ public class ConfigElement {
             throw new IllegalArgumentException("element not of recognized type! Recognized types: Integer, Double, Boolean, Color, Runnable");
         }
         this.optionInfo = optionInfo;
+        this.configFieldName = configFieldName;
     }
 }

@@ -4,12 +4,15 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import co.bugg.quickplay.client.gui.QuickplayGuiButton;
+import co.bugg.quickplay.client.gui.QuickplayGuiSlider;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.config.GuiOption;
+import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.util.ChatComponentTranslation;
 import org.lwjgl.opengl.GL11;
 
@@ -47,6 +50,10 @@ public class EditConfiguration extends QuickplayGui {
         // Fade in opacity has to be applied individually to each component that you want to fade in
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
+
+        /*
+         * Draw background
+         */
 
         // Prepend opacity to 24-bit color
         drawRect(0, 0, width, height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
@@ -157,7 +164,7 @@ public class EditConfiguration extends QuickplayGui {
             GuiOption guiOptionDisplay = field.getAnnotation(GuiOption.class);
             if(guiOptionDisplay != null) {
                 try {
-                    configElements.add(new ConfigElement(field.get(config), guiOptionDisplay));
+                    configElements.add(new ConfigElement(field.get(config), guiOptionDisplay, field.getName()));
                 } catch (IllegalAccessException | IllegalArgumentException e) {
                     e.printStackTrace();
                 }
@@ -178,13 +185,22 @@ public class EditConfiguration extends QuickplayGui {
             // If scroll bar is being drawn, buttons should be moved over a lil bit to give it room
             buttonWidth = boxWidth - ConfigElement.ELEMENT_MARGINS * 2 - (scrollbarDrawn ? scrollbarWidth + ConfigElement.ELEMENT_MARGINS : 0);
 
+        // These objects help format & handle changes to sliders, text boxes, and boolean boxes
+        ConfigGuiResponder guiResponder = new ConfigGuiResponder();
+        SliderFormatHelper formatHelper = new SliderFormatHelper();
+
         for(ConfigElement element : configElements) {
             int buttonX = width / 2 - (ConfigElement.ELEMENT_MARGINS + buttonWidth) / 2;
             int buttonY = scrollFadeLine + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (nextButtonId));
+
+            // Figure out what button type needs to be rendered & give it the appropriate text
             if(element.element instanceof Boolean)
                 buttonList.add(new QuickplayGuiButton(nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText()));
             else if(element.element instanceof Color || element.element instanceof Runnable)
                 buttonList.add(new QuickplayGuiButton(nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name()));
+            else if(element.element instanceof Double)
+                buttonList.add(new QuickplayGuiSlider(guiResponder, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name(), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper));
+
             nextButtonId++;
         }
     }
@@ -201,7 +217,28 @@ public class EditConfiguration extends QuickplayGui {
         System.out.println("Action performed");
         // Only do something if the button is visible
         if(((QuickplayGuiButton) button).lastOpacity > 0) {
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Button click"));
+            final ConfigElement element = configElements.get(button.id);
+            if(element.element instanceof Boolean) {
+                element.element = !(boolean) element.element;
+                button.displayString = element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText();
+            } else if(element.element instanceof Runnable) {
+                Minecraft.getMinecraft().displayGuiScreen(null);
+                ((Runnable) element.element).run();
+            }
+
+            save(element);
+        }
+    }
+
+    public void save(ConfigElement element) {
+        // Try to apply the changed value to the config & then save the config
+        try {
+            config.getClass().getField(element.configFieldName).set(config, element.element);
+            config.save();
+        } catch (IOException | IllegalAccessException | NoSuchFieldException e) {
+            System.out.println("Failed to save option " + element.configFieldName + ".");
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror")));
+            e.printStackTrace();
         }
     }
 
@@ -266,5 +303,49 @@ public class EditConfiguration extends QuickplayGui {
                 }
             }
         });
+    }
+
+    // ------
+
+    public class ConfigGuiResponder implements GuiPageButtonList.GuiResponder {
+
+        /**
+         * Fired every tick for a boolean-based GUI element change
+         * @param p_175321_1_ ID of the element
+         * @param p_175321_2_ Value
+         */
+        @Override
+        public void func_175321_a(int p_175321_1_, boolean p_175321_2_) {
+
+        }
+
+        /**
+         * Fired every tick for a float-based GUI element change
+         * @param id ID of the element
+         * @param value Value
+         */
+        @Override
+        public void onTick(int id, float value) {
+            ConfigElement element = configElements.get(id);
+            element.element = ((Number) value).doubleValue();
+            save(element);
+        }
+
+        /**
+         * Fired every tick for a text-based GUI element change
+         * @param p_175319_1_ ID of the element
+         * @param p_175319_2_ Value
+         */
+        @Override
+        public void func_175319_a(int p_175319_1_, String p_175319_2_) {
+
+        }
+    }
+
+    public class SliderFormatHelper implements QuickplayGuiSlider.FormatHelper {
+        @Override
+        public String getText(int id, String name, float value) {
+            return name + ": " + value;
+        }
     }
 }

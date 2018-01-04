@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.Minecraft;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
@@ -15,8 +16,8 @@ public class InstanceDisplay extends MoveableHudElement {
     }
 
     @Override
-    public void render(double x, double y) {
-        super.render(x, y);
+    public void render(double x, double y, double opacity) {
+        super.render(x, y, opacity);
 
         String instance = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
         int stringHeight = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
@@ -30,9 +31,10 @@ public class InstanceDisplay extends MoveableHudElement {
                 scaledX + stringWidth + this.backgroundHorizontalPadding - stringWidth / 2 - 1, // -1 due to a padding issue I don't
                                                                                                       // understand it but it's uneven without.
                 scaledY + stringHeight + this.backgroungVerticalPadding,
-                0x40000000);
+                0x000000 | (int) (opacity * 100 * 0.5) << 24);
+        GL11.glEnable(GL11.GL_BLEND);
 
-        drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY, Quickplay.INSTANCE.settings.primaryColor.getRGB());
+        drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY, Quickplay.INSTANCE.settings.primaryColor.getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
     }
 
     @Override

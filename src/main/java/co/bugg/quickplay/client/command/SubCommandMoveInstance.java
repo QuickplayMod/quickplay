@@ -2,15 +2,19 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.config.EditConfiguration;
+import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.TickDelay;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Sub command to move the current instance display around
- * TODO this should be removed later and put into the config GUI, but is implemented for testing
  */
+@Deprecated // Use the main configuration instead
 public class SubCommandMoveInstance extends ASubCommand {
 
     /**
@@ -31,6 +35,7 @@ public class SubCommandMoveInstance extends ASubCommand {
 
     @Override
     public void run(String[] args) {
+        Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.quickplay.moveinstance.deprecated").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         new TickDelay(() -> Quickplay.INSTANCE.instanceDisplay.edit(), 1);
     }
 

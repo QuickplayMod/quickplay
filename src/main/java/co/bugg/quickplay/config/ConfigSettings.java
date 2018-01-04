@@ -35,7 +35,11 @@ public class ConfigSettings extends AConfiguration {
             helpText = "Change the position of the Instance display on-screen"
     )
     // TODO Instead of runnable maybe make this a method?
-    public transient Runnable moveInstanceDisplayButton = () -> {
-        new TickDelay(() -> Quickplay.INSTANCE.instanceDisplay.edit(), 1);
-    };
+    public transient Runnable moveInstanceDisplayButton = () -> Quickplay.INSTANCE.instanceDisplay.edit();
+
+    @GuiOption(
+            name = "Hello, World!",
+            helpText = "Testing 123"
+    )
+    public double random = 12;
 }

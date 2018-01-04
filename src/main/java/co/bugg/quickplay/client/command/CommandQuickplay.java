@@ -19,7 +19,7 @@ public class CommandQuickplay extends ASubCommandParent {
 
         addSubCommand(new SubCommandHelp(this));
         addSubCommand(new SubCommandLimbo(this));
-        addSubCommand(new SubCommandMoveInstance(this)); // TODO move this to /qp config
+        addSubCommand(new SubCommandMoveInstance(this));
         addSubCommand(new SubCommandConfig(this));
     }
 
