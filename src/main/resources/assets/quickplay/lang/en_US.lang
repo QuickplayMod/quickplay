@@ -8,3 +8,5 @@ quickplay.commands.usage=Command syntax:
 quickplay.config.saveerror=There was an error saving your configuration. Settings may not be saved!
 quickplay.config.gui.title=Quickplay Config
 quickplay.config.gui.version=Version
+quickplay.config.gui.true=TRUE
+quickplay.config.gui.false=FALSE

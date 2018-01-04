@@ -24,6 +24,11 @@ public class ConfigSettings extends AConfiguration {
     )
     public Color secondaryColor = new Color(0.7f, 0.7f, 0.7f);
 
+    @GuiOption(
+            name = "Instance Display",
+            helpText = "Whether or not the current server instance should be displayed on-screen."
+    )
+    public boolean displayInstance = true;
 
     @GuiOption(
             name = "Move Instance Display",

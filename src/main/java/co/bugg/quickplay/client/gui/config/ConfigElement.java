@@ -15,7 +15,6 @@ public class ConfigElement {
 
     public ConfigElement(Object element, GuiOption optionInfo) {
         if(
-                element instanceof String ||
                 element instanceof Integer ||
                 element instanceof Double ||
                 element instanceof Boolean ||
@@ -24,7 +23,7 @@ public class ConfigElement {
             ) {
             this.element = element;
         } else {
-            throw new IllegalArgumentException("element not of recognized type! Recognized types: String, Integer, Double, Boolean, Color, Runnable");
+            throw new IllegalArgumentException("element not of recognized type! Recognized types: Integer, Double, Boolean, Color, Runnable");
         }
         this.optionInfo = optionInfo;
     }
