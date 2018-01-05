@@ -15,7 +15,9 @@ public abstract class QuickplayGui extends GuiScreen {
     @Override
     public void initGui() {
         super.initGui();
-        fadeIn();
+        if(Quickplay.INSTANCE.settings.fadeInGuis)
+            fadeIn();
+        else opacity = 1;
     }
 
     @Override

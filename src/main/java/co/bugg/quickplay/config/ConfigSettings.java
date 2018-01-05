@@ -6,6 +6,9 @@ import co.bugg.quickplay.util.TickDelay;
 import java.awt.*;
 
 public class ConfigSettings extends AConfiguration {
+    // TODO add priority
+    // TODO Add hover help text to EditConfiguration
+    // TODO make name & helpText into translatable components
     public ConfigSettings() {
         super("settings.json");
     }
@@ -32,14 +35,22 @@ public class ConfigSettings extends AConfiguration {
 
     @GuiOption(
             name = "Move Instance Display",
-            helpText = "Change the position of the Instance display on-screen"
+            helpText = "Change the position of the Instance display on-screen."
     )
     // TODO Instead of runnable maybe make this a method?
     public transient Runnable moveInstanceDisplayButton = () -> Quickplay.INSTANCE.instanceDisplay.edit();
 
     @GuiOption(
-            name = "Hello, World!",
-            helpText = "Testing 123"
+            name = "Instance Display Opacity",
+            helpText = "Opacity of the instance display.",
+            minValue = 0.0f,
+            maxValue = 1.0f
     )
-    public double random = 12;
+    public double instanceOpacity = 1.0;
+
+    @GuiOption(
+            name = "Fade GUIs In",
+            helpText = "Whether GUIs should fade in when opening."
+    )
+    public boolean fadeInGuis = true;
 }

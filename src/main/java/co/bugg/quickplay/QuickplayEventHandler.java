@@ -1,5 +1,6 @@
 package co.bugg.quickplay;
 
+import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.util.ServerChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -33,8 +34,9 @@ public class QuickplayEventHandler {
         if(Quickplay.INSTANCE.onHypixel && event.type == RenderGameOverlayEvent.ElementType.TEXT) {
             // Only render overlay if there is no other GUI open at the moment
             // TODO Maybe make this into a config option?
-            if(Minecraft.getMinecraft().currentScreen == null) {
-                Quickplay.INSTANCE.instanceDisplay.render();
+            if(Quickplay.INSTANCE.settings.displayInstance && Minecraft.getMinecraft().currentScreen == null) {
+                InstanceDisplay instanceDisplay = Quickplay.INSTANCE.instanceDisplay;
+                instanceDisplay.render(instanceDisplay.getxRatio(), instanceDisplay.getyRatio(), Quickplay.INSTANCE.settings.instanceOpacity);
             }
         }
     }
