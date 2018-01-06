@@ -29,13 +29,15 @@ public class ConfigSettings extends AConfiguration {
 
     @GuiOption(
             name = "Instance Display",
-            helpText = "Whether or not the current server instance should be displayed on-screen."
+            helpText = "Whether or not the current server instance should be displayed on-screen.",
+            category = "Instance Display"
     )
     public boolean displayInstance = true;
 
     @GuiOption(
             name = "Move Instance Display",
-            helpText = "Change the position of the Instance display on-screen."
+            helpText = "Change the position of the Instance display on-screen.",
+            category = "Instance Display"
     )
     // TODO Instead of runnable maybe make this a method?
     public transient Runnable moveInstanceDisplayButton = () -> Quickplay.INSTANCE.instanceDisplay.edit();
@@ -43,6 +45,7 @@ public class ConfigSettings extends AConfiguration {
     @GuiOption(
             name = "Instance Display Opacity",
             helpText = "Opacity of the instance display.",
+            category = "Instance Display",
             minValue = 0.0f,
             maxValue = 1.0f
     )

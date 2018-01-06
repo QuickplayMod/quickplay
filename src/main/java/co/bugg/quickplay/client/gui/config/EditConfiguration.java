@@ -2,13 +2,10 @@ package co.bugg.quickplay.client.gui.config;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
-import co.bugg.quickplay.client.gui.QuickplayGui;
-import co.bugg.quickplay.client.gui.QuickplayGuiButton;
-import co.bugg.quickplay.client.gui.QuickplayGuiSlider;
+import co.bugg.quickplay.client.gui.*;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.config.GuiOption;
 import co.bugg.quickplay.util.Message;
-import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
@@ -20,6 +17,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,13 +90,13 @@ public class EditConfiguration extends QuickplayGui {
          * TODO This is pretty meh. Should be made better probs.
          */
         if(scrollbarDrawn) {
-            int buttonsAboveFadeLine = buttonList.stream().filter((button) -> button.yPosition < scrollFadeLine).collect(Collectors.toList()).size();
-            int buttonsBelowScreen = buttonList.stream().filter((button) -> button.yPosition < height).collect(Collectors.toList()).size();
+            int buttonsAboveFadeLine = componentList.stream().filter((button) -> button.y < scrollFadeLine).collect(Collectors.toList()).size();
+            int buttonsBelowScreen = componentList.stream().filter((button) -> button.y < height).collect(Collectors.toList()).size();
             drawRect(
                     (int) ((width * (1 - boxMargins)) - scrollbarWidth) - ConfigElement.ELEMENT_MARGINS,
-                    (int) ((buttonsAboveFadeLine / (double) buttonList.size() * (double) height + (double) topOfBox) + (double) ConfigElement.ELEMENT_MARGINS),
+                    (int) ((buttonsAboveFadeLine / (double) componentList.size() * (double) height + (double) topOfBox) + (double) ConfigElement.ELEMENT_MARGINS),
                     (int) (width * (1 - boxMargins)) - ConfigElement.ELEMENT_MARGINS,
-                    (int) ((buttonsBelowScreen / (double) buttonList.size() * (double) height) - (double) ConfigElement.ELEMENT_MARGINS),
+                    (int) ((buttonsBelowScreen / (double) componentList.size() * (double) height) - (double) ConfigElement.ELEMENT_MARGINS),
                     (Quickplay.INSTANCE.settings.primaryColor.getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
         }
 
@@ -106,12 +104,12 @@ public class EditConfiguration extends QuickplayGui {
         /*
          * Draw buttons & labels
          */
-        for (int i = 0; i < this.buttonList.size(); ++i)
+        for (int i = 0; i < this.componentList.size(); ++i)
         {
-            final QuickplayGuiButton button = (QuickplayGuiButton) this.buttonList.get(i);
-            double scrollOpacity = (button.yPosition > scrollFadeLine ? 1 : button.yPosition + ConfigElement.ELEMENT_HEIGHT < scrollFadeLine ? 0 : (ConfigElement.ELEMENT_HEIGHT - ((double) scrollFadeLine - (double) button.yPosition)) / (double) ConfigElement.ELEMENT_HEIGHT);
-            button.lastOpacity = scrollOpacity;
-            if(button.yPosition + ConfigElement.ELEMENT_HEIGHT > scrollFadeLine) button.drawButton(this.mc, mouseX, mouseY, opacity * (float) scrollOpacity);
+            final QuickplayGuiComponent component = this.componentList.get(i);
+            double scrollOpacity = (component.y > scrollFadeLine ? 1 : component.y + ConfigElement.ELEMENT_HEIGHT < scrollFadeLine ? 0 : (ConfigElement.ELEMENT_HEIGHT - ((double) scrollFadeLine - (double) component.y)) / (double) ConfigElement.ELEMENT_HEIGHT);
+            component.opacity = scrollOpacity;
+            if(component.y + ConfigElement.ELEMENT_HEIGHT > scrollFadeLine) component.draw(this.mc, mouseX, mouseY, opacity * (float) scrollOpacity);
         }
 
         for (int j = 0; j < this.labelList.size(); ++j)
@@ -125,7 +123,7 @@ public class EditConfiguration extends QuickplayGui {
 
     @Override
     public void initGui() {
-        buttonList.clear();
+        componentList.clear();
         configElements.clear();
         super.initGui();
 
@@ -171,6 +169,11 @@ public class EditConfiguration extends QuickplayGui {
             }
         }
 
+        /*
+         * Sort elements
+         */
+        configElements.sort(Comparator.comparing(o -> o.optionInfo.category()));
+
         // If at least the last button is going to be off screen, scroll bar should be drawn
         scrollbarDrawn = scrollFadeLine + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (configElements.size())) + bottomScrollMargins > height;
 
@@ -189,20 +192,32 @@ public class EditConfiguration extends QuickplayGui {
         ConfigGuiResponder guiResponder = new ConfigGuiResponder();
         SliderFormatHelper formatHelper = new SliderFormatHelper();
 
+        String previousCategory = null;
+
         for(ConfigElement element : configElements) {
+            if(previousCategory == null || !previousCategory.equals(element.optionInfo.category())) {
+                componentList.add(new QuickplayGuiHeader(null, nextButtonId, width / 2, getY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.category()));
+                nextButtonId++;
+            }
+            previousCategory = element.optionInfo.category();
+
             int buttonX = width / 2 - (ConfigElement.ELEMENT_MARGINS + buttonWidth) / 2;
-            int buttonY = scrollFadeLine + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (nextButtonId));
+            int buttonY = getY(nextButtonId);
 
             // Figure out what button type needs to be rendered & give it the appropriate text
             if(element.element instanceof Boolean)
-                buttonList.add(new QuickplayGuiButton(nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText()));
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText()));
             else if(element.element instanceof Color || element.element instanceof Runnable)
-                buttonList.add(new QuickplayGuiButton(nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name()));
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name()));
             else if(element.element instanceof Double)
-                buttonList.add(new QuickplayGuiSlider(guiResponder, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name(), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper));
+                componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name(), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper));
 
             nextButtonId++;
         }
+    }
+
+    public int getY(int id) {
+        return (scrollFadeLine + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (id)));
     }
 
     @Override
@@ -212,21 +227,22 @@ public class EditConfiguration extends QuickplayGui {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
-        super.actionPerformed(button);
+    public void componentClicked(QuickplayGuiComponent component) {
         System.out.println("Action performed");
-        // Only do something if the button is visible
-        if(((QuickplayGuiButton) button).lastOpacity > 0) {
-            final ConfigElement element = configElements.get(button.id);
-            if(element.element instanceof Boolean) {
-                element.element = !(boolean) element.element;
-                button.displayString = element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText();
-            } else if(element.element instanceof Runnable) {
-                Minecraft.getMinecraft().displayGuiScreen(null);
-                ((Runnable) element.element).run();
-            }
+        // Only do something if the component is visible
+        if(((QuickplayGuiButton) component).lastOpacity > 0) {
+            final ConfigElement element = component.originElement;
+            if(element != null) {
+                if(element.element instanceof Boolean) {
+                    element.element = !(boolean) element.element;
+                    component.displayString = element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText();
+                } else if(element.element instanceof Runnable) {
+                    Minecraft.getMinecraft().displayGuiScreen(null);
+                    ((Runnable) element.element).run();
+                }
 
-            save(element);
+                save(element);
+            }
         }
     }
 
@@ -285,11 +301,11 @@ public class EditConfiguration extends QuickplayGui {
 
                 // Only allow scrolling if there is an element off screen
                 // If scrolling down & the last element is at all off the screen (plus the additional margins for aesthetic purposes)
-                if((distance < 0 && buttonList.get(buttonList.size() - 1).yPosition > height - ConfigElement.ELEMENT_HEIGHT - bottomScrollMargins) ||
+                if((distance < 0 && componentList.get(componentList.size() - 1).y > height - ConfigElement.ELEMENT_HEIGHT - bottomScrollMargins) ||
                    // OR if scrolling up & the top element is currently off of the screen (above the fade line)
-                   (distance > 0 && buttonList.get(0).yPosition < scrollFadeLine + ConfigElement.ELEMENT_MARGINS)) {
-                        for (GuiButton button : buttonList) {
-                            ((QuickplayGuiButton) button).move(distance < 0 ? -1 : 1);
+                   (distance > 0 && componentList.get(0).y < scrollFadeLine + ConfigElement.ELEMENT_MARGINS)) {
+                        for (QuickplayGuiComponent component : componentList) {
+                            component.move(distance < 0 ? -1 : 1);
                         }
                         try {
                             Thread.sleep(5);
@@ -326,7 +342,7 @@ public class EditConfiguration extends QuickplayGui {
          */
         @Override
         public void onTick(int id, float value) {
-            ConfigElement element = configElements.get(id);
+            ConfigElement element = componentList.get(id).originElement;
             element.element = ((Number) value).doubleValue();
             save(element);
         }

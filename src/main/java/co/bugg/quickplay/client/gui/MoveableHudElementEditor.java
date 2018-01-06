@@ -48,6 +48,10 @@ public class MoveableHudElementEditor extends QuickplayGui {
     }
 
     @Override
+    public void componentClicked(QuickplayGuiComponent component) {
+    }
+
+    @Override
     public void initGui() {
         super.initGui();
     }

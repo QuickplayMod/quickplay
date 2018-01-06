@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 public @interface GuiOption {
     String name();
     String helpText();
+    String category() default "General";
     /*
      * These settings are only used in integer and double options.
      */

@@ -1,8 +1,8 @@
 package co.bugg.quickplay.client.gui;
 
+import co.bugg.quickplay.client.gui.config.ConfigElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPageButtonList;
-import net.minecraft.client.gui.GuiSlider;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
@@ -17,9 +17,9 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     private final GuiPageButtonList.GuiResponder responder;
     private QuickplayGuiSlider.FormatHelper formatHelper;
 
-    public QuickplayGuiSlider(GuiPageButtonList.GuiResponder guiResponder, int idIn, int x, int y, int widthIn, int heightIn, String name, float min, float max, float defaultValue, QuickplayGuiSlider.FormatHelper formatter)
+    public QuickplayGuiSlider(GuiPageButtonList.GuiResponder guiResponder, ConfigElement originElement, int idIn, int x, int y, int widthIn, int heightIn, String name, float min, float max, float defaultValue, QuickplayGuiSlider.FormatHelper formatter)
     {
-        super(idIn, x, y, widthIn, heightIn, "");
+        super(originElement, idIn, x, y, widthIn, heightIn, "");
         this.name = name;
         this.min = min;
         this.max = max;
@@ -52,14 +52,14 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
 
     private String getDisplayString()
     {
-        return this.formatHelper == null ? I18n.format(this.name, new Object[0]) + ": " + this.func_175220_c() : this.formatHelper.getText(this.id, I18n.format(this.name, new Object[0]), this.func_175220_c());
+        return this.formatHelper == null ? I18n.format(this.name) + ": " + this.func_175220_c() : this.formatHelper.getText(this.id, I18n.format(this.name), this.func_175220_c());
     }
 
     /**
      * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
      * this button.
      */
-    protected int getHoverState(boolean mouseOver)
+    public int getButtonTexture(boolean mouseOver)
     {
         return 0;
     }
@@ -70,30 +70,28 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     @Override
     protected void mouseDragged(Minecraft mc, int mouseX, int mouseY, double opacity)
     {
-        if (this.visible)
+        if (this.isMouseDown)
         {
-            if (this.isMouseDown)
+            this.sliderPosition = (float)(mouseX - (this.x + 4)) / (float)(this.width - 8);
+
+            if (this.sliderPosition < 0.0F)
             {
-                this.sliderPosition = (float)(mouseX - (this.xPosition + 4)) / (float)(this.width - 8);
-
-                if (this.sliderPosition < 0.0F)
-                {
-                    this.sliderPosition = 0.0F;
-                }
-
-                if (this.sliderPosition > 1.0F)
-                {
-                    this.sliderPosition = 1.0F;
-                }
-
-                this.displayString = this.getDisplayString();
-                this.responder.onTick(this.id, this.func_175220_c());
+                this.sliderPosition = 0.0F;
             }
 
-            GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
-            this.drawTexturedModalRect(this.xPosition + (int)(this.sliderPosition * (float)(this.width - 8)), this.yPosition, 0, 66, 4, 20);
-            this.drawTexturedModalRect(this.xPosition + (int)(this.sliderPosition * (float)(this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
+            if (this.sliderPosition > 1.0F)
+            {
+                this.sliderPosition = 1.0F;
+            }
+
+            this.displayString = this.getDisplayString();
+            this.responder.onTick(this.id, this.func_175220_c());
         }
+
+        GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
+        this.drawTexturedModalRect(this.x + (int)(this.sliderPosition * (float)(this.width - 8)), this.y, 0, 66, 4, 20);
+        this.drawTexturedModalRect(this.x + (int)(this.sliderPosition * (float)(this.width - 8)) + 4, this.y, 196, 66, 4, 20);
+
     }
 
     public void func_175219_a(float p_175219_1_)
@@ -111,7 +109,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     {
         if (super.mousePressed(mc, mouseX, mouseY))
         {
-            this.sliderPosition = (float)(mouseX - (this.xPosition + 4)) / (float)(this.width - 8);
+            this.sliderPosition = (float)(mouseX - (this.x + 4)) / (float)(this.width - 8);
 
             if (this.sliderPosition < 0.0F)
             {
@@ -137,7 +135,8 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     /**
      * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
      */
-    public void mouseReleased(int mouseX, int mouseY)
+    @Override
+    public void mouseReleased(Minecraft mc, int mouseX, int mouseY)
     {
         this.isMouseDown = false;
     }

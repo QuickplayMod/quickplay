@@ -1,15 +1,20 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class QuickplayGui extends GuiScreen {
 
+    public List<QuickplayGuiComponent> componentList = new ArrayList<>();
     public float opacity = 0;
 
     @Override
@@ -24,12 +29,7 @@ public abstract class QuickplayGui extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         for (int i = 0; i < this.buttonList.size(); ++i)
         {
-            ((QuickplayGuiButton)this.buttonList.get(i)).drawButton(this.mc, mouseX, mouseY, opacity);
-        }
-
-        for (int j = 0; j < this.labelList.size(); ++j)
-        {
-            ((GuiLabel)this.labelList.get(j)).drawLabel(this.mc, mouseX, mouseY);
+            this.componentList.get(i).draw(this.mc, mouseX, mouseY, opacity);
         }
     }
 
@@ -56,5 +56,29 @@ public abstract class QuickplayGui extends GuiScreen {
         }
     }
 
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        if(mouseButton == 0) {
+            for(QuickplayGuiComponent component : componentList) {
+                if(component.mousePressed(mc, mouseX, mouseY)) {
+                    componentClicked(component);
+                    // Play clicky sound
+                    mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        super.mouseReleased(mouseX, mouseY, state);
+        for(QuickplayGuiComponent component : componentList) {
+            component.mouseReleased(mc, mouseX, mouseY);
+        }
+    }
+
     public abstract void mouseScrolled(int distance);
+
+    public abstract void componentClicked(QuickplayGuiComponent component);
 }
