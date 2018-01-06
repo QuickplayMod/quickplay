@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +32,17 @@ public abstract class QuickplayGui extends GuiScreen {
         {
             this.componentList.get(i).draw(this.mc, mouseX, mouseY, opacity);
         }
+    }
+
+    @Override
+    public void drawDefaultBackground() {
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
+        // Prepend opacity to 24-bit color
+        drawRect(0, 0, width, height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
+        // drawRect disables blend (Grr!)
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
     }
 
     public void fadeIn() {

@@ -1,7 +1,9 @@
 package co.bugg.quickplay.config;
 
+import co.bugg.quickplay.util.GsonPostProcessorFactory;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.File;
@@ -44,9 +46,10 @@ public abstract class AConfiguration implements Serializable {
             throw new FileNotFoundException("Settings file not found");
         }
 
+        final Gson gson = new GsonBuilder().registerTypeAdapterFactory(new GsonPostProcessorFactory()).create();
         final String contents = Files.toString(file, Charset.forName("UTF-8"));
 
-        final AConfiguration newConfig =  new Gson().fromJson(contents, type);
+        final AConfiguration newConfig =  gson.fromJson(contents, type);
         newConfig.setFile(file);
 
         return newConfig;

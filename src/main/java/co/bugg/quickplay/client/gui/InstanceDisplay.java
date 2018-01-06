@@ -34,7 +34,7 @@ public class InstanceDisplay extends MoveableHudElement {
                 0x000000 | (int) (opacity * 100 * 0.5) << 24);
         GL11.glEnable(GL11.GL_BLEND);
 
-        drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY, Quickplay.INSTANCE.settings.primaryColor.getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
     }
 
     @Override

@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.gui.config;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
+import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.*;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.config.GuiOption;
@@ -53,10 +54,7 @@ public class EditConfiguration extends QuickplayGui {
          * Draw background
          */
 
-        // Prepend opacity to 24-bit color
-        drawRect(0, 0, width, height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
-        // drawRect disables blend (Grr!)
-        GL11.glEnable(GL11.GL_BLEND);
+        drawDefaultBackground();
 
         /*
          * Draw the header text
@@ -66,7 +64,7 @@ public class EditConfiguration extends QuickplayGui {
         GL11.glScaled(headerScale, headerScale, headerScale);
         drawCenteredString(fontRendererObj, new ChatComponentTranslation("quickplay.config.gui.title").getUnformattedText(), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
                        // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
-                (Quickplay.INSTANCE.settings.primaryColor.getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+                (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
         // Scale back down
         GL11.glScaled( 1 / headerScale, 1 / headerScale, 1 / headerScale);
 
@@ -75,7 +73,7 @@ public class EditConfiguration extends QuickplayGui {
         drawCenteredString(fontRendererObj, new ChatComponentTranslation("quickplay.config.gui.version").getUnformattedText() + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
                     subheaderY,
                        // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
-                (Quickplay.INSTANCE.settings.secondaryColor.getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+                (Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
         // Scale back down
         GL11.glScaled(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
 
@@ -97,7 +95,7 @@ public class EditConfiguration extends QuickplayGui {
                     (int) ((buttonsAboveFadeLine / (double) componentList.size() * (double) height + (double) topOfBox) + (double) ConfigElement.ELEMENT_MARGINS),
                     (int) (width * (1 - boxMargins)) - ConfigElement.ELEMENT_MARGINS,
                     (int) ((buttonsBelowScreen / (double) componentList.size() * (double) height) - (double) ConfigElement.ELEMENT_MARGINS),
-                    (Quickplay.INSTANCE.settings.primaryColor.getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+                    (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
         }
 
 
@@ -207,7 +205,7 @@ public class EditConfiguration extends QuickplayGui {
             // Figure out what button type needs to be rendered & give it the appropriate text
             if(element.element instanceof Boolean)
                 componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText()));
-            else if(element.element instanceof Color || element.element instanceof Runnable)
+            else if(element.element instanceof QuickplayColor || element.element instanceof Runnable)
                 componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name()));
             else if(element.element instanceof Double)
                 componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name(), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper));
@@ -239,6 +237,8 @@ public class EditConfiguration extends QuickplayGui {
                 } else if(element.element instanceof Runnable) {
                     Minecraft.getMinecraft().displayGuiScreen(null);
                     ((Runnable) element.element).run();
+                } else if(element.element instanceof QuickplayColor) {
+
                 }
 
                 save(element);

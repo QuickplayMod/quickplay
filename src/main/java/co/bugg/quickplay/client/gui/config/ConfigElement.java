@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui.config;
 
+import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.config.GuiOption;
 
 import java.awt.*;
@@ -16,7 +17,7 @@ public class ConfigElement {
         if(
                 element instanceof Double ||
                 element instanceof Boolean ||
-                element instanceof Color ||
+                element instanceof QuickplayColor ||
                 element instanceof Runnable
             ) {
             this.element = element;

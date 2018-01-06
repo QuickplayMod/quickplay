@@ -29,10 +29,7 @@ public class MoveableHudElementEditor extends QuickplayGui {
          * Draw background
          */
 
-        // Prepend opacity to 24-bit color
-        drawRect(0, 0, width, height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
-        // drawRect disables blend (Grr!)
-        GL11.glEnable(GL11.GL_BLEND);
+        drawDefaultBackground();
 
         element.render(xRatio, yRatio, opacity);
 

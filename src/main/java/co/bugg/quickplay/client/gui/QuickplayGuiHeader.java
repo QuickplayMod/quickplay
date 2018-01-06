@@ -14,7 +14,7 @@ public class QuickplayGuiHeader extends QuickplayGuiComponent {
     public void draw(Minecraft mc, int mouseX, int mouseY, double opacity) {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
-        drawCenteredString(mc.fontRendererObj, displayString, x, y, (Quickplay.INSTANCE.settings.primaryColor.getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+        drawCenteredString(mc.fontRendererObj, displayString, x, y, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
         GL11.glPopMatrix();
     }
 
