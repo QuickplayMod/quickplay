@@ -17,7 +17,7 @@ public abstract class ASubCommand {
      * @param displayInTabList Whether this sub command can be tabbed into chat
      * @param priority TODO the priority of this sub command in help menu and tab list
      */
-    public ASubCommand(ASubCommandParent parent, String name, String helpMessage, String usage, boolean displayInHelpMenu, boolean displayInTabList, double priority) {
+    public ASubCommand(ACommand parent, String name, String helpMessage, String usage, boolean displayInHelpMenu, boolean displayInTabList, double priority) {
         this.parent = parent;
         this.name = name;
         this.helpMessage = helpMessage;
@@ -30,7 +30,7 @@ public abstract class ASubCommand {
     /**
      * The parent command of this sub command
      */
-    private ASubCommandParent parent;
+    private ACommand parent;
     /**
      * The name of this sub command (what's used when executing)
      */
@@ -53,7 +53,7 @@ public abstract class ASubCommand {
      */
     private boolean displayInTabList;
     /**
-     * TODO the priority of this sub command in tab & help menu & such
+     * the priority of this sub command in tab & help menu & such
      */
     private double priority;
 
@@ -74,7 +74,7 @@ public abstract class ASubCommand {
      * Getter for {@link #parent}
      * @return {@link #parent}
      */
-    public ASubCommandParent getParent() {
+    public ACommand getParent() {
         return parent;
     }
 

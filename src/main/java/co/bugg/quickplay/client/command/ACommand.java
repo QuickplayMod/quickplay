@@ -7,13 +7,14 @@ import net.minecraft.util.BlockPos;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Parent command for all sub commands
  */
-public abstract class ASubCommandParent implements ICommand {
+public abstract class ACommand implements ICommand {
     /**
      * All possible aliases for the command (including the main
      * command, which is in index 0)
@@ -30,7 +31,7 @@ public abstract class ASubCommandParent implements ICommand {
      * Constructor
      * @param aliases All aliases for the command
      */
-    public ASubCommandParent(String... aliases) {
+    public ACommand(String... aliases) {
         this.aliases.addAll(Arrays.asList(aliases));
     }
 
@@ -85,14 +86,12 @@ public abstract class ASubCommandParent implements ICommand {
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
         List<String> tabCompletionOptions = new ArrayList<>();
 
-        if(args.length == 0) {
-            return getDefaultTabCompletions();
+        if(args.length < 2) {
+            tabCompletionOptions.addAll(getDefaultTabCompletions(args[args.length - 1]));
         } else {
             ASubCommand subCommand = getCommand(args[0]);
             if(subCommand != null) {
-                return subCommand.getTabCompletions(args);
-            } else {
-                getDefaultTabCompletions();
+                tabCompletionOptions.addAll(subCommand.getTabCompletions(removeFirstArgument(args)));
             }
         }
 
@@ -126,11 +125,14 @@ public abstract class ASubCommandParent implements ICommand {
      * all sub commands' names that are set
      * to be able to be displayed in the
      * tab completion list
+     * @param limiter only returns sub commands that have names that start with this
      * @return List of command names
      */
-    public List<String> getDefaultTabCompletions() {
+    public List<String> getDefaultTabCompletions(String limiter) {
         return subCommands.stream()
                 .filter(ASubCommand::canDisplayInTabList)
+                .filter(scmd -> scmd.getName().startsWith(limiter))
+                .sorted(Comparator.comparing(ASubCommand::getPriority))
                 .map(ASubCommand::getName)
                 .collect(Collectors.toList());
     }

@@ -7,8 +7,10 @@ import net.minecraft.event.HoverEvent;
 import net.minecraft.util.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 /**
  * Sub command for the "help" message
@@ -19,7 +21,7 @@ public class SubCommandHelp extends ASubCommand {
      * Constructor
      * @param parent Parent command
      */
-    public SubCommandHelp(ASubCommandParent parent) {
+    public SubCommandHelp(ACommand parent) {
         super(
                 parent,
                 "help",
@@ -38,12 +40,15 @@ public class SubCommandHelp extends ASubCommand {
 
         if(args.length == 0) {
             separators = true;
-            for(ListIterator<ASubCommand> iterator = getParent().subCommands.listIterator(); iterator.hasNext();) {
+            // Duplicate
+            List<ASubCommand> subCommands = new ArrayList<>(getParent().subCommands);
+            // Sort by priority & remove items that can't be displayed
+            subCommands = subCommands.stream().filter(ASubCommand::canDisplayInHelpMenu).sorted(Comparator.comparing(ASubCommand::getPriority).reversed()).collect(Collectors.toList());
+
+            for(ListIterator<ASubCommand> iterator = subCommands.listIterator(); iterator.hasNext();) {
                 ASubCommand subCommand = iterator.next();
-                if(subCommand.canDisplayInHelpMenu()) {
-                    helpMessage.appendSibling(getFormattedHelpMessage(subCommand));
-                    if(iterator.hasNext()) helpMessage.appendText("\n");
-                }
+                helpMessage.appendSibling(getFormattedHelpMessage(subCommand));
+                if(iterator.hasNext()) helpMessage.appendText("\n");
             }
         } else {
             separators = false;
@@ -63,8 +68,13 @@ public class SubCommandHelp extends ASubCommand {
     public List<String> getTabCompletions(String[] args) {
         List<String> list = new ArrayList<>();
 
-        if(args.length == 0) {
-            for(ASubCommand subCommand : getParent().getSubCommands()) {
+        List<ASubCommand> subCommands = getParent().getSubCommands().stream()
+                .filter(ASubCommand::canDisplayInTabList)
+                .filter(scmd -> scmd.getName().startsWith(args[args.length - 1]))
+                .sorted(Comparator.comparing(ASubCommand::getPriority).reversed())
+                .collect(Collectors.toList());
+        if(args.length < 2) {
+            for(ASubCommand subCommand : subCommands) {
                 list.add(subCommand.getName());
             }
         }

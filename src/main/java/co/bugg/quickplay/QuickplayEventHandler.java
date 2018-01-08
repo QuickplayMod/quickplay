@@ -3,6 +3,7 @@ package co.bugg.quickplay;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.util.ServerChecker;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -32,9 +33,9 @@ public class QuickplayEventHandler {
     @SubscribeEvent
     public void onRenderOverlay(RenderGameOverlayEvent event) {
         if(Quickplay.INSTANCE.onHypixel && event.type == RenderGameOverlayEvent.ElementType.TEXT) {
-            // Only render overlay if there is no other GUI open at the moment
-            // TODO Maybe make this into a config option?
-            if(Quickplay.INSTANCE.settings.displayInstance && Minecraft.getMinecraft().currentScreen == null) {
+            // Only render overlay if there is no other GUI open at the moment or if the GUI is chat (assuming proper settings)
+            if(Quickplay.INSTANCE.settings.displayInstance && (Minecraft.getMinecraft().currentScreen == null ||
+                    (Quickplay.INSTANCE.settings.displayInstanceWithChatOpen && (Minecraft.getMinecraft().currentScreen instanceof GuiChat)))) {
                 InstanceDisplay instanceDisplay = Quickplay.INSTANCE.instanceDisplay;
                 instanceDisplay.render(instanceDisplay.getxRatio(), instanceDisplay.getyRatio(), Quickplay.INSTANCE.settings.instanceOpacity);
             }

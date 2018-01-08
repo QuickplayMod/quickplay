@@ -2,17 +2,10 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.event.ClickEvent;
-import net.minecraft.event.HoverEvent;
 import net.minecraft.util.*;
-import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Sub command for the limbo command
@@ -23,7 +16,7 @@ public class SubCommandLimbo extends ASubCommand {
      * Constructor
      * @param parent Parent command
      */
-    public SubCommandLimbo(ASubCommandParent parent) {
+    public SubCommandLimbo(ACommand parent) {
         super(
                 parent,
                 "limbo",
@@ -31,7 +24,7 @@ public class SubCommandLimbo extends ASubCommand {
                 "",
                 true,
                 true,
-                90.0
+                -90.0
         );
     }
 

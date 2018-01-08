@@ -1,4 +1,5 @@
 quickplay.commands.quickplay.help.help=Display the available commands.
+quickplay.commands.quickplay.config.help=Configure your Quickplay mod
 quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
 quickplay.commands.quickplay.limbo.offline=You are currently not online the Hypixel Network!
 quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!

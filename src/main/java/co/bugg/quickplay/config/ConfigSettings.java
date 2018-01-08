@@ -52,6 +52,13 @@ public class ConfigSettings extends AConfiguration {
     public double instanceOpacity = 1.0;
 
     @GuiOption(
+            name = "Display Over Chat",
+            helpText = "Whether the instance display should be rendered even when chat is open",
+            category = "Instance Display"
+    )
+    public boolean displayInstanceWithChatOpen = false;
+
+    @GuiOption(
             name = "Fade GUIs In",
             helpText = "Whether GUIs should fade in when opening."
     )

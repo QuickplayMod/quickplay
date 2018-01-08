@@ -1,7 +1,6 @@
 package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
-import co.bugg.quickplay.client.gui.config.EditConfiguration;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.util.ChatComponentTranslation;
@@ -21,7 +20,7 @@ public class SubCommandMoveInstance extends ASubCommand {
      * Constructor
      * @param parent Parent command
      */
-    public SubCommandMoveInstance(ASubCommandParent parent) {
+    public SubCommandMoveInstance(ACommand parent) {
         super(
                 parent,
                 "moveinstance",

@@ -231,7 +231,7 @@ public class EditConfiguration extends QuickplayGui {
                     mc.displayGuiScreen(null);
                     ((Runnable) element.element).run();
                 } else if(element.element instanceof QuickplayColor) {
-                    mc.displayGuiScreen(new EditColor((QuickplayColor) element.element, element.optionInfo.name()));
+                    mc.displayGuiScreen(new EditColor((QuickplayColor) element.element, element.optionInfo.name(), config));
                 }
 
                 save(element);

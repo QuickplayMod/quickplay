@@ -9,7 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * /quickplay command
  */
 @ParametersAreNonnullByDefault
-public class CommandQuickplay extends ASubCommandParent {
+public class CommandQuickplay extends ACommand {
 
     /**
      * Constructor

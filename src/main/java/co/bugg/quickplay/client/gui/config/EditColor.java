@@ -3,20 +3,22 @@ package co.bugg.quickplay.client.gui.config;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.QuickplayGui;
-import co.bugg.quickplay.client.gui.QuickplayGuiButton;
 import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.QuickplayGuiSlider;
+import co.bugg.quickplay.config.AConfiguration;
+import co.bugg.quickplay.util.Message;
 import net.minecraft.client.gui.GuiPageButtonList;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ChatComponentTranslation;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class EditColor extends QuickplayGui {
 
     public QuickplayColor color;
     public String colorName;
+    public AConfiguration config;
     public int sampleTextY;
     public double sampleTextScale;
     public int nameTextY;
@@ -26,9 +28,10 @@ public class EditColor extends QuickplayGui {
     public static int elementHeight = 20;
     public static float chromaMaxSpeed = 0.05f;
 
-    public EditColor(QuickplayColor color, String colorName) {
+    public EditColor(QuickplayColor color, String colorName, AConfiguration config) {
         this.color = color;
         this.colorName = colorName;
+        this.config = config;
     }
 
     @Override
@@ -95,6 +98,18 @@ public class EditColor extends QuickplayGui {
     public void componentClicked(QuickplayGuiComponent component) {
         System.out.println("Clicked");
 
+    }
+
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        super.mouseReleased(mouseX, mouseY, state);
+        try {
+            config.save();
+        } catch (IOException e) {
+            System.out.println("Failed to save color " + colorName + ".");
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror")));
+            e.printStackTrace();
+        }
     }
 
     public class ColorFormatHelper implements QuickplayGuiSlider.FormatHelper {
