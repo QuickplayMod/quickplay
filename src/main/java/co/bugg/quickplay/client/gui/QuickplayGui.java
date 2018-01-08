@@ -28,9 +28,8 @@ public abstract class QuickplayGui extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        for (int i = 0; i < this.buttonList.size(); ++i)
-        {
-            this.componentList.get(i).draw(this.mc, mouseX, mouseY, opacity);
+        for (QuickplayGuiComponent component : componentList) {
+            component.draw(this.mc, mouseX, mouseY, opacity);
         }
     }
 
@@ -75,8 +74,6 @@ public abstract class QuickplayGui extends GuiScreen {
             for(QuickplayGuiComponent component : componentList) {
                 if(component.mousePressed(mc, mouseX, mouseY)) {
                     componentClicked(component);
-                    // Play clicky sound
-                    mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
                 }
             }
         }
@@ -92,5 +89,8 @@ public abstract class QuickplayGui extends GuiScreen {
 
     public abstract void mouseScrolled(int distance);
 
-    public abstract void componentClicked(QuickplayGuiComponent component);
+    public void componentClicked(QuickplayGuiComponent component) {
+        // Play clicky sound
+        mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+    }
 }

@@ -7,16 +7,14 @@ import co.bugg.quickplay.client.gui.*;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.config.GuiOption;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.util.ChatComponentTranslation;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -102,17 +100,11 @@ public class EditConfiguration extends QuickplayGui {
         /*
          * Draw buttons & labels
          */
-        for (int i = 0; i < this.componentList.size(); ++i)
+        for (QuickplayGuiComponent component : componentList)
         {
-            final QuickplayGuiComponent component = this.componentList.get(i);
             double scrollOpacity = (component.y > scrollFadeLine ? 1 : component.y + ConfigElement.ELEMENT_HEIGHT < scrollFadeLine ? 0 : (ConfigElement.ELEMENT_HEIGHT - ((double) scrollFadeLine - (double) component.y)) / (double) ConfigElement.ELEMENT_HEIGHT);
             component.opacity = scrollOpacity;
             if(component.y + ConfigElement.ELEMENT_HEIGHT > scrollFadeLine) component.draw(this.mc, mouseX, mouseY, opacity * (float) scrollOpacity);
-        }
-
-        for (int j = 0; j < this.labelList.size(); ++j)
-        {
-            ((GuiLabel)this.labelList.get(j)).drawLabel(this.mc, mouseX, mouseY);
         }
 
         GL11.glDisable(GL11.GL_BLEND);
@@ -147,7 +139,6 @@ public class EditConfiguration extends QuickplayGui {
         elementSize = (ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS);
 
         // If small height, sacrifice pretty fade for more button space
-        System.out.println(height);
         scrollFadeLine = topOfBox + (height > 250 ? ConfigElement.ELEMENT_HEIGHT : 0);
         bottomScrollMargins = 10;
 
@@ -228,17 +219,19 @@ public class EditConfiguration extends QuickplayGui {
     public void componentClicked(QuickplayGuiComponent component) {
         System.out.println("Action performed");
         // Only do something if the component is visible
-        if(((QuickplayGuiButton) component).lastOpacity > 0) {
-            final ConfigElement element = component.originElement;
+        if(((QuickplayGuiButton) component).opacity > 0) {
+            super.componentClicked(component);
+
+            final ConfigElement element = (ConfigElement) component.origin;
             if(element != null) {
                 if(element.element instanceof Boolean) {
                     element.element = !(boolean) element.element;
                     component.displayString = element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText();
                 } else if(element.element instanceof Runnable) {
-                    Minecraft.getMinecraft().displayGuiScreen(null);
+                    mc.displayGuiScreen(null);
                     ((Runnable) element.element).run();
                 } else if(element.element instanceof QuickplayColor) {
-
+                    mc.displayGuiScreen(new EditColor((QuickplayColor) element.element, element.optionInfo.name()));
                 }
 
                 save(element);
@@ -342,7 +335,7 @@ public class EditConfiguration extends QuickplayGui {
          */
         @Override
         public void onTick(int id, float value) {
-            ConfigElement element = componentList.get(id).originElement;
+            ConfigElement element = (ConfigElement) componentList.get(id).origin;
             element.element = ((Number) value).doubleValue();
             save(element);
         }
@@ -361,7 +354,14 @@ public class EditConfiguration extends QuickplayGui {
     public class SliderFormatHelper implements QuickplayGuiSlider.FormatHelper {
         @Override
         public String getText(int id, String name, float value) {
-            return name + ": " + value;
+            String pattern;
+            if(componentList.size() >= id + 1 && componentList.get(id).origin != null)
+                pattern = ((ConfigElement) componentList.get(id).origin).optionInfo.decimalFormat();
+            else
+                pattern = "0.00";
+
+            final DecimalFormat format = new DecimalFormat(pattern);
+            return name + ": " + format.format(value);
         }
     }
 }

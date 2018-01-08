@@ -6,8 +6,8 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 
 public class QuickplayGuiHeader extends QuickplayGuiComponent {
-    public QuickplayGuiHeader(ConfigElement originElement, int id, int x, int y, int width, int height, String displayString) {
-        super(originElement, id, x, y, width, height, displayString);
+    public QuickplayGuiHeader(Object origin, int id, int x, int y, int width, int height, String displayString) {
+        super(origin, id, x, y, width, height, displayString);
     }
 
     @Override

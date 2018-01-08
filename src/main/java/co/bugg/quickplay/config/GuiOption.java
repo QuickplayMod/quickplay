@@ -16,6 +16,6 @@ public @interface GuiOption {
      */
     float minValue() default 0;
     float maxValue() default 255;
-    int precision() default 2;
+    String decimalFormat() default "0.00";
 
 }

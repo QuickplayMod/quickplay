@@ -1,6 +1,5 @@
 package co.bugg.quickplay.client.gui;
 
-import co.bugg.quickplay.client.gui.config.ConfigElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,9 +16,9 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     private final GuiPageButtonList.GuiResponder responder;
     private QuickplayGuiSlider.FormatHelper formatHelper;
 
-    public QuickplayGuiSlider(GuiPageButtonList.GuiResponder guiResponder, ConfigElement originElement, int idIn, int x, int y, int widthIn, int heightIn, String name, float min, float max, float defaultValue, QuickplayGuiSlider.FormatHelper formatter)
+    public QuickplayGuiSlider(GuiPageButtonList.GuiResponder guiResponder, Object origin, int idIn, int x, int y, int widthIn, int heightIn, String name, float min, float max, float defaultValue, QuickplayGuiSlider.FormatHelper formatter)
     {
-        super(originElement, idIn, x, y, widthIn, heightIn, "");
+        super(origin, idIn, x, y, widthIn, heightIn, "");
         this.name = name;
         this.min = min;
         this.max = max;
@@ -29,30 +28,14 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
         this.displayString = this.getDisplayString();
     }
 
-    public float func_175220_c()
+    public float getValue()
     {
         return this.min + (this.max - this.min) * this.sliderPosition;
     }
 
-    public void func_175218_a(float p_175218_1_, boolean p_175218_2_)
-    {
-        this.sliderPosition = (p_175218_1_ - this.min) / (this.max - this.min);
-        this.displayString = this.getDisplayString();
-
-        if (p_175218_2_)
-        {
-            this.responder.onTick(this.id, this.func_175220_c());
-        }
-    }
-
-    public float func_175217_d()
-    {
-        return this.sliderPosition;
-    }
-
     private String getDisplayString()
     {
-        return this.formatHelper == null ? I18n.format(this.name) + ": " + this.func_175220_c() : this.formatHelper.getText(this.id, I18n.format(this.name), this.func_175220_c());
+        return this.formatHelper == null ? I18n.format(this.name) + ": " + this.getValue() : this.formatHelper.getText(this.id, I18n.format(this.name), this.getValue());
     }
 
     /**
@@ -85,20 +68,13 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
             }
 
             this.displayString = this.getDisplayString();
-            this.responder.onTick(this.id, this.func_175220_c());
+            this.responder.onTick(this.id, this.getValue());
         }
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
         this.drawTexturedModalRect(this.x + (int)(this.sliderPosition * (float)(this.width - 8)), this.y, 0, 66, 4, 20);
         this.drawTexturedModalRect(this.x + (int)(this.sliderPosition * (float)(this.width - 8)) + 4, this.y, 196, 66, 4, 20);
 
-    }
-
-    public void func_175219_a(float p_175219_1_)
-    {
-        this.sliderPosition = p_175219_1_;
-        this.displayString = this.getDisplayString();
-        this.responder.onTick(this.id, this.func_175220_c());
     }
 
     /**
@@ -122,7 +98,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
             }
 
             this.displayString = this.getDisplayString();
-            this.responder.onTick(this.id, this.func_175220_c());
+            this.responder.onTick(this.id, this.getValue());
             this.isMouseDown = true;
             return true;
         }

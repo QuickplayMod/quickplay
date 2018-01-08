@@ -1,6 +1,5 @@
 package co.bugg.quickplay.client.gui;
 
-import co.bugg.quickplay.client.gui.config.ConfigElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
@@ -14,11 +13,11 @@ public abstract class QuickplayGuiComponent extends Gui {
     public String displayString;
     public boolean hovering;
     public double opacity;
-    public ConfigElement originElement;
+    public Object origin;
 
-    public QuickplayGuiComponent(ConfigElement originElement, int id, int x, int y, int width, int height, String displayString) {
+    public QuickplayGuiComponent(Object origin, int id, int x, int y, int width, int height, String displayString) {
         opacity = 1.0;
-        this.originElement = originElement;
+        this.origin = origin;
         this.id = id;
         this.x = x;
         this.y = y;
