@@ -1,11 +1,13 @@
 package co.bugg.quickplay.http.response;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.config.ConfigSettings;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.util.Message;
 import com.google.gson.JsonElement;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -44,7 +46,15 @@ public class ResponseAction {
                 System.out.println(value.getAsString());
                 break;
             case RESET_CONFIG:
-                // TODO Reset all configuration options. Might be server-side?
+                // Overwrite settings
+                Quickplay.INSTANCE.settings = new ConfigSettings();
+                // Overwrite file containing cached settings
+                try {
+                    Quickplay.INSTANCE.settings.save();
+                } catch (IOException e) {
+                    System.out.println("Failed to save file while overwriting settings");
+                    e.printStackTrace();
+                }
                 break;
             case RELOAD_GAMES:
                 Quickplay.INSTANCE.threadPool.submit(() -> {

@@ -30,7 +30,6 @@ public class SubCommandLimbo extends ASubCommand {
 
     @Override
     public void run(String[] args) {
-        // TODO: Get current server & go to hub first if necessary
         if(Quickplay.INSTANCE.onHypixel) {
             String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
             if(currentServer == null) currentServer = "null";

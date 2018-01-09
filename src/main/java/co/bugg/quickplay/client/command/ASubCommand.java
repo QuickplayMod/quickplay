@@ -15,7 +15,7 @@ public abstract class ASubCommand {
      * @param usage Command syntax. See {@link #usage}
      * @param displayInHelpMenu Whether this sub command can be displayed in a help menu
      * @param displayInTabList Whether this sub command can be tabbed into chat
-     * @param priority TODO the priority of this sub command in help menu and tab list
+     * @param priority the priority of this sub command in help menu and tab list (bigger = higher)
      */
     public ASubCommand(ACommand parent, String name, String helpMessage, String usage, boolean displayInHelpMenu, boolean displayInTabList, double priority) {
         this.parent = parent;
