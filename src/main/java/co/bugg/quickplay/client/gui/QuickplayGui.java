@@ -28,6 +28,8 @@ public abstract class QuickplayGui extends GuiScreen {
         super.onGuiClosed();
         // Stop using shaders
         Minecraft.getMinecraft().entityRenderer.stopUseShader();
+        // Show HUD again
+        mc.gameSettings.hideGUI = false;
     }
 
     @Override
@@ -36,6 +38,9 @@ public abstract class QuickplayGui extends GuiScreen {
         if(Quickplay.INSTANCE.settings.fadeInGuis)
             fadeIn();
         else opacity = 1;
+
+        // Hide HUD (health & scoreboard & such)
+        mc.gameSettings.hideGUI = true;
 
         // Load the blur background shader
         if(Quickplay.INSTANCE.settings.blurGuiBackgrounds)
