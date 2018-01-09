@@ -33,7 +33,6 @@ public class AssetFactory {
     public static final String configDirectory = rootDirectory + "configs/";
     public static final String resourcesDirectory = rootDirectory + "resources/";
     public static final String assetsDirectory = resourcesDirectory + "assets/quickplay/";
-    public static final String shadersDirectory = assetsDirectory + "shaders/";
 
     /**
      * Download all icons from the specified URLs
@@ -95,7 +94,6 @@ public class AssetFactory {
         final File configDirFile = new File(configDirectory);
         final File resourcesDirFile = new File(resourcesDirectory);
         final File assetsDirFile = new File(assetsDirectory);
-        final File shadersDirFile = new File(shadersDirectory);
 
         if(!configDirFile.isDirectory())
             configDirFile.mkdirs();
@@ -105,9 +103,6 @@ public class AssetFactory {
 
         if(!assetsDirFile.isDirectory())
             assetsDirFile.mkdirs();
-
-        if(!shadersDirFile.isDirectory())
-            shadersDirFile.mkdirs();
 
         // Create the mcmeta file for the "resource pack"
         final File mcmetaFile = new File(resourcesDirectory + "pack.mcmeta");
