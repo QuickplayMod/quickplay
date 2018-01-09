@@ -1,15 +1,20 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.Reference;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +24,22 @@ public abstract class QuickplayGui extends GuiScreen {
     public float opacity = 0;
 
     @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        // Stop using shaders
+        Minecraft.getMinecraft().entityRenderer.stopUseShader();
+    }
+
+    @Override
     public void initGui() {
         super.initGui();
         if(Quickplay.INSTANCE.settings.fadeInGuis)
             fadeIn();
         else opacity = 1;
+
+        // Load the blur background shader
+        if(Quickplay.INSTANCE.settings.blurGuiBackgrounds)
+            Minecraft.getMinecraft().entityRenderer.loadShader(new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
     }
 
     @Override

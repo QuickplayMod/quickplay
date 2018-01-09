@@ -6,7 +6,6 @@ import co.bugg.quickplay.client.QuickplayColor;
 import java.awt.*;
 
 public class ConfigSettings extends AConfiguration {
-    // TODO add priority
     // TODO Add hover help text to EditConfiguration
     // TODO make name & helpText into translatable components
     public ConfigSettings() {
@@ -18,14 +17,30 @@ public class ConfigSettings extends AConfiguration {
 
     @GuiOption(
             name = "Primary Color",
-            helpText = "Change your Quickplay primary color"
+            helpText = "Change your Quickplay primary color",
+            category = "Colors"
     )
     public QuickplayColor primaryColor = new QuickplayColor(1.0f, 1.0f, 1.0f);
     @GuiOption(
             name = "Secondary Color",
-            helpText = "Change your Quickplay secondary color"
+            helpText = "Change your Quickplay secondary color",
+            category = "Colors"
     )
     public QuickplayColor secondaryColor = new QuickplayColor(0.7f, 0.7f, 0.7f);
+
+    @GuiOption(
+            name = "Blur GUI Backgrounds",
+            helpText = "Whether the background of Quickplay GUIs should be slightly blurred.",
+            category = "GUI"
+    )
+    public boolean blurGuiBackgrounds = true;
+
+    @GuiOption(
+            name = "Fade GUIs In",
+            helpText = "Whether GUIs should fade in when opening.",
+            category = "GUI"
+    )
+    public boolean fadeInGuis = true;
 
     @GuiOption(
             name = "Instance Display",
@@ -57,10 +72,4 @@ public class ConfigSettings extends AConfiguration {
             category = "Instance Display"
     )
     public boolean displayInstanceWithChatOpen = false;
-
-    @GuiOption(
-            name = "Fade GUIs In",
-            helpText = "Whether GUIs should fade in when opening."
-    )
-    public boolean fadeInGuis = true;
 }
