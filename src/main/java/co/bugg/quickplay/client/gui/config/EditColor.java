@@ -3,6 +3,7 @@ package co.bugg.quickplay.client.gui.config;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.QuickplayGui;
+import co.bugg.quickplay.client.gui.QuickplayGuiButton;
 import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.QuickplayGuiSlider;
 import co.bugg.quickplay.config.AConfiguration;
@@ -19,6 +20,8 @@ public class EditColor extends QuickplayGui {
     public QuickplayColor color;
     public String colorName;
     public AConfiguration config;
+    public QuickplayGui previousGui;
+
     public int sampleTextY;
     public double sampleTextScale;
     public int nameTextY;
@@ -29,10 +32,17 @@ public class EditColor extends QuickplayGui {
     public static float chromaMaxSpeed = 0.05f;
 
     public EditColor(QuickplayColor color, String colorName, AConfiguration config) {
+        this(color, colorName, config, null);
+    }
+
+    public EditColor(QuickplayColor color, String colorName, AConfiguration config, QuickplayGui previousGui) {
         this.color = color;
         this.colorName = colorName;
         this.config = config;
+        this.previousGui = previousGui;
     }
+
+
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -87,6 +97,7 @@ public class EditColor extends QuickplayGui {
         nextComponentId++;
         componentList.add(new QuickplayGuiSlider(colorGuiResponder, "CHROMA", nextComponentId, width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth, elementHeight, new ChatComponentTranslation("quickplay.config.color.gui.chromaspeed").getUnformattedText(), 0, chromaMaxSpeed, color.getChromaSpeed(), formatHelper));
         nextComponentId++;
+        componentList.add(new QuickplayGuiButton("EXIT", nextComponentId, width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth, elementHeight, new ChatComponentTranslation("quickplay.gui." + (previousGui == null ? "close" : "back")).getUnformattedText()));
     }
 
     @Override
@@ -96,8 +107,8 @@ public class EditColor extends QuickplayGui {
 
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
-        System.out.println("Clicked");
-
+        if(component.origin.equals("EXIT"))
+            mc.displayGuiScreen(previousGui);
     }
 
     @Override

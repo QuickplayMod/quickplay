@@ -210,14 +210,7 @@ public class EditConfiguration extends QuickplayGui {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        super.keyTyped(typedChar, keyCode);
-        System.out.println("Key typed");
-    }
-
-    @Override
     public void componentClicked(QuickplayGuiComponent component) {
-        System.out.println("Action performed");
         // Only do something if the component is visible
         if(((QuickplayGuiButton) component).opacity > 0) {
             super.componentClicked(component);
@@ -231,7 +224,7 @@ public class EditConfiguration extends QuickplayGui {
                     mc.displayGuiScreen(null);
                     ((Runnable) element.element).run();
                 } else if(element.element instanceof QuickplayColor) {
-                    mc.displayGuiScreen(new EditColor((QuickplayColor) element.element, element.optionInfo.name(), config));
+                    mc.displayGuiScreen(new EditColor((QuickplayColor) element.element, element.optionInfo.name(), config, this));
                 }
 
                 save(element);
@@ -254,15 +247,8 @@ public class EditConfiguration extends QuickplayGui {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        System.out.println("Mouse clicked");
         // lastMouseY is used for dragging scrolling
         lastMouseY = mouseY;
-    }
-
-    @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state) {
-        super.mouseReleased(mouseX, mouseY, state);
-        System.out.println("Mouse released");
     }
 
     int lastMouseY = 0;
@@ -270,7 +256,6 @@ public class EditConfiguration extends QuickplayGui {
     @Override
     protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-        System.out.println("Mouse dragged");
         mouseYMovement = lastMouseY - mouseY;
         lastMouseY = mouseY;
         System.out.println(mouseYMovement);
@@ -280,8 +265,6 @@ public class EditConfiguration extends QuickplayGui {
 
     @Override
     public void mouseScrolled(int distance) {
-        System.out.println("Mouse scrolled");
-
         // Divide the distance by 10 as "120" px is way too much
         final int splitDistance = distance / 10;
         scroll(splitDistance);
