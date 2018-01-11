@@ -3,7 +3,7 @@ package co.bugg.quickplay.config;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayColor;
 
-import java.awt.*;
+import java.util.HashMap;
 
 public class ConfigSettings extends AConfiguration {
     // TODO Add hover help text to EditConfiguration
@@ -72,4 +72,7 @@ public class ConfigSettings extends AConfiguration {
             category = "Instance Display"
     )
     public boolean displayInstanceWithChatOpen = false;
+
+    // Hashmap of custom game priorities for the main game selection GUI
+    public HashMap<String, Integer> gamePriorities = new HashMap<>();
 }

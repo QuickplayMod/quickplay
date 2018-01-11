@@ -4,6 +4,7 @@ import co.bugg.quickplay.client.command.CommandQuickplay;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.config.AssetFactory;
+import co.bugg.quickplay.config.ConfigKeybinds;
 import co.bugg.quickplay.config.ConfigSettings;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.http.HttpRequestFactory;
@@ -12,9 +13,9 @@ import co.bugg.quickplay.http.response.ResponseAction;
 import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.InstanceWatcher;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.ServerChecker;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
-import co.bugg.quickplay.util.ServerChecker;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.ChatComponentTranslation;
@@ -106,6 +107,10 @@ public class Quickplay {
      * Mods settings
      */
     public ConfigSettings settings;
+    /**
+     * Keybinds for the mod, and which buttons open what GUIs
+     */
+    public ConfigKeybinds keybinds;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -149,14 +154,20 @@ public class Quickplay {
 
             try {
                 settings = (ConfigSettings) AConfiguration.load("settings.json", ConfigSettings.class);
+                keybinds = (ConfigKeybinds) AConfiguration.load("keybinds.json", ConfigKeybinds.class);
             } catch (IOException | JsonSyntaxException e) {
                 // Config either doesn't exist or couldn't be parsed
                 e.printStackTrace();
                 assetFactory.createDirectories();
-                settings = new ConfigSettings();
+
+                if(settings == null)
+                    settings = new ConfigSettings();
+                if(keybinds == null)
+                    keybinds = new ConfigKeybinds();
                 try {
                     // Write the default config that we just made to save it
                     settings.save();
+                    keybinds.save();
                 } catch (IOException e1) {
                     // File couldn't be saved
                     e1.printStackTrace();
