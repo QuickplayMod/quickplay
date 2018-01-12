@@ -2,7 +2,9 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +37,14 @@ public class SubCommandLimbo extends ASubCommand {
             if(currentServer == null) currentServer = "null";
 
             if(currentServer.contains("mini") || currentServer.contains("mega")) {
-                //TODO: This doesn't check for lobby protection. Should implement that eventually but it's difficult.
-                Quickplay.INSTANCE.chatBuffer.push("/hub");
+                Quickplay.INSTANCE.chatBuffer.push("/achat §");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Quickplay.INSTANCE.chatBuffer.push("/achat §");
+                    return;
+                }
             }
 
             if(!currentServer.equals("limbo"))
