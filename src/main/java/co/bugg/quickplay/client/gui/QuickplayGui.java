@@ -4,17 +4,12 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +17,9 @@ public abstract class QuickplayGui extends GuiScreen {
 
     public List<QuickplayGuiComponent> componentList = new ArrayList<>();
     public float opacity = 0;
+
+    int lastMouseY = 0;
+    int mouseYMovement = 0;
 
     @Override
     public void onGuiClosed() {
@@ -84,7 +82,8 @@ public abstract class QuickplayGui extends GuiScreen {
 
         int distance;
         if((distance = Mouse.getDWheel()) != 0) {
-            mouseScrolled(distance);
+            // Divide the distance by 10 as "120" px is way too much
+            mouseScrolled(distance / 10);
         }
     }
 
@@ -98,14 +97,29 @@ public abstract class QuickplayGui extends GuiScreen {
                 }
             }
         }
+
+        // lastMouseY is used for dragging scrolling
+        lastMouseY = mouseY;
     }
 
     @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state) {
-        super.mouseReleased(mouseX, mouseY, state);
-        for(QuickplayGuiComponent component : componentList) {
-            component.mouseReleased(mc, mouseX, mouseY);
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        super.keyTyped(typedChar, keyCode);
+        if(keyCode == 1 || keyCode == mc.gameSettings.keyBindInventory.getKeyCode()) {
+            mc.displayGuiScreen(null);
         }
+    }
+
+    @Override
+    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+
+        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+        mouseYMovement = lastMouseY - mouseY;
+        lastMouseY = mouseY;
+        System.out.println(mouseYMovement);
+        // Scroll should be the same direction the mouse is moving
+        if(mouseYMovement != 0) mouseScrolled(mouseYMovement * -1);
     }
 
     public abstract void mouseScrolled(int distance);

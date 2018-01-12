@@ -7,7 +7,6 @@ import co.bugg.quickplay.client.gui.*;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.config.GuiOption;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.util.ChatComponentTranslation;
 import org.lwjgl.opengl.GL11;
@@ -245,32 +244,8 @@ public class EditConfiguration extends QuickplayGui {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-        // lastMouseY is used for dragging scrolling
-        lastMouseY = mouseY;
-    }
-
-    int lastMouseY = 0;
-    int mouseYMovement = 0;
-    @Override
-    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-        mouseYMovement = lastMouseY - mouseY;
-        lastMouseY = mouseY;
-        System.out.println(mouseYMovement);
-        // Scroll should be the same direction the mouse is moving
-        if(mouseYMovement != 0) scroll(mouseYMovement * -1);
-    }
-
-    @Override
     public void mouseScrolled(int distance) {
-        // Divide the distance by 10 as "120" px is way too much
-        final int splitDistance = distance / 10;
-        scroll(splitDistance);
-    }
 
-    public void scroll(int distance) {
         // Scroll is animated, one pixel per 5ms
         Quickplay.INSTANCE.threadPool.submit(() -> {
             for (int i = 0; i < Math.abs(distance); i++) {
@@ -278,17 +253,17 @@ public class EditConfiguration extends QuickplayGui {
                 // Only allow scrolling if there is an element off screen
                 // If scrolling down & the last element is at all off the screen (plus the additional margins for aesthetic purposes)
                 if((distance < 0 && componentList.get(componentList.size() - 1).y > height - ConfigElement.ELEMENT_HEIGHT - bottomScrollMargins) ||
-                   // OR if scrolling up & the top element is currently off of the screen (above the fade line)
-                   (distance > 0 && componentList.get(0).y < scrollFadeLine + ConfigElement.ELEMENT_MARGINS)) {
-                        for (QuickplayGuiComponent component : componentList) {
-                            component.move(distance < 0 ? -1 : 1);
-                        }
-                        try {
-                            Thread.sleep(5);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            break;
-                        }
+                        // OR if scrolling up & the top element is currently off of the screen (above the fade line)
+                        (distance > 0 && componentList.get(0).y < scrollFadeLine + ConfigElement.ELEMENT_MARGINS)) {
+                    for (QuickplayGuiComponent component : componentList) {
+                        component.move(distance < 0 ? -1 : 1);
+                    }
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        break;
+                    }
                 } else {
                     // Already reached the bottom/top, so stop trying to scroll
                     break;

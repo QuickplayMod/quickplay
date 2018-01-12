@@ -5,6 +5,8 @@ import org.lwjgl.opengl.GL11;
 
 public class QuickplayGuiMainMenu extends QuickplayGui {
 
+    int distance = 0;
+
     @Override
     public void initGui() {
         super.initGui();
@@ -17,6 +19,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
         drawDefaultBackground();
 
+        drawString(mc.fontRendererObj, ((Number) this.distance).toString(), width / 2, height / 2, 0xFFFFFF);
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         GL11.glDisable(GL11.GL_BLEND);
@@ -25,6 +28,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
     @Override
     public void mouseScrolled(int distance) {
+        this.distance += distance;
 
     }
 }

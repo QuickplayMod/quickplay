@@ -73,7 +73,7 @@ public class ResponseAction {
                         e.printStackTrace();
                     }
 
-                    // Collect all icon URLs into a list and load them
+                    // Collect all icon URLs into a list and load them (if necessary)
                     Quickplay.INSTANCE.assetFactory.loadIcons(
                             Quickplay.INSTANCE.gameList.stream().map(game -> game.imageURL).collect(Collectors.toList()));
                 });
