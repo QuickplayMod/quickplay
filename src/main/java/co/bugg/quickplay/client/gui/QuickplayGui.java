@@ -122,6 +122,13 @@ public abstract class QuickplayGui extends GuiScreen {
         if(mouseYMovement != 0) mouseScrolled(mouseYMovement * -1);
     }
 
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        super.mouseReleased(mouseX, mouseY, state);
+        for(QuickplayGuiComponent component : componentList)
+            component.mouseReleased(mc, mouseX, mouseY);
+    }
+
     public abstract void mouseScrolled(int distance);
 
     public void componentClicked(QuickplayGuiComponent component) {

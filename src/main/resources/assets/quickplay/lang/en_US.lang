@@ -25,3 +25,8 @@ quickplay.config.color.gui.chromaspeed.slow=SLOW
 quickplay.config.color.gui.chromaspeed.medium=MEDIUM
 quickplay.config.color.gui.chromaspeed.fast=FAST
 quickplay.config.color.gui.chromaspeed.insane=INSANE
+
+quickplay.gui.main.nogames.header=Oops!
+quickplay.gui.main.nogames.issue=Looks like I couldn't figure out what games are available.
+quickplay.gui.main.nogames.why=This most likely is occurring if you just installed the mod.
+quickplay.gui.main.nogames.contact=Try restarting your game, or contact bugfroggy if this doesn't resolve the problem!
