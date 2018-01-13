@@ -175,6 +175,16 @@ public class Quickplay {
                 }
             }
 
+            // Try to load the previous game list from cache
+            // Web server will probably instruct to reload if it's available
+            try {
+                final Game[] gameListArray = this.assetFactory.loadCachedGamelist();
+                if(gameListArray != null)
+                    this.gameList = java.util.Arrays.asList(gameListArray);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             this.threadPool.submit(() -> {
                 HashMap<String, String> params = new HashMap<>();
                 requestFactory.addDebuggingParameters(params);

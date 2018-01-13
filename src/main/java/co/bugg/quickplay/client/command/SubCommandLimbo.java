@@ -38,6 +38,9 @@ public class SubCommandLimbo extends ASubCommand {
 
             if(currentServer.contains("mini") || currentServer.contains("mega")) {
                 Quickplay.INSTANCE.chatBuffer.push("/achat §");
+
+                // Sleep for a sec to give time to get to the lobby
+                // Just try regardless to go to limbo if interrupted
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {

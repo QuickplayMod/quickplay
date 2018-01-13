@@ -69,6 +69,9 @@ public class ResponseAction {
                     try {
                         response.content.getAsJsonObject().get("games").getAsJsonArray().forEach(
                                 obj -> Quickplay.INSTANCE.gameList.add(WebResponse.GSON.fromJson(obj, Game.class)));
+
+                        // Save the retrieved game list to cache
+                        Quickplay.INSTANCE.assetFactory.saveCachedGameList(Quickplay.INSTANCE.gameList.toArray(new Game[Quickplay.INSTANCE.gameList.size()]));
                     } catch(Exception e) {
                         e.printStackTrace();
                     }

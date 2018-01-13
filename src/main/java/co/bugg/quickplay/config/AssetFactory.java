@@ -1,8 +1,10 @@
 package co.bugg.quickplay.config;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.games.Game;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
+import com.google.gson.Gson;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.FolderResourcePack;
 import net.minecraft.client.resources.IResourcePack;
@@ -30,6 +32,7 @@ public class AssetFactory {
      * Relative to Minecraft root
      */
     public static final String rootDirectory = "quickplay/";
+    public static final String gamelistCacheFile = rootDirectory + "cached_gamelist.json";
     public static final String configDirectory = rootDirectory + "configs/";
     public static final String resourcesDirectory = rootDirectory + "resources/";
     public static final String assetsDirectory = resourcesDirectory + "assets/quickplay/";
@@ -151,6 +154,37 @@ public class AssetFactory {
 
         // Refresh the resources of the game
         Minecraft.getMinecraft().refreshResources();
+    }
+
+    /**
+     * Load the previously cached game list if available,
+     * otherwise null is returned.
+     * @return List of games or null if unavailable
+     */
+    public Game[] loadCachedGamelist() throws IOException {
+        final File gameListFile = new File(gamelistCacheFile);
+
+        if(!gameListFile.exists() || (!gameListFile.canRead() && !gameListFile.setReadable(true)))
+            return null;
+
+        final String contents = new String(Files.readAllBytes(gameListFile.toPath()));
+        return new Gson().fromJson(contents, Game[].class);
+    }
+
+    public void saveCachedGameList(Game[] gameList) throws IOException {
+        final File gameListFile = new File(gamelistCacheFile);
+
+        // If file doesn't exist and couldn't be created
+        if(!gameListFile.exists() && !gameListFile.createNewFile())
+            throw new IOException("Failed to create file for cached game list");
+
+        // If file can't be written to and attempts to make it writable failed
+        if(!gameListFile.canWrite() && !gameListFile.setWritable(true))
+            throw new IOException("Cannot write to file for cached game list");
+
+        final String serializedGameList = new Gson().toJson(gameList);
+
+        Files.write(gameListFile.toPath(), serializedGameList.getBytes());
     }
 
     /**
