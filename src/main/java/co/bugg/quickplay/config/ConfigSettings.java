@@ -6,7 +6,7 @@ import co.bugg.quickplay.client.QuickplayColor;
 import java.util.HashMap;
 
 public class ConfigSettings extends AConfiguration {
-    // TODO Add hover help text to EditConfiguration
+    // TODO Add hover help text to QuickplayGuiEditConfig
     // TODO make name & helpText into translatable components
     public ConfigSettings() {
         super("settings.json");

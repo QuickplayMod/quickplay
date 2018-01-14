@@ -4,6 +4,7 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -61,6 +62,85 @@ public abstract class QuickplayGui extends GuiScreen {
         // drawRect disables blend (Grr!)
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glPopMatrix();
+    }
+
+    @Override
+    protected void drawHoveringText(List<String> textLines, int x, int y, FontRenderer font) {
+        if(textLines.size() > 0) {
+            GL11.glPushMatrix();
+            GL11.glEnable(GL11.GL_BLEND);
+
+            int textXMargins = 4;
+            int boxMargins = 10;
+            int textYMargins = 2;
+            int textWidth = 0;
+
+            // Calculate the max width of the text
+            for(String line : textLines) {
+                if(font.getStringWidth(line) > textWidth)
+                    textWidth = font.getStringWidth(line);
+            }
+
+            boolean sidesSwapped = false;
+            if(x > width / 2) {
+                // Move the text over to the other side
+                x -= textWidth + textXMargins * 2;
+                // Subtract margins between the box and the cursor
+                x -= boxMargins;
+                // Side of the screen/mouse the text is rendered on is swapped
+                // This is used for line wrapping
+                sidesSwapped = true;
+            } else {
+                // Add margins between the box and the cursor
+                x += boxMargins;
+            }
+
+            // Wrap all the lines if necessary
+            if(x + textWidth + textXMargins * 2 + boxMargins > width || (sidesSwapped && x < boxMargins)) {
+                final List<String> allWrappedLines = new ArrayList<>();
+                int wrappedTextWidth = 0;
+                for(String line : textLines) {
+                    final int wrapWidth = sidesSwapped ? x + textWidth + textXMargins : width - x - boxMargins - textXMargins;
+                    final List<String> wrappedLine = font.listFormattedStringToWidth(line, wrapWidth);
+
+                    for(String wrappedFragment : wrappedLine) {
+                        final int wrappedFragmentWidth = font.getStringWidth(wrappedFragment);
+                        if(wrappedFragmentWidth > wrappedTextWidth)
+                            wrappedTextWidth = wrappedFragmentWidth;
+
+                        allWrappedLines.add(wrappedFragment);
+                    }
+                }
+                // Recalcuate x if sides swapped
+                if(sidesSwapped) {
+                    x += textWidth - wrappedTextWidth;
+                }
+
+                textWidth = wrappedTextWidth;
+                textLines = allWrappedLines;
+
+            }
+            // Calculate how high the tooltip should be
+            int tooltipHeight = textLines.size() * (font.FONT_HEIGHT + textYMargins) + textYMargins * 2;
+
+            // Move up if falling off bottom of screen
+            if(y + tooltipHeight > height)
+                y -= tooltipHeight;
+
+            // Draw background
+            drawRect(x, y, x + textWidth + textXMargins, y + tooltipHeight, (int) (opacity * 0.5 * 255) << 24);
+            GL11.glEnable(GL11.GL_BLEND);
+
+            // Draw text
+            int currentLineY = y + textYMargins;
+            for(String line : textLines) {
+                drawString(font, line, x + textXMargins, currentLineY, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                currentLineY += font.FONT_HEIGHT + textYMargins;
+            }
+
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glPopMatrix();
+        }
     }
 
     public void fadeIn() {

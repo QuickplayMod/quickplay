@@ -1,7 +1,7 @@
 package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
-import co.bugg.quickplay.client.gui.config.EditConfiguration;
+import co.bugg.quickplay.client.gui.config.QuickplayGuiEditConfig;
 import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentTranslation;
@@ -32,7 +32,7 @@ public class SubCommandConfig extends ASubCommand {
 
     @Override
     public void run(String[] args) {
-        new TickDelay(() -> Minecraft.getMinecraft().displayGuiScreen(new EditConfiguration(Quickplay.INSTANCE.settings)), 1);
+        new TickDelay(() -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiEditConfig(Quickplay.INSTANCE.settings)), 1);
     }
 
     @Override

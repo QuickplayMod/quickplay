@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 import java.io.IOException;
 
-public class EditColor extends QuickplayGui {
+public class QuickplayGuiEditColor extends QuickplayGui {
 
     public QuickplayColor color;
     public String colorName;
@@ -31,11 +31,11 @@ public class EditColor extends QuickplayGui {
     public static int elementHeight = 20;
     public static float chromaMaxSpeed = 0.05f;
 
-    public EditColor(QuickplayColor color, String colorName, AConfiguration config) {
+    public QuickplayGuiEditColor(QuickplayColor color, String colorName, AConfiguration config) {
         this(color, colorName, config, null);
     }
 
-    public EditColor(QuickplayColor color, String colorName, AConfiguration config, QuickplayGui previousGui) {
+    public QuickplayGuiEditColor(QuickplayColor color, String colorName, AConfiguration config, QuickplayGui previousGui) {
         this.color = color;
         this.colorName = colorName;
         this.config = config;

@@ -9,6 +9,8 @@ import co.bugg.quickplay.config.GuiOption;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -19,12 +21,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EditConfiguration extends QuickplayGui {
+public class QuickplayGuiEditConfig extends QuickplayGui {
     public AConfiguration config;
     public List<ConfigElement> configElements = new ArrayList<>();
 
-    public EditConfiguration(AConfiguration config) {
+    public QuickplayGuiEditConfig(AConfiguration config) {
         this.config = config;
+        Quickplay.INSTANCE.registerEventHandler(this);
     }
 
     public double headerScale;
@@ -39,9 +42,35 @@ public class EditConfiguration extends QuickplayGui {
     public int scrollbarWidth = 3;
     public boolean scrollbarDrawn;
     public int bottomScrollMargins;
+    public int[] lastTwoMouseX = new int[2];
+    public int[] lastTwoMouseY = new int[2];
+    public int mouseStandStillTicks = 0;
+    public final int hoverDelayTicks = 10;
+    public final int mouseStandStillMargin = 2;
+
+    @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        Quickplay.INSTANCE.unregisterEventHandler(this);
+    }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+
+        /*
+         * Calculate stuff necessary for whether hover text should be displayed
+         */
+
+        // Add the current mouseX and mouseY to lastTwoMouse arrays
+        lastTwoMouseX[1] = lastTwoMouseX[0];
+        lastTwoMouseX[0] = mouseX;
+        lastTwoMouseY[1] = lastTwoMouseY[0];
+        lastTwoMouseY[0] = mouseY;
+
+        // If the mouse moved enough within the last two frames then reset stand still length
+        if(Math.abs(lastTwoMouseX[0] - lastTwoMouseX[1]) >= mouseStandStillMargin || Math.abs(lastTwoMouseY[0] - lastTwoMouseY[1]) >= mouseStandStillMargin)
+            mouseStandStillTicks = 0;
+
         // Blend is enabled for the GUI fadein
         // Fade in opacity has to be applied individually to each component that you want to fade in
         GL11.glPushMatrix();
@@ -97,13 +126,31 @@ public class EditConfiguration extends QuickplayGui {
 
 
         /*
-         * Draw buttons & labels
+         * Draw buttons
          */
-        for (QuickplayGuiComponent component : componentList)
-        {
+        for (QuickplayGuiComponent component : componentList) {
             double scrollOpacity = (component.y > scrollFadeLine ? 1 : component.y + ConfigElement.ELEMENT_HEIGHT < scrollFadeLine ? 0 : (ConfigElement.ELEMENT_HEIGHT - ((double) scrollFadeLine - (double) component.y)) / (double) ConfigElement.ELEMENT_HEIGHT);
             component.opacity = scrollOpacity;
             if(component.y + ConfigElement.ELEMENT_HEIGHT > scrollFadeLine) component.draw(this.mc, mouseX, mouseY, opacity * (float) scrollOpacity);
+        }
+
+        /*
+         * Draw description text label
+         */
+        if(mouseStandStillTicks >= hoverDelayTicks) {
+            for (QuickplayGuiComponent component : componentList) {
+                if(component.opacity > 0) {
+                    if((component.x < mouseX && component.x + component.width > mouseX) && (component.y < mouseY && component.y + component.height > mouseY)) {
+                        final ConfigElement element = (ConfigElement) component.origin;
+                        if(element != null && element.optionInfo != null && element.optionInfo.category().length() > 0) {
+                            final List<String> text = new ArrayList<>();
+                            text.add(element.optionInfo.helpText());
+                            drawHoveringText(text, mouseX, mouseY, mc.fontRendererObj);
+                        }
+                        break;
+                    }
+                }
+            }
         }
 
         GL11.glDisable(GL11.GL_BLEND);
@@ -223,7 +270,7 @@ public class EditConfiguration extends QuickplayGui {
                     mc.displayGuiScreen(null);
                     ((Runnable) element.element).run();
                 } else if(element.element instanceof QuickplayColor) {
-                    mc.displayGuiScreen(new EditColor((QuickplayColor) element.element, element.optionInfo.name(), config, this));
+                    mc.displayGuiScreen(new QuickplayGuiEditColor((QuickplayColor) element.element, element.optionInfo.name(), config, this));
                 }
 
                 save(element);
@@ -245,6 +292,9 @@ public class EditConfiguration extends QuickplayGui {
 
     @Override
     public void mouseScrolled(int distance) {
+        // On scroll let's clear the arrays containing mouse positions used for hover text
+        lastTwoMouseX = new int[]{-1, -1};
+        lastTwoMouseY = new int[]{-1, -1};
 
         // Scroll is animated, one pixel per 5ms
         Quickplay.INSTANCE.threadPool.submit(() -> {
@@ -270,6 +320,14 @@ public class EditConfiguration extends QuickplayGui {
                 }
             }
         });
+    }
+
+    @SubscribeEvent
+    public void onTick(TickEvent.ClientTickEvent event) {
+        // Increase the number of ticks the mouse has been standing still if necessary
+        if(event.phase == TickEvent.Phase.START)
+            if(Math.abs(lastTwoMouseX[0] - lastTwoMouseX[1]) < mouseStandStillMargin && Math.abs(lastTwoMouseY[0] - lastTwoMouseY[1]) < mouseStandStillMargin)
+                mouseStandStillTicks++;
     }
 
     // ------
