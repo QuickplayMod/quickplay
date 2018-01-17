@@ -159,7 +159,6 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
     @Override
     public void initGui() {
-        componentList.clear();
         configElements.clear();
         super.initGui();
 

@@ -73,8 +73,6 @@ public class QuickplayGuiEditColor extends QuickplayGui {
     @Override
     public void initGui() {
         super.initGui();
-        buttonList.clear();
-        componentList.clear();
 
         nameTextScale = 1.0;
         nameTextY = (int) (height * 0.2);

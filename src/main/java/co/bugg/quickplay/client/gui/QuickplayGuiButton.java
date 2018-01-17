@@ -1,8 +1,6 @@
 package co.bugg.quickplay.client.gui;
 
-import co.bugg.quickplay.client.gui.config.ConfigElement;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -11,9 +9,22 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     public static final ResourceLocation buttonTextures = new ResourceLocation("textures/gui/widgets.png");
 
     public boolean enabled = true;
+    protected ResourceLocation texture = buttonTextures;
+    protected int textureX = -1;
+    protected int textureY = -1;
 
     public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text) {
+        this(origin, id, x, y, widthIn, heightIn, text, null, -1, -1);
+    }
+
+    public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text, ResourceLocation texture, int textureX, int textureY) {
         super(origin, id, x, y, widthIn, heightIn, text);
+
+        if(texture != null) {
+            this.texture = texture;
+        }
+        this.textureX = textureX;
+        this.textureY = textureY;
     }
 
     @Override
@@ -21,47 +32,59 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
 
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-
-        FontRenderer fontrenderer = mc.fontRendererObj;
-        mc.getTextureManager().bindTexture(buttonTextures);
-
-        this.hovering = (mouseX >= this.x && mouseX < this.x + this.width) && (mouseY >= this.y && mouseY < this.y + this.height);
-        int i = this.getButtonTexture(this.hovering);
-
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.blendFunc(770, 771);
+        mc.getTextureManager().bindTexture(texture);
         GlStateManager.color(1, 1, 1, (float) opacity);
 
-        this.drawTexturedModalRect(this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
-        GL11.glEnable(GL11.GL_BLEND);
+        // Update whether user is currently hovering over button
+        hovering = (mouseX >= x && mouseX < x + width) && (mouseY >= y && mouseY < y + height);
+        // Get the default button texture depending on if mouse is hovering or is enabled
+        int buttonTextureMultiplier = getDefaultButtonTexture(hovering);
 
-        this.drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
-        GL11.glEnable(GL11.GL_BLEND);
-
-        this.mouseDragged(mc, mouseX, mouseY, opacity);
-
-        int j = 0xE0E0E0 & 0xFFFFFF | (int) (opacity * 255) << 24;
-        if (!this.enabled)
-        {
-            j = 0xA0A0A0 & 0xFFFFFF | (int) (opacity * 255) << 24;
-        }
-        else if (this.hovering)
-        {
-            j = 0xFFFFA0 & 0xFFFFFF | (int) (opacity * 255) << 24;
+        // If default button
+        if(texture == buttonTextures || textureX < 0 || textureY < 0) {
+            // Draw the different parts of the button
+            drawTexturedModalRect(x, y, 0, 46 + buttonTextureMultiplier * 20, width / 2, height);
+            drawTexturedModalRect(x + width / 2, y, 200 - width / 2, 46 + buttonTextureMultiplier * 20, width / 2, height);
+        } else {
+            drawTexturedModalRect(x, y, textureX, textureY, width, height);
         }
 
-        this.drawCenteredString(fontrenderer, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
+        drawDisplayString(mc);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
 
     }
 
-    public int getButtonTexture(boolean mouseOver) {
+    public void drawDisplayString(Minecraft mc) {
+        if(displayString != null && displayString.length() > 0) {
+            GL11.glPushMatrix();
+            GL11.glEnable(GL11.GL_BLEND);
+
+            drawCenteredString(mc.fontRendererObj, displayString, x + width / 2, y + (height - 8) / 2, getDefaultTextColor(opacity));
+
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glPopMatrix();
+        }
+    }
+
+    public int getDefaultTextColor(double opacity) {
+        int color;
+        if (!enabled) {
+            color = 0xA0A0A0;
+        } else if (hovering) {
+            color = 0xFFFFA0;
+        } else {
+            color = 0xE0E0E0;
+        }
+
+        return color & 0xFFFFFF | (int) (opacity * 255) << 24;
+    }
+
+    public int getDefaultButtonTexture(boolean mouseOver) {
         int i = 1;
 
-        if (!this.enabled) {
+        if (!enabled) {
             i = 0;
         } else if (mouseOver) {
             i = 2;

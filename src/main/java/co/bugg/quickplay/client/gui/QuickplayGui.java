@@ -25,14 +25,17 @@ public abstract class QuickplayGui extends GuiScreen {
     @Override
     public void onGuiClosed() {
         super.onGuiClosed();
-        // Stop using shaders
-        Minecraft.getMinecraft().entityRenderer.stopUseShader();
+        if(Quickplay.INSTANCE.settings.blurGuiBackgrounds)
+            // Stop using shaders
+            Minecraft.getMinecraft().entityRenderer.stopUseShader();
+
         // Show HUD again
         mc.gameSettings.hideGUI = false;
     }
 
     @Override
     public void initGui() {
+        componentList.clear();
         super.initGui();
         if(Quickplay.INSTANCE.settings.fadeInGuis)
             fadeIn();

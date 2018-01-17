@@ -3,12 +3,12 @@ package co.bugg.quickplay.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
 public class QuickplayGuiSlider extends QuickplayGuiButton {
-    private float sliderPosition = 1.0F;
+    private float sliderPercentage = 1.0F;
     public boolean isMouseDown;
     private String name;
     private final float min;
@@ -22,59 +22,61 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
         this.name = name;
         this.min = min;
         this.max = max;
-        this.sliderPosition = (defaultValue - min) / (max - min);
+        this.sliderPercentage = (defaultValue - min) / (max - min);
         this.formatHelper = formatter;
         this.responder = guiResponder;
-        this.displayString = this.getDisplayString();
+        this.displayString = getDisplayString();
     }
 
     public float getValue()
     {
-        return this.min + (this.max - this.min) * this.sliderPosition;
+        return min + (max - min) * sliderPercentage;
     }
 
     private String getDisplayString()
     {
-        return this.formatHelper == null ? I18n.format(this.name) + ": " + this.getValue() : this.formatHelper.getText(this.id, I18n.format(this.name), this.getValue());
+        return formatHelper == null ? name + ": " + getValue() : formatHelper.getText(id, name, getValue());
     }
 
     /**
      * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
      * this button.
      */
-    public int getButtonTexture(boolean mouseOver)
+    public int getDefaultButtonTexture(boolean mouseOver)
     {
         return 0;
     }
 
-    /**
-     * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
-     */
     @Override
-    protected void mouseDragged(Minecraft mc, int mouseX, int mouseY, double opacity)
-    {
-        if (this.isMouseDown)
-        {
-            this.sliderPosition = (float)(mouseX - (this.x + 4)) / (float)(this.width - 8);
+    public void draw(Minecraft mc, int mouseX, int mouseY, double opacity) {
+        super.draw(mc, mouseX, mouseY, opacity);
 
-            if (this.sliderPosition < 0.0F)
-            {
-                this.sliderPosition = 0.0F;
-            }
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
 
-            if (this.sliderPosition > 1.0F)
-            {
-                this.sliderPosition = 1.0F;
-            }
-
-            this.displayString = this.getDisplayString();
-            this.responder.onTick(this.id, this.getValue());
+        if (isMouseDown) {
+            // Calculate the new slider position
+            calculateSliderPos(mouseX);
+            // Update the display string
+            displayString = getDisplayString();
+            // Handle input change
+            responder.onTick(id, getValue());
         }
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
-        this.drawTexturedModalRect(this.x + (int)(this.sliderPosition * (float)(this.width - 8)), this.y, 0, 66, 4, 20);
-        this.drawTexturedModalRect(this.x + (int)(this.sliderPosition * (float)(this.width - 8)) + 4, this.y, 196, 66, 4, 20);
+        mc.getTextureManager().bindTexture(buttonTextures);
+        drawTexturedModalRect(x + (int)(sliderPercentage * (float)(width - 8)), y, 0, 66, 4, 20);
+        drawTexturedModalRect(x + (int)(sliderPercentage * (float)(width - 8)) + 4, y, 196, 66, 4, 20);
+        drawDisplayString(mc);
 
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
+    }
+
+    private void calculateSliderPos(int mouseX) {
+        sliderPercentage = (float)(mouseX - (x + 4)) / (float)(width - 8);
+        // Keep the slider percentage between 0 and 1
+        sliderPercentage = sliderPercentage < 0.0f ? 0.0f : sliderPercentage > 1.0f ? 1.0f : sliderPercentage;
     }
 
     /**
@@ -85,21 +87,21 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     {
         if (super.mousePressed(mc, mouseX, mouseY))
         {
-            this.sliderPosition = (float)(mouseX - (this.x + 4)) / (float)(this.width - 8);
+            sliderPercentage = (float)(mouseX - (x + 4)) / (float)(width - 8);
 
-            if (this.sliderPosition < 0.0F)
+            if (sliderPercentage < 0.0F)
             {
-                this.sliderPosition = 0.0F;
+                sliderPercentage = 0.0F;
             }
 
-            if (this.sliderPosition > 1.0F)
+            if (sliderPercentage > 1.0F)
             {
-                this.sliderPosition = 1.0F;
+                sliderPercentage = 1.0F;
             }
 
-            this.displayString = this.getDisplayString();
-            this.responder.onTick(this.id, this.getValue());
-            this.isMouseDown = true;
+            displayString = getDisplayString();
+            responder.onTick(id, getValue());
+            isMouseDown = true;
             return true;
         }
         else
@@ -114,7 +116,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     @Override
     public void mouseReleased(Minecraft mc, int mouseX, int mouseY)
     {
-        this.isMouseDown = false;
+        isMouseDown = false;
     }
 
     @SideOnly(Side.CLIENT)

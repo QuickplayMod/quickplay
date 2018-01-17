@@ -73,6 +73,15 @@ public class ConfigSettings extends AConfiguration {
     )
     public boolean displayInstanceWithChatOpen = false;
 
+    @GuiOption(
+            name = "Game Logo Scale",
+            helpText = "Scale of each Hypixel game in main menu",
+            category = "GUI",
+            minValue = 0.05f,
+            maxValue = 2.5f
+    )
+    public double gameLogoScale = 1.0;
+
     // Hashmap of custom game priorities for the main game selection GUI
     public HashMap<String, Integer> gamePriorities = new HashMap<>();
 }
