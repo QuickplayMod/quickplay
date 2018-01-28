@@ -152,14 +152,15 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             }
             GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
 
-            // Draw scrollbar (Uses basically the same crappy code in QuickplayGuiEditConfig)
-            drawRect(width - scrollbarWidth - scrollbarMargins,
-                    // Top = percentage of elements above screen multiplied by height of scrollbar region, e.g. 50% above screen means top of scrollbar 50% down
-                    (int) (componentList.stream().filter(component -> component.y + component.height / 2 <= 0 && component.origin instanceof Game).count() / (double) componentList.size() * (double) (height - scrollbarMargins) + scrollbarMargins),
-                    width - scrollbarMargins,
-                    // Top = percentage of elements below screen multiplied by height of scrollbar region subtracted from height of scrollbar region, e.g. 50% below screen means bottom of scrollbar 50% up
-                    height - (int) (componentList.stream().filter(component -> component.y + component.height / 2 >= height && component.origin instanceof Game).count() / (double) componentList.size() * (double) (height - scrollbarMargins) + scrollbarMargins),
-                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB());
+            // Draw scrollbar if the top & bottom element aren't on the screen at the same time (Uses basically the same crappy code in QuickplayGuiEditConfig)
+            if(componentList.get(0).y < 0 || componentList.get(componentList.size() - 1).y + componentList.get(componentList.size() - 1).height > height)
+                drawRect(width - scrollbarWidth - scrollbarMargins,
+                        // Top = percentage of elements above screen multiplied by height of scrollbar region, e.g. 50% above screen means top of scrollbar 50% down
+                        (int) (componentList.stream().filter(component -> component.y <= 0 && component.origin instanceof Game).count() / (double) componentList.size() * (double) (height - scrollbarMargins) + scrollbarMargins),
+                        width - scrollbarMargins,
+                        // Bottom = percentage of elements below screen multiplied by height of scrollbar region subtracted from height of scrollbar region, e.g. 50% below screen means bottom of scrollbar 50% up
+                        height - (int) (componentList.stream().filter(component -> component.y + component.height >= height && component.origin instanceof Game).count() / (double) componentList.size() * (double) (height - scrollbarMargins) + scrollbarMargins),
+                        Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB());
         }
 
         GL11.glDisable(GL11.GL_BLEND);
