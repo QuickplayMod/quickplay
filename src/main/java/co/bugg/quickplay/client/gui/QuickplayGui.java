@@ -196,8 +196,6 @@ public abstract class QuickplayGui extends GuiScreen {
     @Override
     protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-
-        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
         mouseYMovement = lastMouseY - mouseY;
         lastMouseY = mouseY;
         System.out.println(mouseYMovement);

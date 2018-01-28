@@ -18,29 +18,37 @@ import java.nio.charset.Charset;
 public class QuickplayGuiMainMenu extends QuickplayGui {
 
     final int gameImgSize = 256;
-    int gameYMargins = (int) (10 * Quickplay.INSTANCE.settings.gameLogoScale);
-    final int gameXMargins = 15;
+
+    // Margins & padding for GUI elements
+    final int BoxYPadding = Math.max((int) (10 * Quickplay.INSTANCE.settings.gameLogoScale), 10);
+    final int stringLeftMargins = 15;
+    final int boxYMargins = 5;
+    final int boxXMargins = 10;
+    final int scrollMargins = 20;
+    final int windowXPadding = 20;
+
+    int longestStringWidth = 0;
+    int averageStringWidth = 0;
     final double baseScaleMultiplier = 0.25;
     final double scaleMultiplier = baseScaleMultiplier * Quickplay.INSTANCE.settings.gameLogoScale;
-    final int scrollMargins = 20;
-    int gameImgX;
+    int columnZeroX;
     double stringScale = 1.0;
-    int stringX;
+    int columnCount = 1;
+    int currentColumn = 0;
+    int currentRow = 0;
 
     @Override
     public void initGui() {
         super.initGui();
-
-        // game img Y margins have a minimum of 10 px
-        if(gameYMargins < 10) gameYMargins = 10;
+        // Reset column/row number used for determining button positions
+        currentColumn = 0;
+        currentRow = 0;
 
         // Calculate the average width of all strings & what the longest one is
-        int largestStringWidth = 0;
-        int averageStringWidth = 0;
         for(Game game : Quickplay.INSTANCE.gameList) {
             final int stringWidth = fontRendererObj.getStringWidth(game.name);
             averageStringWidth += stringWidth;
-            if(stringWidth > largestStringWidth) largestStringWidth = stringWidth;
+            if(stringWidth > longestStringWidth) longestStringWidth = stringWidth;
         }
         averageStringWidth /= Quickplay.INSTANCE.gameList.size();
 
@@ -54,14 +62,25 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             stringScale = 1.0;
         }
 
-        // Calculate X locations of strings & images
-        gameImgX = (int) ((width / 2 - averageStringWidth * stringScale - gameXMargins) / scaleMultiplier);
-        stringX = (int) (((gameImgX + gameImgSize) * scaleMultiplier + gameXMargins) / stringScale);
+        final int itemWidth = (int) (gameImgSize * scaleMultiplier + longestStringWidth * stringScale + stringLeftMargins + boxXMargins);
+        // Calculate column count
+        columnCount = (int) Math.floor((double) (width - windowXPadding) / itemWidth);
+        if(columnCount <= 0) columnCount = 1;
 
+        // Calculate X location of the furthest left column (i.e. column zero)
+        columnZeroX = (width / 2 - columnCount * itemWidth / 2);
+        // Column zero can't be off the screen
+        if(columnZeroX < 0) columnZeroX = 0;
+
+        // Add buttons to the component list in the proper grid
         int nextButtonId = 0;
         for(Game game : Quickplay.INSTANCE.gameList) {
-            // TODO because of scaling, textures are smaller & in a different location of the actual button
-            componentList.add(new QuickplayGuiButton(game, nextButtonId, gameImgX, (gameImgSize + gameYMargins) * nextButtonId, gameImgSize, gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0));
+            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding + boxYMargins * 2) * currentRow + scrollMargins), gameImgSize, gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier));
+            currentColumn++;
+            if(currentColumn + 1 > columnCount) {
+                currentColumn = 0;
+                currentRow++;
+            }
             nextButtonId++;
         }
     }
@@ -118,15 +137,14 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                     (int) (width / 2 / errorScale), (int) (lineThreeY / errorScale), Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
             GL11.glScaled(1 / errorScale, 1 / errorScale, 1 / errorScale);
         } else {
-            GL11.glScaled(scaleMultiplier, scaleMultiplier, scaleMultiplier);
             super.drawScreen(mouseX, mouseY, partialTicks);
-            GL11.glScaled(1 / scaleMultiplier, 1 / scaleMultiplier, 1 / scaleMultiplier);
 
+            // Draw strings for all the games buttons
             GL11.glScaled(stringScale, stringScale, stringScale);
             GL11.glEnable(GL11.GL_BLEND);
             for(QuickplayGuiComponent component : componentList) {
                 if(component.origin instanceof Game) {
-                    drawString(mc.fontRendererObj, ((Game) component.origin).name, stringX, (int) ((((component.y + component.height / 2) * scaleMultiplier) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                    drawString(mc.fontRendererObj, ((Game) component.origin).name, (int) ((component.x + component.width + stringLeftMargins) / stringScale), (int) ((((component.y + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
                 }
             }
             GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
@@ -146,7 +164,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
                 // Only allow scrolling if there is an element off screen
                 // If scrolling down & the last element is at all off the screen (plus the additional margins for aesthetic purposes)
-                if((distance < 0 && componentList.get(componentList.size() - 1).y > height - gameImgSize / scaleMultiplier - scrollMargins) ||
+                if((distance < 0 && componentList.get(componentList.size() - 1).y > height - gameImgSize * scaleMultiplier - scrollMargins) ||
                         // OR if scrolling up & the top element is currently at all off of the screen
                         (distance > 0 && componentList.get(0).y < scrollMargins)) {
                     for (QuickplayGuiComponent component : componentList) {

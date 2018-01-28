@@ -12,19 +12,24 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     protected ResourceLocation texture = buttonTextures;
     protected int textureX = -1;
     protected int textureY = -1;
+    protected double scale = 1.0;
 
     public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text) {
-        this(origin, id, x, y, widthIn, heightIn, text, null, -1, -1);
+        this(origin, id, x, y, widthIn, heightIn, text, null, -1, -1, 1.0);
     }
 
-    public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text, ResourceLocation texture, int textureX, int textureY) {
+    public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text, ResourceLocation texture, int textureX, int textureY, double scale) {
         super(origin, id, x, y, widthIn, heightIn, text);
+        // Adjust width & height according to scale
+        this.width = (int) (widthIn * scale);
+        this.height = (int) (heightIn * scale);
 
         if(texture != null) {
             this.texture = texture;
         }
         this.textureX = textureX;
         this.textureY = textureY;
+        this.scale = scale;
     }
 
     @Override
@@ -41,13 +46,15 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
         int buttonTextureMultiplier = getDefaultButtonTexture(hovering);
 
         // If default button
+        GL11.glScaled(scale, scale, scale);
         if(texture == buttonTextures || textureX < 0 || textureY < 0) {
             // Draw the different parts of the button
-            drawTexturedModalRect(x, y, 0, 46 + buttonTextureMultiplier * 20, width / 2, height);
-            drawTexturedModalRect(x + width / 2, y, 200 - width / 2, 46 + buttonTextureMultiplier * 20, width / 2, height);
+            drawTexturedModalRect((int) (x / scale), (int) (y  / scale), 0, 46 + buttonTextureMultiplier * 20, width / 2, height);
+            drawTexturedModalRect((int) (x + width / 2 / scale), (int) (y / scale), 200 - width / 2, 46 + buttonTextureMultiplier * 20, width / 2, height);
         } else {
-            drawTexturedModalRect(x, y, textureX, textureY, width, height);
+            drawTexturedModalRect((int) (x / scale), (int) (y / scale), textureX, textureY, (int) (width / scale), (int) (height / scale));
         }
+        GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
 
         drawDisplayString(mc);
 
@@ -99,7 +106,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
 
     @Override
     public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
-        return (mouseX > x && mouseX < x + width) && (mouseY > y && mouseY < y + height);
+        return (mouseX > x && mouseX < (x + width)) && (mouseY > y && mouseY < (y + height));
     }
 
     /**
