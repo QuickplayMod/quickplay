@@ -1,7 +1,6 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
-import co.bugg.quickplay.client.gui.config.ConfigElement;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 
@@ -19,7 +18,7 @@ public class QuickplayGuiHeader extends QuickplayGuiComponent {
     }
 
     @Override
-    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+    public boolean mouseHovering(Minecraft mc, int mouseX, int mouseY) {
         return false;
     }
 

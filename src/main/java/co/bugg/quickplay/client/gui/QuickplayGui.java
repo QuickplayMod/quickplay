@@ -175,7 +175,7 @@ public abstract class QuickplayGui extends GuiScreen {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         if(mouseButton == 0) {
             for(QuickplayGuiComponent component : componentList) {
-                if(component.mousePressed(mc, mouseX, mouseY)) {
+                if(component.mouseHovering(mc, mouseX, mouseY)) {
                     componentClicked(component);
                 }
             }

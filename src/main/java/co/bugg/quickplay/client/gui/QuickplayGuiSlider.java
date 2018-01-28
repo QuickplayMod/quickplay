@@ -81,13 +81,9 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
         sliderPercentage = sliderPercentage < 0.0f ? 0.0f : sliderPercentage > 1.0f ? 1.0f : sliderPercentage;
     }
 
-    /**
-     * Returns true if the mouse has been pressed on this control. Equivalent of MouseListener.mousePressed(MouseEvent
-     * e).
-     */
-    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY)
+    public boolean mouseHovering(Minecraft mc, int mouseX, int mouseY)
     {
-        if (super.mousePressed(mc, mouseX, mouseY))
+        if (super.mouseHovering(mc, mouseX, mouseY))
         {
             sliderPercentage = (float)(mouseX - (x / scale + 4)) / (float)(width / scale - 8);
 
@@ -112,9 +108,6 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
         }
     }
 
-    /**
-     * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
-     */
     @Override
     public void mouseReleased(Minecraft mc, int mouseX, int mouseY)
     {

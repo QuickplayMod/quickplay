@@ -105,7 +105,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     }
 
     @Override
-    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+    public boolean mouseHovering(Minecraft mc, int mouseX, int mouseY) {
         return (mouseX > x && mouseX < (x + width)) && (mouseY > y && mouseY < (y + height));
     }
 
