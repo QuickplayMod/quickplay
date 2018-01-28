@@ -26,11 +26,13 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     final int boxXMargins = 10;
     final int scrollMargins = 20;
     final int windowXPadding = 20;
+    final int scrollbarMargins = 10;
 
     int longestStringWidth = 0;
     int averageStringWidth = 0;
     final double baseScaleMultiplier = 0.25;
     final double scaleMultiplier = baseScaleMultiplier * Quickplay.INSTANCE.settings.gameLogoScale;
+    final int scrollbarWidth = 3;
     int columnZeroX;
     double stringScale = 1.0;
     int columnCount = 1;
@@ -75,6 +77,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         // Add buttons to the component list in the proper grid
         int nextButtonId = 0;
         for(Game game : Quickplay.INSTANCE.gameList) {
+            // TODO: Ideally buttons would extend out to be over the text as well, so you can click there and it still works. This might require a major rewrite.
             componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding + boxYMargins * 2) * currentRow + scrollMargins), gameImgSize, gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier));
             currentColumn++;
             if(currentColumn + 1 > columnCount) {
@@ -148,6 +151,15 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                 }
             }
             GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
+
+            // Draw scrollbar (Uses basically the same crappy code in QuickplayGuiEditConfig)
+            drawRect(width - scrollbarWidth - scrollbarMargins,
+                    // Top = percentage of elements above screen multiplied by height of scrollbar region, e.g. 50% above screen means top of scrollbar 50% down
+                    (int) (componentList.stream().filter(component -> component.y + component.height / 2 <= 0 && component.origin instanceof Game).count() / (double) componentList.size() * (double) (height - scrollbarMargins) + scrollbarMargins),
+                    width - scrollbarMargins,
+                    // Top = percentage of elements below screen multiplied by height of scrollbar region subtracted from height of scrollbar region, e.g. 50% below screen means bottom of scrollbar 50% up
+                    height - (int) (componentList.stream().filter(component -> component.y + component.height / 2 >= height && component.origin instanceof Game).count() / (double) componentList.size() * (double) (height - scrollbarMargins) + scrollbarMargins),
+                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB());
         }
 
         GL11.glDisable(GL11.GL_BLEND);
