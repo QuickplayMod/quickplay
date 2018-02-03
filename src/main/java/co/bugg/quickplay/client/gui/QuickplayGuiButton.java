@@ -115,4 +115,9 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     @Override
     public void mouseReleased(Minecraft mc, int mouseX, int mouseY) {
     }
+
+    @Override
+    public boolean keyTyped(char keyTyped, int keyCode) {
+        return false;
+    }
 }

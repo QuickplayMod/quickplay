@@ -5,6 +5,7 @@ import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import co.bugg.quickplay.client.gui.QuickplayGuiButton;
 import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
+import co.bugg.quickplay.client.gui.QuickplayGuiContextMenu;
 import co.bugg.quickplay.games.Game;
 import com.google.common.hash.Hashing;
 import net.minecraft.util.ChatComponentTranslation;
@@ -14,8 +15,6 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
 
 public class QuickplayGuiMainMenu extends QuickplayGui {
 
@@ -41,14 +40,8 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     int currentColumn = 0;
     int currentRow = 0;
 
-    final int[] rightClickPos = new int[]{-1, -1};
-    QuickplayGuiComponent rightClickedComponent = null;
     String favoriteString = "Bind to key...";
-    int rightClickWidth = 100;
-    int rightClickHeight = 30;
-    final int rightClickMargins = 5;
-    final int rightClickPadding = 4;
-    final int rightClickStringYMargin = 3;
+    QuickplayGuiContextMenu contextMenu = null;
 
     @Override
     public void initGui() {
@@ -57,9 +50,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         currentColumn = 0;
         currentRow = 0;
 
-        // Close right-click menu
-        rightClickedComponent = null;
-        rightClickPos[0] = rightClickPos[1] = -1;
+        closeContextMenu();
 
         // Calculate the average width of all strings & what the longest one is
         for(Game game : Quickplay.INSTANCE.gameList) {
@@ -89,10 +80,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         // Column zero can't be off the screen
         if(columnZeroX < 0) columnZeroX = 0;
 
-        // Calculate size and stuff for right click menu
         favoriteString = new ChatComponentTranslation("quickplay.gui.favorite").getUnformattedText();
-        rightClickWidth = fontRendererObj.getStringWidth(favoriteString) + rightClickPadding * 2;
-        rightClickHeight = fontRendererObj.FONT_HEIGHT + rightClickPadding * 2;
 
         // Add buttons to the component list in the proper grid
         int nextButtonId = 0;
@@ -119,26 +107,22 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         if(Quickplay.INSTANCE.gameList == null || Quickplay.INSTANCE.gameList.size() <= 0) {
             drawNoGamesMenu();
         } else {
-            super.drawScreen(mouseX, mouseY, partialTicks);
-            GL11.glEnable(GL11.GL_BLEND);
-
-            boolean rightClickMenuOpen = rightClickPos[0] >= 0 && rightClickPos[1] >= 0 && rightClickedComponent != null;
 
             // Draw strings for all the games buttons
             GL11.glScaled(stringScale, stringScale, stringScale);
             for(QuickplayGuiComponent component : componentList) {
                 if(component.origin instanceof Game) {
-                    final int color = component.mouseHovering(mc, mouseX, mouseY) && !rightClickMenuOpen ? Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB();
+                    final int color = component.mouseHovering(mc, mouseX, mouseY) && contextMenu == null ? Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB();
                     drawString(mc.fontRendererObj, ((Game) component.origin).name, (int) ((component.x + component.width + stringLeftMargins) / stringScale), (int) ((((component.y + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
                 }
             }
             GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
 
+            super.drawScreen(mouseX, mouseY, partialTicks);
+            GL11.glEnable(GL11.GL_BLEND);
+
             drawScrollBar();
 
-            if(rightClickMenuOpen) {
-                drawRightClickMenu(rightClickPos[0], rightClickPos[1], Arrays.asList(favoriteString, "Move..."), mouseX, mouseY);
-            }
         }
 
         GL11.glDisable(GL11.GL_BLEND);
@@ -200,48 +184,31 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
 
+
+
         // Draw scrollbar if the top & bottom element aren't on the screen at the same time (Uses basically the same crappy code in QuickplayGuiEditConfig)
-        if(componentList.get(0).y < 0 || componentList.get(componentList.size() - 1).y + componentList.get(componentList.size() - 1).height > height)
+        if(componentList.get(0).y < 0 || componentList.get(componentList.size() - 1).y + componentList.get(componentList.size() - 1).height > height) {
+            // If context menu is opened, it'll affect the total component count but doesn't affect scrolling.
+            final int elementCount = contextMenu == null ? componentList.size() : componentList.size() - 1;
             drawRect(width - scrollbarWidth - scrollbarMargins,
                     // Top = percentage of elements above screen multiplied by height of scrollbar region, e.g. 50% above screen means top of scrollbar 50% down
-                    (int) (componentList.stream().filter(component -> component.y <= 0 && component.origin instanceof Game).count() / (double) componentList.size() * (double) (height - scrollbarMargins) + scrollbarMargins),
+                    (int) (componentList.stream().filter(component -> component.y <= 0 && component.origin instanceof Game).count() / (double) elementCount * (double) (height - scrollbarMargins) + scrollbarMargins),
                     width - scrollbarMargins,
                     // Bottom = percentage of elements below screen multiplied by height of scrollbar region subtracted from height of scrollbar region, e.g. 50% below screen means bottom of scrollbar 50% up
-                    height - (int) (componentList.stream().filter(component -> component.y + component.height >= height && component.origin instanceof Game).count() / (double) componentList.size() * (double) (height - scrollbarMargins) + scrollbarMargins),
+                    height - (int) (componentList.stream().filter(component -> component.y + component.height >= height && component.origin instanceof Game).count() / (double) elementCount * (double) (height - scrollbarMargins) + scrollbarMargins),
                     Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        }
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
     }
 
-    protected void drawRightClickMenu(int x, int y, List<String> options, int mouseX, int mouseY) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
-
-        // Calculate width & height
-        String longestOption = "";
-        for(String option : options)
-            if(fontRendererObj.getStringWidth(longestOption) < fontRendererObj.getStringWidth(option))
-                longestOption = option;
-
-        final int width = fontRendererObj.getStringWidth(longestOption) + rightClickPadding * 2;                        // Top element doesn't have a Y margin
-        final int height = (fontRendererObj.FONT_HEIGHT + rightClickStringYMargin) * options.size() + rightClickPadding * 2 - rightClickStringYMargin;
-
-        // Draw right click box
-        drawRect(x, y, x + width, y + height, (int) (opacity * 0.7 * 255) << 24);
-        GL11.glEnable(GL11.GL_BLEND);
-
-        for(ListIterator<String> iter = options.listIterator(); iter.hasNext();) {
-            final int index = iter.nextIndex();
-            final String string = iter.next();
-            final int stringY = y + rightClickPadding + index * (fontRendererObj.FONT_HEIGHT + rightClickStringYMargin);
-            drawString(fontRendererObj, string, x + rightClickPadding, stringY, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-            if(mouseX > x && mouseX < x + width && mouseY > stringY && mouseY < stringY + fontRendererObj.FONT_HEIGHT)
-                drawRect(x + rightClickPadding, stringY + fontRendererObj.FONT_HEIGHT, x + rightClickPadding + fontRendererObj.getStringWidth(string), stringY + fontRendererObj.FONT_HEIGHT + 1, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+    protected void closeContextMenu() {
+        if(contextMenu != null) {
+            if(componentList.contains(contextMenu))
+                componentList.remove(contextMenu);
+            contextMenu = null;
         }
-
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
     }
 
     @Override
@@ -249,54 +216,83 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
         // Scroll is animated, one pixel per 1ms
         Quickplay.INSTANCE.threadPool.submit(() -> {
-            // Quick scrolling is important in this GUI so scroll speed * distance increased
-            for (int i = 0; i < Math.abs(distance * 5); i++) {
 
-                // Only allow scrolling if there is an element off screen
-                // If scrolling down & the last element is at all off the screen (plus the additional margins for aesthetic purposes)
-                if((distance < 0 && componentList.get(componentList.size() - 1).y > height - gameImgSize * scaleMultiplier - scrollMargins) ||
-                        // OR if scrolling up & the top element is currently at all off of the screen
-                        (distance > 0 && componentList.get(0).y < scrollMargins)) {
+            // Figure out which component is the highest on screen & which is lowest
+            QuickplayGuiComponent lowestComponent = null;
+            QuickplayGuiComponent highestComponent = null;
+            for(QuickplayGuiComponent component : componentList) {
+                if(lowestComponent == null || lowestComponent.y < component.y)
+                    lowestComponent = component;
+                if(highestComponent == null || highestComponent.y > component.y)
+                    highestComponent = component;
+            }
 
-                    final int upOrDown = distance < 0 ? -1 : 1;
-                    for (QuickplayGuiComponent component : componentList) {
-                        component.move(upOrDown);
-                    }
-                    rightClickPos[1] += upOrDown;
+            if(componentList.size() > 0)
+                // Quick scrolling is important in this GUI so scroll speed * distance increased
+                for (int i = 0; i < Math.abs(distance * 5); i++) {
 
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    // Only allow scrolling if there is an element off screen
+                    // If scrolling down & the last element is at all off the screen (plus the additional margins for aesthetic purposes)
+                    if((distance < 0 && lowestComponent.y > height - gameImgSize * scaleMultiplier - scrollMargins) ||
+                            // OR if scrolling up & the top element is currently at all off of the screen
+                            (distance > 0 && highestComponent.y < scrollMargins)) {
+
+                        for (QuickplayGuiComponent component : componentList) {
+                            component.move(distance < 0 ? -1 : 1);
+                        }
+
+                        try {
+                            Thread.sleep(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            break;
+                        }
+                    } else {
+                        // Already reached the bottom/top, so stop trying to scroll
                         break;
                     }
-                } else {
-                    // Already reached the bottom/top, so stop trying to scroll
-                    break;
                 }
-            }
         });
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        rightClickPos[0] = rightClickPos[1] = -1;
-        rightClickedComponent = null;
+        closeContextMenu();
         for(QuickplayGuiComponent component : componentList) {
-            if(component.mouseHovering(mc, mouseX, mouseY) && mouseButton == 1) {
-                rightClickPos[0] = mouseX;
-                rightClickPos[1] = mouseY;
-                rightClickedComponent = component;
+            if(!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(mc, mouseX, mouseY) && mouseButton == 1) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(favoriteString, "Move up", "Move down"), component, -1, mouseX, mouseY) {
+                    @Override
+                    public void optionSelected(int index) {
+                        closeContextMenu();
+                        switch(index) {
+                            case 0:
+                                // Open key binding GUI & add
+                                break;
+                            case 1:
+                                // Modify priority, based off of name
+                                break;
+                            case 2:
+                                // Modify priority, based off of name
+                                break;
+                        }
+                    }
+                };
+                componentList.add(contextMenu);
                 break;
             }
         }
     }
 
     @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        super.keyTyped(typedChar, keyCode);
+    }
+
+    @Override
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
-        if(component.origin instanceof Game && rightClickedComponent == null) {
+        if(component.origin instanceof Game && contextMenu == null) {
             mc.displayGuiScreen(new QuickplayGuiGame((Game) component.origin));
             //Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentText(((Game) component.origin).name)));
         }

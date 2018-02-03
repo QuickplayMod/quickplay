@@ -34,4 +34,12 @@ public abstract class QuickplayGuiComponent extends Gui {
 
     public abstract boolean mouseHovering(Minecraft mc, int mouseX, int mouseY);
     public abstract void mouseReleased(Minecraft mc, int mouseX, int mouseY);
+
+    /**
+     * Called whenever a key is typed in a QuickplayGui on all elements in componentList
+     * @param keyTyped Character that was typed
+     * @param keyCode LWJGL key code
+     * @return Whether the key press should be cancelled (true to cancel)
+     */
+    public abstract boolean keyTyped(char keyTyped, int keyCode);
 }

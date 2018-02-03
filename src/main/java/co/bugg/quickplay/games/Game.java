@@ -13,6 +13,10 @@ public class Game implements Serializable {
      */
     public String name;
     /**
+     * Name universal across languages, used for things like priority & favorites
+     */
+    public String unlocalizedName;
+    /**
      * URL to the image file for this gamemode
      */
     public URL imageURL;

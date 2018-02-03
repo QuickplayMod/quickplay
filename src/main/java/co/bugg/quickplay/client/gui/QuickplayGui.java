@@ -187,6 +187,12 @@ public abstract class QuickplayGui extends GuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
+
+        for(QuickplayGuiComponent component : componentList) {
+            if(component.keyTyped(typedChar, keyCode))
+                return;
+        }
+
         if(keyCode == 1 || keyCode == mc.gameSettings.keyBindInventory.getKeyCode()) {
             mc.displayGuiScreen(null);
         }
