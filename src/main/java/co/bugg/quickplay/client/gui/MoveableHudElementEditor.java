@@ -1,6 +1,5 @@
 package co.bugg.quickplay.client.gui;
 
-import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;

@@ -173,13 +173,12 @@ public abstract class QuickplayGui extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        if(mouseButton == 0) {
+        if(mouseButton == 0)
             for(QuickplayGuiComponent component : componentList) {
                 if(component.mouseHovering(mc, mouseX, mouseY)) {
                     componentClicked(component);
                 }
             }
-        }
 
         // lastMouseY is used for dragging scrolling
         lastMouseY = mouseY;

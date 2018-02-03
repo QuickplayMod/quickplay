@@ -126,10 +126,7 @@ public class ServerChecker {
     public boolean checkScoreboardForHypixel() {
         List<String> list = ScoreboardUtils.getSidebarScores(Minecraft.getMinecraft().theWorld.getScoreboard());
 
-        if(list != null && list.get(0) != null)
-            return list.get(0).contains("www.hypixel.net");
-        else
-            return false;
+        return list != null && list.size() > 0 && list.get(0) != null && list.get(0).contains("www.hypixel.net");
     }
 
     /**
