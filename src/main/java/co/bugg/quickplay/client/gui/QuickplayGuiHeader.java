@@ -31,4 +31,9 @@ public class QuickplayGuiHeader extends QuickplayGuiComponent {
     public boolean keyTyped(char keyTyped, int keyCode) {
         return false;
     }
+
+    @Override
+    public boolean mouseClicked(Minecraft mc, int mouseX, int mouseY, int mouseButton) {
+        return false;
+    }
 }

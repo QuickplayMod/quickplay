@@ -66,6 +66,30 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
     }
 
     @Override
+    public boolean mouseClicked(Minecraft mc, int mouseX, int mouseY, int mouseButton) {
+        if(mouseHovering(mc, mouseX, mouseY)) {
+            final int hoveringOver = mouseHoveringOverOption(mouseX, mouseY);
+            if(hoveringOver >= 0) {
+                optionSelected(hoveringOver);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int mouseHoveringOverOption(int mouseX, int mouseY) {
+        for(ListIterator<String> iter = options.listIterator(); iter.hasNext();) {
+            final int index = iter.nextIndex();
+            final int stringY = (int) (y + boxPadding * scale + index * (fontRendererObj.FONT_HEIGHT + stringBottomMargin) * scale);
+            if(mouseX > x && mouseX < x + width * scale && mouseY > stringY && mouseY < stringY + fontRendererObj.FONT_HEIGHT * scale)
+                return index;
+
+            iter.next();
+        }
+        return -1;
+    }
+
+    @Override
     public void draw(Minecraft mc, int mouseX, int mouseY, double opacity) {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
@@ -82,7 +106,7 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
             final int stringY = (int) (y / scale + boxPadding + index * (fontRendererObj.FONT_HEIGHT + stringBottomMargin));
             final int color = highlightedOptionIndex == index ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
             drawString(fontRendererObj, string, (int) (x / scale + boxPadding), stringY, color & 0xFFFFFF | (int) (opacity * 255) << 24);
-            if(mouseX > x && mouseX < x + width && mouseY > stringY * scale && mouseY < (stringY + fontRendererObj.FONT_HEIGHT) * scale)
+            if(mouseX > x && mouseX < x + width * scale && mouseY > stringY * scale && mouseY < (stringY + fontRendererObj.FONT_HEIGHT) * scale)
                 drawRect((int) (x / scale + boxPadding), stringY + fontRendererObj.FONT_HEIGHT, (int) (x / scale + boxPadding + fontRendererObj.getStringWidth(string)), stringY + fontRendererObj.FONT_HEIGHT + 1, color & 0xFFFFFF | (int) (opacity * 255) << 24);
         }
 
@@ -96,7 +120,7 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
     @Override
     public boolean mouseHovering(Minecraft mc, int mouseX, int mouseY) {
-        return mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height;
+        return mouseX > x && mouseX < x + width * scale && mouseY > y && mouseY < y + height * scale;
     }
 
     @Override

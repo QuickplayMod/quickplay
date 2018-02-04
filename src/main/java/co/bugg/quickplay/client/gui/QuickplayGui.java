@@ -177,6 +177,8 @@ public abstract class QuickplayGui extends GuiScreen {
             for(QuickplayGuiComponent component : componentList) {
                 if(component.mouseHovering(mc, mouseX, mouseY)) {
                     componentClicked(component);
+                    if(component instanceof QuickplayGuiContextMenu && component.mouseClicked(mc, mouseX, mouseY, mouseButton))
+                        return;
                 }
             }
 
@@ -184,6 +186,8 @@ public abstract class QuickplayGui extends GuiScreen {
         lastMouseY = mouseY;
     }
 
+    private String trisTribute = "";
+    private final String magicWord = "tris";
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
@@ -196,6 +200,24 @@ public abstract class QuickplayGui extends GuiScreen {
         if(keyCode == 1 || keyCode == mc.gameSettings.keyBindInventory.getKeyCode()) {
             mc.displayGuiScreen(null);
         }
+
+        // A... completely pointless tribute.
+        trisTribute += typedChar;
+        if(trisTribute.toUpperCase().endsWith(magicWord.toUpperCase())) {
+            // Abra kadabra! Open sesame!
+            Minecraft.getMinecraft().entityRenderer.loadShader(new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_rainbow_gui.json"));
+            Quickplay.INSTANCE.threadPool.submit(() -> {
+                while(Minecraft.getMinecraft().currentScreen == this) {
+                    mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("mob.chicken.hurt"), 1.0F));
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+                }
+            });
+        }
+        // /tribute
     }
 
     @Override

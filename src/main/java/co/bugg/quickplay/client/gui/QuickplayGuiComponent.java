@@ -42,4 +42,14 @@ public abstract class QuickplayGuiComponent extends Gui {
      * @return Whether the key press should be cancelled (true to cancel)
      */
     public abstract boolean keyTyped(char keyTyped, int keyCode);
+
+    /**
+     * Called whenever a mouse is pressed in a QuickplayGui on all elements in componentList
+     * @param mc This Minecraft instance
+     * @param mouseX X position of the mouse
+     * @param mouseY Y position of the mouse
+     * @param mouseButton
+     * @return Whether the click should be cancelled (true to cancel)
+     */
+    public abstract boolean mouseClicked(Minecraft mc, int mouseX, int mouseY, int mouseButton);
 }
