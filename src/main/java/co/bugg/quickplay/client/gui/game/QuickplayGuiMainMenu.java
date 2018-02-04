@@ -261,7 +261,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         closeContextMenu();
         for(QuickplayGuiComponent component : componentList) {
             if(!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(mc, mouseX, mouseY) && mouseButton == 1) {
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(favoriteString, "Move up", "Move down"), component, -1, mouseX, mouseY) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(favoriteString), component, -1, mouseX, mouseY) {
                     @Override
                     public void optionSelected(int index) {
                         closeContextMenu();
@@ -269,12 +269,64 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                             case 0:
                                 // Open key binding GUI & add
                                 break;
+
+                            /*    // Priority management. Users can't modify priorities
                             case 1:
-                                // Modify priority, based off of name
-                                break;
                             case 2:
-                                // Modify priority, based off of name
+                                // context menu origin contains a component. This component then has it's own origin,
+                                // which, if the right-click is on a game icon, should be instanceof Game
+                                final QuickplayGuiComponent origin = (QuickplayGuiComponent) this.origin;
+                                if(origin.origin instanceof Game) {
+                                    final Game game = (Game) origin.origin;
+                                    final HashMap<String, Integer> gamePriorities = Quickplay.INSTANCE.settings.gamePriorities;
+                                    // Default 0 priority
+                                    if(!gamePriorities.containsKey(game.unlocalizedName)) {
+                                        gamePriorities.put(game.unlocalizedName, 0);
+                                    }
+
+                                    // Get the current priority
+                                    final int currentPriority = gamePriorities.get(game.unlocalizedName);
+
+                                    // Raising priority
+                                    if(index == 1) {
+                                        // Get next highest priority
+                                        int nextHighestPriority;
+                                        Optional<Map.Entry<String, Integer>> nextHighestPriorityOptional = gamePriorities
+                                                .entrySet()
+                                                .stream()
+                                                .filter(entry -> entry.getValue() >= currentPriority && !entry.getKey().equals(game.unlocalizedName)).min(Comparator.comparing(Map.Entry::getValue));
+                                        if(nextHighestPriorityOptional.isPresent())
+                                            nextHighestPriority = nextHighestPriorityOptional.get().getValue();
+                                        else break;
+
+                                        // Set current priority to next highest priority + 1
+                                        gamePriorities.put(game.unlocalizedName, ++nextHighestPriority);
+                                    // Lowering priority
+                                    } else {
+                                        // Get next highest priority
+                                        int nextLowestPriority;
+                                        Optional<Map.Entry<String, Integer>> nextLowestPriorityOptional = gamePriorities
+                                                .entrySet()
+                                                .stream()
+                                                .filter(entry -> entry.getValue() <= currentPriority && !entry.getKey().equals(game.unlocalizedName)).max(Comparator.comparing(Map.Entry::getValue));
+                                        if(nextLowestPriorityOptional.isPresent())
+                                            nextLowestPriority = nextLowestPriorityOptional.get().getValue();
+                                        else break;
+
+                                        // Set current priority to next highest priority + 1
+                                        gamePriorities.put(game.unlocalizedName, --nextLowestPriority);
+                                    }
+
+                                    Quickplay.INSTANCE.gameList = Arrays.asList(Quickplay.organizeGameList(Quickplay.INSTANCE.gameList.toArray(new Game[]{})));
+                                    initGui();
+                                    try {
+                                        Quickplay.INSTANCE.settings.save();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 break;
+                            */
                         }
                     }
                 };
@@ -294,7 +346,6 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         super.componentClicked(component);
         if(component.origin instanceof Game && contextMenu == null) {
             mc.displayGuiScreen(new QuickplayGuiGame((Game) component.origin));
-            //Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentText(((Game) component.origin).name)));
         }
     }
 }

@@ -168,11 +168,18 @@ public class AssetFactory {
             return null;
 
         final String contents = new String(Files.readAllBytes(gameListFile.toPath()));
-        return new Gson().fromJson(contents, Game[].class);
+        return Quickplay.organizeGameList(new Gson().fromJson(contents, Game[].class));
     }
 
+    /**
+     * Save an array of games to cached "gamelist.json" file.
+     * @param gameList List of games
+     * @throws IOException Error writing to file
+     */
     public void saveCachedGameList(Game[] gameList) throws IOException {
         final File gameListFile = new File(gamelistCacheFile);
+
+        gameList = Quickplay.organizeGameList(gameList);
 
         // If file doesn't exist and couldn't be created
         if(!gameListFile.exists() && !gameListFile.createNewFile())

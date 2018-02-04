@@ -29,9 +29,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -238,5 +236,16 @@ public class Quickplay {
         }
 
         return enabled;
+    }
+
+    /**
+     * Reorganizes a game list to obey priorities in {@link #settings}
+     * @param gameList list of games to organize
+     * @return organized list
+     */
+    public static Game[] organizeGameList(Game[] gameList) {
+        return Arrays.stream(gameList)
+                .sorted(Comparator.comparing(game -> Quickplay.INSTANCE.settings.gamePriorities.getOrDefault(((Game) game).unlocalizedName, 0)).reversed())
+                .toArray(Game[]::new);
     }
 }
