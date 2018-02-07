@@ -2,12 +2,14 @@ package co.bugg.quickplay.config;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayColor;
+import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
+import net.minecraft.client.Minecraft;
 
 import java.util.HashMap;
 
 public class ConfigSettings extends AConfiguration {
-    // TODO Add hover help text to QuickplayGuiEditConfig
     // TODO make name & helpText into translatable components
+    // TODO make runnables into methods
     public ConfigSettings() {
         super("settings.json");
     }
@@ -68,7 +70,7 @@ public class ConfigSettings extends AConfiguration {
 
     @GuiOption(
             name = "Display Over Chat",
-            helpText = "Whether the instance display should be rendered even when chat is open",
+            helpText = "Whether the instance display should be rendered even when chat is open.",
             category = "Instance Display"
     )
     public boolean displayInstanceWithChatOpen = false;
@@ -85,5 +87,15 @@ public class ConfigSettings extends AConfiguration {
     // Hashmap of custom game priorities for the main game selection GUI
     public HashMap<String, Integer> gamePriorities = new HashMap<>();
 
-    // TODO: Send usage statistics
+    @GuiOption(
+            name = "Send Usage Statistics",
+            helpText = "Send anonymous usage statistics to help me create better mods for you and diagnose issues with your game/mod if any arise."
+    )
+    public boolean sendUsageStats = false;
+
+    @GuiOption(
+            name = "Edit Keybinds",
+            helpText = "Assign & remove keybinds previously created by right-clicking games or modes."
+    )
+    public transient Runnable editKeybinds = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
 }

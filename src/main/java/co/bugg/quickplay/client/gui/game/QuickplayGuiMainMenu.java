@@ -109,7 +109,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             GL11.glScaled(stringScale, stringScale, stringScale);
             for(QuickplayGuiComponent component : componentList) {
                 if(component.origin instanceof Game) {
-                    final int color = component.mouseHovering(mc, mouseX, mouseY) && contextMenu == null ? Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB();
+                    final int color = component.mouseHovering(mc, mouseX, mouseY) && contextMenu == null ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
                     drawString(mc.fontRendererObj, ((Game) component.origin).name, (int) ((component.x + component.width + stringLeftMargins) / stringScale), (int) ((((component.y + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
                 }
             }
