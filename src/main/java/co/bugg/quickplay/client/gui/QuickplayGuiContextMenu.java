@@ -15,7 +15,7 @@ import static org.lwjgl.input.Keyboard.*;
 public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent implements ContextMenu {
 
     public final double boxOpacity = 0.7;
-    public final double scale = 1.35;
+    public final double scale = 1.0;
     public final int boxPadding = 3;
     public final int stringBottomMargin = 3;
 
