@@ -84,4 +84,6 @@ public class ConfigSettings extends AConfiguration {
 
     // Hashmap of custom game priorities for the main game selection GUI
     public HashMap<String, Integer> gamePriorities = new HashMap<>();
+
+    // TODO: Send usage statistics
 }

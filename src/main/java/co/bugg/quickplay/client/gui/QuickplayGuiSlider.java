@@ -68,7 +68,8 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
         GL11.glScaled(scale, scale, scale);
         drawTexturedModalRect(x + (int)(sliderPercentage * (float)(width - 8)), y, 0, 66, 4, 20);
         drawTexturedModalRect(x + (int)(sliderPercentage * (float)(width - 8)) + 4, y, 196, 66, 4, 20);
-        drawDisplayString(mc);
+        if(opacity > 0)
+            drawDisplayString(mc, opacity);
         GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
 
         GL11.glDisable(GL11.GL_BLEND);

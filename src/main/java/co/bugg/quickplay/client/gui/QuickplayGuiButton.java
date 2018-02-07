@@ -56,14 +56,15 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
         }
         GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
 
-        drawDisplayString(mc);
+        if(opacity > 0)
+            drawDisplayString(mc, opacity);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
 
     }
 
-    public void drawDisplayString(Minecraft mc) {
+    public void drawDisplayString(Minecraft mc, double opacity) {
         if(displayString != null && displayString.length() > 0) {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);

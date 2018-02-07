@@ -21,6 +21,7 @@ public abstract class QuickplayGui extends GuiScreen {
 
     int lastMouseY = 0;
     int mouseYMovement = 0;
+    public QuickplayGuiContextMenu contextMenu = null;
 
     @Override
     public void onGuiClosed() {
@@ -35,6 +36,7 @@ public abstract class QuickplayGui extends GuiScreen {
 
     @Override
     public void initGui() {
+        closeContextMenu();
         componentList.clear();
         super.initGui();
         if(Quickplay.INSTANCE.settings.fadeInGuis)
@@ -146,6 +148,14 @@ public abstract class QuickplayGui extends GuiScreen {
         }
     }
 
+    public void closeContextMenu() {
+        if(contextMenu != null) {
+            if(componentList.contains(contextMenu))
+                componentList.remove(contextMenu);
+            contextMenu = null;
+        }
+    }
+
     public void fadeIn() {
         Quickplay.INSTANCE.threadPool.submit(() -> {
             while(opacity < 1) {
@@ -173,6 +183,7 @@ public abstract class QuickplayGui extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+        closeContextMenu();
         if(mouseButton == 0)
             for(QuickplayGuiComponent component : componentList) {
                 if(component.mouseHovering(mc, mouseX, mouseY)) {

@@ -41,7 +41,6 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     int currentRow = 0;
 
     String favoriteString = "Bind to key...";
-    QuickplayGuiContextMenu contextMenu = null;
 
     @Override
     public void initGui() {
@@ -49,8 +48,6 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         // Reset column/row number used for determining button positions
         currentColumn = 0;
         currentRow = 0;
-
-        closeContextMenu();
 
         // Calculate the average width of all strings & what the longest one is
         for(Game game : Quickplay.INSTANCE.gameList) {
@@ -203,14 +200,6 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         GL11.glPopMatrix();
     }
 
-    protected void closeContextMenu() {
-        if(contextMenu != null) {
-            if(componentList.contains(contextMenu))
-                componentList.remove(contextMenu);
-            contextMenu = null;
-        }
-    }
-
     @Override
     public void mouseScrolled(int distance) {
 
@@ -258,7 +247,6 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        closeContextMenu();
         for(QuickplayGuiComponent component : componentList) {
             if(!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(mc, mouseX, mouseY) && mouseButton == 1) {
                 contextMenu = new QuickplayGuiContextMenu(Arrays.asList(favoriteString), component, -1, mouseX, mouseY) {

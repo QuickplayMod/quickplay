@@ -5,13 +5,17 @@ import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import co.bugg.quickplay.client.gui.QuickplayGuiButton;
 import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
+import co.bugg.quickplay.client.gui.QuickplayGuiContextMenu;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.Mode;
 import com.google.common.hash.Hashing;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.ListIterator;
 
 public class QuickplayGuiGame extends QuickplayGui {
@@ -22,7 +26,9 @@ public class QuickplayGuiGame extends QuickplayGui {
     public final int headerBottomMargins = 3;
     public double logoScale = 0.25;
     public final int logoSize = 256;
-    public final int logoBottomMargins = 5;
+    public final int logoBottomMargins = 10;
+    public int topOfBackgroundBox = 0;
+    public int backgroundBoxPadding = 10;
 
     // Used for button positions
     public int windowPadding = 0;
@@ -34,6 +40,10 @@ public class QuickplayGuiGame extends QuickplayGui {
     public final int buttonMargins = 5;
     public int buttonWidth = 200;
     public int buttonHeight = 20;
+    public final int scrollMargins = 5;
+    public int scrollFadeLine = 0;
+    public final int scrollbarWidth = 3;
+    public final int scrollbarMargins = 3;
 
     public QuickplayGuiGame(Game game) {
         if(game != null)
@@ -53,7 +63,8 @@ public class QuickplayGuiGame extends QuickplayGui {
         headerScale = height > 300 ? 1.5 : 1.0;
         logoScale = height > 300 ? 0.25 : 0.15;
 
-        final int bottomOfLogo = (int) (headerHeight + fontRendererObj.FONT_HEIGHT * headerScale + headerBottomMargins + logoSize * logoScale);
+        topOfBackgroundBox = (int) (headerHeight + fontRendererObj.FONT_HEIGHT * headerScale + headerBottomMargins + logoSize * logoScale) + logoBottomMargins;
+        scrollFadeLine = topOfBackgroundBox + backgroundBoxPadding;
 
         buttonWidth = 200;
         columnCount = (int) Math.floor((double) (width - windowPadding) / (buttonWidth + buttonMargins));
@@ -73,7 +84,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         for(ListIterator<Mode> iter = game.modes.listIterator(); iter.hasNext();) {
             final int index = iter.nextIndex();
             final Mode next = iter.next();
-            componentList.add(new QuickplayGuiButton(next, index, columnZeroX + (buttonWidth + buttonMargins) * currentColumn, bottomOfLogo + logoBottomMargins + (buttonHeight + buttonMargins) * currentRow, buttonWidth, buttonHeight, next.name));
+            componentList.add(new QuickplayGuiButton(next, index, columnZeroX + (buttonWidth + buttonMargins) * currentColumn, scrollFadeLine + (buttonHeight + buttonMargins) * currentRow, buttonWidth, buttonHeight, next.name));
             // Proceed to next position
             if(currentColumn + 1 >= columnCount) {
                 currentColumn = 0;
@@ -91,7 +102,7 @@ public class QuickplayGuiGame extends QuickplayGui {
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
-        if(component.origin instanceof Mode) {
+        if(component.origin instanceof Mode && contextMenu == null) {
             final Mode mode = (Mode) component.origin;
             // For security purposes, only actual commands are sent and chat messages can't be sent.
             if(mode.command.startsWith("/"))
@@ -118,7 +129,34 @@ public class QuickplayGuiGame extends QuickplayGui {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glScaled(1 / logoScale, 1 / logoScale, 1 / logoScale);
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        final int columnZeroRowZeroX = width / 2 - (buttonWidth + buttonMargins) * columnCount / 2;
+        final int rightOfBox = columnZeroRowZeroX + columnCount * (buttonWidth + buttonMargins) - buttonMargins + backgroundBoxPadding;
+
+        // Draw a background behind the buttons
+        //final int bottomOfBox = (int) (Math.ceil((double) game.modes.size() / columnCount) * (buttonHeight + buttonMargins) - buttonMargins + scrollFadeLine + backgroundBoxPadding);
+        //drawRect(columnZeroRowZeroX - backgroundBoxPadding, topOfBackgroundBox, rightOfBox, bottomOfBox, (int) (opacity * 255 * 0.5) << 24);
+
+        // Modified super.drawScreen()
+        final int scrollFadeDistance = (scrollFadeLine - topOfBackgroundBox);
+        for (QuickplayGuiComponent component : componentList) {
+            double scrollOpacity = (component.y > scrollFadeLine ? 1 : component.y + scrollFadeDistance < scrollFadeLine ? 0 : (scrollFadeDistance - ((double) scrollFadeLine - (double) component.y)) / (double) scrollFadeDistance);
+            component.opacity = scrollOpacity;
+            if(opacity * scrollOpacity > 0)
+                component.draw(this.mc, mouseX, mouseY, opacity * scrollOpacity);
+        }
+
+        // Draw scrollbar if the top & bottom element aren't on the screen at the same time (Uses basically the same crappy code in QuickplayGuiEditConfig)
+        if(componentList.get(0).y < scrollFadeLine || componentList.get(componentList.size() - 1).y + componentList.get(componentList.size() - 1).height > height) {
+            // If context menu is opened, it'll affect the total component count but doesn't affect scrolling.
+            final int elementCount = contextMenu == null ? componentList.size() : componentList.size() - 1;
+            drawRect(rightOfBox - scrollbarWidth - scrollbarMargins,
+                    // Top = percentage of elements above screen multiplied by height of scrollbar region, e.g. 50% above screen means top of scrollbar 50% down
+                    (int) (componentList.stream().filter(component -> component.y <= topOfBackgroundBox).count() / (double) elementCount * (double) (height - topOfBackgroundBox - scrollbarMargins) + topOfBackgroundBox + backgroundBoxPadding),
+                    rightOfBox - scrollbarMargins,
+                    // Bottom = percentage of elements below screen multiplied by height of scrollbar region subtracted from height of scrollbar region, e.g. 50% below screen means bottom of scrollbar 50% up
+                    height - (int) (componentList.stream().filter(component -> component.y + component.height >= height).count() / (double) elementCount * (double) (height - topOfBackgroundBox - scrollbarMargins) + scrollbarMargins),
+                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        }
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
@@ -126,6 +164,67 @@ public class QuickplayGuiGame extends QuickplayGui {
 
     @Override
     public void mouseScrolled(int distance) {
-        // TODO
+
+        // Scroll is animated, one pixel per 1ms
+        Quickplay.INSTANCE.threadPool.submit(() -> {
+
+            // Figure out which component is the highest on screen & which is lowest
+            QuickplayGuiComponent lowestComponent = null;
+            QuickplayGuiComponent highestComponent = null;
+            for(QuickplayGuiComponent component : componentList) {
+                if(lowestComponent == null || lowestComponent.y < component.y)
+                    lowestComponent = component;
+                if(highestComponent == null || highestComponent.y > component.y)
+                    highestComponent = component;
+            }
+
+            if(componentList.size() > 0)
+                // Quick scrolling is important in this GUI so scroll speed * distance increased
+                for (int i = 0; i < Math.abs(distance * 3); i++) {
+
+                    // Only allow scrolling if there is an element off screen
+                    // If scrolling down & the last element is at all off the screen (plus the additional margins for aesthetic purposes)
+                    if((distance < 0 && lowestComponent.y > height - buttonHeight - scrollMargins) ||
+                            // OR if scrolling up & the top element is currently at all off of the screen
+                            (distance > 0 && highestComponent.y < scrollFadeLine)) {
+
+                        for (QuickplayGuiComponent component : componentList) {
+                            component.move(distance < 0 ? -1 : 1);
+                        }
+
+                        try {
+                            Thread.sleep(2);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            break;
+                        }
+                    } else {
+                        // Already reached the bottom/top, so stop trying to scroll
+                        break;
+                    }
+                }
+        });
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        for(QuickplayGuiComponent component : componentList) {
+            if (!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(mc, mouseX, mouseY) && mouseButton == 1) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new String[]{new ChatComponentTranslation("quickplay.gui.favorite").getUnformattedText()}), component, -1, mouseX, mouseY) {
+                    @Override
+                    public void optionSelected(int index) {
+                        switch(index) {
+                            case 0:
+                                // Open keybinds menu
+                                break;
+                        }
+                        closeContextMenu();
+                    }
+                };
+                componentList.add(contextMenu);
+                break;
+            }
+        }
     }
 }
