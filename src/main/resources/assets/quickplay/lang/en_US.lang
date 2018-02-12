@@ -6,6 +6,7 @@ quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
 quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
 quickplay.commands.quickplay.keybinds.help=Open the Quickplay Keybind editor.
 quickplay.commands.quickplay.moveinstance.deprecated=This command is deprecated. You should use "/qp config" instead!
+quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
 quickplay.chat.separator=-
 quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
 quickplay.commands.usage=Command syntax:

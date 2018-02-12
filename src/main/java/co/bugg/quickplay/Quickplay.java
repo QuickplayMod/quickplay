@@ -1,5 +1,6 @@
 package co.bugg.quickplay;
 
+import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandQuickplay;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.config.AConfiguration;
@@ -169,7 +170,7 @@ public class Quickplay {
                 } catch (IOException e1) {
                     // File couldn't be saved
                     e1.printStackTrace();
-                    Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror")));
+                    Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 }
             }
 
@@ -202,6 +203,12 @@ public class Quickplay {
             instanceDisplay = new InstanceDisplay();
 
             commands.add(new CommandQuickplay());
+            // Register lobby commands
+            commands.add(new CommandHub("l"));
+            commands.add(new CommandHub("lobby"));
+            commands.add(new CommandHub("hub"));
+            commands.add(new CommandHub("spawn"));
+            commands.add(new CommandHub("leave"));
             commands.forEach(ClientCommandHandler.instance::registerCommand);
         }
     }
