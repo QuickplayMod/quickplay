@@ -99,4 +99,10 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             helpText = "Assign & remove keybinds previously created by right-clicking games or modes."
     )
     public transient Runnable editKeybinds = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
+
+    @GuiOption(
+            name="Swap to Lobby One",
+            helpText = "Swap to lobby one automatically whenever join join a new lobby."
+    )
+    public boolean lobbyOneSwap = false;
 }
