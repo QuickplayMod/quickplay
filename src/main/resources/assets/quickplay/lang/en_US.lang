@@ -18,6 +18,7 @@ quickplay.config.gui.title=Quickplay Config
 quickplay.config.gui.version=Version
 quickplay.config.gui.true=TRUE
 quickplay.config.gui.false=FALSE
+quickplay.config.openfolder=Open Folder
 quickplay.config.color.gui.sampletext=Sample Text
 quickplay.config.color.gui.red=Red
 quickplay.config.color.gui.green=Green
