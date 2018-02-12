@@ -12,21 +12,21 @@ import java.util.List;
 /**
  * Sub command for the limbo command
  */
-public class SubCommandLimbo extends ASubCommand {
+public class SubCommandDelivery extends ASubCommand {
 
     /**
      * Constructor
      * @param parent Parent command
      */
-    public SubCommandLimbo(ACommand parent) {
+    public SubCommandDelivery(ACommand parent) {
         super(
                 parent,
-                "limbo",
-                new ChatComponentTranslation("quickplay.commands.quickplay.limbo.help").getUnformattedText(),
+                "delivery",
+                new ChatComponentTranslation("quickplay.commands.quickplay.delivery.help").getUnformattedText(),
                 "",
                 true,
                 true,
-                -90.0
+                -100.0
         );
     }
 
@@ -36,24 +36,24 @@ public class SubCommandLimbo extends ASubCommand {
             String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
             if(currentServer == null) currentServer = "null";
 
-            if(currentServer.contains("mini") || currentServer.contains("mega")) {
-                Quickplay.INSTANCE.chatBuffer.push("/achat §");
+            if(currentServer.contains("mini") || currentServer.contains("mega") || currentServer.contains("limbo")) {
+                if(currentServer.contains("limbo"))
+                    Quickplay.INSTANCE.chatBuffer.push("/lobby");
+                else
+                    Quickplay.INSTANCE.chatBuffer.push("/achat §");
 
                 // Sleep for a sec to give time to get to the lobby
-                // Just try regardless to go to limbo if interrupted
+                // Just try regardless to open if interrupted
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(1500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    Quickplay.INSTANCE.chatBuffer.push("/achat §");
+                    Quickplay.INSTANCE.chatBuffer.push("/delivery");
                     return;
                 }
             }
 
-            if(!currentServer.equals("limbo"))
-                Quickplay.INSTANCE.chatBuffer.push("/achat §");
-            else
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.quickplay.limbo.alreadythere").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.chatBuffer.push("/delivery");
         } else {
             Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.offline").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
