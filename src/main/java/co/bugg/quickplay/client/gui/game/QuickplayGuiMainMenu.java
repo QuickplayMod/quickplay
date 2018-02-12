@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.gui.game;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
+import co.bugg.quickplay.client.QuickplayKeybind;
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import co.bugg.quickplay.client.gui.QuickplayGuiButton;
 import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
@@ -10,6 +11,7 @@ import co.bugg.quickplay.games.Game;
 import com.google.common.hash.Hashing;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -255,7 +257,15 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                         closeContextMenu();
                         switch(index) {
                             case 0:
-                                // Open key binding GUI & add
+                                if(component.origin instanceof Game)
+                                    // Open key binding GUI & add new keybind
+                                    Quickplay.INSTANCE.keybinds.keybinds.add(new QuickplayKeybind(component.displayString, Keyboard.KEY_NONE, QuickplayGuiGame.class, ((Game) component.origin).unlocalizedName));
+
+                                try {
+                                    Quickplay.INSTANCE.keybinds.save();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                                 break;
 
                             /*    // Priority management. Users can't modify priorities

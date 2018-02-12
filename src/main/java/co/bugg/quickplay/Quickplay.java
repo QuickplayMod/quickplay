@@ -161,7 +161,7 @@ public class Quickplay {
                 if(settings == null)
                     settings = new ConfigSettings();
                 if(keybinds == null)
-                    keybinds = new ConfigKeybinds();
+                    keybinds = new ConfigKeybinds(true);
                 try {
                     // Write the default config that we just made to save it
                     settings.save();

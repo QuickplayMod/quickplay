@@ -16,7 +16,9 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 public class QuickplayGuiGame extends QuickplayGui {
     public final Game game;
@@ -50,6 +52,21 @@ public class QuickplayGuiGame extends QuickplayGui {
             this.game = game;
         else
             throw new IllegalArgumentException("game cannot be null.");
+    }
+
+    /**
+     * Used for keybinds, gameList is queried for the name of the game provided
+     * @param unlocalizedGameName Name of the game to display if possible
+     */
+    public QuickplayGuiGame(String unlocalizedGameName) {
+        if(unlocalizedGameName != null) {
+            List<Game> filteredList = Quickplay.INSTANCE.gameList.stream().filter(game -> game.unlocalizedName.equals(unlocalizedGameName)).collect(Collectors.toList());
+            if(filteredList.size() <= 0)
+                throw new IllegalArgumentException("unlocalizedGameName could not find a matching game in gameList!");
+            else
+                game = filteredList.get(0);
+        } else
+            throw new IllegalArgumentException("unlocalizedGameName cannot be null.");
     }
 
     @Override

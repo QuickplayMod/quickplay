@@ -5,9 +5,10 @@ import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import net.minecraft.client.Minecraft;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class ConfigSettings extends AConfiguration {
+public class ConfigSettings extends AConfiguration implements Serializable {
     // TODO make name & helpText into translatable components
     // TODO make runnables into methods
     public ConfigSettings() {

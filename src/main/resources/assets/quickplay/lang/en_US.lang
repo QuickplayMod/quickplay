@@ -31,3 +31,5 @@ quickplay.gui.main.nogames.issue=Looks like I couldn't figure out what games are
 quickplay.gui.main.nogames.why=This most likely is occurring if you just installed the mod.
 quickplay.gui.main.nogames.contact=Try restarting your game, or contact bugfroggy if this doesn't resolve the problem!
 quickplay.gui.favorite=Bind to key...
+
+quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recreating it.

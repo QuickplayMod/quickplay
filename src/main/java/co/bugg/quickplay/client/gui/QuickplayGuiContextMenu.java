@@ -45,7 +45,6 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
     @Override
     public boolean keyTyped(char keyTyped, int keyCode) {
-        System.out.println("Key pressed");
 
         // Down/tab buttons move highlighting down the list. Up arrow/shift+tab does opposite. Enter key selects the option.
         if(keyCode == KEY_UP || (keyCode == KEY_TAB && (isKeyDown(Keyboard.KEY_LSHIFT) || isKeyDown(KEY_RSHIFT)))) {

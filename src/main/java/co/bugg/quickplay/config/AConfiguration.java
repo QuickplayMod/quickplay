@@ -43,13 +43,13 @@ public abstract class AConfiguration implements Serializable {
         final File file = new File(AssetFactory.configDirectory + name);
 
         if(!file.exists()) {
-            throw new FileNotFoundException("Settings file not found");
+            throw new FileNotFoundException("Configuration file \"" + name + "\" not found.");
         }
 
         final Gson gson = new GsonBuilder().registerTypeAdapterFactory(new GsonPostProcessorFactory()).create();
         final String contents = Files.toString(file, Charset.forName("UTF-8"));
 
-        final AConfiguration newConfig =  gson.fromJson(contents, type);
+        final AConfiguration newConfig = gson.fromJson(contents, type);
         newConfig.setFile(file);
 
         return newConfig;

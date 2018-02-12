@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
+import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
@@ -183,16 +184,17 @@ public abstract class QuickplayGui extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        closeContextMenu();
         if(mouseButton == 0)
-            for(QuickplayGuiComponent component : componentList) {
+            // Go through components in reverse order in order to process top elements first
+            for(QuickplayGuiComponent component : Lists.reverse(componentList)) {
                 if(component.mouseHovering(mc, mouseX, mouseY)) {
+                    if(component.mouseClicked(mc, mouseX, mouseY, mouseButton))
+                        break;
                     componentClicked(component);
-                    if(component instanceof QuickplayGuiContextMenu && component.mouseClicked(mc, mouseX, mouseY, mouseButton))
-                        return;
                 }
             }
 
+        closeContextMenu();
         // lastMouseY is used for dragging scrolling
         lastMouseY = mouseY;
     }
@@ -236,7 +238,6 @@ public abstract class QuickplayGui extends GuiScreen {
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
         mouseYMovement = lastMouseY - mouseY;
         lastMouseY = mouseY;
-        System.out.println(mouseYMovement);
         // Scroll should be the same direction the mouse is moving
         if(mouseYMovement != 0) mouseScrolled(mouseYMovement * -1);
     }
