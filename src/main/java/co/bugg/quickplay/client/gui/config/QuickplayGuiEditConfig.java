@@ -55,6 +55,99 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
     }
 
     @Override
+    public void initGui() {
+        configElements.clear();
+        super.initGui();
+
+        /*
+         * Calculate various sizes and positions
+         */
+
+        // Header size is responsive to screen size
+        headerScale = height > 400 ? 2 : 1.5;
+        subheaderScale = height > 400 ? 1.3 : 1;
+
+        subheaderY = // Subheader should be 3 pixels below main header
+                (int) (height * 0.05 / subheaderScale) + (int) (fontRendererObj.FONT_HEIGHT * headerScale) + (int) (3 / headerScale);
+
+        // Padding on the sides of the list (responsive)
+        boxMargins = width < 500 ? 0.1 : 0.2;
+        // +20 to the top because for some reason subheaderY + subheader height isn't actually the bottom of the subheader... fix
+        topOfBox = (int) (subheaderY + fontRendererObj.FONT_HEIGHT * subheaderScale + 20);
+
+        boxWidth = (int) (width * (1 - (boxMargins * 2)));
+        boxHeight = height - topOfBox;
+
+        elementSize = (ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS);
+
+        // If small height, sacrifice pretty fade for more button space
+        scrollFadeLine = topOfBox + (height > 250 ? ConfigElement.ELEMENT_HEIGHT : 0);
+        bottomScrollMargins = 10;
+
+        /*
+         * Get the config elements that can be changed
+         */
+        Field[] fields = config.getClass().getDeclaredFields();
+        for(Field field : fields) {
+            field.setAccessible(true);
+            GuiOption guiOptionDisplay = field.getAnnotation(GuiOption.class);
+            if(guiOptionDisplay != null) {
+                try {
+                    configElements.add(new ConfigElement(field.get(config), guiOptionDisplay, field.getName()));
+                } catch (IllegalAccessException | IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        /*
+         * Sort elements
+         */
+        configElements.sort(Comparator.comparing(o -> o.optionInfo.category()));
+
+        // If at least the last button is going to be off screen, scroll bar should be drawn
+        scrollbarDrawn = scrollFadeLine + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (configElements.size())) + bottomScrollMargins > height;
+
+        /*
+         * Create the necessary buttons
+         */
+
+        int nextButtonId = 0;
+        // Get the width of each button
+        int buttonWidth = 200;
+        if(boxWidth < 200 + ConfigElement.ELEMENT_MARGINS * 2)
+            // If scroll bar is being drawn, buttons should be moved over a lil bit to give it room
+            buttonWidth = boxWidth - ConfigElement.ELEMENT_MARGINS * 2 - (scrollbarDrawn ? scrollbarWidth + ConfigElement.ELEMENT_MARGINS : 0);
+
+        // These objects help format & handle changes to sliders, text boxes, and boolean boxes
+        ConfigGuiResponder guiResponder = new ConfigGuiResponder();
+        SliderFormatHelper formatHelper = new SliderFormatHelper();
+
+        String previousCategory = null;
+
+        for(ConfigElement element : configElements) {
+            if(previousCategory == null || !previousCategory.equals(element.optionInfo.category())) {
+                componentList.add(new QuickplayGuiHeader(null, nextButtonId, width / 2, getY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.category()));
+                nextButtonId++;
+            }
+            previousCategory = element.optionInfo.category();
+
+            int buttonX = width / 2 - (ConfigElement.ELEMENT_MARGINS + buttonWidth) / 2;
+            int buttonY = getY(nextButtonId);
+
+            // Figure out what button type needs to be rendered & give it the appropriate text
+            if(element.element instanceof Boolean)
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText()));
+            else if(element.element instanceof QuickplayColor || element.element instanceof Runnable)
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name()));
+            else if(element.element instanceof Double)
+                componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name(), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper));
+
+            nextButtonId++;
+        }
+    }
+
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
         /*
@@ -155,99 +248,6 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public void initGui() {
-        configElements.clear();
-        super.initGui();
-
-        /*
-         * Calculate various sizes and positions
-         */
-
-        // Header size is responsive to screen size
-        headerScale = height > 400 ? 2 : 1.5;
-        subheaderScale = height > 400 ? 1.3 : 1;
-
-        subheaderY = // Subheader should be 3 pixels below main header
-                (int) (height * 0.05 / subheaderScale) + (int) (fontRendererObj.FONT_HEIGHT * headerScale) + (int) (3 / headerScale);
-
-        // Padding on the sides of the list (responsive)
-        boxMargins = width < 500 ? 0.1 : 0.2;
-        // +20 to the top because for some reason subheaderY + subheader height isn't actually the bottom of the subheader... fix
-        topOfBox = (int) (subheaderY + fontRendererObj.FONT_HEIGHT * subheaderScale + 20);
-
-        boxWidth = (int) (width * (1 - (boxMargins * 2)));
-        boxHeight = height - topOfBox;
-
-        elementSize = (ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS);
-
-        // If small height, sacrifice pretty fade for more button space
-        scrollFadeLine = topOfBox + (height > 250 ? ConfigElement.ELEMENT_HEIGHT : 0);
-        bottomScrollMargins = 10;
-
-        /*
-         * Get the config elements that can be changed
-         */
-        Field[] fields = config.getClass().getDeclaredFields();
-        for(Field field : fields) {
-            field.setAccessible(true);
-            GuiOption guiOptionDisplay = field.getAnnotation(GuiOption.class);
-            if(guiOptionDisplay != null) {
-                try {
-                    configElements.add(new ConfigElement(field.get(config), guiOptionDisplay, field.getName()));
-                } catch (IllegalAccessException | IllegalArgumentException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        /*
-         * Sort elements
-         */
-        configElements.sort(Comparator.comparing(o -> o.optionInfo.category()));
-
-        // If at least the last button is going to be off screen, scroll bar should be drawn
-        scrollbarDrawn = scrollFadeLine + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (configElements.size())) + bottomScrollMargins > height;
-
-        /*
-         * Create the necessary buttons
-         */
-
-        int nextButtonId = 0;
-        // Get the width of each button
-        int buttonWidth = 200;
-        if(boxWidth < 200 + ConfigElement.ELEMENT_MARGINS * 2)
-            // If scroll bar is being drawn, buttons should be moved over a lil bit to give it room
-            buttonWidth = boxWidth - ConfigElement.ELEMENT_MARGINS * 2 - (scrollbarDrawn ? scrollbarWidth + ConfigElement.ELEMENT_MARGINS : 0);
-
-        // These objects help format & handle changes to sliders, text boxes, and boolean boxes
-        ConfigGuiResponder guiResponder = new ConfigGuiResponder();
-        SliderFormatHelper formatHelper = new SliderFormatHelper();
-
-        String previousCategory = null;
-
-        for(ConfigElement element : configElements) {
-            if(previousCategory == null || !previousCategory.equals(element.optionInfo.category())) {
-                componentList.add(new QuickplayGuiHeader(null, nextButtonId, width / 2, getY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.category()));
-                nextButtonId++;
-            }
-            previousCategory = element.optionInfo.category();
-
-            int buttonX = width / 2 - (ConfigElement.ELEMENT_MARGINS + buttonWidth) / 2;
-            int buttonY = getY(nextButtonId);
-
-            // Figure out what button type needs to be rendered & give it the appropriate text
-            if(element.element instanceof Boolean)
-                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText()));
-            else if(element.element instanceof QuickplayColor || element.element instanceof Runnable)
-                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name()));
-            else if(element.element instanceof Double)
-                componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name(), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper));
-
-            nextButtonId++;
-        }
     }
 
     public int getY(int id) {

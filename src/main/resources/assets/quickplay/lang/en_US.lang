@@ -33,3 +33,5 @@ quickplay.gui.main.nogames.contact=Try restarting your game, or contact bugfrogg
 quickplay.gui.favorite=Bind to key...
 
 quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recreating it.
+quickplay.keybinds.title=Keybinds
+quickplay.keybinds.reset=Reset Keybinds

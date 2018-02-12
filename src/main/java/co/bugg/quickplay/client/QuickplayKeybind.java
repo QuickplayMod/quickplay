@@ -26,7 +26,9 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
 
     public QuickplayKeybind(String name, int defaultKey, String chatCommand) {
         this(name, defaultKey);
-        this.chatCommand = "/" + chatCommand;
+        this.chatCommand = chatCommand;
+        if(!this.chatCommand.startsWith("/"))
+            this.chatCommand = "/" + chatCommand;
     }
 
     public QuickplayKeybind(String name, int defaultKey, Class<? extends GuiScreen> guiClass, Object... guiConstructorParams) {
@@ -50,18 +52,16 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
         // Open a GUI if one is available
         if(className != null && constructorParams != null)
             try {
-                if(className != null) {
-                    final Class clazz = Class.forName(className);
-                    if(clazz == null || (clazz != GuiScreen.class && !GuiScreen.class.isAssignableFrom(clazz)))
-                        throw new IllegalArgumentException("class corresponding to className could not be found or is not of type GuiScreen");
+                final Class clazz = Class.forName(className);
+                if(clazz == null || (clazz != GuiScreen.class && !GuiScreen.class.isAssignableFrom(clazz)))
+                    throw new IllegalArgumentException("class corresponding to className could not be found or is not of type GuiScreen");
 
-                    Class[] paramsClasses = new Class[constructorParams.length];
-                    int i = 0;
-                    for (Object param : constructorParams)
-                        paramsClasses[i++] = param.getClass();
+                Class[] paramsClasses = new Class[constructorParams.length];
+                int i = 0;
+                for (Object param : constructorParams)
+                    paramsClasses[i++] = param.getClass();
 
-                    Minecraft.getMinecraft().displayGuiScreen((GuiScreen) clazz.getDeclaredConstructor(paramsClasses).newInstance(constructorParams));
-                }
+                Minecraft.getMinecraft().displayGuiScreen((GuiScreen) clazz.getDeclaredConstructor(paramsClasses).newInstance(constructorParams));
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -72,6 +72,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
             if(!chatCommand.startsWith("/"))
                 chatCommand = "/" + chatCommand;
 
+            System.out.println(chatCommand);
             Quickplay.INSTANCE.chatBuffer.push(chatCommand);
         }
     }

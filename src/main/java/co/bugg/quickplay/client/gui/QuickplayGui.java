@@ -186,7 +186,8 @@ public abstract class QuickplayGui extends GuiScreen {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         if(mouseButton == 0)
             // Go through components in reverse order in order to process top elements first
-            for(QuickplayGuiComponent component : Lists.reverse(componentList)) {
+            // Creates new copy of arraylist to avoid a ConcurrentModificationException caused by mouseClicked or componentClicked
+            for(QuickplayGuiComponent component : new ArrayList<>(Lists.reverse(componentList))) {
                 if(component.mouseHovering(mc, mouseX, mouseY)) {
                     if(component.mouseClicked(mc, mouseX, mouseY, mouseButton))
                         break;

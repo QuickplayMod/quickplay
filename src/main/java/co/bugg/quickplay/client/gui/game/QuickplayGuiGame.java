@@ -2,15 +2,19 @@ package co.bugg.quickplay.client.gui.game;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
+import co.bugg.quickplay.client.QuickplayKeybind;
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import co.bugg.quickplay.client.gui.QuickplayGuiButton;
 import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.QuickplayGuiContextMenu;
+import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.Mode;
 import com.google.common.hash.Hashing;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -233,8 +237,18 @@ public class QuickplayGuiGame extends QuickplayGui {
                     public void optionSelected(int index) {
                         switch(index) {
                             case 0:
-                                // Open keybinds menu
+                                if(component.origin instanceof Mode)
+                                    // Open key binding GUI & add new keybind
+                                    Quickplay.INSTANCE.keybinds.keybinds.add(new QuickplayKeybind(game.name + " " + ((Mode) component.origin).name, Keyboard.KEY_NONE, ((Mode) component.origin).command));
+
+                                try {
+                                    Quickplay.INSTANCE.keybinds.save();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
                                 break;
+
                         }
                         closeContextMenu();
                     }
