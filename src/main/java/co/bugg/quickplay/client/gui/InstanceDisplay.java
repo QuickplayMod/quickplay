@@ -49,14 +49,16 @@ public class InstanceDisplay extends MoveableHudElement {
 
     @Override
     public double getxRatio() {
-        // TODO null pointer check
-        return Quickplay.INSTANCE.settings.instanceDisplayX;
+        if(Quickplay.INSTANCE.settings != null)
+            return Quickplay.INSTANCE.settings.instanceDisplayX;
+        else return 0.5;
     }
 
     @Override
     public double getyRatio() {
-        // TODO null pointer check
-        return Quickplay.INSTANCE.settings.instanceDisplayY;
+        if(Quickplay.INSTANCE.settings != null)
+            return Quickplay.INSTANCE.settings.instanceDisplayY;
+        else return 0.05;
     }
 
     @Override

@@ -15,7 +15,13 @@ public class ConfigSettings extends AConfiguration implements Serializable {
         super("settings.json");
     }
 
+    /**
+     * Ratio from the left of the screen that the instance display should be drawn at
+     */
     public double instanceDisplayX = 0.5;
+    /**
+     * Ratio from the top of the screen that the instance display should be drawn at
+     */
     public double instanceDisplayY = 0.05;
 
     @GuiOption(
@@ -57,7 +63,6 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             helpText = "Change the position of the Instance display on-screen.",
             category = "Instance Display"
     )
-    // TODO Instead of runnable maybe make this a method?
     public transient Runnable moveInstanceDisplayButton = () -> Quickplay.INSTANCE.instanceDisplay.edit();
 
     @GuiOption(
