@@ -46,6 +46,7 @@ public class SubCommandLimbo extends ASubCommand {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     Quickplay.INSTANCE.chatBuffer.push("/achat §");
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
                     return;
                 }
             }

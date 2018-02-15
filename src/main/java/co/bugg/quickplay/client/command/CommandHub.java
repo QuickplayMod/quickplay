@@ -45,11 +45,10 @@ public class CommandHub extends ACommand {
 
                             try {
                                 Thread.sleep(1000);
-                                Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
-                                Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
                             }
+                            Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
                         } catch(NumberFormatException e) {
                             Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.hub.numberexception", "/" + command + " " + commandSyntax).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                         }

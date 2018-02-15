@@ -49,6 +49,7 @@ public class SubCommandDelivery extends ASubCommand {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     Quickplay.INSTANCE.chatBuffer.push("/delivery");
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
                     return;
                 }
             }

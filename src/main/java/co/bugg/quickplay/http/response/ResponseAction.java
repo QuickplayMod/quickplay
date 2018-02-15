@@ -54,6 +54,7 @@ public class ResponseAction {
                 } catch (IOException e) {
                     System.out.println("Failed to save file while overwriting settings");
                     e.printStackTrace();
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
                 break;
             case RELOAD_GAMES:
@@ -74,6 +75,7 @@ public class ResponseAction {
                         Quickplay.INSTANCE.assetFactory.saveCachedGameList(Quickplay.INSTANCE.gameList.toArray(new Game[Quickplay.INSTANCE.gameList.size()]));
                     } catch(Exception e) {
                         e.printStackTrace();
+                        Quickplay.INSTANCE.sendExceptionRequest(e);
                     }
 
                     // Collect all icon URLs into a list and load them (if necessary)
@@ -98,6 +100,7 @@ public class ResponseAction {
                     Quickplay.INSTANCE.messageBuffer.push(message);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
                 break;
             case DISABLE_MOD:

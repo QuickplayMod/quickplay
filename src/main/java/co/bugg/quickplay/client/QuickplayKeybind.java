@@ -66,6 +66,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
             } catch (Exception e) {
                 e.printStackTrace();
                 Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.keybinds.illegal", name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                Quickplay.INSTANCE.sendExceptionRequest(e);
             }
 
         if(chatCommand != null) {

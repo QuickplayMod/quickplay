@@ -3,6 +3,7 @@ package co.bugg.quickplay.config;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
+import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
 import net.minecraft.client.Minecraft;
 
 import java.io.Serializable;
@@ -59,11 +60,11 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     public boolean displayInstance = true;
 
     @GuiOption(
-            name = "Move Instance Display",
+            name = "Move Instance Display...",
             helpText = "Change the position of the Instance display on-screen.",
             category = "Instance Display"
     )
-    public transient Runnable moveInstanceDisplayButton = () -> Quickplay.INSTANCE.instanceDisplay.edit();
+    public transient final Runnable moveInstanceDisplayButton = () -> Quickplay.INSTANCE.instanceDisplay.edit();
 
     @GuiOption(
             name = "Instance Display Opacity",
@@ -94,16 +95,16 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     public HashMap<String, Integer> gamePriorities = new HashMap<>();
 
     @GuiOption(
-            name = "Send Usage Statistics",
-            helpText = "Send anonymous usage statistics to help me create better mods for you and diagnose issues with your game/mod if any arise."
+            name = "Usage Statistics...",
+            helpText = "Send anonymous usage statistics to help me create better mods for you!"
     )
-    public boolean sendUsageStats = false;
+    public transient final Runnable sendUsageStatsButton = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiUsageStats());
 
     @GuiOption(
-            name = "Edit Keybinds",
+            name = "Edit Keybinds...",
             helpText = "Assign & remove keybinds previously created by right-clicking games or modes."
     )
-    public transient Runnable editKeybinds = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
+    public transient final Runnable editKeybinds = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
 
     @GuiOption(
             name="Swap to Lobby One",

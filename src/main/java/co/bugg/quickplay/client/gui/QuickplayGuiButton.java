@@ -105,11 +105,6 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     protected void mouseDragged(Minecraft mc, int mouseX, int mouseY, double opacity) {
     }
 
-    @Override
-    public boolean mouseHovering(Minecraft mc, int mouseX, int mouseY) {
-        return (mouseX > x && mouseX < (x + width)) && (mouseY > y && mouseY < (y + height));
-    }
-
     /**
      * We can ignore mouse release events for normal buttons
      */

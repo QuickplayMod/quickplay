@@ -20,6 +20,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -104,6 +105,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                     configElements.add(new ConfigElement(field.get(config), guiOptionDisplay, field.getName()));
                 } catch (IllegalAccessException | IllegalArgumentException e) {
                     e.printStackTrace();
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
             }
         }
@@ -295,6 +297,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                     Desktop.getDesktop().open(new File(AssetFactory.configDirectory));
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
             }
         }
@@ -303,12 +306,16 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
     public void save(ConfigElement element) {
         // Try to apply the changed value to the config & then save the config
         try {
-            config.getClass().getField(element.configFieldName).set(config, element.element);
-            config.save();
+            // If field is final, don't try to overwrite
+            if(!Modifier.isFinal(config.getClass().getField(element.configFieldName).getModifiers())) {
+                config.getClass().getField(element.configFieldName).set(config, element.element);
+                config.save();
+            }
         } catch (IOException | IllegalAccessException | NoSuchFieldException e) {
             System.out.println("Failed to save option " + element.configFieldName + ".");
             Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             e.printStackTrace();
+            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
     }
 
@@ -319,6 +326,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         lastTwoMouseY = new int[]{-1, -1};
 
 
+        // TODO probably possible to shrink the scrolling space from an entire element. Kinda messes up the look of scrolling, but gets rid of the giant gap.
 
         // Scroll is animated, one pixel per 5ms
         Quickplay.INSTANCE.threadPool.submit(() -> {

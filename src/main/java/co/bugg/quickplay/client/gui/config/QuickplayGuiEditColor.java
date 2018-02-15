@@ -120,6 +120,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
             System.out.println("Failed to save color " + colorName + ".");
             Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             e.printStackTrace();
+            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
     }
 

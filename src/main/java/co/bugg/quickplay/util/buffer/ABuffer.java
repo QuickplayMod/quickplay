@@ -100,6 +100,7 @@ public abstract class ABuffer implements Runnable {
                 } catch (InterruptedException e) {
                     stop();
                     Thread.currentThread().interrupt();
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
             }
         });

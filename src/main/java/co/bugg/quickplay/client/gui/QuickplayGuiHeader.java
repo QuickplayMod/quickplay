@@ -19,7 +19,7 @@ public class QuickplayGuiHeader extends QuickplayGuiComponent {
 
     @Override
     public boolean mouseHovering(Minecraft mc, int mouseX, int mouseY) {
-        return false;
+        return (mouseX > x - width / 2 && mouseX < (x + width / 2)) && (mouseY > y && mouseY < (y + height));
     }
 
     @Override

@@ -267,6 +267,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                                     Quickplay.INSTANCE.keybinds.save();
                                 } catch (IOException e) {
                                     e.printStackTrace();
+                                    Quickplay.INSTANCE.sendExceptionRequest(e);
                                 }
                                 Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
                                 break;

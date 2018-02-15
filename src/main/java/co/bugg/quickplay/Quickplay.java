@@ -3,10 +3,7 @@ package co.bugg.quickplay;
 import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandQuickplay;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
-import co.bugg.quickplay.config.AConfiguration;
-import co.bugg.quickplay.config.AssetFactory;
-import co.bugg.quickplay.config.ConfigKeybinds;
-import co.bugg.quickplay.config.ConfigSettings;
+import co.bugg.quickplay.config.*;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.http.HttpRequestFactory;
 import co.bugg.quickplay.http.Request;
@@ -110,6 +107,14 @@ public class Quickplay {
      * Keybinds for the mod, and which buttons open what GUIs
      */
     public ConfigKeybinds keybinds;
+    /**
+     * Privacy settings for the mod's data collection
+     */
+    public ConfigUsageStats usageStats;
+    /**
+     * Whether the user should be asked if they want to share stats next time they join a server
+     */
+    public boolean promptUserForUsageStats = false;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -154,6 +159,7 @@ public class Quickplay {
             try {
                 settings = (ConfigSettings) AConfiguration.load("settings.json", ConfigSettings.class);
                 keybinds = (ConfigKeybinds) AConfiguration.load("keybinds.json", ConfigKeybinds.class);
+                usageStats = (ConfigUsageStats) AConfiguration.load("privacy.json", ConfigUsageStats.class);
             } catch (IOException | JsonSyntaxException e) {
                 // Config either doesn't exist or couldn't be parsed
                 e.printStackTrace();
@@ -163,6 +169,10 @@ public class Quickplay {
                     settings = new ConfigSettings();
                 if(keybinds == null)
                     keybinds = new ConfigKeybinds(true);
+                if(usageStats == null) {
+                    promptUserForUsageStats = true;
+                }
+
                 try {
                     // Write the default config that we just made to save it
                     settings.save();
@@ -170,6 +180,7 @@ public class Quickplay {
                 } catch (IOException e1) {
                     // File couldn't be saved
                     e1.printStackTrace();
+                    sendExceptionRequest(e1);
                     Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 }
             }
@@ -186,7 +197,8 @@ public class Quickplay {
 
             this.threadPool.submit(() -> {
                 HashMap<String, String> params = new HashMap<>();
-                requestFactory.addDebuggingParameters(params);
+                if(usageStats.sendUsageStats)
+                    requestFactory.addStatisticsParameters(params);
 
                 Request request = requestFactory.newEnableRequest(params);
                 WebResponse response = request.execute();
@@ -254,5 +266,10 @@ public class Quickplay {
         return Arrays.stream(gameList)
                 .sorted(Comparator.comparing(game -> Quickplay.INSTANCE.settings.gamePriorities.getOrDefault(((Game) game).unlocalizedName, 0)).reversed())
                 .toArray(Game[]::new);
+    }
+
+    public void sendExceptionRequest(Exception e) {
+        if(usageStats.sendUsageStats)
+            requestFactory.newExceptionRequest(e).execute().actions.forEach(ResponseAction::run);
     }
 }

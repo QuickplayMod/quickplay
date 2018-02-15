@@ -5,7 +5,7 @@ import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.ReflectionUtil;
 import co.bugg.quickplay.util.ServerChecker;
-import net.minecraft.client.Minecraft;
+import com.google.gson.Gson;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import org.apache.http.client.HttpClient;
@@ -18,6 +18,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class HttpRequestFactory {
@@ -61,6 +62,7 @@ public class HttpRequestFactory {
             return new Request(post, this);
         } catch (URISyntaxException e) {
             e.printStackTrace();
+            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
 
         return null;
@@ -70,15 +72,23 @@ public class HttpRequestFactory {
         return newRequest("https://bugg.co/quickplay/mod/enable", params);
     }
 
+    public Request newExceptionRequest(Exception e) {
+        HashMap<String, String> params = new HashMap<>();
+        addStatisticsParameters(params);
+
+        params.put("error_message", e.getMessage());
+        params.put("stack_trace", Arrays.toString(e.getStackTrace()));
+
+        return newRequest("https://bugg.co/quickplay/mod/exception", params);
+    }
+
     /**
      * Add the default debugging parameters
      * to the provided HashMap
      * @param params HashMap to add to
      */
-    public void addDebuggingParameters(HashMap<String, String> params) {
-        // Used for debugging purposes, to prevent the issue of
-        // consistently asking users to post screenshots of "/qp debug"
-        params.put("uuid", Minecraft.getMinecraft().getSession().getPlayerID());
+    public void addStatisticsParameters(HashMap<String, String> params) {
+        params.put("token", Quickplay.INSTANCE.usageStats.statsToken.toString());
         params.put("version", Reference.VERSION);
         params.put("enabled", String.valueOf(Quickplay.INSTANCE.enabled));
         params.put("currentIP", ServerChecker.getCurrentIP());
@@ -88,7 +98,7 @@ public class HttpRequestFactory {
         params.put("osVersion", System.getProperty("os.version"));
         params.put("osArch", System.getProperty("os.arch"));
         // Add a JSON list of all registered mods names
-        params.put("installedMods", WebResponse.GSON.toJson(Loader.instance().getModList()
+        params.put("installedMods", new Gson().toJson(Loader.instance().getModList()
                 .stream().map(ModContainer::getName).toArray()));
 
         try {
@@ -96,6 +106,7 @@ public class HttpRequestFactory {
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
             params.put("mcVersion", "unknown");
+            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
 
         try {
@@ -103,6 +114,7 @@ public class HttpRequestFactory {
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             e.printStackTrace();
             params.put("forgeVersion", "unknown");
+            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
     }
 }

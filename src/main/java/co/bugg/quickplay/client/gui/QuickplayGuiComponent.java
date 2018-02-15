@@ -32,7 +32,9 @@ public abstract class QuickplayGuiComponent extends Gui {
 
     public abstract void draw(Minecraft mc, int mouseX, int mouseY, double opacity);
 
-    public abstract boolean mouseHovering(Minecraft mc, int mouseX, int mouseY);
+    public boolean mouseHovering(Minecraft mc, int mouseX, int mouseY) {
+        return (mouseX > x && mouseX < (x + width)) && (mouseY > y && mouseY < (y + height));
+    }
     public abstract void mouseReleased(Minecraft mc, int mouseX, int mouseY);
 
     /**

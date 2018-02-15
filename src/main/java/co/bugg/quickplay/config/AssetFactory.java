@@ -79,6 +79,7 @@ public class AssetFactory {
 
                 } catch (IOException | URISyntaxException e) {
                     e.printStackTrace();
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
             }
 
@@ -118,6 +119,7 @@ public class AssetFactory {
         } catch(IOException e) {
             System.out.println("Failed to generate mcmeta file! Mod may or may not work properly.");
             e.printStackTrace();
+            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
     }
 
@@ -150,6 +152,7 @@ public class AssetFactory {
             System.out.println("Please report this to @bugfroggy, providing this error log and this list: " + Arrays.toString(Minecraft.class.getDeclaredFields()));
             Quickplay.INSTANCE.disable("Failed to load resources!");
             e.printStackTrace();
+            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
 
         // Refresh the resources of the game
