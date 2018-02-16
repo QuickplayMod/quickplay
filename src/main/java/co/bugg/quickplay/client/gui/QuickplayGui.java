@@ -23,11 +23,17 @@ public abstract class QuickplayGui extends GuiScreen {
     int lastMouseY = 0;
     int mouseYMovement = 0;
     public QuickplayGuiContextMenu contextMenu = null;
+    /**
+     * Whether the GUI blurred background shader needs to be removed when the GUI closes
+     * Assigned on GUI opening, otherwise if the user opens the GUI, the setting changes, and then closes the GUI,
+     * the shader is applied until the user restarts the game, removes the shader manually, or re-enables the setting.
+     */
+    public boolean disableShaderOnGuiClose = Quickplay.INSTANCE.settings.blurGuiBackgrounds;
 
     @Override
     public void onGuiClosed() {
         super.onGuiClosed();
-        if(Quickplay.INSTANCE.settings.blurGuiBackgrounds)
+        if(disableShaderOnGuiClose)
             // Stop using shaders
             Minecraft.getMinecraft().entityRenderer.stopUseShader();
 
@@ -40,7 +46,7 @@ public abstract class QuickplayGui extends GuiScreen {
         closeContextMenu();
         componentList.clear();
         super.initGui();
-        if(Quickplay.INSTANCE.settings.fadeInGuis)
+        if(Quickplay.INSTANCE.settings.fadeInGuis && opacity < 1)
             fadeIn();
         else opacity = 1;
 
