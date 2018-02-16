@@ -60,6 +60,8 @@ public class ResponseAction {
             case RELOAD_GAMES:
                 Quickplay.INSTANCE.threadPool.submit(() -> {
                     System.out.println("Reloading games...");
+                    // TODO send locale, POST parameter "locale" iirc
+                    // TODO this might crash if there's a typo in the URL. Should double check.
                     WebResponse response = Quickplay.INSTANCE.requestFactory.newRequest(getValue().getAsString(), null).execute();
 
                     for (ResponseAction action : response.actions) {
