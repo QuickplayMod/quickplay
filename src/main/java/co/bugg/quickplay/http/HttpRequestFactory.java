@@ -68,7 +68,12 @@ public class HttpRequestFactory {
         return null;
     }
 
-    public Request newEnableRequest(HashMap<String, String> params) {
+    public Request newEnableRequest() {
+        HashMap<String, String> params = new HashMap<>();
+
+        if(Quickplay.INSTANCE.usageStats.sendUsageStats)
+            addStatisticsParameters(params);
+
         return newRequest("https://bugg.co/quickplay/mod/enable", params);
     }
 
@@ -88,7 +93,8 @@ public class HttpRequestFactory {
      * @param params HashMap to add to
      */
     public void addStatisticsParameters(HashMap<String, String> params) {
-        params.put("token", Quickplay.INSTANCE.usageStats.statsToken.toString());
+        params.put("token", Quickplay.INSTANCE.usageStats.statsToken.toString()); // Unique token users can use to link their data to themselves
+        params.put("manager", Reference.MOD_NAME + " v" + Reference.VERSION); // manager of this data, who sent it (e.g. Quickplay, HCC)
         params.put("version", Reference.VERSION);
         params.put("enabled", String.valueOf(Quickplay.INSTANCE.enabled));
         params.put("currentIP", ServerChecker.getCurrentIP());

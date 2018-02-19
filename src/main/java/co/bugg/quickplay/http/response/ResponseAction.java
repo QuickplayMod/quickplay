@@ -1,6 +1,7 @@
 package co.bugg.quickplay.http.response;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.config.ConfigKeybinds;
 import co.bugg.quickplay.config.ConfigSettings;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.util.Message;
@@ -48,9 +49,11 @@ public class ResponseAction {
             case RESET_CONFIG:
                 // Overwrite settings
                 Quickplay.INSTANCE.settings = new ConfigSettings();
+                Quickplay.INSTANCE.keybinds = new ConfigKeybinds(true);
                 // Overwrite file containing cached settings
                 try {
                     Quickplay.INSTANCE.settings.save();
+                    Quickplay.INSTANCE.keybinds.save();
                 } catch (IOException e) {
                     System.out.println("Failed to save file while overwriting settings");
                     e.printStackTrace();
@@ -68,21 +71,24 @@ public class ResponseAction {
                         action.run();
                     }
 
-                    Quickplay.INSTANCE.gameList = new ArrayList<>();
-                    try {
-                        response.content.getAsJsonObject().get("games").getAsJsonArray().forEach(
-                                obj -> Quickplay.INSTANCE.gameList.add(WebResponse.GSON.fromJson(obj, Game.class)));
+                    if(response.ok) {
 
-                        // Save the retrieved game list to cache
-                        Quickplay.INSTANCE.assetFactory.saveCachedGameList(Quickplay.INSTANCE.gameList.toArray(new Game[Quickplay.INSTANCE.gameList.size()]));
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                        Quickplay.INSTANCE.sendExceptionRequest(e);
+                        Quickplay.INSTANCE.gameList = new ArrayList<>();
+                        try {
+                            response.content.getAsJsonObject().get("games").getAsJsonArray().forEach(
+                                    obj -> Quickplay.INSTANCE.gameList.add(WebResponse.GSON.fromJson(obj, Game.class)));
+
+                            // Save the retrieved game list to cache
+                            Quickplay.INSTANCE.assetFactory.saveCachedGameList(Quickplay.INSTANCE.gameList.toArray(new Game[Quickplay.INSTANCE.gameList.size()]));
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                            Quickplay.INSTANCE.sendExceptionRequest(e);
+                        }
+
+                        // Collect all icon URLs into a list and load them (if necessary)
+                        Quickplay.INSTANCE.assetFactory.loadIcons(
+                                Quickplay.INSTANCE.gameList.stream().map(game -> game.imageURL).collect(Collectors.toList()));
                     }
-
-                    // Collect all icon URLs into a list and load them (if necessary)
-                    Quickplay.INSTANCE.assetFactory.loadIcons(
-                            Quickplay.INSTANCE.gameList.stream().map(game -> game.imageURL).collect(Collectors.toList()));
                 });
                 break;
             case REFRESH_CACHE:

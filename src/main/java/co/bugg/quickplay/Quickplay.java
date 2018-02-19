@@ -27,7 +27,10 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -196,11 +199,7 @@ public class Quickplay {
             }
 
             this.threadPool.submit(() -> {
-                HashMap<String, String> params = new HashMap<>();
-                if(usageStats.sendUsageStats)
-                    requestFactory.addStatisticsParameters(params);
-
-                Request request = requestFactory.newEnableRequest(params);
+                Request request = requestFactory.newEnableRequest();
                 WebResponse response = request.execute();
 
                 for(ResponseAction action : response.actions) {
@@ -269,7 +268,10 @@ public class Quickplay {
     }
 
     public void sendExceptionRequest(Exception e) {
-        if(usageStats.sendUsageStats)
-            requestFactory.newExceptionRequest(e).execute().actions.forEach(ResponseAction::run);
+        if(usageStats.sendUsageStats) {
+            final WebResponse response = requestFactory.newExceptionRequest(e).execute();
+            for(ResponseAction action : response.actions)
+                action.run();
+        }
     }
 }
