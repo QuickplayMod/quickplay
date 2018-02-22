@@ -11,5 +11,6 @@ public enum ResponseActionType {
     ENABLE_MOD,
     SYSTEM_OUT,
     RESET_CONFIG,
-    REFRESH_CACHE
+    REFRESH_CACHE,
+    START_PING
 }

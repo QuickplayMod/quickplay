@@ -33,6 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Mod(
         modid = Reference.MOD_ID,
@@ -118,6 +119,16 @@ public class Quickplay {
      * Whether the user should be asked if they want to share stats next time they join a server
      */
     public boolean promptUserForUsageStats = false;
+    /**
+     * Seconds between ping requests to the web server
+     * 0 or less for no requests
+     * If it becomes time for the mod to execute a request but
+     * the frequency is equal to 0 or less, then all ping
+     * requests will be cancelled until the mod re-enables (usually at restart).
+     */
+    public int pingFrequency = 0;
+
+    public Future pingThread;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -199,8 +210,8 @@ public class Quickplay {
             }
 
             this.threadPool.submit(() -> {
-                Request request = requestFactory.newEnableRequest();
-                WebResponse response = request.execute();
+                final Request request = requestFactory.newEnableRequest();
+                final WebResponse response = request.execute();
 
                 for(ResponseAction action : response.actions) {
                     action.run();

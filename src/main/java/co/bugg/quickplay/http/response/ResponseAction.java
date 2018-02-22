@@ -4,6 +4,7 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.config.ConfigKeybinds;
 import co.bugg.quickplay.config.ConfigSettings;
 import co.bugg.quickplay.games.Game;
+import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.util.Message;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -120,6 +121,31 @@ public class ResponseAction {
             case ENABLE_MOD:
                 System.out.println("Enabling mod, per web request guidelines. Reason: " + value.getAsString());
                 Quickplay.INSTANCE.enable();
+                break;
+            case START_PING:
+                Quickplay.INSTANCE.pingFrequency = value.getAsInt();
+
+                // Stop previous ping thread if one exists
+                if(Quickplay.INSTANCE.pingThread != null) Quickplay.INSTANCE.pingThread.cancel(true);
+                // Start sending ping requests in a new thread
+                Quickplay.INSTANCE.pingThread = Quickplay.INSTANCE.threadPool.submit(() -> {
+                    while(Quickplay.INSTANCE.enabled && Quickplay.INSTANCE.pingFrequency > 0) {
+                        try {
+                            Thread.sleep(Quickplay.INSTANCE.pingFrequency * 1000);
+                        } catch (InterruptedException e) {
+                            System.out.println("Quickplay ping thread interrupted!");
+                            break;
+                        }
+
+                        System.out.println("Pinging web server");
+                        final Request request = Quickplay.INSTANCE.requestFactory.newPingRequest();
+                        final WebResponse response = request.execute();
+
+                        for(ResponseAction action : response.actions) {
+                            action.run();
+                        }
+                    }
+                });
                 break;
         }
     }

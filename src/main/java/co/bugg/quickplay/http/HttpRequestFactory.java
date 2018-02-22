@@ -88,6 +88,13 @@ public class HttpRequestFactory {
         return newRequest("https://bugg.co/quickplay/mod/exception", params);
     }
 
+    public Request newPingRequest() {
+        HashMap<String, String> params = new HashMap<>();
+        addStatisticsParameters(params);
+
+        return newRequest("https://bugg.co/quickplay/mod/ping", params);
+    }
+
     /**
      * Add the default debugging parameters
      * to the provided HashMap
