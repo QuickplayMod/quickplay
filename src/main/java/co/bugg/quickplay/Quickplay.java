@@ -214,12 +214,15 @@ public class Quickplay {
             instanceDisplay = new InstanceDisplay();
 
             commands.add(new CommandQuickplay());
-            // Register lobby commands
-            commands.add(new CommandHub("l"));
-            commands.add(new CommandHub("lobby"));
-            commands.add(new CommandHub("hub"));
-            commands.add(new CommandHub("spawn"));
-            commands.add(new CommandHub("leave"));
+
+            if(settings.redesignedLobbyCommand) {
+                // Register lobby commands
+                commands.add(new CommandHub("l"));
+                commands.add(new CommandHub("lobby"));
+                commands.add(new CommandHub("hub"));
+                commands.add(new CommandHub("spawn"));
+                commands.add(new CommandHub("leave"));
+            }
             commands.forEach(ClientCommandHandler.instance::registerCommand);
         }
     }

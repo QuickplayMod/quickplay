@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class ConfigSettings extends AConfiguration implements Serializable {
+
     // TODO make name & helpText into translatable components
     // TODO make runnables into methods
     public ConfigSettings() {
@@ -111,4 +112,16 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             helpText = "Swap to lobby one automatically whenever join join a new lobby."
     )
     public boolean lobbyOneSwap = false;
+
+    @GuiOption(
+            name = "Update Notifications",
+            helpText = "Whether you'd like to be notified when a new version of Quickplay is released (your list of games will update automatically, regardless of this setting)."
+    )
+    public boolean updateNotifications = true;
+
+    @GuiOption(
+            name = "Custom Lobby Command",
+            helpText = "Whether the custom Quickplay lobby commands should be used when possible. Requires game restart."
+    )
+    public boolean redesignedLobbyCommand = true;
 }

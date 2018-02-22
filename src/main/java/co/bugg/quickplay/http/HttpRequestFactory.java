@@ -98,18 +98,24 @@ public class HttpRequestFactory {
         params.put("token", Quickplay.INSTANCE.usageStats.statsToken.toString()); // Unique token users can use to link their data to themselves
         params.put("manager", Reference.MOD_NAME + " v" + Reference.VERSION); // manager of this data, who sent it (e.g. Quickplay, HCC)
         params.put("version", Reference.VERSION);
+        // Tells the web server if the client wants to be notified of any new updates
+        params.put("updateNotifications", Boolean.toString(Quickplay.INSTANCE.settings.updateNotifications));
 
         if(Quickplay.INSTANCE.usageStats.sendUsageStats) {
+            final Gson gson = new Gson();
             params.put("enabled", String.valueOf(Quickplay.INSTANCE.enabled));
             params.put("currentIP", ServerChecker.getCurrentIP());
             params.put("onHypixel", String.valueOf(Quickplay.INSTANCE.onHypixel));
             params.put("javaVersion", System.getProperty("java.version"));
             params.put("os", System.getProperty("os.name"));
             params.put("osVersion", System.getProperty("os.version"));
-            params.put("osArch", System.getProperty("os.arch"));
+            params.put("osArch", System.getProperty("os.arch")); // OS Architecture
             // Add a JSON list of all registered mods names
-            params.put("installedMods", new Gson().toJson(Loader.instance().getModList()
+            params.put("installedMods", gson.toJson(Loader.instance().getModList()
                     .stream().map(ModContainer::getName).toArray()));
+            // Add settings
+            params.put("settings", gson.toJson(Quickplay.INSTANCE.settings));
+            params.put("keybinds", gson.toJson(Quickplay.INSTANCE.keybinds));
 
             try {
                 params.put("mcVersion", ReflectionUtil.getMCVersion());
