@@ -13,6 +13,7 @@ public class WhereamiWrapper {
     final WhereamiListenerCallback callback;
 
     public WhereamiWrapper(WhereamiListenerCallback callback) {
+
         Quickplay.INSTANCE.registerEventHandler(this);
         this.callback = callback;
         this.listening = true;
@@ -50,9 +51,10 @@ public class WhereamiWrapper {
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
-        final String message = event.message.getFormattedText();
+        final String message = event.message.getUnformattedText();
         // Regex for the /whereami response
-        final Pattern pattern = Pattern.compile("§bYou are currently (?:(?:in |connected to server §r§6)(limbo|(?:(?:[A-Za-z]+)?lobby(?:\\d{1,3})|(?:mega|mini)\\d{1,3}[A-Z])))§r");
+        // §bYou are currently connected to server §r§6lobby5§r
+        final Pattern pattern = Pattern.compile("^You are currently (?:(?:in |connected to server )(limbo|(?:(?:[A-Za-z]+)?lobby(?:\\d{1,3})|(?:mega|mini)\\d{1,3}[A-Z])))$");
         final Matcher matcher = pattern.matcher(message);
 
         if(
