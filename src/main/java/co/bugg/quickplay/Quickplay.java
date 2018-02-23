@@ -60,7 +60,7 @@ public class Quickplay {
      */
     public String disabledReason = null;
     /**
-     * Verification method used to verify the client is online Hypixel
+     * Verification method used to verify the client is online Hypixel, or null if not on Hypixel.
      */
     public ServerChecker.VerificationMethod verificationMethod;
     /**

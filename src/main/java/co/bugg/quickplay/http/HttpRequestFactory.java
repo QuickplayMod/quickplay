@@ -113,6 +113,7 @@ public class HttpRequestFactory {
             params.put("enabled", String.valueOf(Quickplay.INSTANCE.enabled));
             params.put("currentIP", ServerChecker.getCurrentIP());
             params.put("onHypixel", String.valueOf(Quickplay.INSTANCE.onHypixel));
+            params.put("hypixelVerificationMethod", String.valueOf(Quickplay.INSTANCE.verificationMethod));
             params.put("javaVersion", System.getProperty("java.version"));
             params.put("os", System.getProperty("os.name"));
             params.put("osVersion", System.getProperty("os.version"));
