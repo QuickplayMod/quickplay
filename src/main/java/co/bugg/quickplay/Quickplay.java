@@ -127,7 +127,9 @@ public class Quickplay {
      * requests will be cancelled until the mod re-enables (usually at restart).
      */
     public int pingFrequency = 0;
-
+    /**
+     * Thread containing code that's pinging the web server periodically
+     */
     public Future pingThread;
 
     @EventHandler
@@ -145,7 +147,8 @@ public class Quickplay {
      * @param handler Object to register
      */
     public void registerEventHandler(Object handler) {
-        eventHandlers.add(handler);
+        if(!eventHandlers.contains(handler))
+            eventHandlers.add(handler);
         MinecraftForge.EVENT_BUS.register(handler);
     }
 
@@ -154,7 +157,8 @@ public class Quickplay {
      * @param handler Object to unregister
      */
     public void unregisterEventHandler(Object handler) {
-        eventHandlers.remove(handler);
+        if(eventHandlers.contains(handler))
+            eventHandlers.remove(handler);
         MinecraftForge.EVENT_BUS.unregister(handler);
     }
 

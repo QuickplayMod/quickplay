@@ -129,6 +129,7 @@ public class ResponseAction {
                 if(Quickplay.INSTANCE.pingThread != null) Quickplay.INSTANCE.pingThread.cancel(true);
                 // Start sending ping requests in a new thread
                 Quickplay.INSTANCE.pingThread = Quickplay.INSTANCE.threadPool.submit(() -> {
+                    // TODO URL should be sent from the web server as well
                     while(Quickplay.INSTANCE.enabled && Quickplay.INSTANCE.pingFrequency > 0) {
                         try {
                             Thread.sleep(Quickplay.INSTANCE.pingFrequency * 1000);
