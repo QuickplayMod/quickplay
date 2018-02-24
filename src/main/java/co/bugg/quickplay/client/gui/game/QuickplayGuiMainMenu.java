@@ -53,13 +53,15 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         currentColumn = 0;
         currentRow = 0;
 
-        // Calculate the average width of all strings & what the longest one is
-        for(Game game : Quickplay.INSTANCE.gameList) {
-            final int stringWidth = fontRendererObj.getStringWidth(game.name);
-            averageStringWidth += stringWidth;
-            if(stringWidth > longestStringWidth) longestStringWidth = stringWidth;
+        if(Quickplay.INSTANCE.gameList.size() > 0) {
+            // Calculate the average width of all strings & what the longest one is
+            for (Game game : Quickplay.INSTANCE.gameList) {
+                final int stringWidth = fontRendererObj.getStringWidth(game.name);
+                averageStringWidth += stringWidth;
+                if (stringWidth > longestStringWidth) longestStringWidth = stringWidth;
+            }
+            averageStringWidth /= Quickplay.INSTANCE.gameList.size();
         }
-        averageStringWidth /= Quickplay.INSTANCE.gameList.size();
 
         // String scales up with size of game images
         // TODO: Make string scale smaller if strings fall off screen

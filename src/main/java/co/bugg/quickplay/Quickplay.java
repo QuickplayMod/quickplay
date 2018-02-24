@@ -167,6 +167,7 @@ public class Quickplay {
      */
     public void enable() {
         if(!this.enabled) {
+
             this.enabled = true;
             requestFactory = new HttpRequestFactory();
             assetFactory = new AssetFactory();
