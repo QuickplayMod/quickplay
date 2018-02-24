@@ -106,7 +106,7 @@ public class HttpRequestFactory {
         params.put("manager", Reference.MOD_NAME + " v" + Reference.VERSION); // manager of this data, who sent it (e.g. Quickplay, HCC)
         params.put("version", Reference.VERSION);
         // Tells the web server if the client wants to be notified of any new updates
-        params.put("updateNotifications", Boolean.toString(Quickplay.INSTANCE.settings.updateNotifications));
+        params.put("updateNotifications", Boolean.toString(Quickplay.INSTANCE.settings != null && Quickplay.INSTANCE.settings.updateNotifications));
 
         if(Quickplay.INSTANCE.usageStats.sendUsageStats) {
             final Gson gson = new Gson();
