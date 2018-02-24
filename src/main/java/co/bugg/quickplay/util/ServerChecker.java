@@ -84,7 +84,7 @@ public class ServerChecker {
      * If the tablist fooder contains "hypixel.net" then the server is verified.
      * If the server MOTD contains "hypixel network" then the server is verified.
      * If the server favicon base64 matches Hypixel's logo then the server is verified.
-     * @return Whether the tab list contains "MC.HYPIXEL.NET"
+     * @return Which of the above checks were true, or null otherwise.
      */
     public VerificationMethod checkServerMetadataForHypixel() {
 
@@ -100,7 +100,6 @@ public class ServerChecker {
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
-            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
 
         try {
@@ -112,7 +111,6 @@ public class ServerChecker {
             }
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
-            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
 
         // Next check server MOTD
@@ -124,9 +122,11 @@ public class ServerChecker {
         try {
             // Next check server favicon
             final String faviconBase64 = Minecraft.getMinecraft().getCurrentServerData().getBase64EncodedIconData();
-            final String hypixelBase64 = Base64.encodeBase64String(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("HypixelMCLogo.png")));
-            if(faviconBase64.equals(hypixelBase64))
-                return VerificationMethod.FAVICON;
+            if(faviconBase64 != null) {
+                final String hypixelBase64 = Base64.encodeBase64String(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("HypixelMCLogo.png")));
+                if(faviconBase64.equals(hypixelBase64))
+                    return VerificationMethod.FAVICON;
+            }
         } catch (IOException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
