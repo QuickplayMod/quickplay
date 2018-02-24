@@ -86,7 +86,7 @@ public class AssetFactory {
             resourceLocations.add(new ResourceLocation(file.getName()));
         }
 
-        Minecraft.getMinecraft().refreshResources();
+        // Minecraft.getMinecraft().refreshResources();
         return resourceLocations;
     }
 
@@ -156,7 +156,7 @@ public class AssetFactory {
         }
 
         // Refresh the resources of the game
-        Minecraft.getMinecraft().refreshResources();
+        // Minecraft.getMinecraft().refreshResources();
     }
 
     /**
