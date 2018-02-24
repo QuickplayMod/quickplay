@@ -21,6 +21,11 @@ plugins {
 }
 */
 
+jar {
+    // Add the license to the jar
+    from "LICENSE"
+}
+
 targetCompatibility = sourceCompatibility = 1.8
 
 version = "2.0.0-beta"
