@@ -74,8 +74,6 @@ public class ResponseAction {
                     }
 
                     if(response.ok) {
-                        // TODO for some reason game list isn't being set. It is only being loaded from cache, which is
-                        // TODO therefore requiring a client to boot twice to get the latest games.
 
                         Quickplay.INSTANCE.gameList = new ArrayList<>();
                         try {
