@@ -13,6 +13,8 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +42,7 @@ public class ServerChecker {
 
         final String ip = getCurrentIP();
         if(!ip.equals("singleplayer")) {
-            Pattern hypixelPattern = Pattern.compile("^(?:(?:(?:.*\\.)?hypixel\\.net)|(?:209\\.222\\.115\\.\\d{1,3}))(?::\\d{1,5})?$", Pattern.CASE_INSENSITIVE);
+            Pattern hypixelPattern = Pattern.compile("^(?:(?:(?:.\\.)?hypixel\\.net)|(?:209\\.222\\.115\\.\\d{1,3}))(?::\\d{1,5})?$", Pattern.CASE_INSENSITIVE);
             Matcher matcher = hypixelPattern.matcher(ip);
 
             // If the current IP matches the regex above
@@ -90,20 +92,21 @@ public class ServerChecker {
     public VerificationMethod checkServerMetadataForHypixel() {
 
         // First check tab list, if it contains any references to Hypixel in the header & footer.
-        // This is best option because header & footer are both constant and present everywhere on Hypixel, including Limbo
         final GuiPlayerTabOverlay tab = Minecraft.getMinecraft().ingameGUI.getTabList();
         try {
             if(checkTabField(tab, "header"))
                 return VerificationMethod.HEADER;
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
+            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
 
         try {
             if(checkTabField(tab, "footer"))
                 return VerificationMethod.FOOTER;
-        } catch (IllegalAccessException | NoSuchFieldException e) {
+        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
+            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
 
         // Next check server MOTD
@@ -137,7 +140,7 @@ public class ServerChecker {
      * @throws NoSuchFieldException The field couldn't be found
      * @throws IllegalAccessException The field couldn't be accessed
      */
-    public boolean checkTabField(GuiPlayerTabOverlay tabOverlay, String fieldName) throws NoSuchFieldException, IllegalAccessException {
+    public boolean checkTabField(GuiPlayerTabOverlay tabOverlay, String fieldName) throws NoSuchFieldException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
         final Field headerField = tabOverlay.getClass().getDeclaredField(fieldName);
         if(headerField != null) {
             headerField.setAccessible(true);
@@ -148,24 +151,22 @@ public class ServerChecker {
 
             final Object headerObj = headerField.get(tabOverlay);
             IChatComponent component;
+            // If user is using Vanilla Enhancements
             if(Loader.instance().getModList().stream().anyMatch(mod -> mod.getName().equals("Vanilla Enhancements"))) {
-                // TODO Figure out how OrangeMarshall's system works. In the mean time just skip tab verification
-//                final String type = "com.orangemarshall.enhancements.util.FieldWrapper";
-//                final Class<?> clazz = Class.forName(type);
-//
-//                // Cast to FieldWrapper, then get the field "field"
-//                final Field field = clazz.cast(headerObj).getClass().getDeclaredField("field");
-//                field.setAccessible(true);
-//                final Field actualField = (Field) field.get(field);
-//                actualField.setAccessible(true);
-//
-//                component = (IChatComponent) actualField.get(tabOverlay);
-                return false;
+                final String type = "com.orangemarshall.enhancements.util.FieldWrapper";
+                final Class<?> clazz = Class.forName(type);
+
+                // Cast to FieldWrapper, then get the method "get" taking one parameger Object obj
+                final Method fieldWrapperGetMethod = clazz.cast(headerObj).getClass().getDeclaredMethod("get", Object.class);
+                fieldWrapperGetMethod.setAccessible(true);
+
+                // Execute the method on headerObj, passing tabOverlay as parameter obj
+                component = (IChatComponent) fieldWrapperGetMethod.invoke(headerObj, tabOverlay);
             } else {
                 component = (IChatComponent) headerObj;
             }
 
-            return component.getUnformattedText().toLowerCase().contains("hypixel.net");
+            return component != null && component.getUnformattedText() != null && component.getUnformattedText().toLowerCase().contains("hypixel.net");
         }
 
         return false;

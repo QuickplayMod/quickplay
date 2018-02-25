@@ -19,6 +19,7 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class QuickplayGuiMainMenu extends QuickplayGui {
 
@@ -32,6 +33,9 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     int windowYPadding = 30;
     final int windowXPadding = 20;
     final int scrollbarMargins = 10;
+
+    String copyright;
+    final int copyrightMargins = 3;
 
     int longestStringWidth = 0;
     int averageStringWidth = 0;
@@ -52,6 +56,8 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         // Reset column/row number used for determining button positions
         currentColumn = 0;
         currentRow = 0;
+
+        copyright = new ChatComponentTranslation("quickplay.gui.copyright", Calendar.getInstance().get(Calendar.YEAR)).getUnformattedText();
 
         // Change the window Y padding if it's set
         if(Quickplay.INSTANCE.settings != null && Quickplay.INSTANCE.settings.mainMenuYPadding > 0)
@@ -131,6 +137,8 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             drawScrollBar();
 
         }
+
+        drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();

@@ -20,6 +20,7 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
@@ -51,6 +52,9 @@ public class QuickplayGuiGame extends QuickplayGui {
     public final int scrollbarWidth = 3;
     public final int scrollbarMargins = 3;
 
+    public String copyright;
+    public final int copyrightMargins = 3;
+
     public QuickplayGuiGame(Game game) {
         if(game != null)
             this.game = game;
@@ -77,6 +81,8 @@ public class QuickplayGuiGame extends QuickplayGui {
     public void initGui() {
         super.initGui();
         currentColumn = currentRow = 0;
+
+        copyright =  new ChatComponentTranslation("quickplay.gui.copyright", Calendar.getInstance().get(Calendar.YEAR)).getUnformattedText();
 
         windowPadding = (int) (width * (width > 500 ? 0.25 : 0.15));
         headerHeight = (int) (height * 0.05);
@@ -178,6 +184,8 @@ public class QuickplayGuiGame extends QuickplayGui {
                     height - (int) (componentList.stream().filter(component -> component.y + component.height >= height).count() / (double) elementCount * (double) (height - topOfBackgroundBox - scrollbarMargins) + scrollbarMargins),
                     Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         }
+
+        drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();

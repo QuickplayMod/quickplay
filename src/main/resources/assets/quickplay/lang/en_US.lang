@@ -46,6 +46,8 @@ quickplay.gui.stats.copy=Click to copy
 quickplay.gui.stats.privacy=Privacy Policy
 quickplay.gui.stats.privacyerror=Something went wrong. %s
 
+quickplay.gui.copyright=Copyright © %s bugfroggy
+
 quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recreating it.
 quickplay.keybinds.title=Keybinds
 quickplay.keybinds.reset=Reset Keybinds
