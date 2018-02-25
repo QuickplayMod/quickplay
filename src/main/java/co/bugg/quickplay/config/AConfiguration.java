@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
 
 public abstract class AConfiguration implements Serializable {
 
-    public transient final Gson GSON = new Gson();
+    public transient final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public transient String fileName;
     public transient File file;
 

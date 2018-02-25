@@ -124,4 +124,15 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             helpText = "Whether the custom Quickplay lobby commands should be used when possible. Requires game restart."
     )
     public boolean redesignedLobbyCommand = true;
+
+    /**
+     * Allows users to change how much padding is on the
+     * top & bottom of {@link co.bugg.quickplay.client.gui.game.QuickplayGuiMainMenu}
+     *
+     * Cannot be changed in the GUI as that might be confusing but
+     * is there for the users who need it.
+     *
+     * @see <a href="https://github.com/bugfroggy/Quickplay2.0/issues/3">Github issue</a>
+     */
+    public int mainMenuYPadding = 30;
 }

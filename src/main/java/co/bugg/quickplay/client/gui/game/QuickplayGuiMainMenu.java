@@ -29,7 +29,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     final int stringLeftMargins = 15;
     final int boxYMargins = 5;
     final int boxXMargins = 10;
-    final int scrollMargins = 20;
+    int windowYPadding = 30;
     final int windowXPadding = 20;
     final int scrollbarMargins = 10;
 
@@ -52,6 +52,10 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         // Reset column/row number used for determining button positions
         currentColumn = 0;
         currentRow = 0;
+
+        // Change the window Y padding if it's set
+        if(Quickplay.INSTANCE.settings != null && Quickplay.INSTANCE.settings.mainMenuYPadding > 0)
+            windowYPadding = Quickplay.INSTANCE.settings.mainMenuYPadding;
 
         if(Quickplay.INSTANCE.gameList.size() > 0) {
             // Calculate the average width of all strings & what the longest one is
@@ -89,7 +93,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         int nextButtonId = 0;
         for(Game game : Quickplay.INSTANCE.gameList) {
             // TODO: Ideally buttons would extend out to be over the text as well, so you can click there and it still works. This might require a major rewrite.
-            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding + boxYMargins * 2) * currentRow + scrollMargins), gameImgSize, gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier));
+            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding + boxYMargins * 2) * currentRow + windowYPadding), gameImgSize, gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier));
             currentColumn++;
             if(currentColumn + 1 > columnCount) {
                 currentColumn = 0;
@@ -228,9 +232,9 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
                     // Only allow scrolling if there is an element off screen
                     // If scrolling down & the last element is at all off the screen (plus the additional margins for aesthetic purposes)
-                    if((distance < 0 && lowestComponent.y > height - gameImgSize * scaleMultiplier - scrollMargins) ||
+                    if((distance < 0 && lowestComponent.y > height - gameImgSize * scaleMultiplier - windowYPadding) ||
                             // OR if scrolling up & the top element is currently at all off of the screen
-                            (distance > 0 && highestComponent.y < scrollMargins)) {
+                            (distance > 0 && highestComponent.y < windowYPadding)) {
 
                         for (QuickplayGuiComponent component : componentList) {
                             component.move(distance < 0 ? -1 : 1);
