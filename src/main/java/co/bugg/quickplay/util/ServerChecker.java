@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
@@ -92,23 +93,15 @@ public class ServerChecker {
         // This is best option because header & footer are both constant and present everywhere on Hypixel, including Limbo
         final GuiPlayerTabOverlay tab = Minecraft.getMinecraft().ingameGUI.getTabList();
         try {
-            final Field headerField = tab.getClass().getDeclaredField("header");
-            if(headerField != null) {
-                headerField.setAccessible(true);
-                if(((IChatComponent) headerField.get(tab)).getUnformattedText().toLowerCase().contains("hypixel.net"))
-                    return VerificationMethod.HEADER;
-            }
+            if(checkTabField(tab, "header"))
+                return VerificationMethod.HEADER;
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
         try {
-            final Field footerField = tab.getClass().getDeclaredField("footer");
-            if(footerField != null) {
-                footerField.setAccessible(true);
-                if(((IChatComponent) footerField.get(tab)).getUnformattedText().toLowerCase().contains("hypixel.net"))
-                    return VerificationMethod.FOOTER;
-            }
+            if(checkTabField(tab, "footer"))
+                return VerificationMethod.FOOTER;
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -134,6 +127,48 @@ public class ServerChecker {
 
         // Return null if none of these conditions matched
         return null;
+    }
+
+    /**
+     * Checks whether the tab list header & footer contain information that would point to the current server being Hypixel.
+     * @param tabOverlay GUI overlay for the tab list
+     * @param fieldName name of the field to check (either <code>header</code> or <code>footer</code>)
+     * @return Whether the field <code>fieldName</code> in the object <code>tabOverlay</code> contains "hypixel.net"
+     * @throws NoSuchFieldException The field couldn't be found
+     * @throws IllegalAccessException The field couldn't be accessed
+     */
+    public boolean checkTabField(GuiPlayerTabOverlay tabOverlay, String fieldName) throws NoSuchFieldException, IllegalAccessException {
+        final Field headerField = tabOverlay.getClass().getDeclaredField(fieldName);
+        if(headerField != null) {
+            headerField.setAccessible(true);
+
+            // OrangeMarshall's Vanilla Enhancements conflicts with this mod. He has a field called
+            // FieldWrapper which wraps IChatComponent, and you must call .get() on the wrapper as well
+            // i.e. instead of headerField.get(tabOverlay), headerField.get(tabOverlay).get(tabOverlay).
+
+            final Object headerObj = headerField.get(tabOverlay);
+            IChatComponent component;
+            if(Loader.instance().getModList().stream().anyMatch(mod -> mod.getName().equals("Vanilla Enhancements"))) {
+                // TODO Figure out how OrangeMarshall's system works. In the mean time just skip tab verification
+//                final String type = "com.orangemarshall.enhancements.util.FieldWrapper";
+//                final Class<?> clazz = Class.forName(type);
+//
+//                // Cast to FieldWrapper, then get the field "field"
+//                final Field field = clazz.cast(headerObj).getClass().getDeclaredField("field");
+//                field.setAccessible(true);
+//                final Field actualField = (Field) field.get(field);
+//                actualField.setAccessible(true);
+//
+//                component = (IChatComponent) actualField.get(tabOverlay);
+                return false;
+            } else {
+                component = (IChatComponent) headerObj;
+            }
+
+            return component.getUnformattedText().toLowerCase().contains("hypixel.net");
+        }
+
+        return false;
     }
 
     /**
