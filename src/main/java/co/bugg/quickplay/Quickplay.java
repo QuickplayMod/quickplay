@@ -247,6 +247,7 @@ public class Quickplay {
      * Disable the mod
      */
     public void disable(String reason) {
+        // TODO This gets stuck when event handlers are unregistered.
         if(this.enabled) {
             this.enabled = false;
             eventHandlers.forEach(this::unregisterEventHandler);
