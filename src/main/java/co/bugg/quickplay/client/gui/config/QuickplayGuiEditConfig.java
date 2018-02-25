@@ -91,7 +91,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         // If small height, sacrifice pretty fade for more button space
         scrollFadeLine = topOfBox + (height > 250 ? ConfigElement.ELEMENT_HEIGHT : 0);
-        bottomScrollMargins = 10;
+        bottomScrollMargins = 30;
 
         /*
          * Get the config elements that can be changed
@@ -116,7 +116,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         configElements.sort(Comparator.comparing(o -> o.optionInfo.category()));
 
         // If at least the last button is going to be off screen, scroll bar should be drawn
-        scrollbarDrawn = scrollFadeLine + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (configElements.size())) + bottomScrollMargins > height;
+        scrollbarDrawn = scrollFadeLine + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * configElements.size()) + bottomScrollMargins > height - scrollFadeLine;
 
         /*
          * Create the necessary buttons
