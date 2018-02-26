@@ -54,3 +54,4 @@ quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recr
 quickplay.keybinds.title=Keybinds
 quickplay.keybinds.reset=Reset Keybinds
 quickplay.gui.keybinds.delete=Delete
+quickplay.gui.keybinds.taken=That key is already assigned to a Quickplay function!

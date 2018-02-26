@@ -10,7 +10,9 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class QuickplayGuiKeybinds extends QuickplayGui {
 
@@ -29,6 +31,8 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     public final String keybindAppendedEditingText = " <";
 
     public QuickplayGuiComponent selectedComponent = null;
+
+    public boolean drawTakenPopup;
 
     @Override
     public void initGui() {
@@ -59,6 +63,12 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         drawDefaultBackground();
 
         super.drawScreen(mouseX, mouseY, partialTicks);
+
+        if(drawTakenPopup) {
+            final List<String> hoverText = new ArrayList<>();
+            hoverText.add(new ChatComponentTranslation("quickplay.gui.keybinds.taken").getUnformattedText());
+            drawHoveringText(hoverText, mouseX, mouseY);
+        }
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
@@ -125,14 +135,28 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         closeContextMenu();
         if(selectedComponent != null) {
             final QuickplayKeybind keybind = (QuickplayKeybind) selectedComponent.origin;
-            switch(keyCode) {
-                case Keyboard.KEY_ESCAPE:
-                    keybind.key = Keyboard.KEY_NONE;
-                    break;
-                default:
-                    keybind.key = keyCode;
-                    break;
+            if(Quickplay.INSTANCE.keybinds.keybinds.stream().anyMatch(keybind1 -> keybind1.key == keyCode && keybind != keybind1)) {
+                // Key is already taken so cancel, draw a popup telling them, and hide it in 3 seconds
+                drawTakenPopup = true;
+                Quickplay.INSTANCE.threadPool.submit(() -> {
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    drawTakenPopup = false;
+                });
+            } else {
+                switch (keyCode) {
+                    case Keyboard.KEY_ESCAPE:
+                        keybind.key = Keyboard.KEY_NONE;
+                        break;
+                    default:
+                        keybind.key = keyCode;
+                        break;
+                }
             }
+
             formatComponentString(selectedComponent, false);
             selectedComponent = null;
             Quickplay.INSTANCE.keybinds.save();
