@@ -82,8 +82,8 @@ public class InstanceWatcher {
                 if(Quickplay.INSTANCE.settings.lobbyOneSwap) {
                     // Swap if this is true by the end of this if statement
                     boolean swapToLobbyOne = true;
-                    // Don't swap if we aren't in a lobby
-                    if(!server.contains("lobby"))
+                    // Don't swap if we aren't in a lobby or we don't know where we are
+                    if(server == null || !server.contains("lobby"))
                         swapToLobbyOne = false;
                     // If we have been in another server before this one
                     else if(instanceHistory.size() > 0) {
