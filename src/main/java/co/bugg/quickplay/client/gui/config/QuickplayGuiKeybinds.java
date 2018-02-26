@@ -67,6 +67,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+
         for(QuickplayGuiComponent component : componentList) {
             if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(mc, mouseX, mouseY)) {
                 //noinspection ArraysAsListWithZeroOrOneArgument
@@ -76,6 +77,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                         switch(index) {
                             case 0:
                                 Quickplay.INSTANCE.keybinds.keybinds.remove(component.origin);
+                                Quickplay.INSTANCE.unregisterEventHandler(component.origin);
                                 try {
                                     Quickplay.INSTANCE.keybinds.save();
                                 } catch (IOException e) {
@@ -104,6 +106,11 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
             formatComponentString(component, true);
         } else if(component.displayString.equals(resetButtonText)) {
             try {
+                // Unsubscribe all keybinds
+                for(QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds)
+                    Quickplay.INSTANCE.unregisterEventHandler(keybind);
+
+                // Create a new keybind list
                 Quickplay.INSTANCE.keybinds = new ConfigKeybinds(true);
                 Quickplay.INSTANCE.keybinds.save();
                 initGui();
