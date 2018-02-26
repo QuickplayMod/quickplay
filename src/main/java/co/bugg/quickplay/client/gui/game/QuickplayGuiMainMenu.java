@@ -98,8 +98,8 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         // Add buttons to the component list in the proper grid
         int nextButtonId = 0;
         for(Game game : Quickplay.INSTANCE.gameList) {
-            // TODO: Ideally buttons would extend out to be over the text as well, so you can click there and it still works. This might require a major rewrite.
-            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding + boxYMargins * 2) * currentRow + windowYPadding), gameImgSize, gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier));
+            // Create invisible button                                                                                                                                                                                      // Width can't be affected by scaling                       // Texture is of the game icon, although it's not rendered (opacity is 0 in drawScreen)
+            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding + boxYMargins * 2) * currentRow + windowYPadding), (int) (itemWidth / scaleMultiplier), gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier));
             currentColumn++;
             if(currentColumn + 1 > columnCount) {
                 currentColumn = 0;
@@ -116,22 +116,35 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
         drawDefaultBackground();
 
+        // OVERRIDE
+        //super.drawScreen(mouseX, mouseY, partialTicks);
+        for (QuickplayGuiComponent component : componentList) {
+            component.draw(this.mc, mouseX, mouseY, 0);
+        }
+
         // if there are no games to display
         if(Quickplay.INSTANCE.gameList == null || Quickplay.INSTANCE.gameList.size() <= 0) {
             drawNoGamesMenu();
         } else {
 
-            // Draw strings for all the games buttons
-            GL11.glScaled(stringScale, stringScale, stringScale);
+            // Draw images & strings for all the games buttons
             for(QuickplayGuiComponent component : componentList) {
+                GL11.glColor3f(1, 1, 1);
                 if(component.origin instanceof Game) {
+                    // Draw icon
+                    GL11.glScaled(scaleMultiplier, scaleMultiplier, scaleMultiplier);
+                    Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(((Game) component.origin).imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"));
+                    drawTexturedModalRect((int) (component.x / scaleMultiplier), (int) (component.y / scaleMultiplier), 0, 0, gameImgSize, gameImgSize);
+                    GL11.glScaled(1 / scaleMultiplier, 1 / scaleMultiplier, 1 / scaleMultiplier);
+
+                    // Draw text
+                    GL11.glScaled(stringScale, stringScale, stringScale);
                     final int color = component.mouseHovering(mc, mouseX, mouseY) && contextMenu == null ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
-                    drawString(mc.fontRendererObj, ((Game) component.origin).name, (int) ((component.x + component.width + stringLeftMargins) / stringScale), (int) ((((component.y + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                    drawString(mc.fontRendererObj, ((Game) component.origin).name, (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale), (int) ((((component.y + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                    GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
                 }
             }
-            GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
 
-            super.drawScreen(mouseX, mouseY, partialTicks);
             GL11.glEnable(GL11.GL_BLEND);
 
             drawScrollBar();
