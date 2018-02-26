@@ -1,4 +1,7 @@
 quickplay.offline=You are not currently online the Hypixel Network!
+quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
+quickplay.chat.separator=-
+
 quickplay.commands.quickplay.help.help=Display the available commands.
 quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
 quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
@@ -7,11 +10,13 @@ quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
 quickplay.commands.quickplay.keybinds.help=Open the Quickplay Keybind editor.
 quickplay.commands.quickplay.moveinstance.deprecated=This command is deprecated. You should use "/qp config" instead!
 quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
-quickplay.chat.separator=-
-quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
 quickplay.commands.usage=Command syntax:
+
+quickplay.gui.copyright=Copyright © %s bugfroggy
+quickplay.gui.favorite=Bind to key...
 quickplay.gui.close=Close
 quickplay.gui.back=Back
+
 quickplay.config.keybinds.openmain=Open Main GUI
 quickplay.config.saveerror=There was an error saving your configuration. Settings may not be saved!
 quickplay.config.gui.title=Quickplay Config
@@ -34,7 +39,6 @@ quickplay.gui.main.nogames.header=Oops!
 quickplay.gui.main.nogames.issue=Looks like I couldn't figure out what games are available.
 quickplay.gui.main.nogames.why=This most likely is occurring if you just installed the mod.
 quickplay.gui.main.nogames.contact=Try restarting your game, or contact bugfroggy if this doesn't resolve the problem!
-quickplay.gui.favorite=Bind to key...
 
 quickplay.gui.stats.yes=Yes, send statistics
 quickplay.gui.stats.no=No, don't send statistics
@@ -46,8 +50,7 @@ quickplay.gui.stats.copy=Click to copy
 quickplay.gui.stats.privacy=Privacy Policy
 quickplay.gui.stats.privacyerror=Something went wrong. %s
 
-quickplay.gui.copyright=Copyright © %s bugfroggy
-
 quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recreating it.
 quickplay.keybinds.title=Keybinds
 quickplay.keybinds.reset=Reset Keybinds
+quickplay.gui.keybinds.delete=Delete

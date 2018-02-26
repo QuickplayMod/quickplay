@@ -2,10 +2,7 @@ package co.bugg.quickplay.client.gui.config;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayKeybind;
-import co.bugg.quickplay.client.gui.QuickplayGui;
-import co.bugg.quickplay.client.gui.QuickplayGuiButton;
-import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
-import co.bugg.quickplay.client.gui.QuickplayGuiHeader;
+import co.bugg.quickplay.client.gui.*;
 import co.bugg.quickplay.config.ConfigKeybinds;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -13,6 +10,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class QuickplayGuiKeybinds extends QuickplayGui {
 
@@ -67,6 +65,35 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     }
 
     @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        for(QuickplayGuiComponent component : componentList) {
+            if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(mc, mouseX, mouseY)) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new ChatComponentTranslation("quickplay.gui.keybinds.delete").getUnformattedText()), component, -1, mouseX, mouseY) {
+                    @Override
+                    public void optionSelected(int index) {
+                        switch(index) {
+                            case 0:
+                                Quickplay.INSTANCE.keybinds.keybinds.remove(component.origin);
+                                try {
+                                    Quickplay.INSTANCE.keybinds.save();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    Quickplay.INSTANCE.sendExceptionRequest(e);
+                                }
+
+                                initGui();
+                                break;
+                        }
+                    }
+                };
+                componentList.add(contextMenu);
+                break;
+            }
+        }
+    }
+
+    @Override
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
         if(component.origin instanceof QuickplayKeybind) {
@@ -87,6 +114,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        closeContextMenu();
         if(selectedComponent != null) {
             final QuickplayKeybind keybind = (QuickplayKeybind) selectedComponent.origin;
             switch(keyCode) {
