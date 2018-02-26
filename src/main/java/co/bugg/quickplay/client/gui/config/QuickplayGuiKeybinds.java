@@ -69,6 +69,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         for(QuickplayGuiComponent component : componentList) {
             if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(mc, mouseX, mouseY)) {
+                //noinspection ArraysAsListWithZeroOrOneArgument
                 contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new ChatComponentTranslation("quickplay.gui.keybinds.delete").getUnformattedText()), component, -1, mouseX, mouseY) {
                     @Override
                     public void optionSelected(int index) {

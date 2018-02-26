@@ -66,6 +66,7 @@ public class QuickplayGuiGame extends QuickplayGui {
      * Used for keybinds, gameList is queried for the name of the game provided
      * @param unlocalizedGameName Name of the game to display if possible
      */
+    @SuppressWarnings("unused")
     public QuickplayGuiGame(String unlocalizedGameName) {
         if(unlocalizedGameName != null) {
             List<Game> filteredList = Quickplay.INSTANCE.gameList.stream().filter(game -> game.unlocalizedName.equals(unlocalizedGameName)).collect(Collectors.toList());

@@ -279,6 +279,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         for(QuickplayGuiComponent component : componentList) {
             if(!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(mc, mouseX, mouseY) && mouseButton == 1) {
+                //noinspection ArraysAsListWithZeroOrOneArgument
                 contextMenu = new QuickplayGuiContextMenu(Arrays.asList(favoriteString), component, -1, mouseX, mouseY) {
                     @Override
                     public void optionSelected(int index) {
