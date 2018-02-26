@@ -8,10 +8,12 @@ import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.util.Message;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import net.minecraft.client.Minecraft;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -65,8 +67,11 @@ public class ResponseAction {
             case RELOAD_GAMES:
                 Quickplay.INSTANCE.threadPool.submit(() -> {
                     System.out.println("Reloading games...");
-                    // TODO send locale, POST parameter "locale" iirc
-                    // TODO this might crash if there's a typo in the URL. Should double check.
+
+                    HashMap<String, String> params = new HashMap<>();
+                    Quickplay.INSTANCE.requestFactory.addStatisticsParameters(params);
+                    params.put("locale", Minecraft.getMinecraft().gameSettings.language);
+
                     WebResponse response = Quickplay.INSTANCE.requestFactory.newRequest(getValue().getAsString(), null).execute();
 
                     for (ResponseAction action : response.actions) {
