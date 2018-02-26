@@ -115,12 +115,6 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
         drawDefaultBackground();
 
-        // OVERRIDE
-        //super.drawScreen(mouseX, mouseY, partialTicks);
-        for (QuickplayGuiComponent component : componentList) {
-            component.draw(this.mc, mouseX, mouseY, 0);
-        }
-
         // if there are no games to display
         if(Quickplay.INSTANCE.gameList == null || Quickplay.INSTANCE.gameList.size() <= 0) {
             drawNoGamesMenu();
@@ -148,6 +142,12 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
             drawScrollBar();
 
+        }
+
+        // OVERRIDE
+        //super.drawScreen(mouseX, mouseY, partialTicks);
+        for (QuickplayGuiComponent component : componentList) {
+            component.draw(this.mc, mouseX, mouseY, (component instanceof QuickplayGuiContextMenu) ? opacity : 0);
         }
 
         drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
