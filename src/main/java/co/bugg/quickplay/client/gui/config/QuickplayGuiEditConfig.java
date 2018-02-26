@@ -325,9 +325,6 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         lastTwoMouseX = new int[]{-1, -1};
         lastTwoMouseY = new int[]{-1, -1};
 
-
-        // TODO probably possible to shrink the scrolling space from an entire element. Kinda messes up the look of scrolling, but gets rid of the giant gap.
-
         // Scroll is animated, one pixel per 5ms
         Quickplay.INSTANCE.threadPool.submit(() -> {
 

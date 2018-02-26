@@ -74,7 +74,6 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         }
 
         // String scales up with size of game images
-        // TODO: Make string scale smaller if strings fall off screen
         if(gameImgSize * scaleMultiplier > 100) {
             stringScale = 2.0;
         } else if(gameImgSize * scaleMultiplier > 50) {
