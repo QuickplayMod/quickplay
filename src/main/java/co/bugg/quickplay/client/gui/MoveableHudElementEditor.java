@@ -39,11 +39,6 @@ public class MoveableHudElementEditor extends QuickplayGui {
     }
 
     @Override
-    public void mouseScrolled(int distance) {
-
-    }
-
-    @Override
     public void componentClicked(QuickplayGuiComponent component) {
     }
 

@@ -137,7 +137,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         for(ConfigElement element : configElements) {
             if(previousCategory == null || !previousCategory.equals(element.optionInfo.category())) {
-                componentList.add(new QuickplayGuiHeader(null, nextButtonId, width / 2, getY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.category()));
+                componentList.add(new QuickplayGuiString(null, nextButtonId, width / 2, getY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.category(), true, true));
                 nextButtonId++;
             }
             previousCategory = element.optionInfo.category();
@@ -147,16 +147,24 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
             // Figure out what button type needs to be rendered & give it the appropriate text
             if(element.element instanceof Boolean)
-                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText()));
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText(), true));
             else if(element.element instanceof QuickplayColor || element.element instanceof Runnable)
-                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name()));
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name(), true));
             else if(element.element instanceof Double)
-                componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name(), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper));
+                componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name(), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper, true));
 
             nextButtonId++;
         }
 
-        componentList.add(new QuickplayGuiButton(null, nextButtonId, width - openFolderButtonMargins - openFolderButtonWidth, openFolderButtonMargins, openFolderButtonWidth, 20, openFolderText));
+        componentList.add(new QuickplayGuiButton(null, nextButtonId, width - openFolderButtonMargins - openFolderButtonWidth, openFolderButtonMargins, openFolderButtonWidth, 20, openFolderText, false));
+
+        setScrollingValues();
+    }
+
+    @Override
+    public void setScrollingValues() {
+        super.setScrollingValues();
+        scrollFrameTop = scrollFadeLine;
     }
 
     @Override
@@ -239,9 +247,9 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             if(!component.displayString.equals(openFolderText)) {
                 double scrollOpacity = (component.y > scrollFadeLine ? 1 : component.y + ConfigElement.ELEMENT_HEIGHT < scrollFadeLine ? 0 : (ConfigElement.ELEMENT_HEIGHT - ((double) scrollFadeLine - (double) component.y)) / (double) ConfigElement.ELEMENT_HEIGHT);
                 component.opacity = scrollOpacity;
-                if(component.y + ConfigElement.ELEMENT_HEIGHT > scrollFadeLine) component.draw(this.mc, mouseX, mouseY, opacity * (float) scrollOpacity);
+                if(component.y + ConfigElement.ELEMENT_HEIGHT > scrollFadeLine) component.draw(this, mouseX, mouseY, opacity * (float) scrollOpacity);
             } else
-                component.draw(mc, mouseX, mouseY, opacity);
+                component.draw(this, mouseX, mouseY, opacity);
         }
 
         /*
@@ -321,50 +329,11 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
     @Override
     public void mouseScrolled(int distance) {
+        super.mouseScrolled(distance);
         // On scroll let's clear the arrays containing mouse positions used for hover text
         lastTwoMouseX = new int[]{-1, -1};
         lastTwoMouseY = new int[]{-1, -1};
 
-        // Scroll is animated, one pixel per 5ms
-        Quickplay.INSTANCE.threadPool.submit(() -> {
-
-            // Make a copy of the list & remove the folder button as it's static
-            final List<QuickplayGuiComponent> componentListWithoutFolderButton = new ArrayList<>(componentList).stream().filter(component -> !component.displayString.equals(openFolderText)).collect(Collectors.toList());
-            // No point in trying to scroll if there's no elements
-            if(componentListWithoutFolderButton.size() > 0) {
-                // Figure out which component is the highest on screen & which is lowest
-                QuickplayGuiComponent lowestComponent = null;
-                QuickplayGuiComponent highestComponent = null;
-                for (QuickplayGuiComponent component : componentListWithoutFolderButton) {
-                    if (lowestComponent == null || lowestComponent.y < component.y)
-                        lowestComponent = component;
-                    if (highestComponent == null || highestComponent.y > component.y)
-                        highestComponent = component;
-                }
-
-                for (int i = 0; i < Math.abs(distance); i++) {
-
-                    // Only allow scrolling if there is an element off screen
-                    // If scrolling down & the last element is at all off the screen (plus the additional margins for aesthetic purposes)
-                    if ((distance < 0 && lowestComponent.y > height - ConfigElement.ELEMENT_HEIGHT - bottomScrollMargins) ||
-                            // OR if scrolling up & the top element is currently off of the screen (above the fade line)
-                            (distance > 0 && highestComponent.y < scrollFadeLine + ConfigElement.ELEMENT_MARGINS)) {
-                        for (QuickplayGuiComponent component : componentListWithoutFolderButton) {
-                            component.move(distance < 0 ? -1 : 1);
-                        }
-                        try {
-                            Thread.sleep(5);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            break;
-                        }
-                    } else {
-                        // Already reached the bottom/top, so stop trying to scroll
-                        break;
-                    }
-                }
-            }
-        });
     }
 
     @SubscribeEvent

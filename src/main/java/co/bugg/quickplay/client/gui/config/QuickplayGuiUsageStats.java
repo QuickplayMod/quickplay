@@ -4,7 +4,7 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import co.bugg.quickplay.client.gui.QuickplayGuiButton;
 import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
-import co.bugg.quickplay.client.gui.QuickplayGuiHeader;
+import co.bugg.quickplay.client.gui.QuickplayGuiString;
 import co.bugg.quickplay.config.ConfigUsageStats;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentTranslation;
@@ -39,16 +39,16 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
     public void initGui() {
         super.initGui();
         buttonY = (int) (height * 0.8);
-        componentList.add(new QuickplayGuiButton(usageStats, 0, width / 2 - buttonWidth - buttonMargins / 2, buttonY, buttonWidth, buttonHeight, yesText));
-        componentList.add(new QuickplayGuiButton(usageStats, 1, width / 2 + buttonMargins / 2, buttonY, buttonWidth, buttonHeight, noText));
+        componentList.add(new QuickplayGuiButton(usageStats, 0, width / 2 - buttonWidth - buttonMargins / 2, buttonY, buttonWidth, buttonHeight, yesText, true));
+        componentList.add(new QuickplayGuiButton(usageStats, 1, width / 2 + buttonMargins / 2, buttonY, buttonWidth, buttonHeight, noText, true));
 
 
         // Draw the stats token if it's available
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null) {
             tokenText = new ChatComponentTranslation("quickplay.gui.stats.token", Quickplay.INSTANCE.usageStats.statsToken.toString()).getUnformattedText();
-            componentList.add(new QuickplayGuiHeader(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2, buttonY - fontRendererObj.FONT_HEIGHT - 3, fontRendererObj.getStringWidth(tokenText), fontRendererObj.FONT_HEIGHT, tokenText));
+            componentList.add(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2, buttonY - fontRendererObj.FONT_HEIGHT - 3, fontRendererObj.getStringWidth(tokenText), fontRendererObj.FONT_HEIGHT, tokenText, true, true));
         }
-        componentList.add(new QuickplayGuiHeader("https://bugg.co/quickplay/privacy", 3, width / 2, buttonY - (fontRendererObj.FONT_HEIGHT + 3) * 2, fontRendererObj.getStringWidth(privacyText), fontRendererObj.FONT_HEIGHT, privacyText));
+        componentList.add(new QuickplayGuiString("https://bugg.co/quickplay/privacy", 3, width / 2, buttonY - (fontRendererObj.FONT_HEIGHT + 3) * 2, fontRendererObj.getStringWidth(privacyText), fontRendererObj.FONT_HEIGHT, privacyText, true, true));
 
         descriptionWidth = (int) (width * 0.8);
         final String description = new ChatComponentTranslation("quickplay.gui.stats.description").getUnformattedText();
@@ -75,7 +75,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
 
         // If hovering over the token button
         Optional<QuickplayGuiComponent> filteredStream = componentList.stream().filter(component -> component.displayString.equals(tokenText)).findFirst();
-        if(tokenText != null && filteredStream.isPresent() && filteredStream.get().mouseHovering(mc, mouseX, mouseY)) {
+        if(tokenText != null && filteredStream.isPresent() && filteredStream.get().mouseHovering(this, mouseX, mouseY)) {
             drawHoveringText(Collections.singletonList(new ChatComponentTranslation("quickplay.gui.stats.copy").getUnformattedText()), mouseX, mouseY);
         }
 
@@ -117,6 +117,6 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
 
     @Override
     public void mouseScrolled(int distance) {
-
+        // This GUI does not have scrolling capability
     }
 }

@@ -28,9 +28,9 @@ jar {
 
 targetCompatibility = sourceCompatibility = 1.8
 
-version = "2.0.0-beta.2"
+version = "2.0.0-beta.3"
 group= "co.bugg.quickplay" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Quickplay"
+archivesBaseName = "Quickplay-1.8.9"
 
 idea {
     module {

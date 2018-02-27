@@ -43,16 +43,18 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         int buttonId = 0;
 
         // Header
-        componentList.add(new QuickplayGuiHeader(null, buttonId, width / 2, topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight, new ChatComponentTranslation("quickplay.keybinds.title").getUnformattedText()));
+        componentList.add(new QuickplayGuiString(null, buttonId, width / 2, topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight, new ChatComponentTranslation("quickplay.keybinds.title").getUnformattedText(), true, true));
 
         for(QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds) {
-            final QuickplayGuiComponent component = new QuickplayGuiButton(keybind, buttonId, width / 2 - buttonWidth / 2, topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight, keybind.name);
+            final QuickplayGuiComponent component = new QuickplayGuiButton(keybind, buttonId, width / 2 - buttonWidth / 2, topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight, keybind.name, true);
             formatComponentString(component, false);
             componentList.add(component);
         }
 
         // Reset button
-        componentList.add(new QuickplayGuiButton(null, buttonId, width - buttonMargins - resetButtonWidth, height - buttonMargins - buttonHeight, resetButtonWidth, buttonHeight, resetButtonText));
+        componentList.add(new QuickplayGuiButton(null, buttonId, width - buttonMargins - resetButtonWidth, height - buttonMargins - buttonHeight, resetButtonWidth, buttonHeight, resetButtonText, false));
+
+        setScrollingValues();
     }
 
     @Override
@@ -79,9 +81,9 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
         for(QuickplayGuiComponent component : componentList) {
-            if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(mc, mouseX, mouseY)) {
+            if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(this, mouseX, mouseY)) {
                 //noinspection ArraysAsListWithZeroOrOneArgument
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new ChatComponentTranslation("quickplay.gui.keybinds.delete").getUnformattedText()), component, -1, mouseX, mouseY) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new ChatComponentTranslation("quickplay.gui.keybinds.delete").getUnformattedText()), component, -1, mouseX, mouseY, false) {
                     @Override
                     public void optionSelected(int index) {
                         switch(index) {
@@ -171,50 +173,5 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
             component.displayString = keybindPrependedEditingText + keybind.name + keybindNameSeparator + keybindEditingColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET + keybindAppendedEditingText;
         else
             component.displayString = keybind.name + keybindNameSeparator + keybindColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET;
-    }
-
-    @Override
-    public void mouseScrolled(int distance) {
-
-        // Scroll is animated, one pixel per 1ms
-        Quickplay.INSTANCE.threadPool.submit(() -> {
-
-            // Figure out which component is the highest on screen & which is lowest
-            QuickplayGuiComponent lowestComponent = null;
-            QuickplayGuiComponent highestComponent = null;
-            for(QuickplayGuiComponent component : componentList) {
-                if(lowestComponent == null || lowestComponent.y < component.y)
-                    lowestComponent = component;
-                if(highestComponent == null || highestComponent.y > component.y)
-                    highestComponent = component;
-            }
-
-            if(componentList.size() > 0)
-                // Quick scrolling is important in this GUI so scroll speed * distance increased
-                for (int i = 0; i < Math.abs(distance); i++) {
-
-                    // Only allow scrolling if there is an element off screen
-                    // If scrolling down & the last element is at all off the screen (plus the additional margins for aesthetic purposes)
-                    if((distance < 0 && lowestComponent.y > height - buttonHeight - buttonMargins) ||
-                            // OR if scrolling up & the top element is currently at all off of the screen
-                            (distance > 0 && highestComponent.y < topOfButtons)) {
-
-                        for (QuickplayGuiComponent component : componentList) {
-                            if(!component.displayString.equals(resetButtonText))
-                                component.move(distance < 0 ? -1 : 1);
-                        }
-
-                        try {
-                            Thread.sleep(1);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            break;
-                        }
-                    } else {
-                        // Already reached the bottom/top, so stop trying to scroll
-                        break;
-                    }
-                }
-        });
     }
 }

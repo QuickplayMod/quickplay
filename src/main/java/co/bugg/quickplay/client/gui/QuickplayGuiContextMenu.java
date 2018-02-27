@@ -23,9 +23,9 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
     final FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRendererObj;
 
-    public QuickplayGuiContextMenu(List<String> options, QuickplayGuiComponent origin, int id, int x, int y) {
+    public QuickplayGuiContextMenu(List<String> options, QuickplayGuiComponent origin, int id, int x, int y, boolean scrollable) {
         // Width / height calculated later
-        super(origin, id, x, y, 0, 0, "");
+        super(origin, id, x, y, 0, 0, "", scrollable);
 
         Quickplay.INSTANCE.registerEventHandler(this);
 
@@ -65,9 +65,9 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
     }
 
     @Override
-    public boolean mouseClicked(Minecraft mc, int mouseX, int mouseY, int mouseButton) {
-        if(mouseHovering(mc, mouseX, mouseY)) {
-            final int hoveringOver = mouseHoveringOverOption(mouseX, mouseY);
+    public boolean mouseClicked(QuickplayGui gui, int mouseX, int mouseY, int mouseButton) {
+        if(mouseHovering(gui, mouseX, mouseY)) {
+            final int hoveringOver = mouseHoveringOverOption(gui, mouseX, mouseY);
             if(hoveringOver >= 0) {
                 optionSelected(hoveringOver);
                 return true;
@@ -76,10 +76,12 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
         return false;
     }
 
-    private int mouseHoveringOverOption(int mouseX, int mouseY) {
+    private int mouseHoveringOverOption(QuickplayGui gui, int mouseX, int mouseY) {
+        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+
         for(ListIterator<String> iter = options.listIterator(); iter.hasNext();) {
             final int index = iter.nextIndex();
-            final int stringY = (int) (y + boxPadding * scale + index * (fontRendererObj.FONT_HEIGHT + stringBottomMargin) * scale);
+            final int stringY = (int) (scrollAdjustedY + boxPadding * scale + index * (fontRendererObj.FONT_HEIGHT + stringBottomMargin) * scale);
             if(mouseX > x && mouseX < x + width * scale && mouseY > stringY && mouseY < stringY + fontRendererObj.FONT_HEIGHT * scale)
                 return index;
 
@@ -89,20 +91,22 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
     }
 
     @Override
-    public void draw(Minecraft mc, int mouseX, int mouseY, double opacity) {
+    public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
+        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
 
         GL11.glScaled(scale, scale, scale);
 
         // Draw right click box
-        drawRect((int) (x / scale), (int) (y / scale), (int) (x / scale + width), (int) (y / scale + height), (int) (opacity * boxOpacity * 255) << 24);
+        drawRect((int) (x / scale), (int) (scrollAdjustedY / scale), (int) (x / scale + width), (int) (scrollAdjustedY / scale + height), (int) (opacity * boxOpacity * 255) << 24);
         GL11.glEnable(GL11.GL_BLEND);
 
         for(ListIterator<String> iter = options.listIterator(); iter.hasNext();) {
             final int index = iter.nextIndex();
             final String string = iter.next();
-            final int stringY = (int) (y / scale + boxPadding + index * (fontRendererObj.FONT_HEIGHT + stringBottomMargin));
+            final int stringY = (int) (scrollAdjustedY / scale + boxPadding + index * (fontRendererObj.FONT_HEIGHT + stringBottomMargin));
             final int color = highlightedOptionIndex == index ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
             drawString(fontRendererObj, string, (int) (x / scale + boxPadding), stringY, color & 0xFFFFFF | (int) (opacity * 255) << 24);
             if(mouseX > x && mouseX < x + width * scale && mouseY > stringY * scale && mouseY < (stringY + fontRendererObj.FONT_HEIGHT) * scale)
@@ -118,12 +122,13 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
 
     @Override
-    public boolean mouseHovering(Minecraft mc, int mouseX, int mouseY) {
-        return mouseX > x && mouseX < x + width * scale && mouseY > y && mouseY < y + height * scale;
+    public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY) {
+        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+        return mouseX > x && mouseX < x + width * scale && mouseY > scrollAdjustedY && mouseY < scrollAdjustedY + height * scale;
     }
 
     @Override
-    public void mouseReleased(Minecraft mc, int mouseX, int mouseY) {
+    public void mouseReleased(QuickplayGui gui, int mouseX, int mouseY) {
 
     }
 }

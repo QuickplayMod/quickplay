@@ -112,7 +112,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         for(ListIterator<Mode> iter = game.modes.listIterator(); iter.hasNext();) {
             final int index = iter.nextIndex();
             final Mode next = iter.next();
-            componentList.add(new QuickplayGuiButton(next, index, columnZeroX + (buttonWidth + buttonMargins) * currentColumn, scrollFadeLine + (buttonHeight + buttonMargins) * currentRow, buttonWidth, buttonHeight, next.name));
+            componentList.add(new QuickplayGuiButton(next, index, columnZeroX + (buttonWidth + buttonMargins) * currentColumn, scrollFadeLine + (buttonHeight + buttonMargins) * currentRow, buttonWidth, buttonHeight, next.name, true));
             // Proceed to next position
             if(currentColumn + 1 >= columnCount) {
                 currentColumn = 0;
@@ -125,6 +125,18 @@ public class QuickplayGuiGame extends QuickplayGui {
                 currentColumn++;
             }
         }
+
+        setScrollingValues();
+    }
+
+    @Override
+    public void setScrollingValues() {
+        super.setScrollingValues();
+        scrollFrameTop = scrollFadeLine;
+
+        // Increase scroll speed & amount
+        scrollMultiplier = 5;
+        scrollDelay = 1;
     }
 
     @Override
@@ -170,7 +182,7 @@ public class QuickplayGuiGame extends QuickplayGui {
             double scrollOpacity = (component.y > scrollFadeLine ? 1 : component.y + scrollFadeDistance < scrollFadeLine ? 0 : (scrollFadeDistance - ((double) scrollFadeLine - (double) component.y)) / (double) scrollFadeDistance);
             component.opacity = scrollOpacity;
             if(opacity * scrollOpacity > 0)
-                component.draw(this.mc, mouseX, mouseY, opacity * scrollOpacity);
+                component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
         }
 
         // Draw scrollbar if the top & bottom element aren't on the screen at the same time (Uses basically the same crappy code in QuickplayGuiEditConfig)
@@ -193,55 +205,11 @@ public class QuickplayGuiGame extends QuickplayGui {
     }
 
     @Override
-    public void mouseScrolled(int distance) {
-
-        // Scroll is animated, one pixel per 1ms
-        Quickplay.INSTANCE.threadPool.submit(() -> {
-
-            // Figure out which component is the highest on screen & which is lowest
-            QuickplayGuiComponent lowestComponent = null;
-            QuickplayGuiComponent highestComponent = null;
-            for(QuickplayGuiComponent component : componentList) {
-                if(lowestComponent == null || lowestComponent.y < component.y)
-                    lowestComponent = component;
-                if(highestComponent == null || highestComponent.y > component.y)
-                    highestComponent = component;
-            }
-
-            if(componentList.size() > 0)
-                // Quick scrolling is important in this GUI so scroll speed * distance increased
-                for (int i = 0; i < Math.abs(distance * 3); i++) {
-
-                    // Only allow scrolling if there is an element off screen
-                    // If scrolling down & the last element is at all off the screen (plus the additional margins for aesthetic purposes)
-                    if((distance < 0 && lowestComponent.y > height - buttonHeight - scrollMargins) ||
-                            // OR if scrolling up & the top element is currently at all off of the screen
-                            (distance > 0 && highestComponent.y < scrollFadeLine)) {
-
-                        for (QuickplayGuiComponent component : componentList) {
-                            component.move(distance < 0 ? -1 : 1);
-                        }
-
-                        try {
-                            Thread.sleep(2);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            break;
-                        }
-                    } else {
-                        // Already reached the bottom/top, so stop trying to scroll
-                        break;
-                    }
-                }
-        });
-    }
-
-    @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         for(QuickplayGuiComponent component : componentList) {
-            if (!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(mc, mouseX, mouseY) && mouseButton == 1) {
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new String[]{new ChatComponentTranslation("quickplay.gui.favorite").getUnformattedText()}), component, -1, mouseX, mouseY) {
+            if (!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(this, mouseX, mouseY) && mouseButton == 1) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new String[]{new ChatComponentTranslation("quickplay.gui.favorite").getUnformattedText()}), component, -1, mouseX, mouseY, false) {
                     @Override
                     public void optionSelected(int index) {
                         switch(index) {

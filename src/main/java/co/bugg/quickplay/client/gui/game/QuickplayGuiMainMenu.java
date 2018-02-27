@@ -53,6 +53,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     @Override
     public void initGui() {
         super.initGui();
+
         // Reset column/row number used for determining button positions
         currentColumn = 0;
         currentRow = 0;
@@ -98,7 +99,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         int nextButtonId = 0;
         for(Game game : Quickplay.INSTANCE.gameList) {
             // Create invisible button                                                                                                                                                                                      // Width can't be affected by scaling                       // Texture is of the game icon, although it's not rendered (opacity is 0 in drawScreen)
-            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding + boxYMargins * 2) * currentRow + windowYPadding), (int) (itemWidth / scaleMultiplier), gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier));
+            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding + boxYMargins * 2) * currentRow + windowYPadding), (int) (itemWidth / scaleMultiplier), gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier, true));
             currentColumn++;
             if(currentColumn + 1 > columnCount) {
                 currentColumn = 0;
@@ -106,6 +107,17 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             }
             nextButtonId++;
         }
+
+        setScrollingValues();
+    }
+
+    @Override
+    public void setScrollingValues() {
+        super.setScrollingValues();
+
+        // Increase scroll speed & amount
+        scrollMultiplier = 5;
+        scrollDelay = 1;
     }
 
     @Override
@@ -122,18 +134,19 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
             // Draw images & strings for all the games buttons
             for(QuickplayGuiComponent component : componentList) {
+                final int scrollAdjustedY = component.scrollable ? component.y - scrollPixel : component.y;
                 GL11.glColor3f(1, 1, 1);
                 if(component.origin instanceof Game) {
                     // Draw icon
                     GL11.glScaled(scaleMultiplier, scaleMultiplier, scaleMultiplier);
                     Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(((Game) component.origin).imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"));
-                    drawTexturedModalRect((int) (component.x / scaleMultiplier), (int) (component.y / scaleMultiplier), 0, 0, gameImgSize, gameImgSize);
+                    drawTexturedModalRect((int) (component.x / scaleMultiplier), (int) (scrollAdjustedY / scaleMultiplier), 0, 0, gameImgSize, gameImgSize);
                     GL11.glScaled(1 / scaleMultiplier, 1 / scaleMultiplier, 1 / scaleMultiplier);
 
                     // Draw text
                     GL11.glScaled(stringScale, stringScale, stringScale);
-                    final int color = component.mouseHovering(mc, mouseX, mouseY) && contextMenu == null ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
-                    drawString(mc.fontRendererObj, ((Game) component.origin).name, (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale), (int) ((((component.y + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                    final int color = component.mouseHovering(this, mouseX, mouseY) && contextMenu == null ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
+                    drawString(mc.fontRendererObj, ((Game) component.origin).name, (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale), (int) ((((scrollAdjustedY + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
                     GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
                 }
             }
@@ -147,7 +160,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         // OVERRIDE
         //super.drawScreen(mouseX, mouseY, partialTicks);
         for (QuickplayGuiComponent component : componentList) {
-            component.draw(this.mc, mouseX, mouseY, (component instanceof QuickplayGuiContextMenu) ? opacity : 0);
+            component.draw(this, mouseX, mouseY, (component instanceof QuickplayGuiContextMenu) ? opacity : 0);
         }
 
         drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
@@ -231,56 +244,12 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     }
 
     @Override
-    public void mouseScrolled(int distance) {
-
-        // Scroll is animated, one pixel per 1ms
-        Quickplay.INSTANCE.threadPool.submit(() -> {
-
-            // Figure out which component is the highest on screen & which is lowest
-            QuickplayGuiComponent lowestComponent = null;
-            QuickplayGuiComponent highestComponent = null;
-            for(QuickplayGuiComponent component : componentList) {
-                if(lowestComponent == null || lowestComponent.y < component.y)
-                    lowestComponent = component;
-                if(highestComponent == null || highestComponent.y > component.y)
-                    highestComponent = component;
-            }
-
-            if(componentList.size() > 0)
-                // Quick scrolling is important in this GUI so scroll speed * distance increased
-                for (int i = 0; i < Math.abs(distance * 5); i++) {
-
-                    // Only allow scrolling if there is an element off screen
-                    // If scrolling down & the last element is at all off the screen (plus the additional margins for aesthetic purposes)
-                    if((distance < 0 && lowestComponent.y > height - gameImgSize * scaleMultiplier - windowYPadding) ||
-                            // OR if scrolling up & the top element is currently at all off of the screen
-                            (distance > 0 && highestComponent.y < windowYPadding)) {
-
-                        for (QuickplayGuiComponent component : componentList) {
-                            component.move(distance < 0 ? -1 : 1);
-                        }
-
-                        try {
-                            Thread.sleep(1);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            break;
-                        }
-                    } else {
-                        // Already reached the bottom/top, so stop trying to scroll
-                        break;
-                    }
-                }
-        });
-    }
-
-    @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         for(QuickplayGuiComponent component : componentList) {
-            if(!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(mc, mouseX, mouseY) && mouseButton == 1) {
+            if(!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(this, mouseX, mouseY) && mouseButton == 1) {
                 //noinspection ArraysAsListWithZeroOrOneArgument
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(favoriteString), component, -1, mouseX, mouseY) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(favoriteString), component, -1, mouseX, mouseY, false) {
                     @Override
                     public void optionSelected(int index) {
                         closeContextMenu();

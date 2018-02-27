@@ -1,6 +1,5 @@
 package co.bugg.quickplay.client.gui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
@@ -16,9 +15,9 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     private final GuiPageButtonList.GuiResponder responder;
     private QuickplayGuiSlider.FormatHelper formatHelper;
 
-    public QuickplayGuiSlider(GuiPageButtonList.GuiResponder guiResponder, Object origin, int idIn, int x, int y, int widthIn, int heightIn, String name, float min, float max, float defaultValue, QuickplayGuiSlider.FormatHelper formatter)
+    public QuickplayGuiSlider(GuiPageButtonList.GuiResponder guiResponder, Object origin, int idIn, int x, int y, int widthIn, int heightIn, String name, float min, float max, float defaultValue, QuickplayGuiSlider.FormatHelper formatter, boolean scrollable)
     {
-        super(origin, idIn, x, y, widthIn, heightIn, "");
+        super(origin, idIn, x, y, widthIn, heightIn, "", scrollable);
         this.name = name;
         this.min = min;
         this.max = max;
@@ -48,8 +47,10 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     }
 
     @Override
-    public void draw(Minecraft mc, int mouseX, int mouseY, double opacity) {
-        super.draw(mc, mouseX, mouseY, opacity);
+    public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
+        super.draw(gui, mouseX, mouseY, opacity);
+
+        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
 
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
@@ -64,12 +65,12 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
         }
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
-        mc.getTextureManager().bindTexture(buttonTextures);
+        gui.mc.getTextureManager().bindTexture(buttonTextures);
         GL11.glScaled(scale, scale, scale);
-        drawTexturedModalRect(x + (int)(sliderPercentage * (float)(width - 8)), y, 0, 66, 4, 20);
-        drawTexturedModalRect(x + (int)(sliderPercentage * (float)(width - 8)) + 4, y, 196, 66, 4, 20);
+        drawTexturedModalRect(x + (int)(sliderPercentage * (float)(width - 8)), scrollAdjustedY, 0, 66, 4, 20);
+        drawTexturedModalRect(x + (int)(sliderPercentage * (float)(width - 8)) + 4, scrollAdjustedY, 196, 66, 4, 20);
         if(opacity > 0)
-            drawDisplayString(mc, opacity);
+            drawDisplayString(gui, opacity, scrollAdjustedY);
         GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
 
         GL11.glDisable(GL11.GL_BLEND);
@@ -82,9 +83,9 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
         sliderPercentage = sliderPercentage < 0.0f ? 0.0f : sliderPercentage > 1.0f ? 1.0f : sliderPercentage;
     }
 
-    public boolean mouseHovering(Minecraft mc, int mouseX, int mouseY)
+    public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY)
     {
-        if (super.mouseHovering(mc, mouseX, mouseY))
+        if (super.mouseHovering(gui, mouseX, mouseY))
         {
             sliderPercentage = (float)(mouseX - (x / scale + 4)) / (float)(width / scale - 8);
 
@@ -110,7 +111,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     }
 
     @Override
-    public void mouseReleased(Minecraft mc, int mouseX, int mouseY)
+    public void mouseReleased(QuickplayGui gui, int mouseX, int mouseY)
     {
         isMouseDown = false;
     }

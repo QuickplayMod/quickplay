@@ -1,6 +1,5 @@
 package co.bugg.quickplay.client.gui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -14,12 +13,12 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     protected int textureY = -1;
     protected double scale = 1.0;
 
-    public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text) {
-        this(origin, id, x, y, widthIn, heightIn, text, null, -1, -1, 1.0);
+    public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text, boolean scrollable) {
+        this(origin, id, x, y, widthIn, heightIn, text, null, -1, -1, 1.0, scrollable);
     }
 
-    public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text, ResourceLocation texture, int textureX, int textureY, double scale) {
-        super(origin, id, x, y, widthIn, heightIn, text);
+    public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text, ResourceLocation texture, int textureX, int textureY, double scale, boolean scrollable) {
+        super(origin, id, x, y, widthIn, heightIn, text, scrollable);
         // Adjust width & height according to scale
         this.width = (int) (widthIn * scale);
         this.height = (int) (heightIn * scale);
@@ -33,15 +32,17 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     }
 
     @Override
-    public void draw(Minecraft mc, int mouseX, int mouseY, double opacity) {
+    public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
+
+        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
-        mc.getTextureManager().bindTexture(texture);
+        gui.mc.getTextureManager().bindTexture(texture);
         GlStateManager.color(1, 1, 1, (float) opacity);
 
         // Update whether user is currently hovering over button
-        hovering = (mouseX >= x && mouseX < x + width) && (mouseY >= y && mouseY < y + height);
+        hovering = (mouseX >= x && mouseX < x + width) && (mouseY >= scrollAdjustedY && mouseY < scrollAdjustedY + height);
         // Get the default button texture depending on if mouse is hovering or is enabled
         int buttonTextureMultiplier = getDefaultButtonTexture(hovering);
 
@@ -49,27 +50,27 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
         GL11.glScaled(scale, scale, scale);
         if(texture == buttonTextures || textureX < 0 || textureY < 0) {
             // Draw the different parts of the button
-            drawTexturedModalRect((int) (x / scale), (int) (y  / scale), 0, 46 + buttonTextureMultiplier * 20, width / 2, height);
-            drawTexturedModalRect((int) (x + width / 2 / scale), (int) (y / scale), 200 - width / 2, 46 + buttonTextureMultiplier * 20, width / 2, height);
+            drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY  / scale), 0, 46 + buttonTextureMultiplier * 20, width / 2, height);
+            drawTexturedModalRect((int) (x + width / 2 / scale), (int) (scrollAdjustedY / scale), 200 - width / 2, 46 + buttonTextureMultiplier * 20, width / 2, height);
         } else {
-            drawTexturedModalRect((int) (x / scale), (int) (y / scale), textureX, textureY, (int) (width / scale), (int) (height / scale));
+            drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), textureX, textureY, (int) (width / scale), (int) (height / scale));
         }
         GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
 
         if(opacity > 0)
-            drawDisplayString(mc, opacity);
+            drawDisplayString(gui, opacity, scrollAdjustedY);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
 
     }
 
-    public void drawDisplayString(Minecraft mc, double opacity) {
+    public void drawDisplayString(QuickplayGui gui, double opacity, int scrollAdjustedY) {
         if(displayString != null && displayString.length() > 0) {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
 
-            drawCenteredString(mc.fontRendererObj, displayString, x + width / 2, y + (height - 8) / 2, getDefaultTextColor(opacity));
+            drawCenteredString(gui.mc.fontRendererObj, displayString, x + width / 2, scrollAdjustedY + (height - 8) / 2, getDefaultTextColor(opacity));
 
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glPopMatrix();
@@ -102,14 +103,14 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     }
 
     // Things like GUI sliders need the opacity in this method in order to draw the slider handle correctly
-    protected void mouseDragged(Minecraft mc, int mouseX, int mouseY, double opacity) {
+    protected void mouseDragged(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
     }
 
     /**
      * We can ignore mouse release events for normal buttons
      */
     @Override
-    public void mouseReleased(Minecraft mc, int mouseX, int mouseY) {
+    public void mouseReleased(QuickplayGui gui, int mouseX, int mouseY) {
     }
 
     @Override
@@ -118,7 +119,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     }
 
     @Override
-    public boolean mouseClicked(Minecraft mc, int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(QuickplayGui gui, int mouseX, int mouseY, int mouseButton) {
         return false;
     }
 }
