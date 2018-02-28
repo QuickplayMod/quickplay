@@ -125,6 +125,13 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public boolean redesignedLobbyCommand = true;
 
+    @GuiOption(
+            name = "Reverse Scrolling Direction",
+            helpText = "Reverse the direction scrolling & dragging moves the screen.",
+            category = "GUI"
+    )
+    public boolean reverseScrollingDirection = false;
+
     /**
      * Allows users to change how much padding is on the
      * top & bottom of {@link co.bugg.quickplay.client.gui.game.QuickplayGuiMainMenu}

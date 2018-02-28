@@ -460,7 +460,8 @@ public class QuickplayGui extends GuiScreen {
         if(distance != 0) {
             // Scroll is animated so we run on a thread
             Quickplay.INSTANCE.threadPool.submit(() -> {
-                final boolean scrollingUp = distance > 0;
+                // Get the scrolling direction, multiply distance by -1 to reverse it if the user's settings say so
+                final boolean scrollingUp = 0 < distance * (Quickplay.INSTANCE.settings.reverseScrollingDirection ? -1 : 1);
 
                 // Loop for the number of pixels scrolled
                 for (int i = 0; i < Math.abs(distance * scrollMultiplier); i++) {
