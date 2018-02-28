@@ -290,8 +290,9 @@ public class Quickplay {
     public void sendExceptionRequest(Exception e) {
         if(usageStats.sendUsageStats) {
             final WebResponse response = requestFactory.newExceptionRequest(e).execute();
-            for(ResponseAction action : response.actions)
-                action.run();
+            if(response != null)
+                for(ResponseAction action : response.actions)
+                    action.run();
         }
     }
 }

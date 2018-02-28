@@ -94,7 +94,7 @@ public class ServerChecker {
         // First check tab list, if it contains any references to Hypixel in the header & footer.
         final GuiPlayerTabOverlay tab = Minecraft.getMinecraft().ingameGUI.getTabList();
         try {
-            if(checkTabField(tab, "header"))
+            if(checkTabField(tab, "header", "field_175256_i"))
                 return VerificationMethod.HEADER;
         } catch (NoSuchFieldException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
@@ -102,7 +102,7 @@ public class ServerChecker {
         }
 
         try {
-            if(checkTabField(tab, "footer"))
+            if(checkTabField(tab, "footer", "field_175255_h"))
                 return VerificationMethod.FOOTER;
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
@@ -136,12 +136,21 @@ public class ServerChecker {
      * Checks whether the tab list header & footer contain information that would point to the current server being Hypixel.
      * @param tabOverlay GUI overlay for the tab list
      * @param fieldName name of the field to check (either <code>header</code> or <code>footer</code>)
+     * @param srgName field name in an obfuscated environment
      * @return Whether the field <code>fieldName</code> in the object <code>tabOverlay</code> contains "hypixel.net"
      * @throws NoSuchFieldException The field couldn't be found
      * @throws IllegalAccessException The field couldn't be accessed
      */
-    public boolean checkTabField(GuiPlayerTabOverlay tabOverlay, String fieldName) throws NoSuchFieldException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
-        final Field headerField = tabOverlay.getClass().getDeclaredField(fieldName);
+    public boolean checkTabField(GuiPlayerTabOverlay tabOverlay, String fieldName, String srgName) throws NoSuchFieldException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
+        Field headerField;
+        try {
+            // Try deobfuscated
+            headerField = tabOverlay.getClass().getDeclaredField(fieldName);
+        } catch(NoSuchFieldException e) {
+            // Assume SRG otherwise
+            headerField = tabOverlay.getClass().getDeclaredField(srgName);
+        }
+
         if(headerField != null) {
             headerField.setAccessible(true);
 
