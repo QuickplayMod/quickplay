@@ -7,11 +7,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,9 +111,10 @@ public class QuickplayGui extends GuiScreen {
     @Override
     public void onGuiClosed() {
         super.onGuiClosed();
-        if(disableShaderOnGuiClose)
+        if(disableShaderOnGuiClose) {
             // Stop using shaders
             Minecraft.getMinecraft().entityRenderer.stopUseShader();
+        }
 
         // Show HUD again
         mc.gameSettings.hideGUI = false;
@@ -132,8 +136,32 @@ public class QuickplayGui extends GuiScreen {
         mc.gameSettings.hideGUI = true;
 
         // Load the blur background shader
-        if(Quickplay.INSTANCE.settings.blurGuiBackgrounds)
-            Minecraft.getMinecraft().entityRenderer.loadShader(new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
+        if(Quickplay.INSTANCE.settings.blurGuiBackgrounds) {
+
+            // This method isn't public in some versions of Forge seemingly.
+            // Reflection is used just in case
+            Method loadShaderMethod = null;
+            try {
+                loadShaderMethod = EntityRenderer.class.getDeclaredMethod("loadShader", ResourceLocation.class);
+            } catch (NoSuchMethodException e) {
+                try {
+                    loadShaderMethod = EntityRenderer.class.getDeclaredMethod("func_175069_a", ResourceLocation.class);
+                } catch (NoSuchMethodException e1) {
+                    e1.printStackTrace();
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
+                }
+            }
+
+            if(loadShaderMethod != null) {
+                loadShaderMethod.setAccessible(true);
+                try {
+                    loadShaderMethod.invoke(Minecraft.getMinecraft().entityRenderer, new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
+                }
+            }
+        }
 
         setScrollingValues();
     }
