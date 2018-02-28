@@ -35,15 +35,22 @@ public class QuickplayGui extends GuiScreen {
     public int scrollDelay = 2;
     /**
      * How many pixels high the content that can be scrolled is
+     * Includes {@link #scrollContentMargins}
      */
     public int scrollContentHeight = 0;
     /**
-     * Vertical Y padding on the scrollable region for scrolling.
+     * Vertical Y margins on the scrollable content.
+     * DOES NOT include both the top and bottom. If you want the margins
+     * split evenly on both top & bottom then you need this value / 2
      *
+     * Coder is responsible for drawing items in the correct place, similar to
+     * {@link #scrollFrameTop} and {@link #scrollFrameBottom}
+     *
+     * {@link #scrollContentHeight} gets this value added to it
      * @see #scrollFrameTop
      * @see #scrollFrameBottom
      */
-    public int scrollYPadding = 30;
+    public int scrollContentMargins = 30;
     /**
      * Top of the frame for scrollable content
      * When scrolling up, content SHOULD stop at this pixel
@@ -62,6 +69,17 @@ public class QuickplayGui extends GuiScreen {
      * Default <code>height</code>, as set in {@link #initGui()}
      */
     public int scrollFrameBottom;
+    /**
+     * Width in pixels of the scrollbar
+     *
+     * @see #drawScrollbar(int)
+     */
+    public int scrollbarWidth = 3;
+    /**
+     * Default scrollbar vertical margins
+     * to avoid the scrollbar touching the edges of the frame
+     */
+    public int scrollbarYMargins = 5;
     /**
      * The list of all components that should be rendered
      */
@@ -395,7 +413,7 @@ public class QuickplayGui extends GuiScreen {
     /**
      * Default calculation for top of the screen's scrolling limit
      * Finds the gui component with the lowest Y value (highest on screen)
-     * @return the Y value of the highest component on the user's screen minus {@link #scrollYPadding}
+     * @return the Y value of the highest component on the user's screen minus {@link #scrollContentMargins}
      */
     public int calcScrollHeight() {
         if(componentList.size() > 0) {
@@ -411,7 +429,7 @@ public class QuickplayGui extends GuiScreen {
             }
 
             if(highestComponent != null && lowestComponent != null)
-                return lowestComponent.y - highestComponent.y + lowestComponent.height;
+                return lowestComponent.y - highestComponent.y + lowestComponent.height + scrollContentMargins;
             else
                 return 0;
         } else {
@@ -426,12 +444,12 @@ public class QuickplayGui extends GuiScreen {
     public void setScrollingValues() {
 
         // Default scrollable area Y padding. Can be changed
-        scrollYPadding = 30;
+        scrollContentMargins = 30;
         // Calculate the height of the scrollable content
         scrollContentHeight = calcScrollHeight();
         // Top & bottom of thee scroll frame
-        scrollFrameBottom = height - scrollYPadding;
-        scrollFrameTop = scrollYPadding;
+        scrollFrameBottom = height;
+        scrollFrameTop = 0;
     }
 
     /**
@@ -470,6 +488,31 @@ public class QuickplayGui extends GuiScreen {
                 }
 
             });
+        }
+    }
+
+    /**
+     * Draw the scrollbar on screen
+     * @param x X column of the left of the scrollbar
+     */
+    public void drawScrollbar(final int x) {
+        final int scrollbarSectionHeight = scrollFrameBottom - scrollFrameTop - scrollbarYMargins;
+        if(scrollbarSectionHeight > 0) {
+
+            final double scrollbarRatio = (double) scrollbarSectionHeight / (double) scrollContentHeight;
+
+            // Don't draw scrollbar if everything fits on screen
+            if(scrollbarRatio < 1) {
+                // Height of the scrollbar
+                final int scrollbarHeight = (int) (scrollbarRatio * scrollbarSectionHeight);
+                // How many pixels down the scrollbar should be moved
+                final int scrollbarMoved = (int) (scrollbarRatio * scrollPixel);
+                drawRect(x,
+                        scrollFrameTop + scrollbarMoved + scrollbarYMargins,
+                        x + scrollbarWidth,
+                        scrollFrameTop + scrollbarHeight + scrollbarMoved,
+                        Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            }
         }
     }
 

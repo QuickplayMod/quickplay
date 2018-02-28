@@ -132,7 +132,9 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Cannot be changed in the GUI as that might be confusing but
      * is there for the users who need it.
      *
+     * Divided by two, half for top and half for bottom
+     *
      * @see <a href="https://github.com/bugfroggy/Quickplay2.0/issues/3">Github issue</a>
      */
-    public int mainMenuYPadding = 30;
+    public int mainMenuYPadding = 60;
 }

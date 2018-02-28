@@ -47,10 +47,6 @@ public class QuickplayGuiGame extends QuickplayGui {
     public final int buttonMargins = 5;
     public int buttonWidth = 200;
     public int buttonHeight = 20;
-    public final int scrollMargins = 5;
-    public int scrollFadeLine = 0;
-    public final int scrollbarWidth = 3;
-    public final int scrollbarMargins = 3;
 
     public String copyright;
     public final int copyrightMargins = 3;
@@ -92,7 +88,6 @@ public class QuickplayGuiGame extends QuickplayGui {
         logoScale = height > 300 ? 0.25 : 0.15;
 
         topOfBackgroundBox = (int) (headerHeight + fontRendererObj.FONT_HEIGHT * headerScale + headerBottomMargins + logoSize * logoScale) + logoBottomMargins;
-        scrollFadeLine = topOfBackgroundBox + backgroundBoxPadding;
 
         buttonWidth = 200;
         columnCount = (int) Math.floor((double) (width - windowPadding) / (buttonWidth + buttonMargins));
@@ -112,7 +107,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         for(ListIterator<Mode> iter = game.modes.listIterator(); iter.hasNext();) {
             final int index = iter.nextIndex();
             final Mode next = iter.next();
-            componentList.add(new QuickplayGuiButton(next, index, columnZeroX + (buttonWidth + buttonMargins) * currentColumn, scrollFadeLine + (buttonHeight + buttonMargins) * currentRow, buttonWidth, buttonHeight, next.name, true));
+            componentList.add(new QuickplayGuiButton(next, index, columnZeroX + (buttonWidth + buttonMargins) * currentColumn, topOfBackgroundBox + backgroundBoxPadding + (buttonHeight + buttonMargins) * currentRow, buttonWidth, buttonHeight, next.name, true));
             // Proceed to next position
             if(currentColumn + 1 >= columnCount) {
                 currentColumn = 0;
@@ -132,11 +127,12 @@ public class QuickplayGuiGame extends QuickplayGui {
     @Override
     public void setScrollingValues() {
         super.setScrollingValues();
-        scrollFrameTop = scrollFadeLine;
+        scrollFrameTop = topOfBackgroundBox + backgroundBoxPadding;
 
         // Increase scroll speed & amount
         scrollMultiplier = 5;
         scrollDelay = 1;
+        scrollbarYMargins = 0;
     }
 
     @Override
@@ -177,26 +173,15 @@ public class QuickplayGuiGame extends QuickplayGui {
         //drawRect(columnZeroRowZeroX - backgroundBoxPadding, topOfBackgroundBox, rightOfBox, bottomOfBox, (int) (opacity * 255 * 0.5) << 24);
 
         // Modified super.drawScreen()
-        final int scrollFadeDistance = (scrollFadeLine - topOfBackgroundBox);
+        final int scrollFadeDistance = (topOfBackgroundBox + backgroundBoxPadding - topOfBackgroundBox);
         for (QuickplayGuiComponent component : componentList) {
-            double scrollOpacity = (component.y > scrollFadeLine ? 1 : component.y + scrollFadeDistance < scrollFadeLine ? 0 : (scrollFadeDistance - ((double) scrollFadeLine - (double) component.y)) / (double) scrollFadeDistance);
+            double scrollOpacity = (component.y > topOfBackgroundBox + backgroundBoxPadding ? 1 : component.y + scrollFadeDistance < topOfBackgroundBox + backgroundBoxPadding ? 0 : (scrollFadeDistance - ((double) topOfBackgroundBox + backgroundBoxPadding - (double) component.y)) / (double) scrollFadeDistance);
             component.opacity = scrollOpacity;
             if(opacity * scrollOpacity > 0)
                 component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
         }
 
-        // Draw scrollbar if the top & bottom element aren't on the screen at the same time (Uses basically the same crappy code in QuickplayGuiEditConfig)
-        if(componentList.get(0).y < scrollFadeLine || componentList.get(componentList.size() - 1).y + componentList.get(componentList.size() - 1).height > height) {
-            // If context menu is opened, it'll affect the total component count but doesn't affect scrolling.
-            final int elementCount = contextMenu == null ? componentList.size() : componentList.size() - 1;
-            drawRect(rightOfBox - scrollbarWidth - scrollbarMargins,
-                    // Top = percentage of elements above screen multiplied by height of scrollbar region, e.g. 50% above screen means top of scrollbar 50% down
-                    (int) (componentList.stream().filter(component -> component.y <= topOfBackgroundBox).count() / (double) elementCount * (double) (height - topOfBackgroundBox - scrollbarMargins) + topOfBackgroundBox + backgroundBoxPadding),
-                    rightOfBox - scrollbarMargins,
-                    // Bottom = percentage of elements below screen multiplied by height of scrollbar region subtracted from height of scrollbar region, e.g. 50% below screen means bottom of scrollbar 50% up
-                    height - (int) (componentList.stream().filter(component -> component.y + component.height >= height).count() / (double) elementCount * (double) (height - topOfBackgroundBox - scrollbarMargins) + scrollbarMargins),
-                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        }
+        drawScrollbar(rightOfBox);
 
         drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 

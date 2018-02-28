@@ -25,7 +25,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class QuickplayGuiEditConfig extends QuickplayGui {
     public AConfiguration config;
@@ -44,10 +43,6 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
     public int boxWidth;
     public int boxHeight;
     public int elementSize;
-    public int scrollFadeLine;
-    public int scrollbarWidth = 3;
-    public boolean scrollbarDrawn;
-    public int bottomScrollMargins;
     public int[] lastTwoMouseX = new int[2];
     public int[] lastTwoMouseY = new int[2];
     public int mouseStandStillTicks = 0;
@@ -89,10 +84,6 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         elementSize = (ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS);
 
-        // If small height, sacrifice pretty fade for more button space
-        scrollFadeLine = topOfBox + (height > 250 ? ConfigElement.ELEMENT_HEIGHT : 0);
-        bottomScrollMargins = 30;
-
         /*
          * Get the config elements that can be changed
          */
@@ -115,9 +106,6 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
          */
         configElements.sort(Comparator.comparing(o -> o.optionInfo.category()));
 
-        // If at least the last button is going to be off screen, scroll bar should be drawn
-        scrollbarDrawn = scrollFadeLine + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * configElements.size()) + bottomScrollMargins > height - scrollFadeLine;
-
         /*
          * Create the necessary buttons
          */
@@ -127,7 +115,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         int buttonWidth = 200;
         if(boxWidth < 200 + ConfigElement.ELEMENT_MARGINS * 2)
             // If scroll bar is being drawn, buttons should be moved over a lil bit to give it room
-            buttonWidth = boxWidth - ConfigElement.ELEMENT_MARGINS * 2 - (scrollbarDrawn ? scrollbarWidth + ConfigElement.ELEMENT_MARGINS : 0);
+            buttonWidth = boxWidth - ConfigElement.ELEMENT_MARGINS * 2 - ((scrollFrameBottom - scrollFrameTop) / scrollContentHeight < 1 ? scrollbarWidth + ConfigElement.ELEMENT_MARGINS : 0);
 
         // These objects help format & handle changes to sliders, text boxes, and boolean boxes
         ConfigGuiResponder guiResponder = new ConfigGuiResponder();
@@ -164,7 +152,9 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
     @Override
     public void setScrollingValues() {
         super.setScrollingValues();
-        scrollFrameTop = scrollFadeLine;
+        scrollFrameTop = topOfBox;
+        scrollFrameBottom = height - 4;
+        scrollbarYMargins = 2;
     }
 
     @Override
@@ -222,32 +212,16 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         drawRect((int) (width * boxMargins), topOfBox, (int) (width * (1 - boxMargins)), height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
 
-        /*
-         * Draw scroll bar
-         * TODO This is pretty meh. Should be made better probs.
-         */
-        if(scrollbarDrawn) {
-            // Minus one because of folder button
-            final int componentCount = componentList.size() - 1;
-            final int buttonsAboveFadeLine = componentList.stream().filter((button) -> button.y < scrollFadeLine && !button.displayString.equals(openFolderText)).collect(Collectors.toList()).size();
-            final int buttonsBelowScreen = componentList.stream().filter((button) -> button.y < height && !button.displayString.equals(openFolderText)).collect(Collectors.toList()).size();
-            drawRect(
-                    (int) ((width * (1 - boxMargins)) - scrollbarWidth) - ConfigElement.ELEMENT_MARGINS,
-                    (int) ((buttonsAboveFadeLine / (double) componentCount * (double) height + (double) topOfBox) + (double) ConfigElement.ELEMENT_MARGINS),
-                    (int) (width * (1 - boxMargins)) - ConfigElement.ELEMENT_MARGINS,
-                    (int) ((buttonsBelowScreen / (double) componentCount * (double) height) - (double) ConfigElement.ELEMENT_MARGINS),
-                    (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-        }
-
+        drawScrollbar((int) ((width * (1 - boxMargins)) - scrollbarWidth) - ConfigElement.ELEMENT_MARGINS);
 
         /*
          * Draw buttons
          */
         for (QuickplayGuiComponent component : componentList) {
             if(!component.displayString.equals(openFolderText)) {
-                double scrollOpacity = (component.y > scrollFadeLine ? 1 : component.y + ConfigElement.ELEMENT_HEIGHT < scrollFadeLine ? 0 : (ConfigElement.ELEMENT_HEIGHT - ((double) scrollFadeLine - (double) component.y)) / (double) ConfigElement.ELEMENT_HEIGHT);
+                double scrollOpacity = (component.y > topOfBox ? 1 : component.y + ConfigElement.ELEMENT_HEIGHT < topOfBox ? 0 : (ConfigElement.ELEMENT_HEIGHT - ((double) topOfBox - (double) component.y)) / (double) ConfigElement.ELEMENT_HEIGHT);
                 component.opacity = scrollOpacity;
-                if(component.y + ConfigElement.ELEMENT_HEIGHT > scrollFadeLine) component.draw(this, mouseX, mouseY, opacity * (float) scrollOpacity);
+                if(component.y + ConfigElement.ELEMENT_HEIGHT > topOfBox) component.draw(this, mouseX, mouseY, opacity * (float) scrollOpacity);
             } else
                 component.draw(this, mouseX, mouseY, opacity);
         }
@@ -276,7 +250,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
     }
 
     public int getY(int id) {
-        return (scrollFadeLine + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (id)));
+        return (topOfBox + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (id)));
     }
 
     @Override

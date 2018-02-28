@@ -58,6 +58,15 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     }
 
     @Override
+    public void setScrollingValues() {
+        super.setScrollingValues();
+        // TODO there's a weird bug here that causes items to fall off the screen on large screens. Resolved it temporarily by increasing scrollContentMargins but that can make things look silly depending on screen size
+        scrollContentMargins = (int) (height * 0.15);
+        // Apply this change by recalculating scroll height
+        scrollContentHeight = calcScrollHeight();
+    }
+
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
@@ -71,6 +80,8 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
             hoverText.add(new ChatComponentTranslation("quickplay.gui.keybinds.taken").getUnformattedText());
             drawHoveringText(hoverText, mouseX, mouseY);
         }
+
+        drawScrollbar(width / 2 + buttonWidth / 2 + 3);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();

@@ -30,9 +30,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     final int stringLeftMargins = 15;
     final int boxYMargins = 5;
     final int boxXMargins = 10;
-    int windowYPadding = 30;
     final int windowXPadding = 20;
-    final int scrollbarMargins = 10;
 
     String copyright;
     final int copyrightMargins = 3;
@@ -41,7 +39,6 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     int averageStringWidth = 0;
     final double baseScaleMultiplier = 0.25;
     final double scaleMultiplier = baseScaleMultiplier * Quickplay.INSTANCE.settings.gameLogoScale;
-    final int scrollbarWidth = 3;
     int columnZeroX;
     double stringScale = 1.0;
     int columnCount = 1;
@@ -62,7 +59,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
         // Change the window Y padding if it's set
         if(Quickplay.INSTANCE.settings != null && Quickplay.INSTANCE.settings.mainMenuYPadding > 0)
-            windowYPadding = Quickplay.INSTANCE.settings.mainMenuYPadding;
+            scrollContentMargins = Quickplay.INSTANCE.settings.mainMenuYPadding;
 
         if(Quickplay.INSTANCE.gameList.size() > 0) {
             // Calculate the average width of all strings & what the longest one is
@@ -98,8 +95,8 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         // Add buttons to the component list in the proper grid
         int nextButtonId = 0;
         for(Game game : Quickplay.INSTANCE.gameList) {
-            // Create invisible button                                                                                                                                                                                      // Width can't be affected by scaling                       // Texture is of the game icon, although it's not rendered (opacity is 0 in drawScreen)
-            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding + boxYMargins * 2) * currentRow + windowYPadding), (int) (itemWidth / scaleMultiplier), gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier, true));
+            // Create invisible button                                                                                                                                                                                              // Width can't be affected by scaling                       // Texture is of the game icon, although it's not rendered (opacity is 0 in drawScreen)
+            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding + boxYMargins * 2) * currentRow + scrollContentMargins / 2), (int) (itemWidth / scaleMultiplier), gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier, true));
             currentColumn++;
             if(currentColumn + 1 > columnCount) {
                 currentColumn = 0;
@@ -153,7 +150,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
             GL11.glEnable(GL11.GL_BLEND);
 
-            drawScrollBar();
+            drawScrollbar(width - scrollbarWidth - 5);
 
         }
 
@@ -215,29 +212,6 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         drawCenteredString(mc.fontRendererObj, new ChatComponentTranslation("quickplay.gui.main.nogames.contact").getUnformattedText(),
                 (int) (width / 2 / errorScale), (int) (lineThreeY / errorScale), Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         GL11.glScaled(1 / errorScale, 1 / errorScale, 1 / errorScale);
-
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
-    }
-
-    protected void drawScrollBar() {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
-
-
-
-        // Draw scrollbar if the top & bottom element aren't on the screen at the same time (Uses basically the same crappy code in QuickplayGuiEditConfig)
-        if(componentList.get(0).y < 0 || componentList.get(componentList.size() - 1).y + componentList.get(componentList.size() - 1).height > height) {
-            // If context menu is opened, it'll affect the total component count but doesn't affect scrolling.
-            final int elementCount = contextMenu == null ? componentList.size() : componentList.size() - 1;
-            drawRect(width - scrollbarWidth - scrollbarMargins,
-                    // Top = percentage of elements above screen multiplied by height of scrollbar region, e.g. 50% above screen means top of scrollbar 50% down
-                    (int) (componentList.stream().filter(component -> component.y <= 0 && component.origin instanceof Game).count() / (double) elementCount * (double) (height - scrollbarMargins) + scrollbarMargins),
-                    width - scrollbarMargins,
-                    // Bottom = percentage of elements below screen multiplied by height of scrollbar region subtracted from height of scrollbar region, e.g. 50% below screen means bottom of scrollbar 50% up
-                    height - (int) (componentList.stream().filter(component -> component.y + component.height >= height && component.origin instanceof Game).count() / (double) elementCount * (double) (height - scrollbarMargins) + scrollbarMargins),
-                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        }
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
