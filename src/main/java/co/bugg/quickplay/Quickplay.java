@@ -218,9 +218,10 @@ public class Quickplay {
                 final Request request = requestFactory.newEnableRequest();
                 final WebResponse response = request.execute();
 
-                for(ResponseAction action : response.actions) {
-                    action.run();
-                }
+                if(response != null)
+                    for(ResponseAction action : response.actions) {
+                        action.run();
+                    }
             });
 
             registerEventHandler(new QuickplayEventHandler());

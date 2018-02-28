@@ -74,27 +74,29 @@ public class ResponseAction {
 
                     WebResponse response = Quickplay.INSTANCE.requestFactory.newRequest(getValue().getAsString(), null).execute();
 
-                    for (ResponseAction action : response.actions) {
-                        action.run();
-                    }
-
-                    if(response.ok) {
-
-                        Quickplay.INSTANCE.gameList = new ArrayList<>();
-                        try {
-                            response.content.getAsJsonObject().get("games").getAsJsonArray().forEach(
-                                    obj -> Quickplay.INSTANCE.gameList.add(new Gson().fromJson(obj, Game.class)));
-
-                            // Save the retrieved game list to cache
-                            Quickplay.INSTANCE.assetFactory.saveCachedGameList(Quickplay.INSTANCE.gameList.toArray(new Game[Quickplay.INSTANCE.gameList.size()]));
-                        } catch(Exception e) {
-                            e.printStackTrace();
-                            Quickplay.INSTANCE.sendExceptionRequest(e);
+                    if(response != null) {
+                        for (ResponseAction action : response.actions) {
+                            action.run();
                         }
 
-                        // Collect all icon URLs into a list and load them (if necessary)
-                        Quickplay.INSTANCE.assetFactory.loadIcons(
-                                Quickplay.INSTANCE.gameList.stream().map(game -> game.imageURL).collect(Collectors.toList()));
+                        if (response.ok) {
+
+                            Quickplay.INSTANCE.gameList = new ArrayList<>();
+                            try {
+                                response.content.getAsJsonObject().get("games").getAsJsonArray().forEach(
+                                        obj -> Quickplay.INSTANCE.gameList.add(new Gson().fromJson(obj, Game.class)));
+
+                                // Save the retrieved game list to cache
+                                Quickplay.INSTANCE.assetFactory.saveCachedGameList(Quickplay.INSTANCE.gameList.toArray(new Game[Quickplay.INSTANCE.gameList.size()]));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Quickplay.INSTANCE.sendExceptionRequest(e);
+                            }
+
+                            // Collect all icon URLs into a list and load them (if necessary)
+                            Quickplay.INSTANCE.assetFactory.loadIcons(
+                                    Quickplay.INSTANCE.gameList.stream().map(game -> game.imageURL).collect(Collectors.toList()));
+                        }
                     }
                 });
                 break;
@@ -147,9 +149,10 @@ public class ResponseAction {
                         final Request request = Quickplay.INSTANCE.requestFactory.newPingRequest();
                         final WebResponse response = request.execute();
 
-                        for(ResponseAction action : response.actions) {
-                            action.run();
-                        }
+                        if(response != null)
+                            for(ResponseAction action : response.actions) {
+                                action.run();
+                            }
                     }
                 });
                 break;
