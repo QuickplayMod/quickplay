@@ -9,8 +9,16 @@ quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
 quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
 quickplay.commands.quickplay.keybinds.help=Open the Quickplay Keybind editor.
 quickplay.commands.quickplay.moveinstance.deprecated=This command is deprecated. You should use "/qp config" instead!
+quickplay.commands.quickplay.premium.help=Command for Quickplay Premium features.
+quickplay.commands.quickplay.premium.helpMenuMissing=I'm sorry, but Quickplay couldn't gather the latest information about Quickplay Premium! Visit %s
+quickplay.commands.quickplay.premium.helpMenuMissing.clickToOpen=Click to open %s
+quickplay.commands.quickplay.history.help=View what instances you've last been on.
+quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
+quickplay.commands.quickplay.history.error=Something went wrong!
 quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
 quickplay.commands.usage=Command syntax:
+
+quickplay.premium.permissions=You need Quickplay Premium for this feature!
 
 quickplay.gui.copyright=Copyright © %s bugfroggy
 quickplay.gui.favorite=Bind to key...

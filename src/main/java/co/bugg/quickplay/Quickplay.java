@@ -14,6 +14,7 @@ import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.ServerChecker;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
+import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.ChatComponentTranslation;
@@ -131,6 +132,11 @@ public class Quickplay {
      * Thread containing code that's pinging the web server periodically
      */
     public Future pingThread;
+    /**
+     * Help menu for Quickplay Premium
+     * retrieved from the <code>enable</code> endpoint on mod enable from the content field <code>premiumInfo</code>
+     */
+    public IChatComponent premiumHelp = null;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -216,12 +222,24 @@ public class Quickplay {
 
             this.threadPool.submit(() -> {
                 final Request request = requestFactory.newEnableRequest();
-                final WebResponse response = request.execute();
+                if(request != null) {
+                    final WebResponse response = request.execute();
 
-                if(response != null)
-                    for(ResponseAction action : response.actions) {
-                        action.run();
+                    if (response != null) {
+                        for (ResponseAction action : response.actions) {
+                            action.run();
+                        }
+
+                        try {
+                            if (response.ok && response.content != null && response.content.getAsJsonObject().get("premiumInfo") != null) {
+                                premiumHelp = new Gson().fromJson(response.content.getAsJsonObject().get("premiumInfo"), IChatComponent.class);
+                            }
+                        } catch (IllegalStateException e) {
+                            e.printStackTrace();
+                            sendExceptionRequest(e);
+                        }
                     }
+                }
             });
 
             registerEventHandler(new QuickplayEventHandler());

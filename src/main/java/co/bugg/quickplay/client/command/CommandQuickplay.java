@@ -23,6 +23,8 @@ public class CommandQuickplay extends ACommand {
         addSubCommand(new SubCommandKeybinds(this));
         addSubCommand(new SubCommandMoveInstance(this));
         addSubCommand(new SubCommandConfig(this));
+        addSubCommand(new SubCommandPremium(this));
+        addSubCommand(new SubCommandHistory(this));
     }
 
     @Override
