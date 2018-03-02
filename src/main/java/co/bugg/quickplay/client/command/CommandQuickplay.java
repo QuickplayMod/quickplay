@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.client.command.premium.SubCommandPremium;
 import net.minecraft.command.ICommandSender;
 
 import javax.annotation.ParametersAreNonnullByDefault;

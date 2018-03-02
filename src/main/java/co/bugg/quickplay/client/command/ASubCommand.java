@@ -66,6 +66,7 @@ public abstract class ASubCommand {
 
     /**
      * Called when this sub command is executed
+     * First argument (this command's name) is removed from param <code>args</code>.
      * @param args Arguments provided when executing
      */
     public abstract void run(String[] args);

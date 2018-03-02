@@ -136,7 +136,7 @@ public class Quickplay {
      * Help menu for Quickplay Premium
      * retrieved from the <code>enable</code> endpoint on mod enable from the content field <code>premiumInfo</code>
      */
-    public IChatComponent premiumHelp = null;
+    public IChatComponent premiumAbout = null;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -232,7 +232,7 @@ public class Quickplay {
 
                         try {
                             if (response.ok && response.content != null && response.content.getAsJsonObject().get("premiumInfo") != null) {
-                                premiumHelp = new Gson().fromJson(response.content.getAsJsonObject().get("premiumInfo"), IChatComponent.class);
+                                premiumAbout = new Gson().fromJson(response.content.getAsJsonObject().get("premiumInfo"), IChatComponent.class);
                             }
                         } catch (IllegalStateException e) {
                             e.printStackTrace();
