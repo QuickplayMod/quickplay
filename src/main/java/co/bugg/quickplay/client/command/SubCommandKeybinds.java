@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sub command to open the config GUI
+ * Sub command to open the keybinds GUI
  */
 public class SubCommandKeybinds extends ASubCommand {
 
@@ -25,7 +25,7 @@ public class SubCommandKeybinds extends ASubCommand {
                 "",
                 true,
                 true,
-                90
+                80
         );
     }
 

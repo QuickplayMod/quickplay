@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sub command for the limbo command
+ * Sub command for the delivery menu
  */
 public class SubCommandDelivery extends ASubCommand {
 

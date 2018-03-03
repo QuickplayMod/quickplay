@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sub command for the limbo command
+ * Sub command to display instance history
  */
 public class SubCommandHistory extends ASubCommand {
 
@@ -24,7 +24,7 @@ public class SubCommandHistory extends ASubCommand {
                 "[count]",
                 true,
                 true,
-                89
+                85
         );
     }
 
