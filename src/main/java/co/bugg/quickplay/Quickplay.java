@@ -14,7 +14,6 @@ import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.ServerChecker;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.ChatComponentTranslation;
@@ -230,9 +229,11 @@ public class Quickplay {
                             action.run();
                         }
 
+                        System.out.println(response.content);
+
                         try {
                             if (response.ok && response.content != null && response.content.getAsJsonObject().get("premiumInfo") != null) {
-                                premiumAbout = new Gson().fromJson(response.content.getAsJsonObject().get("premiumInfo"), IChatComponent.class);
+                                premiumAbout = IChatComponent.Serializer.jsonToComponent(response.content.getAsJsonObject().get("premiumInfo").toString());
                             }
                         } catch (IllegalStateException e) {
                             e.printStackTrace();
