@@ -110,9 +110,12 @@ public class ServerChecker {
         }
 
         // Next check server MOTD
-        final String motd = Minecraft.getMinecraft().getCurrentServerData().serverMOTD;
-        if(motd != null && motd.toLowerCase().contains("hypixel network")) {
-            return VerificationMethod.MOTD;
+        final ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();
+        if(serverData != null) {
+            final String motd = Minecraft.getMinecraft().getCurrentServerData().serverMOTD;
+            if(motd != null && motd.toLowerCase().contains("hypixel network")) {
+                return VerificationMethod.MOTD;
+            }
         }
 
         try {
