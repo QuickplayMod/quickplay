@@ -3,6 +3,8 @@ package co.bugg.quickplay;
 import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandQuickplay;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
+import co.bugg.quickplay.client.render.GlyphRenderer;
+import co.bugg.quickplay.client.render.PlayerGlyph;
 import co.bugg.quickplay.config.*;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.http.HttpRequestFactory;
@@ -27,10 +29,9 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -136,6 +137,10 @@ public class Quickplay {
      * retrieved from the <code>enable</code> endpoint on mod enable from the content field <code>premiumInfo</code>
      */
     public IChatComponent premiumAbout = null;
+    /**
+     * List of all player glyphs, which contains the URL to the glyph as well as the owner's UUID
+     */
+    public List<PlayerGlyph> glyphs = new ArrayList<>();
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -243,6 +248,12 @@ public class Quickplay {
                 }
             });
 
+            try {
+                glyphs.add(new PlayerGlyph(UUID.fromString("0b0c7ea8-243f-4a55-bf66-14000b69e3bb"), new URL("https://bugg.co"), 20.0));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            registerEventHandler(new GlyphRenderer());
             registerEventHandler(new QuickplayEventHandler());
 
             chatBuffer = (ChatBuffer) new ChatBuffer(100).start();

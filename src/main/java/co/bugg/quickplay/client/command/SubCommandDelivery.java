@@ -36,6 +36,7 @@ public class SubCommandDelivery extends ASubCommand {
             String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
             if(currentServer == null) currentServer = "null";
 
+            // TODO false positive in Megawalls lobby
             if(currentServer.contains("mini") || currentServer.contains("mega") || currentServer.contains("limbo")) {
                 if(currentServer.contains("limbo"))
                     Quickplay.INSTANCE.chatBuffer.push("/lobby");

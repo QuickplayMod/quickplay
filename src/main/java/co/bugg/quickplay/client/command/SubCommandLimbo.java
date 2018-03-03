@@ -36,6 +36,7 @@ public class SubCommandLimbo extends ASubCommand {
             String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
             if(currentServer == null) currentServer = "null";
 
+            // TODO false positive in Megawalls lobby
             if(currentServer.contains("mini") || currentServer.contains("mega")) {
                 Quickplay.INSTANCE.chatBuffer.push("/achat §");
 
