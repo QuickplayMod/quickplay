@@ -253,11 +253,13 @@ public class Quickplay {
                 }
             });
 
+            // Add a sample glyph linked to Buggy
             try {
-                glyphs.add(new PlayerGlyph(UUID.fromString("0b0c7ea8-243f-4a55-bf66-14000b69e3bb"), new URL("https://bugg.co/quickplay/images/games/Duels-64.png"), 20.0));
+                glyphs.add(new PlayerGlyph(UUID.fromString("0b0c7ea8-243f-4a55-bf66-14000b69e3bb"), new URL("https://bugg.co/images/buggy.jpg"), 20.0));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
+
             registerEventHandler(new GlyphRenderer());
             registerEventHandler(new QuickplayEventHandler());
 

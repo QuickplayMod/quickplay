@@ -64,7 +64,8 @@ public class PlayerGlyph {
             int responseCode = httpResponse.getStatusLine().getStatusCode();
 
             // If the response code is a successful one & request header is png
-            if (200 <= responseCode && responseCode < 300 && httpResponse.getEntity().getContentType().getValue().equals("image/png")) {
+            final String contentType = httpResponse.getEntity().getContentType().getValue();
+            if (200 <= responseCode && responseCode < 300 && (contentType.equals("image/png") || contentType.equals("image/jpg") || contentType.equals("image/jpeg"))) {
 
                 final File file = new File(AssetFactory.glyphsDirectory + Hashing.md5().hashString(resource.toString(), Charset.forName("UTF-8")).toString() + ".png");
                 // Try to create file if necessary
