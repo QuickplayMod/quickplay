@@ -17,6 +17,7 @@ import co.bugg.quickplay.util.ServerChecker;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
 import com.google.gson.JsonSyntaxException;
+import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
@@ -141,6 +142,10 @@ public class Quickplay {
      * List of all player glyphs, which contains the URL to the glyph as well as the owner's UUID
      */
     public List<PlayerGlyph> glyphs = new ArrayList<>();
+    /**
+     * Quickplay's resource pack
+     */
+    public IResourcePack resourcePack;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -183,7 +188,7 @@ public class Quickplay {
             assetFactory = new AssetFactory();
 
             assetFactory.createDirectories();
-            assetFactory.registerResourcePack();
+            resourcePack = assetFactory.registerResourcePack();
 
             try {
                 settings = (ConfigSettings) AConfiguration.load("settings.json", ConfigSettings.class);
@@ -249,7 +254,7 @@ public class Quickplay {
             });
 
             try {
-                glyphs.add(new PlayerGlyph(UUID.fromString("0b0c7ea8-243f-4a55-bf66-14000b69e3bb"), new URL("https://bugg.co"), 20.0));
+                glyphs.add(new PlayerGlyph(UUID.fromString("0b0c7ea8-243f-4a55-bf66-14000b69e3bb"), new URL("https://bugg.co/quickplay/images/games/Duels-64.png"), 20.0));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

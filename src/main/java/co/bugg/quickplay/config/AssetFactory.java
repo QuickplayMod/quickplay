@@ -36,6 +36,7 @@ public class AssetFactory {
     public static final String configDirectory = rootDirectory + "configs/";
     public static final String resourcesDirectory = rootDirectory + "resources/";
     public static final String assetsDirectory = resourcesDirectory + "assets/quickplay/";
+    public static final String glyphsDirectory = assetsDirectory + "glyphs/";
 
     /**
      * Download all icons from the specified URLs
@@ -98,6 +99,7 @@ public class AssetFactory {
         final File configDirFile = new File(configDirectory);
         final File resourcesDirFile = new File(resourcesDirectory);
         final File assetsDirFile = new File(assetsDirectory);
+        final File glyphsDirFile = new File(glyphsDirectory);
 
         if(!configDirFile.isDirectory())
             configDirFile.mkdirs();
@@ -107,6 +109,9 @@ public class AssetFactory {
 
         if(!assetsDirFile.isDirectory())
             assetsDirFile.mkdirs();
+
+        if(!glyphsDirFile.isDirectory())
+            glyphsDirFile.mkdirs();
 
         // Create the mcmeta file for the "resource pack"
         final File mcmetaFile = new File(resourcesDirectory + "pack.mcmeta");
@@ -126,8 +131,9 @@ public class AssetFactory {
     /**
      * Register the custom resource pack with Minecraft.
      * The resource pack is used for loading in icons.
+     * @return resource pack that is added
      */
-    public void registerResourcePack() {
+    public IResourcePack registerResourcePack() {
         FolderResourcePack resourcePack = new FolderResourcePack(new File(resourcesDirectory));
 
         // Add the custom resource pack we've created to the list of registered packs
@@ -147,6 +153,8 @@ public class AssetFactory {
             defaultResourcePacks.add(resourcePack);
 
             defaultResourcePacksField.set(Minecraft.getMinecraft(), defaultResourcePacks);
+
+            return resourcePack;
         } catch (IllegalAccessException | NoSuchFieldException e) {
             System.out.println("Disabling the mod, as we can't add our custom resource pack.");
             System.out.println("Please report this to @bugfroggy, providing this error log and this list: " + Arrays.toString(Minecraft.class.getDeclaredFields()));
@@ -154,6 +162,8 @@ public class AssetFactory {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
+
+        return null;
 
         // Refresh the resources of the game
         // Minecraft.getMinecraft().refreshResources();

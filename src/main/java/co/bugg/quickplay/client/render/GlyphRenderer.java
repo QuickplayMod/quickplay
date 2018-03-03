@@ -20,6 +20,10 @@ import java.nio.charset.Charset;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Renders all Quickplay Glyphs when registered to the event bus
+ * @see Quickplay#glyphs
+ */
 public class GlyphRenderer {
 
     /**
@@ -47,57 +51,69 @@ public class GlyphRenderer {
             if (player != null && me != null && !player.isInvisible() && !player.isDead && me.canEntityBeSeen(player) && me.getDistanceSqToEntity(player) < drawDistance * drawDistance) {
 
                 if(Quickplay.INSTANCE.glyphs.stream().anyMatch(glyph -> glyph.userUUID.toString().equals(player.getGameProfile().getId().toString()))) {
-                    renderGlyph(e.renderer, Quickplay.INSTANCE.glyphs.stream().filter(glyph -> glyph.userUUID.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0), e.entityPlayer, e.x, e.y + offset, e.z);
+                    renderGlyph(e.renderer, Quickplay.INSTANCE.glyphs.stream().filter(glyph -> glyph.userUUID.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0), e.entityPlayer, e.x, e.y + offset + player.height, e.z);
                 }
             }
 
         }
     }
 
+    /**
+     * Render a glyph
+     * @param renderer Renderer to use
+     * @param glyph Glyph to render
+     * @param player Player to render it over
+     * @param x x position
+     * @param y y position
+     * @param z z position
+     */
     public void renderGlyph(RendererLivingEntity renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
 
-        final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(Quickplay.INSTANCE.gameList.get(0).imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png");
+        final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.resource.toString(), Charset.forName("UTF-8")).toString() + ".png");
+        if(Quickplay.INSTANCE.resourcePack.resourceExists(resource)) {
+            float scale = (float) (glyph.height * 0.0015);
 
-        float scale = (float) (glyph.height * 0.0015);
+            // Apply GL properties
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float) x, (float) y, (float) z);
+            GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+            GlStateManager.disableLighting();
+            GlStateManager.enableBlend();
 
-        // Apply GL properties
-        GlStateManager.pushMatrix();
-        GlStateManager.translate((float)x + 0.0F, (float)y + player.height, (float)z);
-        GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.disableLighting();
-        GlStateManager.enableBlend();
+            // Rotate rendering axes
+            GlStateManager.rotate(-renderer.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
 
-        // Rotate rendering axes
-        GlStateManager.rotate(-renderer.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+            // Calculate x-axis rotation
+            int xRotationMultiplier = 1;
+            // no x-rotation if in inventory & rendering self
+            if (player == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().currentScreen instanceof GuiInventory)
+                xRotationMultiplier = 0;
+                // Flip x rotation if in front-facing 3rd person
+            else if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 2)
+                xRotationMultiplier = -1;
+            GlStateManager.rotate(renderer.getRenderManager().playerViewX * xRotationMultiplier, 1.0F, 0.0F, 0.0F);
 
-        // Calculate x-axis rotation
-        int xRotationMultiplier = 1;
-        // no x-rotation if in inventory & rendering self
-        if(player == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().currentScreen instanceof GuiInventory)
-            xRotationMultiplier = 0;
-        // Flip x rotation if in front-facing 3rd person
-        else if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 2)
-            xRotationMultiplier = -1;
-        GlStateManager.rotate(renderer.getRenderManager().playerViewX * xRotationMultiplier, 1.0F, 0.0F, 0.0F);
+            // Scale
+            GlStateManager.scale(-scale, -scale, scale);
 
-        // Scale
-        GlStateManager.scale(-scale, -scale, scale);
+            // Draw texture
+            Tessellator tessellator = Tessellator.getInstance();
+            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+            renderer.bindTexture(resource);
+            worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+            worldrenderer.pos((double) (-16), (double) (-16), 0.0D).tex(0, 0).endVertex();
+            worldrenderer.pos((double) (-16), (double) (16), 0.0D).tex(0, 1).endVertex();
+            worldrenderer.pos((double) (16), (double) (16), 0.0D).tex(1, 1).endVertex();
+            worldrenderer.pos((double) (16), (double) (-16), 0.0D).tex(1, 0).endVertex();
+            tessellator.draw();
 
-        // Draw texture
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        renderer.bindTexture(resource);
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos((double)(-16), (double)(-16), 0.0D).tex(0, 0).endVertex();
-        worldrenderer.pos((double)(-16), (double)(16), 0.0D).tex(0, 1).endVertex();
-        worldrenderer.pos((double)(16), (double)(16), 0.0D).tex(1, 1).endVertex();
-        worldrenderer.pos((double)(16), (double)(-16), 0.0D).tex(1, 0) .endVertex();
-        tessellator.draw();
-
-        // Remove GL properties
-        GlStateManager.enableLighting();
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
+            // Remove GL properties
+            GlStateManager.enableLighting();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
+        } else if(!glyph.downloadAttempted) {
+            Quickplay.INSTANCE.threadPool.submit(glyph::download);
+        }
     }
 }
