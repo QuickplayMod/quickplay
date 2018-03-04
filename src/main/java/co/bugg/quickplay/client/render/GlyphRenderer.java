@@ -75,7 +75,7 @@ public class GlyphRenderer {
 
             // Apply GL properties
             GlStateManager.pushMatrix();
-            GlStateManager.translate((float) x, (float) y, (float) z);
+            GlStateManager.translate((float) x, (float) y + glyph.yOffset, (float) z);
             GL11.glNormal3f(0.0F, 1.0F, 0.0F);
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             GlStateManager.disableLighting();
