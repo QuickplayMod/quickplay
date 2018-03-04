@@ -46,7 +46,9 @@ public class InstanceWatcher {
 
     @SubscribeEvent
     public void onWorldChange(WorldEvent.Load event) {
+        // Run twice, just in case first one doesn't trigger
         new TickDelay(this::runWhereami, 15);
+        new TickDelay(this::runWhereami, 60);
     }
 
     /**

@@ -269,7 +269,7 @@ public class Quickplay {
             registerEventHandler(new QuickplayEventHandler());
 
             chatBuffer = (ChatBuffer) new ChatBuffer(100).start();
-            instanceWatcher = new InstanceWatcher(10).start();
+            instanceWatcher = new InstanceWatcher(30).start();
             instanceDisplay = new InstanceDisplay();
 
             commands.add(new CommandQuickplay());

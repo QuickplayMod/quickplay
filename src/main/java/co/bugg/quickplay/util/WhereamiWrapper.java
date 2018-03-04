@@ -21,8 +21,8 @@ public class WhereamiWrapper {
 
         // Send the /whereami command
         Quickplay.INSTANCE.chatBuffer.push("/whereami");
-        // If a /whereami isn't received within 80 ticks (4 seconds), don't cancel the message
-        new TickDelay(this::stopCancelling, 80);
+        // If a /whereami isn't received within 120 ticks (6 seconds), don't cancel the message
+        new TickDelay(this::stopCancelling, 120);
         // If a /whereami isn't received within 1200 ticks (60 seconds), stop listening
         new TickDelay(() -> stopListening(null), 1200);
     }
