@@ -25,15 +25,20 @@ public class PlayerGlyph {
     /**
      * UUID of the owner
      */
-    public final UUID userUUID;
+    public final UUID uuid;
     /**
      * URL to the glyph image
      */
-    public final URL resource;
+    public final URL path;
     /**
      * Height of the glyph
      */
     public final Double height;
+    /**
+     * Vertical offset from the default position that the glyph should be rendered at
+     * TODO
+     */
+    public final Double yOffset = 0.0;
     /**
      * Whether a download has already been attempted
      * or is currently being attempted on this glyph
@@ -47,8 +52,8 @@ public class PlayerGlyph {
      * @param height Height of the glyph
      */
     public PlayerGlyph(UUID uuid, URL resource, Double height) {
-        this.userUUID = uuid;
-        this.resource = resource;
+        this.uuid = uuid;
+        this.path = resource;
         this.height = height;
     }
 
@@ -57,7 +62,7 @@ public class PlayerGlyph {
      */
     public synchronized void download() {
         downloadAttempted = true;
-        final HttpGet get = new HttpGet(resource.toString());
+        final HttpGet get = new HttpGet(path.toString());
 
         try (CloseableHttpResponse httpResponse = (CloseableHttpResponse) Quickplay.INSTANCE.requestFactory.httpClient.execute(get)) {
 
@@ -67,7 +72,7 @@ public class PlayerGlyph {
             final String contentType = httpResponse.getEntity().getContentType().getValue();
             if (200 <= responseCode && responseCode < 300 && (contentType.equals("image/png") || contentType.equals("image/jpg") || contentType.equals("image/jpeg"))) {
 
-                final File file = new File(AssetFactory.glyphsDirectory + Hashing.md5().hashString(resource.toString(), Charset.forName("UTF-8")).toString() + ".png");
+                final File file = new File(AssetFactory.glyphsDirectory + Hashing.md5().hashString(path.toString(), Charset.forName("UTF-8")).toString() + ".png");
                 // Try to create file if necessary
                 if(!file.exists() && !file.createNewFile())
                     throw new IllegalStateException("Glyph file could not be created.");

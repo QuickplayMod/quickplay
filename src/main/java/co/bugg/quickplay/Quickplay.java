@@ -16,6 +16,7 @@ import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.ServerChecker;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
+import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.command.ICommand;
@@ -239,11 +240,15 @@ public class Quickplay {
                             action.run();
                         }
 
-                        System.out.println(response.content);
-
                         try {
-                            if (response.ok && response.content != null && response.content.getAsJsonObject().get("premiumInfo") != null) {
-                                premiumAbout = IChatComponent.Serializer.jsonToComponent(response.content.getAsJsonObject().get("premiumInfo").toString());
+                            if (response.ok && response.content != null) {
+                                System.out.println(response.content);
+                                // Add the premium about information
+                                if(response.content.getAsJsonObject().get("premiumInfo") != null)
+                                    premiumAbout = IChatComponent.Serializer.jsonToComponent(response.content.getAsJsonObject().get("premiumInfo").toString());
+                                // Add all glyphs
+                                if(response.content.getAsJsonObject().get("glyphs") != null)
+                                    glyphs.addAll(Arrays.asList(new Gson().fromJson(response.content.getAsJsonObject().get("glyphs"), PlayerGlyph[].class)));
                             }
                         } catch (IllegalStateException e) {
                             e.printStackTrace();
@@ -255,7 +260,7 @@ public class Quickplay {
 
             // Add a sample glyph linked to Buggy
             try {
-                glyphs.add(new PlayerGlyph(UUID.fromString("0b0c7ea8-243f-4a55-bf66-14000b69e3bb"), new URL("https://bugg.co/images/buggy.jpg"), 20.0));
+                glyphs.add(new PlayerGlyph(UUID.fromString("0b0c7ea8-243f-4a55-bf66-14000b69e3bb"), new URL("https://nebula.wsimg.com/f6f19eab7cad320587ae582bade8d9fb?AccessKeyId=9EF31630E39E4BE18FDC&disposition=0&alloworigin=1"), 20.0));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

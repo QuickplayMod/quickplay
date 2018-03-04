@@ -50,8 +50,8 @@ public class GlyphRenderer {
             // If both players aren't null, player is visible, and player isn't dead
             if (player != null && me != null && !player.isInvisible() && !player.isDead && me.canEntityBeSeen(player) && me.getDistanceSqToEntity(player) < drawDistance * drawDistance) {
 
-                if(Quickplay.INSTANCE.glyphs.stream().anyMatch(glyph -> glyph.userUUID.toString().equals(player.getGameProfile().getId().toString()))) {
-                    renderGlyph(e.renderer, Quickplay.INSTANCE.glyphs.stream().filter(glyph -> glyph.userUUID.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0), e.entityPlayer, e.x, e.y + offset + player.height, e.z);
+                if(Quickplay.INSTANCE.glyphs.stream().anyMatch(glyph -> glyph.uuid.toString().equals(player.getGameProfile().getId().toString()))) {
+                    renderGlyph(e.renderer, Quickplay.INSTANCE.glyphs.stream().filter(glyph -> glyph.uuid.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0), e.entityPlayer, e.x, e.y + offset + player.height, e.z);
                 }
             }
 
@@ -69,7 +69,7 @@ public class GlyphRenderer {
      */
     public void renderGlyph(RendererLivingEntity renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
 
-        final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.resource.toString(), Charset.forName("UTF-8")).toString() + ".png");
+        final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.path.toString(), Charset.forName("UTF-8")).toString() + ".png");
         if(Quickplay.INSTANCE.resourcePack.resourceExists(resource)) {
             float scale = (float) (glyph.height * 0.0015);
 
