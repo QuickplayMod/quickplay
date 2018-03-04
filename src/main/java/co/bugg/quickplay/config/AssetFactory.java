@@ -39,6 +39,17 @@ public class AssetFactory {
     public static final String glyphsDirectory = assetsDirectory + "glyphs/";
 
     /**
+     * Cache life for glyphs in milliseconds
+     * 2 days
+     */
+    public static final long glyphCacheLife = 2L * 24 * 60 * 60 * 1000;
+    /**
+     * Cache life for game icons in milliseconds
+     * 14 days
+     */
+    public static final long iconCacheLife = 14L * 24 * 60 * 60 * 1000;
+
+    /**
      * Download all icons from the specified URLs
      * @param urls List of URLs to download from
      * @return List of ResourceLocations for all icons
@@ -89,6 +100,63 @@ public class AssetFactory {
 
         // Minecraft.getMinecraft().refreshResources();
         return resourceLocations;
+    }
+
+    /**
+     * Dump cached images (glyphs & game icons) that
+     * are passed their expiration
+     *
+     * Game list does not have an expiration
+     */
+    public void dumpOldCache() {
+        final long now = System.currentTimeMillis();
+
+        // Dump glyph cache first
+        final File[] glyphFiles = new File(glyphsDirectory).listFiles();
+        if(glyphFiles != null) {
+            for (final File file : glyphFiles) {
+                if(file.exists() && file.isFile() && file.lastModified() + glyphCacheLife < now)
+                    file.delete();
+            }
+        }
+
+        // Dump old icons
+        final File[] iconFiles = new File(assetsDirectory).listFiles();
+        if(iconFiles != null) {
+            for(final File file : iconFiles) {
+                if(file.exists() && file.isFile() && file.lastModified() + iconCacheLife < now)
+                    file.delete();
+            }
+        }
+    }
+
+    /**
+     * Dump all cache, regardless of lifetime
+     * This also dumps the cached gamelist.
+     */
+    public void dumpAllCache() {
+        // Dump glyph cache first
+        final File[] glyphFiles = new File(glyphsDirectory).listFiles();
+        if(glyphFiles != null) {
+            for (final File file : glyphFiles) {
+                if(file.exists() && file.isFile())
+                    file.delete();
+            }
+        }
+
+        // Dump old icons
+        final File[] iconFiles = new File(resourcesDirectory).listFiles();
+        if(iconFiles != null) {
+            for(final File file : iconFiles) {
+                if(file.exists() && file.isFile())
+                    file.delete();
+            }
+        }
+
+        // Delete cached gamelist
+        final File gameList = new File(gamelistCacheFile);
+        if(gameList.exists() && gameList.isFile())
+            gameList.delete();
     }
 
     /**

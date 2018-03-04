@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import net.minecraft.client.Minecraft;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,15 +100,7 @@ public class ResponseAction {
                 });
                 break;
             case REFRESH_CACHE:
-                // Get all files in the assets directory
-                File[] files = new File(Quickplay.INSTANCE.assetFactory.assetsDirectory).listFiles();
-                // If they exist
-                if(files != null) {
-                    for(File file : files) {
-                        // Delete 'em all!!
-                        file.delete();
-                    }
-                }
+                Quickplay.INSTANCE.assetFactory.dumpAllCache();
                 break;
             case SEND_MESSAGE:
                 try {

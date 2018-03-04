@@ -189,6 +189,7 @@ public class Quickplay {
             assetFactory = new AssetFactory();
 
             assetFactory.createDirectories();
+            assetFactory.dumpOldCache();
             resourcePack = assetFactory.registerResourcePack();
 
             try {
