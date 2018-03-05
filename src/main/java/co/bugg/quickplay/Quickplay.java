@@ -31,9 +31,10 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -258,13 +259,6 @@ public class Quickplay {
                     }
                 }
             });
-
-            // Add a sample glyph linked to Buggy
-            try {
-                glyphs.add(new PlayerGlyph(UUID.fromString("0b0c7ea8-243f-4a55-bf66-14000b69e3bb"), new URL("https://nebula.wsimg.com/f6f19eab7cad320587ae582bade8d9fb?AccessKeyId=9EF31630E39E4BE18FDC&disposition=0&alloworigin=1"), 20.0));
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
 
             registerEventHandler(new GlyphRenderer());
             registerEventHandler(new QuickplayEventHandler());
