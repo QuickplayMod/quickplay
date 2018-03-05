@@ -131,6 +131,11 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             category = "GUI"
     )
     public boolean reverseScrollingDirection = false;
+    /**
+     * Whether the client's own glyph should be visible or not
+     * Should be set via QuickplayPremium jar.
+     */
+    public boolean displayOwnGlyph = true;
 
     /**
      * Allows users to change how much padding is on the

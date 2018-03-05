@@ -49,13 +49,15 @@ public class GlyphRenderer {
 
             // If both players aren't null, player is visible, and player isn't dead
             if (player != null && me != null && !player.isInvisible() && !player.isDead && me.canEntityBeSeen(player) && me.getDistanceSqToEntity(player) < drawDistance * drawDistance) {
-
-                // If the player has any glyphs
-                if(Quickplay.INSTANCE.glyphs.stream().anyMatch(glyph -> glyph.uuid.toString().equals(player.getGameProfile().getId().toString()))) {
-                    final PlayerGlyph glyph = Quickplay.INSTANCE.glyphs.stream().filter(thisGlyph -> thisGlyph.uuid.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0);
-                    // If this client is currently not in a game OR if the glyph is set to display in-game
-                    if((currentServer != null && !gameServerPattern.matcher(currentServer).matches()) || glyph.displayInGames)
-                        renderGlyph(e.renderer, glyph, e.entityPlayer, e.x, e.y + offset + player.height, e.z);
+                // If the player being rendered isn't this player OR the client's settings allow rendering of own glyph
+                if(!player.getUniqueID().toString().equals(me.getUniqueID().toString()) || Quickplay.INSTANCE.settings.displayOwnGlyph) {
+                    // If the player has any glyphs
+                    if(Quickplay.INSTANCE.glyphs.stream().anyMatch(glyph -> glyph.uuid.toString().equals(player.getGameProfile().getId().toString()))) {
+                        final PlayerGlyph glyph = Quickplay.INSTANCE.glyphs.stream().filter(thisGlyph -> thisGlyph.uuid.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0);
+                        // If this client is currently not in a game OR if the glyph is set to display in-game
+                        if((currentServer != null && !gameServerPattern.matcher(currentServer).matches()) || glyph.displayInGames)
+                            renderGlyph(e.renderer, glyph, e.entityPlayer, e.x, e.y + offset + player.height, e.z);
+                    }
                 }
             }
 
