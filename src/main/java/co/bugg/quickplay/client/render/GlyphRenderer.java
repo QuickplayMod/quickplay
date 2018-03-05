@@ -43,15 +43,19 @@ public class GlyphRenderer {
     public void onPlayerRender(RenderPlayerEvent.Pre e) {
         final String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
         // Don't render at all if F1 is hit or if the client is in a game (or unknown location)
-        if(!Minecraft.getMinecraft().gameSettings.hideGUI && currentServer != null && !gameServerPattern.matcher(currentServer).matches()) {
+        if(!Minecraft.getMinecraft().gameSettings.hideGUI) {
             final EntityPlayer player = e.entityPlayer;
             final EntityPlayer me = Minecraft.getMinecraft().thePlayer;
 
             // If both players aren't null, player is visible, and player isn't dead
             if (player != null && me != null && !player.isInvisible() && !player.isDead && me.canEntityBeSeen(player) && me.getDistanceSqToEntity(player) < drawDistance * drawDistance) {
 
+                // If the player has any glyphs
                 if(Quickplay.INSTANCE.glyphs.stream().anyMatch(glyph -> glyph.uuid.toString().equals(player.getGameProfile().getId().toString()))) {
-                    renderGlyph(e.renderer, Quickplay.INSTANCE.glyphs.stream().filter(glyph -> glyph.uuid.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0), e.entityPlayer, e.x, e.y + offset + player.height, e.z);
+                    final PlayerGlyph glyph = Quickplay.INSTANCE.glyphs.stream().filter(thisGlyph -> thisGlyph.uuid.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0);
+                    // If this client is currently not in a game OR if the glyph is set to display in-game
+                    if((currentServer != null && !gameServerPattern.matcher(currentServer).matches()) || glyph.displayInGames)
+                        renderGlyph(e.renderer, glyph, e.entityPlayer, e.x, e.y + offset + player.height, e.z);
                 }
             }
 

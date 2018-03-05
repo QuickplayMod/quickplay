@@ -39,6 +39,10 @@ public class PlayerGlyph {
      */
     public Double yOffset = 0.0;
     /**
+     * Whether this glyph should be dipslayed in-game
+     */
+    public boolean displayInGames = false;
+    /**
      * Whether a download has already been attempted
      * or is currently being attempted on this glyph
      */
