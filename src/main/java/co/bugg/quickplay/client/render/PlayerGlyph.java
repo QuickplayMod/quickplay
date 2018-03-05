@@ -33,12 +33,11 @@ public class PlayerGlyph {
     /**
      * Height of the glyph
      */
-    public final Double height;
+    public Double height = 20.0;
     /**
      * Vertical offset from the default position that the glyph should be rendered at
-     * TODO
      */
-    public final Double yOffset = 0.0;
+    public Double yOffset = 0.0;
     /**
      * Whether a download has already been attempted
      * or is currently being attempted on this glyph
@@ -49,12 +48,10 @@ public class PlayerGlyph {
      * Constructor
      * @param uuid UUID of the owner
      * @param resource URL to the glyph image
-     * @param height Height of the glyph
      */
-    public PlayerGlyph(UUID uuid, URL resource, Double height) {
+    public PlayerGlyph(UUID uuid, URL resource) {
         this.uuid = uuid;
         this.path = resource;
-        this.height = height;
     }
 
     /**
