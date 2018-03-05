@@ -45,18 +45,21 @@ public class GlyphRenderer {
         // Don't render at all if F1 is hit or if the client is in a game (or unknown location)
         if(!Minecraft.getMinecraft().gameSettings.hideGUI) {
             final EntityPlayer player = e.entityPlayer;
-            final EntityPlayer me = Minecraft.getMinecraft().thePlayer;
+            final EntityPlayer self = Minecraft.getMinecraft().thePlayer;
 
             // If both players aren't null, player is visible, and player isn't dead
-            if (player != null && me != null && !player.isInvisible() && !player.isDead && me.canEntityBeSeen(player) && me.getDistanceSqToEntity(player) < drawDistance * drawDistance) {
-                // If the player being rendered isn't this player OR the client's settings allow rendering of own glyph
-                if(!player.getUniqueID().toString().equals(me.getUniqueID().toString()) || Quickplay.INSTANCE.settings.displayOwnGlyph) {
-                    // If the player has any glyphs
-                    if(Quickplay.INSTANCE.glyphs.stream().anyMatch(glyph -> glyph.uuid.toString().equals(player.getGameProfile().getId().toString()))) {
-                        final PlayerGlyph glyph = Quickplay.INSTANCE.glyphs.stream().filter(thisGlyph -> thisGlyph.uuid.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0);
-                        // If this client is currently not in a game OR if the glyph is set to display in-game
-                        if((currentServer != null && !gameServerPattern.matcher(currentServer).matches()) || glyph.displayInGames)
-                            renderGlyph(e.renderer, glyph, e.entityPlayer, e.x, e.y + offset + player.height, e.z);
+            if (player != null && self != null && !player.isInvisible() && !player.isDead && self.canEntityBeSeen(player) && self.getDistanceSqToEntity(player) < drawDistance * drawDistance) {
+                // If not rendering self or inventory isn't open (don't render self while inventory is open)
+                if(player != self || !(Minecraft.getMinecraft().currentScreen instanceof GuiInventory)) {
+                    // If the player being rendered isn't this player OR the client's settings allow rendering of own glyph
+                    if (!player.getUniqueID().toString().equals(self.getUniqueID().toString()) || Quickplay.INSTANCE.settings.displayOwnGlyph) {
+                        // If the player has any glyphs
+                        if (Quickplay.INSTANCE.glyphs.stream().anyMatch(glyph -> glyph.uuid.toString().equals(player.getUniqueID().toString()))) {
+                            final PlayerGlyph glyph = Quickplay.INSTANCE.glyphs.stream().filter(thisGlyph -> thisGlyph.uuid.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0);
+                            // If this client is currently not in a game OR if the glyph is set to display in-game
+                            if ((currentServer != null && !gameServerPattern.matcher(currentServer).matches()) || glyph.displayInGames)
+                                renderGlyph(e.renderer, glyph, e.entityPlayer, e.x, e.y + offset + player.height, e.z);
+                        }
                     }
                 }
             }
@@ -92,11 +95,8 @@ public class GlyphRenderer {
 
             // Calculate x-axis rotation
             int xRotationMultiplier = 1;
-            // no x-rotation if in inventory & rendering self
-            if (player == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().currentScreen instanceof GuiInventory)
-                xRotationMultiplier = 0;
-                // Flip x rotation if in front-facing 3rd person
-            else if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 2)
+            // Flip x rotation if in front-facing 3rd person
+            if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 2)
                 xRotationMultiplier = -1;
             GlStateManager.rotate(renderer.getRenderManager().playerViewX * xRotationMultiplier, 1.0F, 0.0F, 0.0F);
 
