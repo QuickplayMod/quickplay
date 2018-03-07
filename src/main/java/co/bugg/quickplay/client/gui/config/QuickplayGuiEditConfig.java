@@ -232,7 +232,10 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         if(mouseStandStillTicks >= hoverDelayTicks) {
             for (QuickplayGuiComponent component : componentList) {
                 if(component.origin instanceof ConfigElement && component.opacity > 0) {
-                    if((component.x < mouseX && component.x + component.width > mouseX) && (component.y < mouseY && component.y + component.height > mouseY)) {
+                    int y = component.y;
+                    if(component.scrollable) y -= scrollPixel;
+
+                    if((component.x < mouseX && component.x + component.width > mouseX) && (y < mouseY && y + component.height > mouseY)) {
                         final ConfigElement element = (ConfigElement) component.origin;
                         if(element != null && element.optionInfo != null && element.optionInfo.category().length() > 0) {
                             final List<String> text = new ArrayList<>();
