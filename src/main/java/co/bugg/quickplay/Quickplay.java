@@ -244,7 +244,6 @@ public class Quickplay {
 
                         try {
                             if (response.ok && response.content != null) {
-                                System.out.println(response.content);
                                 // Add the premium about information
                                 if(response.content.getAsJsonObject().get("premiumInfo") != null)
                                     premiumAbout = IChatComponent.Serializer.jsonToComponent(response.content.getAsJsonObject().get("premiumInfo").toString());
