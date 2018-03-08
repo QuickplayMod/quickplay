@@ -135,6 +135,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                 GL11.glColor3f(1, 1, 1);
                 if(component.origin instanceof Game) {
                     // Draw icon
+                    GL11.glColor4f(1, 1, 1, opacity);
                     GL11.glScaled(scaleMultiplier, scaleMultiplier, scaleMultiplier);
                     Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(((Game) component.origin).imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"));
                     drawTexturedModalRect((int) (component.x / scaleMultiplier), (int) (scrollAdjustedY / scaleMultiplier), 0, 0, gameImgSize, gameImgSize);
