@@ -9,6 +9,7 @@ import co.bugg.quickplay.config.AssetFactory;
 import co.bugg.quickplay.config.GuiOption;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.gui.GuiPageButtonList;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
@@ -93,7 +94,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             GuiOption guiOptionDisplay = field.getAnnotation(GuiOption.class);
             if(guiOptionDisplay != null) {
                 try {
-                    configElements.add(new ConfigElement(field.get(config), guiOptionDisplay, field.getName()));
+                    configElements.add(new ConfigElement(field.get(config), guiOptionDisplay, I18n.format(field.getName())));
                 } catch (IllegalAccessException | IllegalArgumentException e) {
                     e.printStackTrace();
                     Quickplay.INSTANCE.sendExceptionRequest(e);
@@ -104,7 +105,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         /*
          * Sort elements
          */
-        configElements.sort(Comparator.comparing(o -> o.optionInfo.category()));
+        configElements.sort(Comparator.comparing(o -> I18n.format(o.optionInfo.category())));
 
         /*
          * Create the necessary buttons
@@ -124,22 +125,22 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         String previousCategory = null;
 
         for(ConfigElement element : configElements) {
-            if(previousCategory == null || !previousCategory.equals(element.optionInfo.category())) {
+            if(previousCategory == null || !previousCategory.equals(I18n.format(element.optionInfo.category()))) {
                 componentList.add(new QuickplayGuiString(null, nextButtonId, width / 2, getY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.category(), true, true));
                 nextButtonId++;
             }
-            previousCategory = element.optionInfo.category();
+            previousCategory = I18n.format(element.optionInfo.category());
 
             int buttonX = width / 2 - (ConfigElement.ELEMENT_MARGINS + buttonWidth) / 2;
             int buttonY = getY(nextButtonId);
 
             // Figure out what button type needs to be rendered & give it the appropriate text
             if(element.element instanceof Boolean)
-                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText(), true));
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()) + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText(), true));
             else if(element.element instanceof QuickplayColor || element.element instanceof Runnable)
-                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name(), true));
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()), true));
             else if(element.element instanceof Double)
-                componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.name(), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper, true));
+                componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper, true));
 
             nextButtonId++;
         }
@@ -237,9 +238,9 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
                     if((component.x < mouseX && component.x + component.width > mouseX) && (y < mouseY && y + component.height > mouseY)) {
                         final ConfigElement element = (ConfigElement) component.origin;
-                        if(element != null && element.optionInfo != null && element.optionInfo.category().length() > 0) {
+                        if(element != null && element.optionInfo != null && I18n.format(element.optionInfo.category()).length() > 0) {
                             final List<String> text = new ArrayList<>();
-                            text.add(element.optionInfo.helpText());
+                            text.add(I18n.format(element.optionInfo.helpText()));
                             drawHoveringText(text, mouseX, mouseY, mc.fontRendererObj);
                         }
                         break;
@@ -267,12 +268,12 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                 if(element != null) {
                     if(element.element instanceof Boolean) {
                         element.element = !(boolean) element.element;
-                        component.displayString = element.optionInfo.name() + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText();
+                        component.displayString = I18n.format(element.optionInfo.name()) + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText();
                     } else if(element.element instanceof Runnable) {
                         mc.displayGuiScreen(null);
                         ((Runnable) element.element).run();
                     } else if(element.element instanceof QuickplayColor) {
-                        mc.displayGuiScreen(new QuickplayGuiEditColor((QuickplayColor) element.element, element.optionInfo.name(), config, this));
+                        mc.displayGuiScreen(new QuickplayGuiEditColor((QuickplayColor) element.element, I18n.format(element.optionInfo.name()), config, this));
                     }
 
                     save(element);
