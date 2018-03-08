@@ -29,6 +29,45 @@ quickplay.gui.favorite=Bind to key...
 quickplay.gui.close=Close
 quickplay.gui.back=Back
 
+quickplay.settings.category.general=General
+
+quickplay.settings.category.colors=Colors
+quickplay.settings.primaryColor.name=Primary Color
+quickplay.settings.primaryColor.help=Change your Quickplay primary color
+quickplay.settings.secondaryColor.name=Secondary Color
+quickplay.settings.secondaryColor.help=Change your Quickplay secondary color
+
+quickplay.settings.category.gui=GUI
+quickplay.settings.blurGuiBackgrounds.name=Blur GUI Backgrounds
+quickplay.settings.blurGuiBackgrounds.help=Whether the background of Quickplay GUIs should be slightly blurred.
+quickplay.settings.fadeInGuis.name=Fade GUIs In
+quickplay.settings.fadeInGuis.help=Whether GUIs should fade in when opening.
+quickplay.settings.gameLogoScale.name=Main Menu Scale
+quickplay.settings.gameLogoScale.help=Scale of each item in the Quickplay main menu.
+quickplay.settings.reverseScrollingDirection.name=Reverse Scrolling Direction
+quickplay.settings.reverseScrollingDirection.help=Reverse the direction scrolling & dragging moves the screen.
+
+quickplay.settings.category.instanceDisplay=Instance Display
+quickplay.settings.instanceDisplay.name=Instance Display
+quickplay.settings.instanceDisplay.help=Whether or not the current server instance should be displayed on-screen.
+quickplay.settings.moveInstanceDisplayButton.name=Move Instance Display...
+quickplay.settings.moveInstanceDisplayButton.help=Change the position of the Instance display on-screen.
+quickplay.settings.instanceOpacity.name=Instance Display Opacity
+quickplay.settings.instanceOpacity.help=Opacity of the instance display.
+quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
+quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display should be rendered even when chat is open.
+
+quickplay.settings.sendUsageStatsButton.name=Usage Statistics...
+quickplay.settings.sendUsageStatsButton.help=Send anonymous usage statistics to help me create better mods for you!
+quickplay.settings.editKeybinds.name=Edit Keybinds...
+quickplay.settings.editKeybinds.help=Assign & remove keybinds previously created by right-clicking games or modes.
+quickplay.settings.lobbyOneSwap.name=Swap to Lobby One
+quickplay.settings.lobbyOneSwap.help=Swap to lobby one automatically whenever you join a new lobby.
+quickplay.settings.updateNotifications.name=Update Notifications
+quickplay.settings.updateNotifications.help=Whether you'd like to be notified when a new version of Quickplay is released (your list of games will update automatically, regardless of this setting).
+quickplay.settings.redesignedLobbyCommand.name=Custom Lobby Command
+quickplay.settings.redesignedLobbyCommand.help=Whether the custom Quickplay lobby commands should be used when possible. Requires game restart.
+
 quickplay.config.keybinds.openmain=Open Main GUI
 quickplay.config.saveerror=There was an error saving your configuration. Settings may not be saved!
 quickplay.config.gui.title=Quickplay Config

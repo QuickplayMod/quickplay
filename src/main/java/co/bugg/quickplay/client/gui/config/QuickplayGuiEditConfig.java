@@ -126,7 +126,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         for(ConfigElement element : configElements) {
             if(previousCategory == null || !previousCategory.equals(I18n.format(element.optionInfo.category()))) {
-                componentList.add(new QuickplayGuiString(null, nextButtonId, width / 2, getY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, element.optionInfo.category(), true, true));
+                componentList.add(new QuickplayGuiString(null, nextButtonId, width / 2, getY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.category()), true, true));
                 nextButtonId++;
             }
             previousCategory = I18n.format(element.optionInfo.category());

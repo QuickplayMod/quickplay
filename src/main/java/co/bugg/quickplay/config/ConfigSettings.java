@@ -11,7 +11,6 @@ import java.util.HashMap;
 
 public class ConfigSettings extends AConfiguration implements Serializable {
 
-    // TODO make name & helpText into translatable components
     // TODO make runnables into methods
     public ConfigSettings() {
         super("settings.json");
@@ -27,110 +26,111 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     public double instanceDisplayY = 0.05;
 
     @GuiOption(
-            name = "Primary Color",
-            helpText = "Change your Quickplay primary color",
-            category = "Colors"
+            name = "quickplay.settings.primaryColor.name",
+            helpText = "quickplay.settings.primaryColor.help",
+            category = "quickplay.settings.category.colors"
     )
     public QuickplayColor primaryColor = new QuickplayColor(1.0f, 1.0f, 1.0f);
     @GuiOption(
-            name = "Secondary Color",
-            helpText = "Change your Quickplay secondary color",
-            category = "Colors"
+            name = "quickplay.settings.secondaryColor.name",
+            helpText = "quickplay.settings.secondaryColor.help",
+            category = "quickplay.settings.category.colors"
     )
     public QuickplayColor secondaryColor = new QuickplayColor(0.7f, 0.7f, 0.7f);
 
     @GuiOption(
-            name = "Blur GUI Backgrounds",
-            helpText = "Whether the background of Quickplay GUIs should be slightly blurred.",
-            category = "GUI"
+            name = "quickplay.settings.blurGuiBackgrounds.name",
+            helpText = "quickplay.settings.blurGuiBackgrounds.help",
+            category = "quickplay.settings.category.gui"
     )
     public boolean blurGuiBackgrounds = true;
 
     @GuiOption(
-            name = "Fade GUIs In",
-            helpText = "Whether GUIs should fade in when opening.",
-            category = "GUI"
+            name = "quickplay.settings.fadeInGuis.name",
+            helpText = "quickplay.settings.fadeInGuis.help",
+            category = "quickplay.settings.category.gui"
     )
     public boolean fadeInGuis = true;
 
     @GuiOption(
-            name = "Instance Display",
-            helpText = "Whether or not the current server instance should be displayed on-screen.",
-            category = "Instance Display"
+            name = "quickplay.settings.gameLogoScale.name",
+            helpText = "quickplay.settings.gameLogoScale.help",
+            category = "quickplay.settings.category.gui",
+            minValue = 0.05f,
+            maxValue = 2.5f
+    )
+    public double gameLogoScale = 1.0;
+
+    @GuiOption(
+            name = "quickplay.settings.reverseScrollingDirection.name",
+            helpText = "quickplay.settings.reverseScrollingDirection.help",
+            category = "quickplay.settings.category.gui"
+    )
+    public boolean reverseScrollingDirection = false;
+
+    @GuiOption(
+            name = "quickplay.settings.instanceDisplay.name",
+            helpText = "quickplay.settings.instanceDisplay.help",
+            category = "quickplay.settings.category.instanceDisplay"
     )
     public boolean displayInstance = true;
 
     @GuiOption(
-            name = "Move Instance Display...",
-            helpText = "Change the position of the Instance display on-screen.",
-            category = "Instance Display"
+            name = "quickplay.settings.moveInstanceDisplayButton.name",
+            helpText = "quickplay.settings.moveInstanceDisplayButton.help",
+            category = "quickplay.settings.category.instanceDisplay"
     )
     public transient final Runnable moveInstanceDisplayButton = () -> Quickplay.INSTANCE.instanceDisplay.edit();
 
     @GuiOption(
-            name = "Instance Display Opacity",
-            helpText = "Opacity of the instance display.",
-            category = "Instance Display",
+            name = "quickplay.settings.instanceOpacity.name",
+            helpText = "quickplay.settings.instanceOpacity.help",
+            category = "quickplay.settings.category.instanceDisplay",
             minValue = 0.0f,
             maxValue = 1.0f
     )
     public double instanceOpacity = 1.0;
 
     @GuiOption(
-            name = "Display Over Chat",
-            helpText = "Whether the instance display should be rendered even when chat is open.",
-            category = "Instance Display"
+            name = "quickplay.settings.displayInstanceWithChatOpen.name",
+            helpText = "quickplay.settings.displayInstanceWithChatOpen.help",
+            category = "quickplay.settings.category.instanceDisplay"
     )
-    public boolean displayInstanceWithChatOpen = false;
-
-    @GuiOption(
-            name = "Game Logo Scale",
-            helpText = "Scale of each Hypixel game in main menu",
-            category = "GUI",
-            minValue = 0.05f,
-            maxValue = 2.5f
-    )
-    public double gameLogoScale = 1.0;
+    public boolean displayInstanceWithChatOpen = true;
 
     // Hashmap of custom game priorities for the main game selection GUI
     public HashMap<String, Integer> gamePriorities = new HashMap<>();
 
     @GuiOption(
-            name = "Usage Statistics...",
-            helpText = "Send anonymous usage statistics to help me create better mods for you!"
+            name = "quickplay.settings.sendUsageStatsButton.name",
+            helpText = "quickplay.settings.sendUsageStatsButton.help"
     )
     public transient final Runnable sendUsageStatsButton = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiUsageStats());
 
     @GuiOption(
-            name = "Edit Keybinds...",
-            helpText = "Assign & remove keybinds previously created by right-clicking games or modes."
+            name = "quickplay.settings.editKeybinds.name",
+            helpText = "quickplay.settings.editKeybinds.help"
     )
     public transient final Runnable editKeybinds = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
 
     @GuiOption(
-            name="Swap to Lobby One",
-            helpText = "Swap to lobby one automatically whenever you join a new lobby."
+            name="quickplay.settings.lobbyOneSwap.name",
+            helpText = "quickplay.settings.lobbyOneSwap.help"
     )
     public boolean lobbyOneSwap = false;
 
     @GuiOption(
-            name = "Update Notifications",
-            helpText = "Whether you'd like to be notified when a new version of Quickplay is released (your list of games will update automatically, regardless of this setting)."
+            name = "quickplay.settings.updateNotifications.name",
+            helpText = "quickplay.settings.updateNotifications.help"
     )
     public boolean updateNotifications = true;
 
     @GuiOption(
-            name = "Custom Lobby Command",
-            helpText = "Whether the custom Quickplay lobby commands should be used when possible. Requires game restart."
+            name = "quickplay.settings.redesignedLobbyCommand.name",
+            helpText = "quickplay.settings.redesignedLobbyCommand.help"
     )
     public boolean redesignedLobbyCommand = true;
 
-    @GuiOption(
-            name = "Reverse Scrolling Direction",
-            helpText = "Reverse the direction scrolling & dragging moves the screen.",
-            category = "GUI"
-    )
-    public boolean reverseScrollingDirection = false;
     /**
      * Whether the client's own glyph should be visible or not
      * Should be set via QuickplayPremium jar.

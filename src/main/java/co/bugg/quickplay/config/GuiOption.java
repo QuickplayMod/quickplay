@@ -25,7 +25,7 @@ public @interface GuiOption {
      * Translation key for what category this setting belongs to
      * @return Category translation key
      */
-    String category() default "General";
+    String category() default "quickplay.settings.category.general";
 
     /*
      * These settings are only used in integer and double options.
