@@ -70,6 +70,7 @@ public class ResponseAction {
                     HashMap<String, String> params = new HashMap<>();
                     Quickplay.INSTANCE.requestFactory.addStatisticsParameters(params);
                     params.put("locale", Minecraft.getMinecraft().gameSettings.language);
+                    params.put("gamelistProtocol", "2");
 
                     WebResponse response = Quickplay.INSTANCE.requestFactory.newRequest(getValue().getAsString(), null).execute();
 
