@@ -276,6 +276,9 @@ public class Quickplay {
                 commands.add(new CommandHub("spawn"));
                 commands.add(new CommandHub("leave"));
             }
+            // Copy of the lobby command that doesn't override server commands
+            // Used for "Go to Lobby" buttons
+            commands.add(new CommandHub("quickplaylobby", "hub"));
             commands.forEach(ClientCommandHandler.instance::registerCommand);
         }
     }
