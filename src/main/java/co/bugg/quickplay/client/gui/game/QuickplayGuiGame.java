@@ -12,6 +12,7 @@ import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.Mode;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
@@ -120,6 +121,7 @@ public class QuickplayGuiGame extends QuickplayGui {
                 currentColumn++;
             }
         }
+        componentList.add(new QuickplayGuiButton(null, game.modes.size() + 1, 3, 3, 100, 20, I18n.format("quickplay.gui.back"), false));
 
         setScrollingValues();
     }
@@ -143,6 +145,8 @@ public class QuickplayGuiGame extends QuickplayGui {
             // For security purposes, only actual commands are sent and chat messages can't be sent.
             if(mode.command.startsWith("/"))
                 Quickplay.INSTANCE.chatBuffer.push(((Mode) component.origin).command);
+        } else if(component.displayString.equals(I18n.format("quickplay.gui.back"))) {
+            Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiMainMenu());
         }
     }
 
@@ -175,7 +179,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         // Modified super.drawScreen()
         final int scrollFadeDistance = (topOfBackgroundBox + backgroundBoxPadding - topOfBackgroundBox);
         for (QuickplayGuiComponent component : componentList) {
-            double scrollOpacity = (component.y > topOfBackgroundBox + backgroundBoxPadding ? 1 : component.y + scrollFadeDistance < topOfBackgroundBox + backgroundBoxPadding ? 0 : (scrollFadeDistance - ((double) topOfBackgroundBox + backgroundBoxPadding - (double) component.y)) / (double) scrollFadeDistance);
+            double scrollOpacity = component.scrollable ? (component.y > topOfBackgroundBox + backgroundBoxPadding ? 1 : component.y + scrollFadeDistance < topOfBackgroundBox + backgroundBoxPadding ? 0 : (scrollFadeDistance - ((double) topOfBackgroundBox + backgroundBoxPadding - (double) component.y)) / (double) scrollFadeDistance) : 1;
             component.opacity = scrollOpacity;
             if(opacity * scrollOpacity > 0)
                 component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
