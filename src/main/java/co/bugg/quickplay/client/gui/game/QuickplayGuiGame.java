@@ -179,8 +179,9 @@ public class QuickplayGuiGame extends QuickplayGui {
         // Modified super.drawScreen()
         final int scrollFadeDistance = (topOfBackgroundBox + backgroundBoxPadding - topOfBackgroundBox);
         for (QuickplayGuiComponent component : componentList) {
-            double scrollOpacity = component.scrollable ? (component.y > topOfBackgroundBox + backgroundBoxPadding ? 1 : component.y + scrollFadeDistance < topOfBackgroundBox + backgroundBoxPadding ? 0 : (scrollFadeDistance - ((double) topOfBackgroundBox + backgroundBoxPadding - (double) component.y)) / (double) scrollFadeDistance) : 1;
+            double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfBackgroundBox + backgroundBoxPadding ? 1 : (component.y - scrollPixel) + scrollFadeDistance < topOfBackgroundBox + backgroundBoxPadding ? 0 : (scrollFadeDistance - ((double) topOfBackgroundBox + backgroundBoxPadding - (double) (component.y - scrollPixel))) / (double) scrollFadeDistance) : 1;
             component.opacity = scrollOpacity;
+            System.out.println(scrollOpacity);
             if(opacity * scrollOpacity > 0)
                 component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
         }
