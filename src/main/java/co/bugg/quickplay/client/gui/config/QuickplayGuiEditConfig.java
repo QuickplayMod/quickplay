@@ -218,11 +218,12 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         /*
          * Draw buttons
          */
+        final int fadeDistance = 10;
         for (QuickplayGuiComponent component : componentList) {
             if(!component.displayString.equals(openFolderText)) {
-                double scrollOpacity = (component.y > topOfBox ? 1 : component.y + ConfigElement.ELEMENT_HEIGHT < topOfBox ? 0 : (ConfigElement.ELEMENT_HEIGHT - ((double) topOfBox - (double) component.y)) / (double) ConfigElement.ELEMENT_HEIGHT);
+                double scrollOpacity = ((component.y - scrollPixel) > topOfBox ? 1 : (component.y - scrollPixel) + ConfigElement.ELEMENT_HEIGHT < topOfBox ? 0 : (fadeDistance - ((double) topOfBox - (double) (component.y - scrollPixel))) / (double) fadeDistance);
                 component.opacity = scrollOpacity;
-                if(component.y + ConfigElement.ELEMENT_HEIGHT > topOfBox) component.draw(this, mouseX, mouseY, opacity * (float) scrollOpacity);
+                if((component.y - scrollPixel) + fadeDistance > topOfBox) component.draw(this, mouseX, mouseY, opacity * (float) scrollOpacity);
             } else
                 component.draw(this, mouseX, mouseY, opacity);
         }
