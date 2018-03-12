@@ -134,6 +134,23 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public boolean redesignedLobbyCommand = true;
 
+    @GuiOption(
+            name = "quickplay.settings.partyModeDelay.name",
+            helpText = "quickplay.settings.partyModeDelay.help",
+            category = "quickplay.settings.category.partyMode",
+            minValue = 0,
+            maxValue = 10,
+            decimalFormat = "0.0"
+    )
+    public double partyModeDelay = 5.0;
+
+    @GuiOption(
+            name="quickplay.settings.partyModeGui.name",
+            helpText = "quickplay.settings.partyModeGui.help",
+            category = "quickplay.settings.category.partyMode"
+    )
+    public boolean partyModeGui = true;
+
     /**
      * Whether the client's own glyph should be visible or not
      * Should be set via QuickplayPremium jar.

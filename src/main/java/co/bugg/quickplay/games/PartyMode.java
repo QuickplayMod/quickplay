@@ -24,4 +24,6 @@ public class PartyMode extends Mode {
         super(name, command);
         this.namespace = namespace;
     }
+
+    // TODO getNamespace() method instead of field, that way people can't spoof it by editing files
 }

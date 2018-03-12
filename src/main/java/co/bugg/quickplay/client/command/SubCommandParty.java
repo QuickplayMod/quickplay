@@ -33,7 +33,7 @@ public class SubCommandParty extends ASubCommand {
             new TickDelay(() -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiPartyEditor()), 1);
         } else {
             if(args[0].equals("launch")) {
-                Quickplay.INSTANCE.launchPartyMode();
+                new TickDelay(() -> Quickplay.INSTANCE.threadPool.submit(Quickplay.INSTANCE::launchPartyMode), 1);
             } else {
                 Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.syntax", "/qp party launch").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             }

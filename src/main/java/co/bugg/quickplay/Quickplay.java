@@ -3,6 +3,7 @@ package co.bugg.quickplay;
 import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandQuickplay;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
+import co.bugg.quickplay.client.gui.QuickplayGuiPartySpinner;
 import co.bugg.quickplay.client.render.GlyphRenderer;
 import co.bugg.quickplay.client.render.PlayerGlyph;
 import co.bugg.quickplay.config.*;
@@ -19,6 +20,7 @@ import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.ChatComponentTranslation;
@@ -339,17 +341,35 @@ public class Quickplay {
      */
     public void launchPartyMode() {
         if(settings.partyModes.size() > 0) {
-            PartyMode mode;
-            // Don't need to randomize on size 1
-            if(settings.partyModes.size() == 1) {
-                mode = settings.partyModes.get(0);
+            if(settings.partyModeGui) {
+                Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiPartySpinner());
             } else {
-                final Random random = new Random();
-                mode = settings.partyModes.get(random.nextInt(settings.partyModes.size()));
-            }
+                // No GUI, handle randomization in chat
 
-            messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
-            chatBuffer.push(mode.command);
+                // Send commencement message if delay is greater than 0 seconds
+                if(settings.partyModeDelay > 0) {
+                    messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.commencing").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE))));
+                }
+
+                // Calculate mode
+                PartyMode mode;
+                // Don't need to randomize on size 1
+                if(settings.partyModes.size() == 1) {
+                    mode = settings.partyModes.get(0);
+                } else {
+                    final Random random = new Random();
+                    mode = settings.partyModes.get(random.nextInt(settings.partyModes.size()));
+                }
+
+                try {
+                    Thread.sleep((long) (settings.partyModeDelay * 1000));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
+                chatBuffer.push(mode.command);
+            }
         } else {
             messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.nogames").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
