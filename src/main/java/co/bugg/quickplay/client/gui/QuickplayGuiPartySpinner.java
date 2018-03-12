@@ -4,10 +4,12 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
@@ -90,18 +92,24 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                 if(spinnerDelay > 0) {
                     // While less than 100% of the spinnerDelay has passed
                     while (startedAt > System.currentTimeMillis() - spinnerDelay * 1000) {
-                        final int nextSelectedModeIndex = random.nextInt(Quickplay.INSTANCE.settings.partyModes.size());
-                        currentlySelectedMode = Quickplay.INSTANCE.settings.partyModes.get(nextSelectedModeIndex);
-                        spinnerText = currentlySelectedMode.name;
+                        if(Minecraft.getMinecraft().currentScreen == this) {
+                            final int nextSelectedModeIndex = random.nextInt(Quickplay.INSTANCE.settings.partyModes.size());
+                            currentlySelectedMode = Quickplay.INSTANCE.settings.partyModes.get(nextSelectedModeIndex);
+                            spinnerText = currentlySelectedMode.name;
 
-                        // Sleep for 1/5th of the length this spinner has been running
-                        // This creates a fast spinning speed to start that slows down over time
-                        // Minimum of 10ms and max of 1000ms
-                        long sleepTime = (long) ((1 / 5d) * (System.currentTimeMillis() - startedAt));
-                        if (sleepTime < 10) sleepTime = 10;
-                        if (sleepTime > 1000) sleepTime = 1000;
+                            // Play clicky sound
+                            mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("note.harp"), 1.5F));
 
-                        Thread.sleep(sleepTime);
+                            // Sleep for 1/5th of the length this spinner has been running
+                            // This creates a fast spinning speed to start that slows down over time
+                            // Minimum of 30ms and max of 1000ms
+                            long sleepTime = (long) ((1 / 5d) * (System.currentTimeMillis() - startedAt));
+                            if (sleepTime < 30) sleepTime = 30;
+                            if (sleepTime > 1000) sleepTime = 1000;
+
+                            Thread.sleep(sleepTime);
+                        } else
+                            return;
                     }
                 } else {
                     final int nextSelectedModeIndex = random.nextInt(Quickplay.INSTANCE.settings.partyModes.size());
@@ -110,15 +118,20 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                 }
 
                 // After spinning complete, start finalization
+                // Play dingy sound
+                mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("random.levelup"), 0.7F));
                 final String textToFlash = spinnerText;
                 // While less than 100% of the spinnerDelay and finalization period combined has passed
                 while (startedAt > System.currentTimeMillis() - (spinnerDelay + finalizationLength) * 1000) {
-                    if (spinnerText.equals(textToFlash)) {
-                        spinnerText = "";
-                    } else
-                        spinnerText = textToFlash;
+                    if(Minecraft.getMinecraft().currentScreen == this) {
+                        if (spinnerText.equals(textToFlash)) {
+                            spinnerText = "";
+                        } else
+                            spinnerText = textToFlash;
 
-                    Thread.sleep((long) (flashFrequency * 1000));
+                        Thread.sleep((long) (flashFrequency * 1000));
+                    } else
+                        return;
                 }
 
                 // Finally, if this GUI is still open, send the mode command & close GUI
