@@ -163,8 +163,8 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             initGui();
         } else if(component.displayString.equals(I18n.format("quickplay.gui.party.launch"))) {
             // Launch!
-            Quickplay.INSTANCE.threadPool.submit(Quickplay.INSTANCE::launchPartyMode);
             Minecraft.getMinecraft().displayGuiScreen(null);
+            Quickplay.INSTANCE.threadPool.submit(Quickplay.INSTANCE::launchPartyMode);
         }
     }
 
