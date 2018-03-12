@@ -44,6 +44,10 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
      * The Y value at which point values should start being drawn
      */
     public int topOfButtons;
+    /**
+     * Across how many pixels buttons fade while scrolling
+     */
+    public final int scrollFadeDistance = 20;
 
     @Override
     public void initGui() {
@@ -104,7 +108,11 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
 
         drawScrollbar(width / 2 + buttonWidth / 2 + 3);
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        //Override super.drawScreen(mouseX, mouseY, partialTicks);
+        for (QuickplayGuiComponent component : componentList) {
+            double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfButtons ? 1 : (component.y - scrollPixel) + scrollFadeDistance < topOfButtons ? 0 : (scrollFadeDistance - ((double) topOfButtons - (double) (component.y - scrollPixel))) / (double) scrollFadeDistance) : 1;
+            component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
+        }
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
@@ -114,19 +122,21 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
         if(component.origin instanceof PartyMode) {
-            final PartyMode mode = (PartyMode) component.origin;
-            // Display name of this component, split at the colon, to separate the name from the current toggle status
-            final String nameWithoutToggleStatus = component.displayString.split(":")[0];
+            if(component.y - scrollPixel > topOfButtons - scrollFadeDistance && component.scrollable) {
+                final PartyMode mode = (PartyMode) component.origin;
+                // Display name of this component, split at the colon, to separate the name from the current toggle status
+                final String nameWithoutToggleStatus = component.displayString.split(":")[0];
 
-            // Reference to this mode's twin in the toggled modes list (or null if doesn't exist)
-            final PartyMode toggledModeReference = checkIfModeToggled(mode);
-            // If the mode is toggled on remove it, otherwise add it
-            if(toggledModeReference != null) {
-                toggledModes.remove(toggledModeReference);
-                component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.RED + I18n.format("quickplay.config.gui.false");
-            } else {
-                toggledModes.add(mode);
-                component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.GREEN + I18n.format("quickplay.config.gui.true");
+                // Reference to this mode's twin in the toggled modes list (or null if doesn't exist)
+                final PartyMode toggledModeReference = checkIfModeToggled(mode);
+                // If the mode is toggled on remove it, otherwise add it
+                if(toggledModeReference != null) {
+                    toggledModes.remove(toggledModeReference);
+                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.RED + I18n.format("quickplay.config.gui.false");
+                } else {
+                    toggledModes.add(mode);
+                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.GREEN + I18n.format("quickplay.config.gui.true");
+                }
             }
         }
     }
