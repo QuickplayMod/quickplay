@@ -312,6 +312,8 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
+        if(Quickplay.INSTANCE.settings.anyKeyClosesGui)
+            Minecraft.getMinecraft().displayGuiScreen(null);
     }
 
     @Override

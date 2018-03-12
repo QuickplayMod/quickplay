@@ -72,6 +72,13 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     public boolean reverseScrollingDirection = false;
 
     @GuiOption(
+            name="quickplay.settings.anyKeyClosesGui.name",
+            helpText="quickplay.settings.anyKeyClosesGui.help",
+            category = "quickplay.settings.category.gui"
+    )
+    public boolean anyKeyClosesGui = false;
+
+    @GuiOption(
             name = "quickplay.settings.instanceDisplay.name",
             helpText = "quickplay.settings.instanceDisplay.help",
             category = "quickplay.settings.category.instanceDisplay"

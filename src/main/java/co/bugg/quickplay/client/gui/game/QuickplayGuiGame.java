@@ -194,6 +194,13 @@ public class QuickplayGuiGame extends QuickplayGui {
     }
 
     @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        super.keyTyped(typedChar, keyCode);
+        if(Quickplay.INSTANCE.settings.anyKeyClosesGui)
+            Minecraft.getMinecraft().displayGuiScreen(null);
+    }
+
+    @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         for(QuickplayGuiComponent component : componentList) {

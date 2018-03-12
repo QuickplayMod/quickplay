@@ -47,6 +47,8 @@ quickplay.settings.gameLogoScale.name=Main Menu Scale
 quickplay.settings.gameLogoScale.help=Scale of each item in the Quickplay main menu.
 quickplay.settings.reverseScrollingDirection.name=Reverse Scrolling Direction
 quickplay.settings.reverseScrollingDirection.help=Reverse the direction scrolling & dragging moves the screen.
+quickplay.settings.anyKeyClosesGui.name=Any Key Closes GUIs
+quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed
 
 quickplay.settings.category.instanceDisplay=Instance Display
 quickplay.settings.instanceDisplay.name=Instance Display
