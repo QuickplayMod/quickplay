@@ -7,6 +7,7 @@ import co.bugg.quickplay.client.render.GlyphRenderer;
 import co.bugg.quickplay.client.render.PlayerGlyph;
 import co.bugg.quickplay.config.*;
 import co.bugg.quickplay.games.Game;
+import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.http.HttpRequestFactory;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.ResponseAction;
@@ -31,10 +32,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -333,6 +331,25 @@ public class Quickplay {
             if(response != null)
                 for(ResponseAction action : response.actions)
                     action.run();
+        }
+    }
+
+    /**
+     * Start a party mode session by randomizing selected games & then executing the command
+     */
+    public void launchPartyMode() {
+        if(settings.partyModes.size() > 0) {
+            PartyMode mode;
+            // Don't need to randomize on size 1
+            if(settings.partyModes.size() == 1) {
+                mode = settings.partyModes.get(0);
+            } else {
+                final Random random = new Random();
+                mode = settings.partyModes.get(random.nextInt(settings.partyModes.size()));
+            }
+
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
+            chatBuffer.push(mode.command);
         }
     }
 }

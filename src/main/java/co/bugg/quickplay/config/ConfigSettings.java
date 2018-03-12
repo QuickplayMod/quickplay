@@ -4,10 +4,13 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
+import co.bugg.quickplay.games.PartyMode;
 import net.minecraft.client.Minecraft;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ConfigSettings extends AConfiguration implements Serializable {
 
@@ -149,4 +152,12 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * @see <a href="https://github.com/bugfroggy/Quickplay2.0/issues/3">Github issue</a>
      */
     public int mainMenuYPadding = 60;
+
+    /**
+     * A list of all modes currently set to "TRUE" in party mode.
+     *
+     * When the client receives a response from the gamelist endpoint,
+     * it will verify all modes in this list and make sure they're all valid
+     */
+    public List<PartyMode> partyModes = new ArrayList<>();
 }

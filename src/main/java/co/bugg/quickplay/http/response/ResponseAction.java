@@ -4,6 +4,7 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.config.ConfigKeybinds;
 import co.bugg.quickplay.config.ConfigSettings;
 import co.bugg.quickplay.games.Game;
+import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.util.Message;
 import com.google.gson.Gson;
@@ -13,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 /**
@@ -85,6 +87,45 @@ public class ResponseAction {
                             try {
                                 response.content.getAsJsonObject().get("games").getAsJsonArray().forEach(
                                         obj -> Quickplay.INSTANCE.gameList.add(new Gson().fromJson(obj, Game.class)));
+
+
+                                // Parse game list to verify the client's party mode list
+                                if(Quickplay.INSTANCE.gameList.size() > 0) {
+                                    // If the client has any party modes
+                                    if (Quickplay.INSTANCE.settings.partyModes != null && Quickplay.INSTANCE.settings.partyModes.size() > 0) {
+                                        // Go through list of party modes the client has
+                                        for (final ListIterator<PartyMode> iter = Quickplay.INSTANCE.settings.partyModes.listIterator(); iter.hasNext();) {
+                                            final PartyMode mode = iter.next();
+                                            // Split the namespace
+                                            final String[] splitNamespace = mode.namespace.split("/");
+                                            // If no games have the given unlocalized game name
+                                            if(Quickplay.INSTANCE.gameList.stream().noneMatch(game -> game.unlocalizedName.replace("/", "").equals(splitNamespace[0]))) {
+                                                iter.remove();
+                                            } else {
+                                                boolean found = false;
+                                                // For each game matching the first portion of the namespace
+                                                for(Game gameMatchingNamespace : Quickplay.INSTANCE.gameList.stream().filter(game -> game.unlocalizedName.replace("/", "").equals(splitNamespace[0])).collect(Collectors.toList())) {
+                                                    // If a mode with a command matching part two of the namespace is found, set found to true and break
+                                                    if(gameMatchingNamespace.modes.stream().anyMatch(mode1 -> mode1.command.replace("/", "").equals(splitNamespace[1]))) {
+                                                        found = true;
+                                                        break;
+                                                    }
+                                                }
+                                                // If a mode wasn't found, remove this party mode
+                                                if(!found)
+                                                    iter.remove();
+                                            }
+                                        }
+
+                                        // Save after iteration is done
+                                        Quickplay.INSTANCE.settings.save();
+                                    }
+                                } else {
+                                    // There's no games so we know all party modes are invalid
+                                    Quickplay.INSTANCE.settings.partyModes.clear();
+                                    Quickplay.INSTANCE.settings.save();
+                                }
+
 
                                 // Save the retrieved game list to cache
                                 Quickplay.INSTANCE.assetFactory.saveCachedGameList(Quickplay.INSTANCE.gameList.toArray(new Game[Quickplay.INSTANCE.gameList.size()]));

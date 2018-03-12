@@ -12,6 +12,7 @@ quickplay.commands.quickplay.keybinds.help=Open the Quickplay Keybind editor.
 quickplay.commands.quickplay.moveinstance.deprecated=This command is deprecated. You should use "/qp config" instead!
 quickplay.commands.quickplay.discord.help=Join the Quickplay Discord server.
 quickplay.commands.quickplay.discord.message=Discord is the #1 way to get in touch with @bugfroggy. Join the Quickplay Discord if you have any questions, feedback, or bug reports.
+quickplay.commands.quickplay.party.help=
 quickplay.commands.quickplay.premium.help=Command for Quickplay Premium features.
 quickplay.commands.quickplay.premium.noCommands=No known commands!
 quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay couldn't gather the latest information about Quickplay Premium! Visit %s
@@ -100,6 +101,9 @@ quickplay.gui.stats.copied=Copied to clipboard!
 quickplay.gui.stats.copy=Click to copy
 quickplay.gui.stats.privacy=Privacy Policy
 quickplay.gui.stats.privacyerror=Something went wrong. %s
+
+quickplay.party.syntax=Invalid syntax! Type "%s" to take off!
+quickplay.party.sendingYou=Sending you to %s...
 
 quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recreating it.
 quickplay.keybinds.title=Keybinds
