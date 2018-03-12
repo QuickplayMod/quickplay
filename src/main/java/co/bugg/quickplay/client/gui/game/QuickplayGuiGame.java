@@ -181,7 +181,6 @@ public class QuickplayGuiGame extends QuickplayGui {
         for (QuickplayGuiComponent component : componentList) {
             double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfBackgroundBox + backgroundBoxPadding ? 1 : (component.y - scrollPixel) + scrollFadeDistance < topOfBackgroundBox + backgroundBoxPadding ? 0 : (scrollFadeDistance - ((double) topOfBackgroundBox + backgroundBoxPadding - (double) (component.y - scrollPixel))) / (double) scrollFadeDistance) : 1;
             component.opacity = scrollOpacity;
-            System.out.println(scrollOpacity);
             if(opacity * scrollOpacity > 0)
                 component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
         }

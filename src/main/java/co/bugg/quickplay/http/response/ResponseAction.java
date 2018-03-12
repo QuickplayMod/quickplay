@@ -72,7 +72,7 @@ public class ResponseAction {
                     params.put("locale", Minecraft.getMinecraft().gameSettings.language);
                     params.put("gamelistProtocol", "2");
 
-                    WebResponse response = Quickplay.INSTANCE.requestFactory.newRequest(getValue().getAsString(), null).execute();
+                    WebResponse response = Quickplay.INSTANCE.requestFactory.newRequest(getValue().getAsString(), params).execute();
 
                     if(response != null) {
                         for (ResponseAction action : response.actions) {
