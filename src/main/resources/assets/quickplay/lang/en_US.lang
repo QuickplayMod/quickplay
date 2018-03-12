@@ -104,6 +104,7 @@ quickplay.gui.stats.privacyerror=Something went wrong. %s
 
 quickplay.party.syntax=Invalid syntax! Type "%s" to take off!
 quickplay.party.sendingYou=Sending you to %s...
+quickplay.party.nogames=D'oh! Party mode does not have any games selected.
 
 quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recreating it.
 quickplay.keybinds.title=Keybinds

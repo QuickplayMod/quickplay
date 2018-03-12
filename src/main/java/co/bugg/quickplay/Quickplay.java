@@ -348,8 +348,10 @@ public class Quickplay {
                 mode = settings.partyModes.get(random.nextInt(settings.partyModes.size()));
             }
 
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
+            messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
             chatBuffer.push(mode.command);
+        } else {
+            messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.nogames").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }
 }
