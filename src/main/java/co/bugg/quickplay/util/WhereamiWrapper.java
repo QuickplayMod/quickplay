@@ -7,11 +7,28 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Wrapper for the <code>/whereami</code> command on Hypixel and determining the client's location
+ */
 public class WhereamiWrapper {
+    /**
+     * Whether this wrapper should listen for & action on chat messages
+     */
     boolean listening;
+    /**
+     * Whether this wrapper should cancel whereami messages it finds
+     */
     boolean cancel;
+    /**
+     * Callback when this wrapper finds a /whereami message
+     */
     final WhereamiListenerCallback callback;
 
+    /**
+     * Constructor
+     *
+     * @param callback Callback when this wrapper finds a /whereami message
+     */
     public WhereamiWrapper(WhereamiListenerCallback callback) {
 
         Quickplay.INSTANCE.registerEventHandler(this);

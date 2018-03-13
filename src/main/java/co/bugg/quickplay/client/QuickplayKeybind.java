@@ -14,16 +14,48 @@ import org.lwjgl.input.Keyboard;
 
 import java.io.Serializable;
 
+/**
+ * Quickplay's Keybind system
+ * These Keybinds have two keybind optiosn:
+ * <ul>
+ *     <li>Chat commands</li>
+ *     <li>GUI opening</li>
+ * </ul>
+ */
 public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.PostProcessor{
 
+    /**
+     * Name of this keybind
+     */
     public String name;
+    /**
+     * The key that triggers this keybind
+     */
     public int key;
 
+    /**
+     * If this keybind runs a command:
+     * The chat command this keybind triggers
+     */
     public String chatCommand = null;
-
+    /**
+     * If this keybind opens a GUI:
+     * The name of the class to the GUI
+     */
     public String className = null;
+    /**
+     * If this keybind opens a GUI:
+     * The parameters to the constructor for the GUI
+     */
     public Object[] constructorParams = null;
 
+    /**
+     * Constructor
+     *
+     * @param name Name of the keybind
+     * @param defaultKey Default key for this keybind
+     * @param chatCommand Chat command to run when this keybind's key is pressed
+     */
     public QuickplayKeybind(String name, int defaultKey, String chatCommand) {
         this(name, defaultKey);
         this.chatCommand = chatCommand;
@@ -31,12 +63,26 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
             this.chatCommand = "/" + chatCommand;
     }
 
+    /**
+     * Constructor
+     *
+     * @param name Name of the keybind
+     * @param defaultKey Default key for this keybind
+     * @param guiClass Class for the GUI that this keybind opens
+     * @param guiConstructorParams Parameters for the GUI class constructor that this keybind opens
+     */
     public QuickplayKeybind(String name, int defaultKey, Class<? extends GuiScreen> guiClass, Object... guiConstructorParams) {
         this(name, defaultKey);
         this.className = guiClass.getName();
         this.constructorParams = guiConstructorParams;
     }
 
+    /**
+     * Constructor
+     *
+     * @param name Name of this keybind
+     * @param defaultKey Default key for this keybind
+     */
     public QuickplayKeybind(String name, int defaultKey) {
         this.name = name;
         this.key = defaultKey;
@@ -44,10 +90,16 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
         registerAsEventHandler();
     }
 
+    /**
+     * Register this keybind as an event handler
+     */
     private void registerAsEventHandler() {
         Quickplay.INSTANCE.registerEventHandler(this);
     }
 
+    /**
+     * Called whenever this keybind is triggered
+     */
     public void keyPressed() {
         // Open a GUI if one is available
         if(className != null && constructorParams != null)

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Mode for a Hypixel game
+ * @see Game
  */
 public class Mode implements Serializable {
     /**

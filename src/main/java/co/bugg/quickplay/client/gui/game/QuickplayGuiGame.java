@@ -26,32 +26,98 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
 
+/**
+ * GUI for individual Quickplay {@link Game}s
+ */
 public class QuickplayGuiGame extends QuickplayGui {
+    /**
+     * Game this GUI is for
+     */
     public final Game game;
 
-    public int headerHeight = 0;
+    /**
+     * The height at which the header (game name) is rendered
+     */
+    public int headerHeight;
+    /**
+     * Scale of the header
+     */
     public double headerScale = 1.5;
+    /**
+     * Margins on the bottom of the header between the header & the item below it
+     */
     public final int headerBottomMargins = 3;
+    /**
+     * Scale of the game's logo
+     */
     public double logoScale = 0.25;
+    /**
+     * UV size of the logo
+     */
     public final int logoSize = 256;
+    /**
+     * Margins on the bottom of the logo between the logo & the item below it
+     */
     public final int logoBottomMargins = 10;
-    public int topOfBackgroundBox = 0;
+    /**
+     * Y level of the box in the background of the buttons
+     */
+    public int topOfBackgroundBox;
+    /**
+     * Padding between the background box's edge and the items inside it
+     */
     public int backgroundBoxPadding = 10;
 
     // Used for button positions
-    public int windowPadding = 0;
+    /**
+     * Percentage padding between the sides of the window and the columns
+     */
+    public int windowPadding;
+    /**
+     * Number of columns the client should try to render
+     */
     public int columnCount = 1;
-    public int columnZeroX = 0;
+    /**
+     * The X position of the first column
+     */
+    public int columnZeroX;
+
+    /**
+     * The column currently being calculated by {@link #initGui()}
+     */
     public int currentColumn;
+    /**
+     * The row currently being calculated by {@link #initGui()}
+     */
     public int currentRow;
 
+    /**
+     * The margins between each mode button both vertically and horizontally
+     */
     public final int buttonMargins = 5;
+    /**
+     * The width of each mode button
+     */
     public int buttonWidth = 200;
+    /**
+     * The height of each mode button
+     */
     public int buttonHeight = 20;
 
+    /**
+     * The string containing the current copyright
+     */
     public String copyright;
+    /**
+     * The margins between the copyright string and the bottom of the screen
+     */
     public final int copyrightMargins = 3;
 
+    /**
+     * Constructor
+     *
+     * @param game Game this GUI is for
+     */
     public QuickplayGuiGame(Game game) {
         if(game != null)
             this.game = game;
@@ -60,6 +126,8 @@ public class QuickplayGuiGame extends QuickplayGui {
     }
 
     /**
+     * Constructor
+     *
      * Used for keybinds, gameList is queried for the name of the game provided
      * @param unlocalizedGameName Name of the game to display if possible
      */
@@ -180,7 +248,6 @@ public class QuickplayGuiGame extends QuickplayGui {
         final int scrollFadeDistance = 10;
         for (QuickplayGuiComponent component : componentList) {
             double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfBackgroundBox + backgroundBoxPadding ? 1 : (component.y - scrollPixel) + scrollFadeDistance < topOfBackgroundBox + backgroundBoxPadding ? 0 : (scrollFadeDistance - ((double) topOfBackgroundBox + backgroundBoxPadding - (double) (component.y - scrollPixel))) / (double) scrollFadeDistance) : 1;
-            component.opacity = scrollOpacity;
             if(opacity * scrollOpacity > 0)
                 component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
         }
@@ -205,7 +272,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         for(QuickplayGuiComponent component : componentList) {
             if (!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(this, mouseX, mouseY) && mouseButton == 1) {
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new String[]{new ChatComponentTranslation("quickplay.gui.favorite").getUnformattedText()}), component, -1, mouseX, mouseY, false) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new String[]{new ChatComponentTranslation("quickplay.gui.favorite").getUnformattedText()}), component, -1, mouseX, mouseY) {
                     @Override
                     public void optionSelected(int index) {
                         switch(index) {

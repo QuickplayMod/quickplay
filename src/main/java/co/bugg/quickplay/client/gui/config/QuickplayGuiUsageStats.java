@@ -7,6 +7,7 @@ import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.QuickplayGuiString;
 import co.bugg.quickplay.config.ConfigUsageStats;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import org.lwjgl.opengl.GL11;
 
@@ -19,20 +20,55 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * GUI prompting the user if they'd like to send usage statistics
+ * in order to help improve Quickplay.
+ */
 public class QuickplayGuiUsageStats extends QuickplayGui {
 
+    /**
+     * Width of each button on the screen
+     */
     public final int buttonWidth = 150;
+    /**
+     * Height of each button on the screen
+     */
     public final int buttonHeight = 20;
+    /**
+     * Margins between each button on the screen
+     */
     public final int buttonMargins = 5;
+    /**
+     * Y levels of the yes and no buttons
+     */
     public int buttonY;
+    /**
+     * Usage stats configuration that is being altered
+     */
     public final ConfigUsageStats usageStats = Quickplay.INSTANCE.usageStats;
-
-    public final String yesText = new ChatComponentTranslation("quickplay.gui.stats.yes").getUnformattedText();
-    public final String noText = new ChatComponentTranslation("quickplay.gui.stats.no").getUnformattedText();
+    /**
+     * Display string for the "YES" button
+     */
+    public final String yesText = I18n.format("quickplay.gui.stats.yes");
+    /**
+     * Display string for the "NO" button
+     */
+    public final String noText = I18n.format("quickplay.gui.stats.no");
+    /**
+     * String displaying the user's current Quickplay statistics token
+     */
     public String tokenText = null;
-    public String privacyText = new ChatComponentTranslation("quickplay.gui.stats.privacy").getFormattedText();
-
+    /**
+     * String for the user to click to visit the privacy policy
+     */
+    public String privacyText = I18n.format("quickplay.gui.stats.privacy");
+    /**
+     * The max width of the description text on what data Quickplay collects & such
+     */
     public int descriptionWidth;
+    /**
+     * The lines that need to be rendered for the description on how Quickplay collects data & such
+     */
     public String[] descriptionLines;
 
     @Override

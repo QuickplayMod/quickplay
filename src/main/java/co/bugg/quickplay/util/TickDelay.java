@@ -5,8 +5,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 /**
- * Class to delay code by a certain number of
- * game ticks
+ * Class to delay code by a certain number ofgame ticks
  * @author bugfroggy
  */
 public class TickDelay {
@@ -31,7 +30,13 @@ public class TickDelay {
         this(fn, 20);
     }
 
+    /**
+     * Runnable code to delay
+     */
     public Runnable fn;
+    /**
+     * Number of ticks to delay by
+     */
     public int delay;
 
     @SubscribeEvent
@@ -46,10 +51,16 @@ public class TickDelay {
         }
     }
 
+    /**
+     * Run the delayed code
+     */
     public void run() {
         fn.run();
     }
 
+    /**
+     * Destroy this object by unregistering it from the event bus
+     */
     public void destroy() {
         Quickplay.INSTANCE.unregisterEventHandler(this);
     }

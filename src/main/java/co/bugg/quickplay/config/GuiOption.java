@@ -5,6 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Annotation used to signify that a field in an {@link AConfiguration}
+ * should appear in {@link co.bugg.quickplay.client.gui.config.QuickplayGuiEditConfig}
+ */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GuiOption {

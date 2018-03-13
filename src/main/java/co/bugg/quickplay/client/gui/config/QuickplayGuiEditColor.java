@@ -17,26 +17,77 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 import java.io.IOException;
 
+/**
+ * Gui for editing Quickplay colors
+ */
 public class QuickplayGuiEditColor extends QuickplayGui {
 
+    /**
+     * Color this GUI is editing
+     */
     public QuickplayColor color;
+    /**
+     * Name of the color being edited
+     */
     public String colorName;
+    /**
+     * Configuration this color belongs to
+     */
     public AConfiguration config;
+    /**
+     * GUI this client was previously on
+     */
     public QuickplayGui previousGui;
 
+    /**
+     * The Y location of the sample text
+     */
     public int sampleTextY;
+    /**
+     * The scale of the sample text
+     */
     public double sampleTextScale;
+    /**
+     * The Y location of the name text
+     */
     public int nameTextY;
+    /**
+     * The scale of the name text
+     */
     public double nameTextScale;
 
+    /**
+     * Vertical margins between each button/element on the screen
+     */
     public static int elementMargins = 4;
+    /**
+     * The height of each button/element on the screen
+     */
     public static int elementHeight = 20;
+    /**
+     * The maximum arbitrary speed the client may set their chroma colors to
+     */
     public static float chromaMaxSpeed = 0.05f;
 
+    /**
+     * Constructor
+     *
+     * @param color Color the client is editing
+     * @param colorName Display name of this color
+     * @param config Configuration this color is coming from
+     */
     public QuickplayGuiEditColor(QuickplayColor color, String colorName, AConfiguration config) {
         this(color, colorName, config, null);
     }
 
+    /**
+     * Constructor
+     *
+     * @param color Color the client is editing
+     * @param colorName Display name of this color
+     * @param config The config this color is coming from
+     * @param previousGui Previous GUI the client was on
+     */
     public QuickplayGuiEditColor(QuickplayColor color, String colorName, AConfiguration config, QuickplayGui previousGui) {
         this.color = color;
         this.colorName = colorName;
@@ -124,6 +175,9 @@ public class QuickplayGuiEditColor extends QuickplayGui {
         }
     }
 
+    /**
+     * A slider formatter for formatting the sliders display text
+     */
     public class ColorFormatHelper implements QuickplayGuiSlider.FormatHelper {
         @Override
         public String getText(int id, String name, float value) {
@@ -147,6 +201,9 @@ public class QuickplayGuiEditColor extends QuickplayGui {
         }
     }
 
+    /**
+     * A GUI responder used for saving the values of sliders when the value changes
+     */
     public class ColorGuiResponder implements GuiPageButtonList.GuiResponder {
         /**
          * Fired every tick for a boolean-based GUI element change

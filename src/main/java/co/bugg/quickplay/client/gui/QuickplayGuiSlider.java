@@ -6,15 +6,57 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+/**
+ * Component that extends off of Quickplay GUI buttons to add a number slider
+ */
 public class QuickplayGuiSlider extends QuickplayGuiButton {
+    /**
+     * Percentage of the way down the slider, from the left, that the handle is currently at
+     */
     private float sliderPercentage = 1.0F;
+    /**
+     * Whether the mouse is currently pressed down or not
+     */
     public boolean isMouseDown;
+    /**
+     * Display name of this slider
+     */
     private String name;
+    /**
+     * Minimum value of this slider
+     */
     private final float min;
+    /**
+     * Maximum value of this slider
+     */
     private final float max;
+    /**
+     * {@link net.minecraft.client.gui.GuiPageButtonList.GuiResponder} the slider uses to send off changes in values
+     * Whenever the slider's value changes, a method in the {@link net.minecraft.client.gui.GuiPageButtonList.GuiResponder} is called.
+     */
     private final GuiPageButtonList.GuiResponder responder;
+    /**
+     * {@link FormatHelper} for formatting the slider's display string, depending on the value
+     */
     private QuickplayGuiSlider.FormatHelper formatHelper;
 
+    /**
+     * Constructor
+     *
+     * @param guiResponder GUI responder for this slider
+     * @param origin Origin of this slider
+     * @param idIn ID of this slider
+     * @param x X position of this slider if scrolling = 0
+     * @param y Y position of this slider if scrolling = 0
+     * @param widthIn Width of this slider
+     * @param heightIn Height of this slider
+     * @param name Display name of this slider
+     * @param min Minimum value of this slider
+     * @param max Maxiumum value of this slider
+     * @param defaultValue Default value of this slider
+     * @param formatter Display name formatter depending on the slider's value
+     * @param scrollable Whether this slider is scrollable
+     */
     public QuickplayGuiSlider(GuiPageButtonList.GuiResponder guiResponder, Object origin, int idIn, int x, int y, int widthIn, int heightIn, String name, float min, float max, float defaultValue, QuickplayGuiSlider.FormatHelper formatter, boolean scrollable)
     {
         super(origin, idIn, x, y, widthIn, heightIn, "", scrollable);
@@ -27,20 +69,26 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
         this.displayString = getDisplayString();
     }
 
+    /**
+     * Get the current value of this slider
+     * @return The current value
+     */
     public float getValue()
     {
         return min + (max - min) * sliderPercentage;
     }
 
-    private String getDisplayString()
-    {
+    /**
+     * Get the display string for this slider
+     * This method tries to use a formatHelper if one exists, otherwise uses a default format
+     * @return The full display string, after formatting
+     */
+    private String getDisplayString() {
         return formatHelper == null ? name + ": " + getValue() : formatHelper.getText(id, name, getValue());
     }
 
-    /**
-     * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
-     * this button.
-     */
+    // Unused by sliders
+    @Override
     public int getDefaultButtonTexture(boolean mouseOver)
     {
         return 0;
@@ -77,12 +125,17 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
         GL11.glPopMatrix();
     }
 
+    /**
+     * Calculate the percentage from the left of the slider that the handle is at
+     * @param mouseX The X position of the mouse
+     */
     private void calculateSliderPos(int mouseX) {
         sliderPercentage = (float)(mouseX - (x + 4)) / (float)(width - 8);
         // Keep the slider percentage between 0 and 1
         sliderPercentage = sliderPercentage < 0.0f ? 0.0f : sliderPercentage > 1.0f ? 1.0f : sliderPercentage;
     }
 
+    @Override
     public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY)
     {
         if (super.mouseHovering(gui, mouseX, mouseY))

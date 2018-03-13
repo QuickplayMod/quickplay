@@ -13,6 +13,9 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Sub command for the Quickplay Party system
+ */
 public class SubCommandParty extends ASubCommand {
 
     public SubCommandParty(ACommand parent) {

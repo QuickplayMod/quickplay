@@ -327,6 +327,10 @@ public class Quickplay {
                 .toArray(Game[]::new);
     }
 
+    /**
+     * Send an exception request to Quickplay backend for error reporting
+     * @param e Exception that occurred
+     */
     public void sendExceptionRequest(Exception e) {
         if(usageStats.sendUsageStats) {
             final WebResponse response = requestFactory.newExceptionRequest(e).execute();

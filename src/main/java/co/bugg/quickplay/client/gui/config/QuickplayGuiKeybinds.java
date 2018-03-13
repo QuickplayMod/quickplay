@@ -14,24 +14,64 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The Quickplay GUI for editing the list of keybinds known to the basic Quickplay settings
+ */
 public class QuickplayGuiKeybinds extends QuickplayGui {
 
-    public int topOfButtons = 0;
+    /**
+     * Y position that the buttons for each keybind start at
+     */
+    public int topOfButtons;
+    /**
+     * The width of each button in the GUI
+     */
     public int buttonWidth = 200;
+    /**
+     * The height of each button in the GUI
+     */
     public int buttonHeight = 20;
+    /**
+     * The margins between each button on the GUI
+     */
     public int buttonMargins = 3;
+    /**
+     * How wide the "Reset" button on the screen is
+     */
     public int resetButtonWidth = 90;
-
+    /**
+     * The display text of the reset button
+     */
     public final String resetButtonText = new ChatComponentTranslation("quickplay.keybinds.reset").getUnformattedText();
-
+    /**
+     * The color of keybinds on buttons when they are not being edited
+     */
     public final EnumChatFormatting keybindColor = EnumChatFormatting.YELLOW;
+    /**
+     * The color of keybinds when the keybind is currently selected & being edited
+     */
     public final EnumChatFormatting keybindEditingColor = EnumChatFormatting.GOLD;
+    /**
+     * The separating characters between a keybind's name and the key it's mapped to
+     */
     public final String keybindNameSeparator = " : ";
+    /**
+     * Characters that are prepended to the keybind button display string when it is being edited
+     */
     public final String keybindPrependedEditingText = "> ";
+    /**
+     * Characters that are appended to the keybind button display string when it is being edited
+     */
     public final String keybindAppendedEditingText = " <";
-
+    /**
+     * The GUI component for the keybind that is currently selected and being edited
+     */
     public QuickplayGuiComponent selectedComponent = null;
-
+    /**
+     * Whether a popup telling the client that the key they tried to assign is already taken
+     * This is set to true whenever the user tries to bind a key that's already set to something else
+     * It disappears shortly afterwards by setting this back to false.
+     */
     public boolean drawTakenPopup;
 
     @Override
@@ -94,7 +134,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         for(QuickplayGuiComponent component : componentList) {
             if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(this, mouseX, mouseY)) {
                 //noinspection ArraysAsListWithZeroOrOneArgument
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new ChatComponentTranslation("quickplay.gui.keybinds.delete").getUnformattedText()), component, -1, mouseX, mouseY, false) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new ChatComponentTranslation("quickplay.gui.keybinds.delete").getUnformattedText()), component, -1, mouseX, mouseY) {
                     @Override
                     public void optionSelected(int index) {
                         switch(index) {
@@ -170,7 +210,12 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                 }
             }
 
-            formatComponentString(selectedComponent, false);
+            try {
+                formatComponentString(selectedComponent, false);
+            } catch(IllegalArgumentException e) {
+                e.printStackTrace();
+                Quickplay.INSTANCE.sendExceptionRequest(e);
+            }
             selectedComponent = null;
             Quickplay.INSTANCE.keybinds.save();
         } else {
@@ -178,11 +223,20 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         }
     }
 
+    /**
+     * Format the display string for the given component & keybind
+     * @param component Component to format
+     * @param selected Whether this component is currently selected/being edited or not
+     * @throws IllegalArgumentException when the component provided's origin isn't a QuickplayKeybind
+     */
     public void formatComponentString(QuickplayGuiComponent component, boolean selected) {
-        final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
-        if(selected)
-            component.displayString = keybindPrependedEditingText + keybind.name + keybindNameSeparator + keybindEditingColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET + keybindAppendedEditingText;
-        else
-            component.displayString = keybind.name + keybindNameSeparator + keybindColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET;
+        if(component.origin instanceof QuickplayKeybind) {
+            final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
+            if(selected)
+                component.displayString = keybindPrependedEditingText + keybind.name + keybindNameSeparator + keybindEditingColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET + keybindAppendedEditingText;
+            else
+                component.displayString = keybind.name + keybindNameSeparator + keybindColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET;
+        } else
+            throw new IllegalArgumentException("The GUI component provided does not have a QuickplayKeybind as it's origin!");
     }
 }

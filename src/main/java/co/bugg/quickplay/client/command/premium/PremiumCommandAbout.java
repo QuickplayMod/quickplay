@@ -12,6 +12,11 @@ import net.minecraft.util.IChatComponent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Displays information about what Quickplay Premium is.
+ * Quickplay attempts to grab this information from the web server on startup
+ * If it doesn't exist, an error is sent.
+ */
 public class PremiumCommandAbout implements IPremiumCommand {
     @Override
     public String getName() {

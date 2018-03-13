@@ -8,6 +8,10 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
+/**
+ * Improved Hypixel /hub command
+ * /hub on Hypixel is poor, so this adds a few extra features to the command
+ */
 public class CommandHub extends ACommand {
     public static final String commandSyntax = "[lobbyName | lobbyNumber] [lobbyNumber]";
 

@@ -27,31 +27,110 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Basic GUI for editing any {@link AConfiguration}
+ * Many {@link AConfiguration}s use their own GUI/customization system,
+ * but they are capable of using this system if desired.
+ */
 public class QuickplayGuiEditConfig extends QuickplayGui {
+    /**
+     * {@link AConfiguration} this GUI is editing
+     */
     public AConfiguration config;
+    /**
+     * A list of elements this GUI is handling
+     * Taken directly from {@link #config} in {@link #initGui()}
+     */
     public List<ConfigElement> configElements = new ArrayList<>();
 
+    /**
+     * Constructor
+     *
+     * @param config The {@link AConfiguration} this GUI is editing
+     */
     public QuickplayGuiEditConfig(AConfiguration config) {
         this.config = config;
         Quickplay.INSTANCE.registerEventHandler(this);
     }
 
+    /**
+     * The scale of the header at the top of the screen
+     * Set in {@link #initGui()}
+     * Responsive
+     */
     public double headerScale;
+    /**
+     * The scale of the subheader below the header
+     * Set in {@link #initGui()}
+     * Responsive
+     */
     public double subheaderScale;
+    /**
+     * Y location of the subheader
+     */
     public int subheaderY;
+    /**
+     * Margins of the gray background box
+     * Percentage-based, e.g. 0.1 or 0.2
+     * Multiplied by two to account for both sides of the box
+     */
     public double boxMargins;
+    /**
+     * Y level that is the top of the background box
+     */
     public int topOfBox;
+    /**
+     * How wide the background box is (e.g. width - boxMargins * 2)
+     */
     public int boxWidth;
+    /**
+     * How high the background box is (e.g. height - topOfBox)
+     */
     public int boxHeight;
+    /**
+     * The size of each element in the config, including margins
+     */
     public int elementSize;
+    /**
+     * The distance vertically elements must move to go from opacity 0 to opacity 1 at the fade line
+     */
+    final int fadeDistance = 10;
+    /**
+     * Last two logged Y positions of the mouse on the screen
+     * This is used for hovering tooltips, as you must hover for a certain
+     * period of time before the tooltip appears
+     */
     public int[] lastTwoMouseX = new int[2];
+    /**
+     * Last two logged X positions of the mouse on the screen
+     * This is used for hovering tooltips, as you must hover for a certain
+     * period of time before the tooltip appears
+     */
     public int[] lastTwoMouseY = new int[2];
+    /**
+     * How many game ticks the mouse has been standing still (within the provided margin)
+     */
     public int mouseStandStillTicks = 0;
+    /**
+     * How many ticks the mouse must be standing still for the tooltip to appear
+     */
     public final int hoverDelayTicks = 10;
+    /**
+     * How many pixels the mouse may move each tick before {@link #mouseStandStillTicks} is invalidated
+     */
     public final int mouseStandStillMargin = 2;
+    /**
+     * How wide the button to open the Quickplay configuration folder iis
+     */
     public final int openFolderButtonWidth = 90;
+    /**
+     * The margins around the Quickplay configuration folder button
+     */
     public final int openFolderButtonMargins = 4;
-    public final String openFolderText = new ChatComponentTranslation("quickplay.config.openfolder").getFormattedText();
+    /**
+     * The text displayed on the open folder button
+     */
+    public final String openFolderText = I18n.format("quickplay.config.openfolder");
 
     @Override
     public void onGuiClosed() {
@@ -126,13 +205,13 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         for(ConfigElement element : configElements) {
             if(previousCategory == null || !previousCategory.equals(I18n.format(element.optionInfo.category()))) {
-                componentList.add(new QuickplayGuiString(null, nextButtonId, width / 2, getY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.category()), true, true));
+                componentList.add(new QuickplayGuiString(null, nextButtonId, width / 2, getElementY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.category()), true, true));
                 nextButtonId++;
             }
             previousCategory = I18n.format(element.optionInfo.category());
 
             int buttonX = width / 2 - (ConfigElement.ELEMENT_MARGINS + buttonWidth) / 2;
-            int buttonY = getY(nextButtonId);
+            int buttonY = getElementY(nextButtonId);
 
             // Figure out what button type needs to be rendered & give it the appropriate text
             if(element.element instanceof Boolean)
@@ -218,11 +297,9 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         /*
          * Draw buttons
          */
-        final int fadeDistance = 10;
         for (QuickplayGuiComponent component : componentList) {
             if(!component.displayString.equals(openFolderText)) {
                 double scrollOpacity = ((component.y - scrollPixel) > topOfBox ? 1 : (component.y - scrollPixel) + ConfigElement.ELEMENT_HEIGHT < topOfBox ? 0 : (fadeDistance - ((double) topOfBox - (double) (component.y - scrollPixel))) / (double) fadeDistance);
-                component.opacity = scrollOpacity;
                 if((component.y - scrollPixel) + fadeDistance > topOfBox) component.draw(this, mouseX, mouseY, opacity * (float) scrollOpacity);
             } else
                 component.draw(this, mouseX, mouseY, opacity);
@@ -233,7 +310,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
          */
         if(mouseStandStillTicks >= hoverDelayTicks) {
             for (QuickplayGuiComponent component : componentList) {
-                if(component.origin instanceof ConfigElement && component.opacity > 0) {
+                if(component.origin instanceof ConfigElement && component.y - scrollPixel > scrollFrameTop - fadeDistance) {
                     int y = component.y;
                     if(component.scrollable) y -= scrollPixel;
 
@@ -254,14 +331,21 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         GL11.glPopMatrix();
     }
 
-    public int getY(int id) {
+    /**
+     * Get the Y location of the element with the given ID
+     * Elements are given an ID, that ID being a zero-indexed position within the list of elements.
+     * Therefore we can calculate the Y value for the element if we have it's ID and each element's height
+     * @param id ID of the element to check
+     * @return The value along the Y axis that this element rests on
+     */
+    public int getElementY(int id) {
         return (topOfBox + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (id)));
     }
 
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
         // Only do something if the component is visible
-        if(component.opacity > 0) {
+        if(component.y - scrollPixel > scrollFrameTop - fadeDistance) {
             super.componentClicked(component);
 
             if(component.origin instanceof ConfigElement) {
@@ -290,6 +374,10 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         }
     }
 
+    /**
+     * Save the given configuration element to the config
+     * @param element Element to write & save
+     */
     public void save(ConfigElement element) {
         // Try to apply the changed value to the config & then save the config
         try {
@@ -325,6 +413,9 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
     // ------
 
+    /**
+     * GUI responder used for detecting movement on GUI sliders
+     */
     public class ConfigGuiResponder implements GuiPageButtonList.GuiResponder {
 
         /**
@@ -360,6 +451,9 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         }
     }
 
+    /**
+     * Format helper for figuring out the display text for GUI sliders
+     */
     public class SliderFormatHelper implements QuickplayGuiSlider.FormatHelper {
         @Override
         public String getText(int id, String name, float value) {

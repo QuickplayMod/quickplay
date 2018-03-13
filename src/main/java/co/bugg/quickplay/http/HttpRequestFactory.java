@@ -20,6 +20,9 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * Factory for Quickplay HTTP requests
+ */
 public class HttpRequestFactory {
 
     public HttpClient httpClient;

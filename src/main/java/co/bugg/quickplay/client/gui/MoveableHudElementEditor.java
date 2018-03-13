@@ -4,13 +4,29 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
+/**
+ * Editor for Quickplay {@link MoveableHudElement}s
+ */
 public class MoveableHudElementEditor extends QuickplayGui {
 
+    /**
+     * Element being edited
+     */
     private final MoveableHudElement element;
 
+    /**
+     * Ratio from the left of the screen this element is at
+     */
     double xRatio;
+    /**
+     * Ratio from the top of the screen this element is at
+     */
     double yRatio;
 
+    /**
+     * Constructor
+     * @param element Element to edit
+     */
     public MoveableHudElementEditor(MoveableHudElement element) {
         this.element = element;
         this.xRatio = element.getxRatio();
@@ -86,14 +102,20 @@ public class MoveableHudElementEditor extends QuickplayGui {
         save();
     }
 
-
-
+    /**
+     * Save the current position of the element being edited
+     */
     public void save() {
         element.setxRatio(xRatio);
         element.setyRatio(yRatio);
         element.save();
     }
 
+    /**
+     * Move {@link #element} to specified mouseX and mouseY by calculating {@link #xRatio} and {@link #yRatio}
+     * @param mouseX X position to move to
+     * @param mouseY Y position to move to
+     */
     public void moveTo(int mouseX, int mouseY) {
         xRatio = (double) mouseX / (double) element.screenWidth;
         yRatio = (double) mouseY / (double) element.screenHeight;

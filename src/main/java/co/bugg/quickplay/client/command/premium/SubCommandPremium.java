@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Sub command for the limbo command
+ * Sub command for Quickplay Premium
  */
 public class SubCommandPremium extends ASubCommand {
 

@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
 
+/**
+ * Command for getting help with Quickplay Premium commands and displaying help text for each Premium command
+ */
 public class PremiumCommandHelp implements IPremiumCommand {
 
     public final SubCommandPremium parent;

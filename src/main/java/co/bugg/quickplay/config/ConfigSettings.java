@@ -28,12 +28,19 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      */
     public double instanceDisplayY = 0.05;
 
+    /**
+     * Quickplay's primary color
+     */
     @GuiOption(
             name = "quickplay.settings.primaryColor.name",
             helpText = "quickplay.settings.primaryColor.help",
             category = "quickplay.settings.category.colors"
     )
     public QuickplayColor primaryColor = new QuickplayColor(1.0f, 1.0f, 1.0f);
+
+    /**
+     * Quickplay's secondary color
+     */
     @GuiOption(
             name = "quickplay.settings.secondaryColor.name",
             helpText = "quickplay.settings.secondaryColor.help",
@@ -41,6 +48,9 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public QuickplayColor secondaryColor = new QuickplayColor(0.7f, 0.7f, 0.7f);
 
+    /**
+     * Whether Quickplay GUIs should be blurred
+     */
     @GuiOption(
             name = "quickplay.settings.blurGuiBackgrounds.name",
             helpText = "quickplay.settings.blurGuiBackgrounds.help",
@@ -48,6 +58,9 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public boolean blurGuiBackgrounds = true;
 
+    /**
+     * Whether Quickplay GUIs should fade in
+     */
     @GuiOption(
             name = "quickplay.settings.fadeInGuis.name",
             helpText = "quickplay.settings.fadeInGuis.help",
@@ -55,6 +68,9 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public boolean fadeInGuis = true;
 
+    /**
+     * The scale of items in the Quickplay main menu
+     */
     @GuiOption(
             name = "quickplay.settings.gameLogoScale.name",
             helpText = "quickplay.settings.gameLogoScale.help",
@@ -64,6 +80,9 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public double gameLogoScale = 1.0;
 
+    /**
+     * Whether scrolling in GUIs should be reversed from the default
+     */
     @GuiOption(
             name = "quickplay.settings.reverseScrollingDirection.name",
             helpText = "quickplay.settings.reverseScrollingDirection.help",
@@ -71,6 +90,10 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public boolean reverseScrollingDirection = false;
 
+    /**
+     * Whether any key should close the Quickplay main menu & game GUIs or only escape and inventory key
+     * This does not affect any other GUI on Quickplay or otherwise
+     */
     @GuiOption(
             name="quickplay.settings.anyKeyClosesGui.name",
             helpText="quickplay.settings.anyKeyClosesGui.help",
@@ -78,6 +101,9 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public boolean anyKeyClosesGui = false;
 
+    /**
+     * Whether Quickplay's instance displayer should be displayed
+     */
     @GuiOption(
             name = "quickplay.settings.instanceDisplay.name",
             helpText = "quickplay.settings.instanceDisplay.help",
@@ -85,6 +111,9 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public boolean displayInstance = true;
 
+    /**
+     * Runnable to move the instance display to a different location
+     */
     @GuiOption(
             name = "quickplay.settings.moveInstanceDisplayButton.name",
             helpText = "quickplay.settings.moveInstanceDisplayButton.help",
@@ -92,6 +121,9 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public transient final Runnable moveInstanceDisplayButton = () -> Quickplay.INSTANCE.instanceDisplay.edit();
 
+    /**
+     * Opacity of the instance display
+     */
     @GuiOption(
             name = "quickplay.settings.instanceOpacity.name",
             helpText = "quickplay.settings.instanceOpacity.help",
@@ -101,6 +133,9 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public double instanceOpacity = 1.0;
 
+    /**
+     * Whether the instance display should be visible even when chat is open
+     */
     @GuiOption(
             name = "quickplay.settings.displayInstanceWithChatOpen.name",
             helpText = "quickplay.settings.displayInstanceWithChatOpen.help",
@@ -108,39 +143,63 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public boolean displayInstanceWithChatOpen = true;
 
-    // Hashmap of custom game priorities for the main game selection GUI
+    /**
+     * Hashmap of custom game priorities for the main game selection GUI
+     *
+     * Key is the game's unlocalized name, value is the priority (higher number = higher priority)
+     * Cannot be customized outside of a text editor at the moment
+     */
     public HashMap<String, Integer> gamePriorities = new HashMap<>();
 
+    /**
+     * Runnable to change the privacy settings
+     */
     @GuiOption(
             name = "quickplay.settings.sendUsageStatsButton.name",
             helpText = "quickplay.settings.sendUsageStatsButton.help"
     )
     public transient final Runnable sendUsageStatsButton = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiUsageStats());
 
+    /**
+     * Runnable to edit the keybinds
+     */
     @GuiOption(
             name = "quickplay.settings.editKeybinds.name",
             helpText = "quickplay.settings.editKeybinds.help"
     )
     public transient final Runnable editKeybinds = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
 
+    /**
+     * Whether the client should swap to lobby one when it joins a new lobby
+     */
     @GuiOption(
             name="quickplay.settings.lobbyOneSwap.name",
             helpText = "quickplay.settings.lobbyOneSwap.help"
     )
     public boolean lobbyOneSwap = false;
 
+    /**
+     * Whether the client should receive notifications for updates
+     */
     @GuiOption(
             name = "quickplay.settings.updateNotifications.name",
             helpText = "quickplay.settings.updateNotifications.help"
     )
     public boolean updateNotifications = true;
 
+    /**
+     * Whether the client should use Quickplay's redesigned /hub command
+     */
     @GuiOption(
             name = "quickplay.settings.redesignedLobbyCommand.name",
             helpText = "quickplay.settings.redesignedLobbyCommand.help"
     )
     public boolean redesignedLobbyCommand = true;
 
+    /**
+     * The delay in the number of seconds for party mode to "calculate"
+     * Cosmetic, used for suspense & for the spinner
+     */
     @GuiOption(
             name = "quickplay.settings.partyModeDelay.name",
             helpText = "quickplay.settings.partyModeDelay.help",
@@ -151,6 +210,9 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public double partyModeDelay = 5.0;
 
+    /**
+     * Whether the client should use the party mode spinner GUI or not
+     */
     @GuiOption(
             name="quickplay.settings.partyModeGui.name",
             helpText = "quickplay.settings.partyModeGui.help",

@@ -12,20 +12,49 @@ import java.util.ListIterator;
 
 import static org.lwjgl.input.Keyboard.*;
 
+/**
+ * Context menu for Quickplay GUIs whenever the user right-clicks on something that has context menu options
+ */
 public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent implements ContextMenu {
 
+    /**
+     * Opacity of the background box behind the menu
+     */
     public final double boxOpacity = 0.7;
+    /**
+     * Scale of the menu
+     */
     public final double scale = 1.0;
+    /**
+     * Padding between the text and the edges of the background box
+     */
     public final int boxPadding = 3;
+    /**
+     * Margin on the bottom of strings (between each string)
+     */
     public final int stringBottomMargin = 3;
-
+    /**
+     * The index of the currently highlighted option
+     * -1 for none
+     */
     public int highlightedOptionIndex = -1;
-
+    /**
+     * The font renderer to use
+     */
     final FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRendererObj;
 
-    public QuickplayGuiContextMenu(List<String> options, QuickplayGuiComponent origin, int id, int x, int y, boolean scrollable) {
+    /**
+     * Constructor
+     * Context menus cannot be scrolled
+     * @param options A list of all options available to the user
+     * @param origin The origin of this context menu
+     * @param id The ID of this context menu
+     * @param x The X position of this context menu
+     * @param y The Y position of this context menu
+     */
+    public QuickplayGuiContextMenu(List<String> options, QuickplayGuiComponent origin, int id, int x, int y) {
         // Width / height calculated later
-        super(origin, id, x, y, 0, 0, "", scrollable);
+        super(origin, id, x, y, 0, 0, "", false);
 
         Quickplay.INSTANCE.registerEventHandler(this);
 
@@ -76,6 +105,13 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
         return false;
     }
 
+    /**
+     * Gets the index of the option the mouse is currently hovering over, if any
+     * @param gui GUI this component is being rendered on
+     * @param mouseX X position of the mouse
+     * @param mouseY Y position of the mouse
+     * @return The index of the option the mouse is currently hovering over, or -1 if none
+     */
     private int mouseHoveringOverOption(QuickplayGui gui, int mouseX, int mouseY) {
         final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
 

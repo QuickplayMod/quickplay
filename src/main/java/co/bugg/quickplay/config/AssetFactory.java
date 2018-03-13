@@ -29,13 +29,34 @@ import java.util.List;
 public class AssetFactory {
 
     /**
+     * Root directory for all things Quickplay
      * Relative to Minecraft root
      */
     public static final String rootDirectory = "quickplay/";
+    /**
+     * File path to the Quickplay game list cache
+     * Relative to Minecraft root
+     */
     public static final String gamelistCacheFile = rootDirectory + "cached_gamelist.json";
+    /**
+     * Directory to all Quickplay configurations
+     * Relative to Minecraft root
+     */
     public static final String configDirectory = rootDirectory + "configs/";
+    /**
+     * Directory to all Quickplay resources
+     * Relative to Minecraft root
+     */
     public static final String resourcesDirectory = rootDirectory + "resources/";
+    /**
+     * Directory to all Quickplay resource pack assets
+     * Relative to Minecraft root
+     */
     public static final String assetsDirectory = resourcesDirectory + "assets/quickplay/";
+    /**
+     * Directory to all Quickplay Glyphs
+     * Relative to Minecraft root
+     */
     public static final String glyphsDirectory = assetsDirectory + "glyphs/";
 
     /**

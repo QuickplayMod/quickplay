@@ -6,11 +6,23 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
+/**
+ * Displays the Hypixel instance the client is currently connected to
+ */
 public class InstanceDisplay extends MoveableHudElement {
 
+    /**
+     * Horizontal padding for the transparent background
+     */
     int backgroundHorizontalPadding = 4;
+    /**
+     * Vertical padding for the transparent background
+     */
     int backgroungVerticalPadding = 3;
 
+    /**
+     * Constructor
+     */
     public InstanceDisplay() {
         super();
     }

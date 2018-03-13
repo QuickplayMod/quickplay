@@ -21,30 +21,82 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Calendar;
 
+/**
+ * Quickplay's main menu GUI
+ */
 public class QuickplayGuiMainMenu extends QuickplayGui {
 
+    /**
+     * UV size of each game's image
+     */
     final int gameImgSize = 256;
 
     // Margins & padding for GUI elements
+    /**
+     * Vertical padding between each game element (image + text)
+     * Minimum of 10
+     */
     final int BoxYPadding = Math.max((int) (10 * Quickplay.INSTANCE.settings.gameLogoScale), 10);
+    /**
+     * Margins between the game's image and the game's title string
+     */
     final int stringLeftMargins = 15;
-    final int boxYMargins = 5;
+    /**
+     * Horizontal margins between each game element (image + text)
+     */
     final int boxXMargins = 10;
+    /**
+     * Padding between the edge of the window and the game images
+     */
     final int windowXPadding = 20;
-
+    /**
+     * Copyright text at the bottom of the screen
+     */
     String copyright;
+    /**
+     * Margins between the copyright text & the bottom of the window
+     */
     final int copyrightMargins = 3;
-
+    /**
+     * Longest display string for any of the games
+     */
     int longestStringWidth = 0;
+    /**
+     * Average calculated length of each display string
+     * UNUSED at the moment
+     */
     int averageStringWidth = 0;
+    /**
+     * Base multiplier for scaling. The user's settings multiplier is multiplied by this
+     */
     final double baseScaleMultiplier = 0.25;
+    /**
+     * Finalized multiplier, taking the user's settings into account
+     */
     final double scaleMultiplier = baseScaleMultiplier * Quickplay.INSTANCE.settings.gameLogoScale;
+    /**
+     * The X position of the first column of game elements
+     */
     int columnZeroX;
+    /**
+     * The scale of display strings for games
+     */
     double stringScale = 1.0;
+    /**
+     * The number of columns of games
+     */
     int columnCount = 1;
+    /**
+     * The column currently being calculated by {@link #initGui()}
+     */
     int currentColumn = 0;
+    /**
+     * The row currently being calcluated by {@link #initGui()}
+     */
     int currentRow = 0;
-
+    /**
+     * The string displayed in the context menu to bind a game to a key
+     */
     String favoriteString = "Bind to key...";
 
     @Override
@@ -96,7 +148,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         int nextButtonId = 0;
         for(Game game : Quickplay.INSTANCE.gameList) {
             // Create invisible button                                                                                                                                                                                              // Width can't be affected by scaling                       // Texture is of the game icon, although it's not rendered (opacity is 0 in drawScreen)
-            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding + boxYMargins * 2) * currentRow + scrollContentMargins / 2), (int) (itemWidth / scaleMultiplier), gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier, true));
+            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding) * currentRow + scrollContentMargins / 2), (int) (itemWidth / scaleMultiplier), gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier, true));
             currentColumn++;
             if(currentColumn + 1 > columnCount) {
                 currentColumn = 0;
@@ -167,6 +219,12 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         GL11.glPopMatrix();
     }
 
+    /**
+     * Draw the menu telling the user there are no known games to the client
+     * This typically occurs if the user is using Quickplay for the first time and
+     * they cannot connect to the Quickplay web server for whatever reason (or have not
+     * been instructed to contact the web server due to some server error)
+     */
     protected void drawNoGamesMenu() {
 
         GL11.glPushMatrix();
@@ -224,7 +282,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         for(QuickplayGuiComponent component : componentList) {
             if(!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(this, mouseX, mouseY) && mouseButton == 1) {
                 //noinspection ArraysAsListWithZeroOrOneArgument
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(favoriteString), component, -1, mouseX, mouseY, false) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(favoriteString), component, -1, mouseX, mouseY) {
                     @Override
                     public void optionSelected(int index) {
                         closeContextMenu();
