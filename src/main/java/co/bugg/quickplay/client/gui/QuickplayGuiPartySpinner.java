@@ -4,7 +4,9 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.Style;
@@ -97,8 +99,8 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                             currentlySelectedMode = Quickplay.INSTANCE.settings.partyModes.get(nextSelectedModeIndex);
                             spinnerText = currentlySelectedMode.name;
 
-                            // Play clicky sound
-                            mc.player.playSound(new SoundEvent(new ResourceLocation("note.harp")), 1.0F, 1.5F);
+                            // Play harp sound
+                            mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_NOTE_HARP, 1.5F));
 
                             // Sleep for 1/5th of the length this spinner has been running
                             // This creates a fast spinning speed to start that slows down over time
@@ -119,7 +121,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
                 // After spinning complete, start finalization
                 // Play dingy sound
-                mc.player.playSound(new SoundEvent(new ResourceLocation("random.levelup")), 1.0F, 0.7F);
+                mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_PLAYER_LEVELUP, 0.7F));
                 final String textToFlash = spinnerText;
                 // While less than 100% of the spinnerDelay and finalization period combined has passed
                 while (startedAt > System.currentTimeMillis() - (spinnerDelay + finalizationLength) * 1000) {
