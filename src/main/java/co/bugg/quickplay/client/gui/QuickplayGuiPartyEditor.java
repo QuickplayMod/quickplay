@@ -7,8 +7,8 @@ import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -80,7 +80,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         // Add all the buttons for each mode
         for(PartyMode mode : modes) {
             // Display string for whether this mode is currently enabled or not
-            final String trueOrFalse = checkIfModeToggled(mode) != null ? EnumChatFormatting.GREEN + I18n.format("quickplay.config.gui.true") : EnumChatFormatting.RED + I18n.format("quickplay.config.gui.false");
+            final String trueOrFalse = checkIfModeToggled(mode) != null ? TextFormatting.GREEN + I18n.format("quickplay.config.gui.true") : TextFormatting.RED + I18n.format("quickplay.config.gui.false");
             componentList.add(new QuickplayGuiButton(mode, buttonId, width / 2 - buttonWidth / 2, topOfButtons + (buttonHeight + buttonYMargins) * buttonId, buttonWidth, buttonHeight, mode.name + ": " + trueOrFalse, true));
             buttonId++;
         }
@@ -146,10 +146,10 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
                 // If the mode is toggled on remove it, otherwise add it
                 if(toggledModeReference != null) {
                     toggledModes.remove(toggledModeReference);
-                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.RED + I18n.format("quickplay.config.gui.false");
+                    component.displayString = nameWithoutToggleStatus + ": " + TextFormatting.RED + I18n.format("quickplay.config.gui.false");
                 } else {
                     toggledModes.add(mode);
-                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.GREEN + I18n.format("quickplay.config.gui.true");
+                    component.displayString = nameWithoutToggleStatus + ": " + TextFormatting.GREEN + I18n.format("quickplay.config.gui.true");
                 }
             }
         } else if(component.displayString.equals(I18n.format("quickplay.gui.party.alloff"))) {
@@ -175,7 +175,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             Quickplay.INSTANCE.settings.save();
         } catch (IOException e) {
             e.printStackTrace();
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror")));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.config.saveerror")));
         }
     }
 }

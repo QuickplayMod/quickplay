@@ -3,9 +3,9 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.TickDelay;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class SubCommandMoveInstance extends ASubCommand {
 
     @Override
     public void run(String[] args) {
-        Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.quickplay.moveinstance.deprecated").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+        Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.commands.quickplay.moveinstance.deprecated").setStyle(new Style().setColor(TextFormatting.RED))));
         new TickDelay(() -> Quickplay.INSTANCE.instanceDisplay.edit(), 1);
     }
 

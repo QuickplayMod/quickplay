@@ -10,11 +10,12 @@ import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.*;
 import java.io.IOException;
 
@@ -111,10 +112,10 @@ public class QuickplayGuiEditColor extends QuickplayGui {
         drawDefaultBackground();
 
         GL11.glScaled(nameTextScale, nameTextScale, nameTextScale);
-        drawCenteredString(mc.fontRendererObj, colorName, (int) (width / 2 / nameTextScale), (int) (nameTextY / nameTextScale), 0xFFFFFF);
+        drawCenteredString(mc.fontRenderer, colorName, (int) (width / 2 / nameTextScale), (int) (nameTextY / nameTextScale), 0xFFFFFF);
         GL11.glScaled(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
         GL11.glScaled(sampleTextScale, sampleTextScale, sampleTextScale);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.config.color.gui.sampletext"), (int) (width / 2 / sampleTextScale), (int) (sampleTextY / sampleTextScale), color.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        drawCenteredString(mc.fontRenderer, I18n.format("quickplay.config.color.gui.sampletext"), (int) (width / 2 / sampleTextScale), (int) (sampleTextY / sampleTextScale), color.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         GL11.glScaled(1 / sampleTextScale, 1 / sampleTextScale, 1 / sampleTextScale);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -131,7 +132,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
         nameTextScale = 1.0;
         nameTextY = (int) (height * 0.2);
         sampleTextScale = 1.5;
-        sampleTextY = (int) (nameTextY + fontRendererObj.FONT_HEIGHT * nameTextScale + 4);
+        sampleTextY = (int) (nameTextY + fontRenderer.FONT_HEIGHT * nameTextScale + 4);
 
         int elementWidth = (width > 200 + elementMargins * 2 ? 200 : width - elementMargins * 2);
 
@@ -140,7 +141,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
         ColorGuiResponder colorGuiResponder = new ColorGuiResponder();
         ColorFormatHelper formatHelper = new ColorFormatHelper();
 
-        final int sampleTextBottom = (int) (sampleTextY + mc.fontRendererObj.FONT_HEIGHT * sampleTextScale);
+        final int sampleTextBottom = (int) (sampleTextY + mc.fontRenderer.FONT_HEIGHT * sampleTextScale);
         componentList.add(new QuickplayGuiSlider(colorGuiResponder, "RED", nextComponentId, width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.red"), 0, 255, color.getColor().getRed(), formatHelper, true));
         nextComponentId++;
         componentList.add(new QuickplayGuiSlider(colorGuiResponder, "GREEN", nextComponentId, width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.green"), 0, 255, color.getColor().getGreen(), formatHelper, true));
@@ -170,7 +171,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
             config.save();
         } catch (IOException e) {
             System.out.println("Failed to save color " + colorName + ".");
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.config.saveerror").setStyle(new Style().setColor(TextFormatting.RED))));
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
@@ -212,7 +213,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
          * @param p_175321_2_ Value
          */
         @Override
-        public void func_175321_a(int p_175321_1_, boolean p_175321_2_) {
+        public void setEntryValue(int p_175321_1_, boolean p_175321_2_) {
 
         }
 
@@ -222,7 +223,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
          * @param value Value
          */
         @Override
-        public void onTick(int id, float value) {
+        public void setEntryValue(int id, float value) {
             switch((String) componentList.get(id).origin) {
                 default:
                     color.setColor(new Color(((int) ((QuickplayGuiSlider) componentList.get(0)).getValue()), (int) ((QuickplayGuiSlider) componentList.get(1)).getValue(), (int) ((QuickplayGuiSlider) componentList.get(2)).getValue()));
@@ -239,7 +240,8 @@ public class QuickplayGuiEditColor extends QuickplayGui {
          * @param p_175319_2_ Value
          */
         @Override
-        public void func_175319_a(int p_175319_1_, String p_175319_2_) {
+        @ParametersAreNonnullByDefault
+        public void setEntryValue(int p_175319_1_, String p_175319_2_) {
 
         }
     }

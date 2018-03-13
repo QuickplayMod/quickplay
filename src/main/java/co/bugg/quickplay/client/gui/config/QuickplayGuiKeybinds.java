@@ -5,7 +5,7 @@ import co.bugg.quickplay.client.QuickplayKeybind;
 import co.bugg.quickplay.client.gui.*;
 import co.bugg.quickplay.config.ConfigKeybinds;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -46,11 +46,11 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     /**
      * The color of keybinds on buttons when they are not being edited
      */
-    public final EnumChatFormatting keybindColor = EnumChatFormatting.YELLOW;
+    public final TextFormatting keybindColor = TextFormatting.YELLOW;
     /**
      * The color of keybinds when the keybind is currently selected & being edited
      */
-    public final EnumChatFormatting keybindEditingColor = EnumChatFormatting.GOLD;
+    public final TextFormatting keybindEditingColor = TextFormatting.GOLD;
     /**
      * The separating characters between a keybind's name and the key it's mapped to
      */
@@ -233,9 +233,9 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         if(component.origin instanceof QuickplayKeybind) {
             final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
             if(selected)
-                component.displayString = keybindPrependedEditingText + keybind.name + keybindNameSeparator + keybindEditingColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET + keybindAppendedEditingText;
+                component.displayString = keybindPrependedEditingText + keybind.name + keybindNameSeparator + keybindEditingColor + Keyboard.getKeyName(keybind.key) + TextFormatting.RESET + keybindAppendedEditingText;
             else
-                component.displayString = keybind.name + keybindNameSeparator + keybindColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET;
+                component.displayString = keybind.name + keybindNameSeparator + keybindColor + Keyboard.getKeyName(keybind.key) + TextFormatting.RESET;
         } else
             throw new IllegalArgumentException("The GUI component provided does not have a QuickplayKeybind as it's origin!");
     }
