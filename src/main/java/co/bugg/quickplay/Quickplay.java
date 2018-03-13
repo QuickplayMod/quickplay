@@ -28,6 +28,10 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.command.ICommand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -52,7 +56,7 @@ import java.util.concurrent.Future;
         name = Reference.MOD_NAME,
         version = Reference.VERSION,
         clientSideOnly = true,
-        acceptedMinecraftVersions = "[1.9, 1.11.2]"
+        acceptedMinecraftVersions = "[1.12, 1.12.2]"
 )
 public class Quickplay {
 

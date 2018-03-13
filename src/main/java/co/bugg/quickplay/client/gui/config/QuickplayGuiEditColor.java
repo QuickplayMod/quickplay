@@ -15,6 +15,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.*;
 import java.io.IOException;
 
@@ -239,6 +240,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
          * @param p_175319_2_ Value
          */
         @Override
+        @ParametersAreNonnullByDefault
         public void setEntryValue(int p_175319_1_, String p_175319_2_) {
 
         }
