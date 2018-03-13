@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.*;
@@ -22,7 +23,7 @@ public class SubCommandDiscord extends ASubCommand {
         super(
                 parent,
                 "discord",
-                new ChatComponentTranslation("quickplay.commands.quickplay.discord.help").getUnformattedText(),
+                I18n.format("quickplay.commands.quickplay.discord.help"),
                 "",
                 true,
                 true,

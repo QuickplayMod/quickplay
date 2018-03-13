@@ -8,7 +8,6 @@ import co.bugg.quickplay.client.gui.QuickplayGuiString;
 import co.bugg.quickplay.config.ConfigUsageStats;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -81,13 +80,13 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
 
         // Draw the stats token if it's available
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null) {
-            tokenText = new ChatComponentTranslation("quickplay.gui.stats.token", Quickplay.INSTANCE.usageStats.statsToken.toString()).getUnformattedText();
+            tokenText = I18n.format("quickplay.gui.stats.token", Quickplay.INSTANCE.usageStats.statsToken.toString());
             componentList.add(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2, buttonY - fontRendererObj.FONT_HEIGHT - 3, fontRendererObj.getStringWidth(tokenText), fontRendererObj.FONT_HEIGHT, tokenText, true, true));
         }
         componentList.add(new QuickplayGuiString("https://bugg.co/quickplay/privacy", 3, width / 2, buttonY - (fontRendererObj.FONT_HEIGHT + 3) * 2, fontRendererObj.getStringWidth(privacyText), fontRendererObj.FONT_HEIGHT, privacyText, true, true));
 
         descriptionWidth = (int) (width * 0.8);
-        final String description = new ChatComponentTranslation("quickplay.gui.stats.description").getUnformattedText();
+        final String description = I18n.format("quickplay.gui.stats.description");
         descriptionLines = fontRendererObj.listFormattedStringToWidth(description, descriptionWidth).toArray(new String[0]);
     }
 
@@ -99,7 +98,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
         drawDefaultBackground();
 
         final int headerY = (int) (height * 0.1);
-        drawCenteredString(fontRendererObj, new ChatComponentTranslation("quickplay.gui.stats.title").getUnformattedText(), width / 2, headerY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        drawCenteredString(fontRendererObj, I18n.format("quickplay.gui.stats.title"), width / 2, headerY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
         int lineHeight = headerY + fontRendererObj.FONT_HEIGHT + 5;
         for(String line : descriptionLines) {
@@ -112,7 +111,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
         // If hovering over the token button
         Optional<QuickplayGuiComponent> filteredStream = componentList.stream().filter(component -> component.displayString.equals(tokenText)).findFirst();
         if(tokenText != null && filteredStream.isPresent() && filteredStream.get().mouseHovering(this, mouseX, mouseY)) {
-            drawHoveringText(Collections.singletonList(new ChatComponentTranslation("quickplay.gui.stats.copy").getUnformattedText()), mouseX, mouseY);
+            drawHoveringText(Collections.singletonList(I18n.format("quickplay.gui.stats.copy")), mouseX, mouseY);
         }
 
         GL11.glDisable(GL11.GL_BLEND);
@@ -130,13 +129,13 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
                 Quickplay.INSTANCE.sendExceptionRequest(e);
                 // If origin isn't string for some reason, just put "contact bugfroggy" instead of a url.
                 final String url = (component.origin instanceof String) ? "Visit " + component.origin : "Contact @bugfroggy.";
-                component.displayString = new ChatComponentTranslation("quickplay.gui.stats.privacyerror", url).getUnformattedText();
+                component.displayString = I18n.format("quickplay.gui.stats.privacyerror", url);
             }
             // If the copy to clipboard text is clicked
         } else if(tokenText != null && tokenText.equals(component.displayString)) {
             final UUID token = (UUID) component.origin;
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(token.toString()), null);
-            component.displayString = new ChatComponentTranslation("quickplay.gui.stats.copied").getUnformattedText();
+            component.displayString = I18n.format("quickplay.gui.stats.copied");
         } else {
             Quickplay.INSTANCE.promptUserForUsageStats = false;
             Quickplay.INSTANCE.usageStats = new ConfigUsageStats();

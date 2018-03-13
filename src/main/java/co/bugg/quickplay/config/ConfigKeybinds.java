@@ -2,7 +2,7 @@ package co.bugg.quickplay.config;
 
 import co.bugg.quickplay.client.QuickplayKeybind;
 import co.bugg.quickplay.client.gui.game.QuickplayGuiMainMenu;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.client.resources.I18n;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class ConfigKeybinds extends AConfiguration {
     public ConfigKeybinds(boolean addDefaultKeybinds) {
         this();
         if(addDefaultKeybinds) {
-            keybinds.add(new QuickplayKeybind(new ChatComponentTranslation("quickplay.config.keybinds.openmain").getUnformattedText(), Keyboard.KEY_R, QuickplayGuiMainMenu.class));
+            keybinds.add(new QuickplayKeybind(I18n.format("quickplay.config.keybinds.openmain"), Keyboard.KEY_R, QuickplayGuiMainMenu.class));
         }
     }
 

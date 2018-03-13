@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.*;
@@ -25,7 +26,7 @@ public class SubCommandHelp extends ASubCommand {
         super(
                 parent,
                 "help",
-                new ChatComponentTranslation("quickplay.commands.quickplay.help.help").getUnformattedText(),
+                I18n.format("quickplay.commands.quickplay.help.help"),
                 "[subcommand]",
                 true,
                 true,

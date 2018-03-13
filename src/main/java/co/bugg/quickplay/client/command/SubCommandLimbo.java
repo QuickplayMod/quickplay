@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
@@ -22,7 +23,7 @@ public class SubCommandLimbo extends ASubCommand {
         super(
                 parent,
                 "limbo",
-                new ChatComponentTranslation("quickplay.commands.quickplay.limbo.help").getUnformattedText(),
+                I18n.format("quickplay.commands.quickplay.limbo.help"),
                 "",
                 true,
                 true,

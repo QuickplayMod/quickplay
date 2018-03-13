@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.*;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class SubCommandHistory extends ASubCommand {
         super(
                 parent,
                 "history",
-                new ChatComponentTranslation("quickplay.commands.quickplay.history.help").getUnformattedText(),
+                I18n.format("quickplay.commands.quickplay.history.help"),
                 "[count]",
                 true,
                 true,

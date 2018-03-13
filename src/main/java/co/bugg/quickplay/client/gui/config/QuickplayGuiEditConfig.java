@@ -215,7 +215,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
             // Figure out what button type needs to be rendered & give it the appropriate text
             if(element.element instanceof Boolean)
-                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()) + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText(), true));
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()) + ": " + I18n.format((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false"), true));
             else if(element.element instanceof QuickplayColor || element.element instanceof Runnable)
                 componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()), true));
             else if(element.element instanceof Double)
@@ -271,7 +271,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         // Scale up to header size
         GL11.glScaled(headerScale, headerScale, headerScale);
-        drawCenteredString(fontRendererObj, new ChatComponentTranslation("quickplay.config.gui.title").getUnformattedText(), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
+        drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.title"), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
                        // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
                 (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
         // Scale back down
@@ -279,7 +279,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         // Scale up to subheader size
         GL11.glScaled(subheaderScale, subheaderScale, subheaderScale);
-        drawCenteredString(fontRendererObj, new ChatComponentTranslation("quickplay.config.gui.version").getUnformattedText() + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
+        drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.version") + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
                     subheaderY,
                        // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
                 (Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
@@ -353,7 +353,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                 if(element != null) {
                     if(element.element instanceof Boolean) {
                         element.element = !(boolean) element.element;
-                        component.displayString = I18n.format(element.optionInfo.name()) + ": " + new ChatComponentTranslation((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false").getUnformattedText();
+                        component.displayString = I18n.format(element.optionInfo.name()) + ": " + I18n.format((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false");
                     } else if(element.element instanceof Runnable) {
                         mc.displayGuiScreen(null);
                         ((Runnable) element.element).run();

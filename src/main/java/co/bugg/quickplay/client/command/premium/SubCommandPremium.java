@@ -2,7 +2,7 @@ package co.bugg.quickplay.client.command.premium;
 
 import co.bugg.quickplay.client.command.ACommand;
 import co.bugg.quickplay.client.command.ASubCommand;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.client.resources.I18n;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class SubCommandPremium extends ASubCommand {
         super(
                 parent,
                 "premium",
-                new ChatComponentTranslation("quickplay.commands.quickplay.premium.help").getUnformattedText(),
+                I18n.format("quickplay.commands.quickplay.premium.help"),
                 "",
                 true,
                 true,

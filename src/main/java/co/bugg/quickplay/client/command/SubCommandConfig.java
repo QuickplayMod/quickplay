@@ -4,7 +4,7 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiEditConfig;
 import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.client.resources.I18n;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class SubCommandConfig extends ASubCommand {
         super(
                 parent,
                 "config",
-                new ChatComponentTranslation("quickplay.commands.quickplay.config.help").getUnformattedText(),
+                I18n.format("quickplay.commands.quickplay.config.help"),
                 "",
                 true,
                 true,

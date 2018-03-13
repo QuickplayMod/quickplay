@@ -3,7 +3,7 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.client.resources.I18n;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class SubCommandKeybinds extends ASubCommand {
         super(
                 parent,
                 "keybinds",
-                new ChatComponentTranslation("quickplay.commands.quickplay.keybinds.help").getUnformattedText(),
+                I18n.format("quickplay.commands.quickplay.keybinds.help"),
                 "",
                 true,
                 true,

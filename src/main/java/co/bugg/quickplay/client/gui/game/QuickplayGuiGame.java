@@ -13,7 +13,6 @@ import co.bugg.quickplay.games.Mode;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -148,7 +147,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         super.initGui();
         currentColumn = currentRow = 0;
 
-        copyright =  new ChatComponentTranslation("quickplay.gui.copyright", Calendar.getInstance().get(Calendar.YEAR)).getUnformattedText();
+        copyright = I18n.format("quickplay.gui.copyright", Calendar.getInstance().get(Calendar.YEAR));
 
         windowPadding = (int) (width * (width > 500 ? 0.25 : 0.15));
         headerHeight = (int) (height * 0.05);
@@ -272,7 +271,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         for(QuickplayGuiComponent component : componentList) {
             if (!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(this, mouseX, mouseY) && mouseButton == 1) {
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new String[]{new ChatComponentTranslation("quickplay.gui.favorite").getUnformattedText()}), component, -1, mouseX, mouseY) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new String[]{I18n.format("quickplay.gui.favorite")}), component, -1, mouseX, mouseY) {
                     @Override
                     public void optionSelected(int index) {
                         switch(index) {
