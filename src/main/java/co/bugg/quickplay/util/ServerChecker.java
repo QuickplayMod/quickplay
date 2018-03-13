@@ -4,7 +4,7 @@ import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -159,11 +159,11 @@ public class ServerChecker {
             headerField.setAccessible(true);
 
             // OrangeMarshall's Vanilla Enhancements conflicts with this mod. He has a field called
-            // FieldWrapper which wraps IChatComponent, and you must call .get() on the wrapper as well
+            // FieldWrapper which wraps ITextComponent, and you must call .get() on the wrapper as well
             // i.e. instead of headerField.get(tabOverlay), headerField.get(tabOverlay).get(tabOverlay).
 
             final Object headerObj = headerField.get(tabOverlay);
-            IChatComponent component;
+            ITextComponent component;
             // If user is using Vanilla Enhancements
             if(Loader.instance().getModList().stream().anyMatch(mod -> mod.getName().equals("Vanilla Enhancements"))) {
                 final String type = "com.orangemarshall.enhancements.util.FieldWrapper";
@@ -174,9 +174,9 @@ public class ServerChecker {
                 fieldWrapperGetMethod.setAccessible(true);
 
                 // Execute the method on headerObj, passing tabOverlay as parameter obj
-                component = (IChatComponent) fieldWrapperGetMethod.invoke(headerObj, tabOverlay);
+                component = (ITextComponent) fieldWrapperGetMethod.invoke(headerObj, tabOverlay);
             } else {
-                component = (IChatComponent) headerObj;
+                component = (ITextComponent) headerObj;
             }
 
             return component != null && component.getUnformattedText() != null && component.getUnformattedText().toLowerCase().contains("hypixel.net");

@@ -3,7 +3,8 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.BlockPos;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,28 +45,28 @@ public abstract class ACommand implements ICommand {
     }
 
     @Override
-    public List<String> getCommandAliases() {
+    public List<String> getAliases() {
         return aliases;
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return aliases.get(0);
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "/" + getCommandName() + " " + subCommands.get(0).getName();
+    public String getUsage(ICommandSender sender) {
+        return "/" + getName() + " " + subCommands.get(0).getName();
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
         // Send analytical data to Google
         if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
             Quickplay.INSTANCE.ga.event()
                     .eventCategory("Commands")
                     .eventAction("Execute Command")
-                    .eventLabel("/" + getCommandName() + " " + String.join(" ", args))
+                    .eventLabel("/" + getName() + " " + String.join(" ", args))
                     .send();
         }
 
@@ -87,12 +88,12 @@ public abstract class ACommand implements ICommand {
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
         return true;
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
         List<String> tabCompletionOptions = new ArrayList<>();
 
         if(args.length < 2) {

@@ -44,7 +44,7 @@ public class QuickplayEventHandler {
 
     @SubscribeEvent
     public void onRenderOverlay(RenderGameOverlayEvent event) {
-        if(Quickplay.INSTANCE.onHypixel && event.type == RenderGameOverlayEvent.ElementType.TEXT) {
+        if(Quickplay.INSTANCE.onHypixel && event.getType() == RenderGameOverlayEvent.ElementType.TEXT) {
             // Only render overlay if there is no other GUI open at the moment or if the GUI is chat (assuming proper settings)
             if(Quickplay.INSTANCE.settings.displayInstance && (Minecraft.getMinecraft().currentScreen == null ||
                     (Quickplay.INSTANCE.settings.displayInstanceWithChatOpen && (Minecraft.getMinecraft().currentScreen instanceof GuiChat)))) {

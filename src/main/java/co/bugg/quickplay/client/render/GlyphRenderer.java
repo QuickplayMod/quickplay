@@ -7,8 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -44,8 +44,8 @@ public class GlyphRenderer {
         final String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
         // Don't render at all if F1 is hit or if the client is in a game (or unknown location)
         if(!Minecraft.getMinecraft().gameSettings.hideGUI) {
-            final EntityPlayer player = e.entityPlayer;
-            final EntityPlayer self = Minecraft.getMinecraft().thePlayer;
+            final EntityPlayer player = e.getEntityPlayer();
+            final EntityPlayer self = Minecraft.getMinecraft().player;
 
             // If both players aren't null, player is visible, and player isn't dead
             if (player != null && self != null && !player.isInvisible() && !player.isDead && self.canEntityBeSeen(player) && self.getDistanceSqToEntity(player) < drawDistance * drawDistance) {
@@ -58,7 +58,7 @@ public class GlyphRenderer {
                             final PlayerGlyph glyph = Quickplay.INSTANCE.glyphs.stream().filter(thisGlyph -> thisGlyph.uuid.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0);
                             // If this client is currently not in a game OR if the glyph is set to display in-game
                             if ((currentServer != null && !gameServerPattern.matcher(currentServer).matches()) || glyph.displayInGames)
-                                renderGlyph(e.renderer, glyph, e.entityPlayer, e.x, e.y + offset + player.height, e.z);
+                                renderGlyph(e.getRenderer(), glyph, e.getEntityPlayer(), e.getX(), e.getY() + offset + player.height, e.getZ());
                         }
                     }
                 }
@@ -76,7 +76,7 @@ public class GlyphRenderer {
      * @param y y position
      * @param z z position
      */
-    public synchronized void renderGlyph(RendererLivingEntity renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
+    public void renderGlyph(RenderPlayer renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
 
         final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.path.toString(), Charset.forName("UTF-8")).toString() + ".png");
         if(Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {
@@ -105,7 +105,7 @@ public class GlyphRenderer {
 
             // Draw texture
             Tessellator tessellator = Tessellator.getInstance();
-            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+            VertexBuffer worldrenderer = tessellator.getBuffer();
             renderer.bindTexture(resource);
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldrenderer.pos((double) (-16), (double) (-16), 0.0D).tex(0, 0).endVertex();

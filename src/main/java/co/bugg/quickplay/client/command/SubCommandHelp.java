@@ -3,9 +3,9 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.event.ClickEvent;
-import net.minecraft.event.HoverEvent;
-import net.minecraft.util.*;
+import net.minecraft.util.text.*;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.HoverEvent;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -37,7 +37,7 @@ public class SubCommandHelp extends ASubCommand {
     @Override
     public void run(String[] args) {
         boolean separators;
-        IChatComponent helpMessage = new ChatComponentText("");
+        ITextComponent helpMessage = new TextComponentString("");
 
         if(args.length == 0) {
             separators = true;
@@ -55,10 +55,10 @@ public class SubCommandHelp extends ASubCommand {
             separators = false;
             ASubCommand commandToDisplay = getParent().getCommand(args[0]);
             if(commandToDisplay != null) {
-                helpMessage.appendSibling(new ChatComponentTranslation("quickplay.commands.usage"));
+                helpMessage.appendSibling(new TextComponentTranslation("quickplay.commands.usage"));
                 helpMessage.appendText("\n");
-                helpMessage.appendText("/" + commandToDisplay.getParent().getCommandName() + " " + commandToDisplay.getName() + " " + commandToDisplay.getUsage());
-                helpMessage.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
+                helpMessage.appendText("/" + commandToDisplay.getParent().getName() + " " + commandToDisplay.getName() + " " + commandToDisplay.getUsage());
+                helpMessage.setStyle(new Style().setColor(TextFormatting.RED));
             }
         }
 
@@ -88,33 +88,33 @@ public class SubCommandHelp extends ASubCommand {
      * @param subCommand Sub command to format for
      * @return A chat-ready formatted help message
      */
-    public IChatComponent getFormattedHelpMessage(ASubCommand subCommand) {
-        final String fullCommand = "/" + subCommand.getParent().getCommandName() + " " + subCommand.getName();
+    public ITextComponent getFormattedHelpMessage(ASubCommand subCommand) {
+        final String fullCommand = "/" + subCommand.getParent().getName() + " " + subCommand.getName();
 
-        final IChatComponent msg = new ChatComponentText("");
+        final ITextComponent msg = new TextComponentString("");
 
-        final IChatComponent command = new ChatComponentText(fullCommand);
-        command.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA));
+        final ITextComponent command = new TextComponentString(fullCommand);
+        command.setStyle(new Style().setColor(TextFormatting.AQUA));
 
-        final IChatComponent separator = new ChatComponentText(" - ");
-        separator.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY));
+        final ITextComponent separator = new TextComponentString(" - ");
+        separator.setStyle(new Style().setColor(TextFormatting.GRAY));
 
-        final IChatComponent helpMessage = new ChatComponentText(subCommand.getHelpMessage());
-        helpMessage.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW));
+        final ITextComponent helpMessage = new TextComponentString(subCommand.getHelpMessage());
+        helpMessage.setStyle(new Style().setColor(TextFormatting.YELLOW));
 
         msg.appendSibling(command);
         msg.appendSibling(separator);
         msg.appendSibling(helpMessage);
 
-        final ChatStyle msgStyle = new ChatStyle();
-        msgStyle.setChatClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, fullCommand));
+        final Style msgStyle = new Style();
+        msgStyle.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, fullCommand));
 
-        final IChatComponent hoverText = new ChatComponentText("Click to put " + fullCommand + " in chat box");
-        final ChatStyle hoverStyle = new ChatStyle().setColor(EnumChatFormatting.GRAY).setItalic(true);
-        hoverText.setChatStyle(hoverStyle);
+        final ITextComponent hoverText = new TextComponentString("Click to put " + fullCommand + " in chat box");
+        final Style hoverStyle = new Style().setColor(TextFormatting.GRAY).setItalic(true);
+        hoverText.setStyle(hoverStyle);
 
-        msgStyle.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText));
-        msg.setChatStyle(msgStyle);
+        msgStyle.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText));
+        msg.setStyle(msgStyle);
 
         return msg;
     }
