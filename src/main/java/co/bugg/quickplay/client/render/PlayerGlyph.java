@@ -88,15 +88,7 @@ public class PlayerGlyph {
             httpResponse.close();
 
             // Reload the resource pack
-            Field resourceManagerField;
-            try {
-                resourceManagerField = Minecraft.class.getDeclaredField("field_110451_am");
-            } catch(NoSuchFieldException e) {
-                resourceManagerField = Minecraft.class.getDeclaredField("mcResourceManager");
-            }
-            resourceManagerField.setAccessible(true);
-            SimpleReloadableResourceManager resourceManager = (SimpleReloadableResourceManager) resourceManagerField.get(Minecraft.getMinecraft());
-            resourceManager.reloadResourcePack(Quickplay.INSTANCE.resourcePack);
+            Quickplay.INSTANCE.reloadResourcePack();
         } catch (IOException | NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);

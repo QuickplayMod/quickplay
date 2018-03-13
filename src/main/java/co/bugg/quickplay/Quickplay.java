@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
@@ -34,6 +35,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -377,5 +379,21 @@ public class Quickplay {
         } else {
             messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.nogames").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
+    }
+
+    /**
+     * Reload the Quickplay Resource pack that contains glyphs, icons, lang, etc.
+     * @throws NoSuchFieldException Neither field (obf or deobf) exist, according to the client.
+     */
+    public void reloadResourcePack() throws NoSuchFieldException, IllegalAccessException {
+        Field resourceManagerField;
+        try {
+            resourceManagerField = Minecraft.class.getDeclaredField("field_110451_am");
+        } catch(NoSuchFieldException e) {
+            resourceManagerField = Minecraft.class.getDeclaredField("mcResourceManager");
+        }
+        resourceManagerField.setAccessible(true);
+        SimpleReloadableResourceManager resourceManager = (SimpleReloadableResourceManager) resourceManagerField.get(Minecraft.getMinecraft());
+        resourceManager.reloadResourcePack(Quickplay.INSTANCE.resourcePack);
     }
 }
