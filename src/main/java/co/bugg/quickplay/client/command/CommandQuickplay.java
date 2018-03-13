@@ -3,6 +3,7 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.command.premium.SubCommandPremium;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -33,9 +34,9 @@ public class CommandQuickplay extends ACommand {
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
         if(Quickplay.INSTANCE.checkEnabledStatus()) {
-            super.processCommand(sender, args);
+            super.execute(sender, args);
         }
     }
 }

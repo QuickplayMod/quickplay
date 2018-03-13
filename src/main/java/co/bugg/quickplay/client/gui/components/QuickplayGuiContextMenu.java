@@ -42,7 +42,7 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
     /**
      * The font renderer to use
      */
-    final FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRendererObj;
+    final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
     /**
      * Constructor
@@ -62,12 +62,12 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
         // Calculate width
         int longestStringLength = 0;
         for(String option : options) {
-            if(fontRendererObj.getStringWidth(option) > longestStringLength)
-                longestStringLength = fontRendererObj.getStringWidth(option);
+            if(fontRenderer.getStringWidth(option) > longestStringLength)
+                longestStringLength = fontRenderer.getStringWidth(option);
         }
 
         this.width = longestStringLength + boxPadding * 2;
-        this.height = options.size() * (fontRendererObj.FONT_HEIGHT + stringBottomMargin) + boxPadding * 2;
+        this.height = options.size() * (fontRenderer.FONT_HEIGHT + stringBottomMargin) + boxPadding * 2;
 
         this.options.clear();
         this.options.addAll(options);
@@ -118,8 +118,8 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
         for(ListIterator<String> iter = options.listIterator(); iter.hasNext();) {
             final int index = iter.nextIndex();
-            final int stringY = (int) (scrollAdjustedY + boxPadding * scale + index * (fontRendererObj.FONT_HEIGHT + stringBottomMargin) * scale);
-            if(mouseX > x && mouseX < x + width * scale && mouseY > stringY && mouseY < stringY + fontRendererObj.FONT_HEIGHT * scale)
+            final int stringY = (int) (scrollAdjustedY + boxPadding * scale + index * (fontRenderer.FONT_HEIGHT + stringBottomMargin) * scale);
+            if(mouseX > x && mouseX < x + width * scale && mouseY > stringY && mouseY < stringY + fontRenderer.FONT_HEIGHT * scale)
                 return index;
 
             iter.next();
@@ -144,11 +144,11 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
             for (ListIterator<String> iter = options.listIterator(); iter.hasNext(); ) {
                 final int index = iter.nextIndex();
                 final String string = iter.next();
-                final int stringY = (int) (scrollAdjustedY / scale + boxPadding + index * (fontRendererObj.FONT_HEIGHT + stringBottomMargin));
+                final int stringY = (int) (scrollAdjustedY / scale + boxPadding + index * (fontRenderer.FONT_HEIGHT + stringBottomMargin));
                 final int color = highlightedOptionIndex == index ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
-                drawString(fontRendererObj, string, (int) (x / scale + boxPadding), stringY, color & 0xFFFFFF | (int) (opacity * 255) << 24);
-                if (mouseX > x && mouseX < x + width * scale && mouseY > stringY * scale && mouseY < (stringY + fontRendererObj.FONT_HEIGHT) * scale)
-                    drawRect((int) (x / scale + boxPadding), stringY + fontRendererObj.FONT_HEIGHT, (int) (x / scale + boxPadding + fontRendererObj.getStringWidth(string)), stringY + fontRendererObj.FONT_HEIGHT + 1, color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                drawString(fontRenderer, string, (int) (x / scale + boxPadding), stringY, color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                if (mouseX > x && mouseX < x + width * scale && mouseY > stringY * scale && mouseY < (stringY + fontRenderer.FONT_HEIGHT) * scale)
+                    drawRect((int) (x / scale + boxPadding), stringY + fontRenderer.FONT_HEIGHT, (int) (x / scale + boxPadding + fontRenderer.getStringWidth(string)), stringY + fontRenderer.FONT_HEIGHT + 1, color & 0xFFFFFF | (int) (opacity * 255) << 24);
             }
 
             GL11.glScaled(1 / scale, 1 / scale, 1 / scale);

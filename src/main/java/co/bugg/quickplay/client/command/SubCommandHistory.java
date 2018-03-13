@@ -3,7 +3,7 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.*;
+import net.minecraft.util.text.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,23 +51,23 @@ public class SubCommandHistory extends ASubCommand {
                 // If the number provided by the user is too large, use the max
                 instanceCount = Math.min(Quickplay.INSTANCE.instanceWatcher.instanceHistory.size(), instanceCount);
 
-                final IChatComponent instanceList = new ChatComponentText("");
+                final ITextComponent instanceList = new TextComponentString("");
 
                 for(int i = 0; i < instanceCount; i++) {
                     instanceList.appendText(Quickplay.INSTANCE.instanceWatcher.instanceHistory.get(i) + "\n");
                 }
 
-                instanceList.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW));
+                instanceList.setStyle(new Style().setColor(TextFormatting.YELLOW));
 
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.quickplay.history.header", instanceCount).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD))));
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.commands.quickplay.history.header", instanceCount).setStyle(new Style().setColor(TextFormatting.GOLD))));
                 Quickplay.INSTANCE.messageBuffer.push(new Message(instanceList));
             } else {
                 // Something went wrong
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.quickplay.history.error").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.commands.quickplay.history.error").setStyle(new Style().setColor(TextFormatting.RED))));
             }
         } else {
             // Not online hypixel
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.offline").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.offline").setStyle(new Style().setColor(TextFormatting.RED))));
         }
     }
 

@@ -128,7 +128,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
 
-            drawCenteredString(gui.mc.fontRendererObj, displayString, x + width / 2, scrollAdjustedY + (height - 8) / 2, getDefaultTextColor(opacity));
+            drawCenteredString(gui.mc.fontRenderer, displayString, x + width / 2, scrollAdjustedY + (height - 8) / 2, getDefaultTextColor(opacity));
 
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glPopMatrix();

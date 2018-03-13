@@ -2,7 +2,7 @@ package co.bugg.quickplay.client.command.premium;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.util.*;
+import net.minecraft.util.text.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +44,10 @@ public class PremiumCommandHelp implements IPremiumCommand {
         } else {
             List<IPremiumCommand> filteredList = parent.premiumCommands.stream().filter(cmd -> cmd.getName().equals(args[1])).collect(Collectors.toList());
             if(filteredList.size() > 0) {
-                final IChatComponent chatComponent = new ChatComponentText(filteredList.get(0).getHelpText() + "\n")
-                        .appendSibling(new ChatComponentTranslation("quickplay.commands.usage").appendText("\n"))
-                        .appendSibling(new ChatComponentText("/" + parent.getParent().getCommandName() + " " + parent.getName() + " " + filteredList.get(0).getName() + " " + filteredList.get(0).getUsage()))
-                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW));
+                final ITextComponent chatComponent = new TextComponentString(filteredList.get(0).getHelpText() + "\n")
+                        .appendSibling(new TextComponentTranslation("quickplay.commands.usage").appendText("\n"))
+                        .appendSibling(new TextComponentString("/" + parent.getParent().getName() + " " + parent.getName() + " " + filteredList.get(0).getName() + " " + filteredList.get(0).getUsage()))
+                        .setStyle(new Style().setColor(TextFormatting.YELLOW));
                 Quickplay.INSTANCE.messageBuffer.push(new Message(chatComponent, true));
             } else {
                 sendBaseHelpMessage();
@@ -59,18 +59,18 @@ public class PremiumCommandHelp implements IPremiumCommand {
      * Send the basic help message for premium commands
      */
     public void sendBaseHelpMessage() {
-        final IChatComponent message = new ChatComponentText("");
+        final ITextComponent message = new TextComponentString("");
         if(parent.premiumCommands.size() > 0) {
             for(ListIterator<IPremiumCommand> iter = parent.premiumCommands.listIterator(); iter.hasNext();) {
                 final IPremiumCommand premiumCommand = iter.next();
-                message.appendSibling(new ChatComponentText("/" + parent.getParent().getCommandName() + " " + parent.getName() + " " + premiumCommand.getName()))
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA));
-                message.appendSibling(new ChatComponentText(" - ").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
-                message.appendSibling(new ChatComponentText(premiumCommand.getHelpText()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+                message.appendSibling(new TextComponentString("/" + parent.getParent().getName() + " " + parent.getName() + " " + premiumCommand.getName()))
+                    .setStyle(new Style().setColor(TextFormatting.AQUA));
+                message.appendSibling(new TextComponentString(" - ").setStyle(new Style().setColor(TextFormatting.GRAY)));
+                message.appendSibling(new TextComponentString(premiumCommand.getHelpText()).setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 if(iter.hasNext()) message.appendText("\n");
             }
         } else {
-            message.appendSibling(new ChatComponentTranslation("quickplay.commands.quickplay.premium.noCommands").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+            message.appendSibling(new TextComponentTranslation("quickplay.commands.quickplay.premium.noCommands").setStyle(new Style().setColor(TextFormatting.RED)));
         }
 
         Quickplay.INSTANCE.messageBuffer.push(new Message(message, true));

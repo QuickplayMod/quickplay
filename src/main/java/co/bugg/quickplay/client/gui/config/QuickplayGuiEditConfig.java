@@ -14,13 +14,14 @@ import co.bugg.quickplay.config.GuiOption;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -157,12 +158,12 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         subheaderScale = height > 400 ? 1.3 : 1;
 
         subheaderY = // Subheader should be 3 pixels below main header
-                (int) (height * 0.05 / subheaderScale) + (int) (fontRendererObj.FONT_HEIGHT * headerScale) + (int) (3 / headerScale);
+                (int) (height * 0.05 / subheaderScale) + (int) (fontRenderer.FONT_HEIGHT * headerScale) + (int) (3 / headerScale);
 
         // Padding on the sides of the list (responsive)
         boxMargins = width < 500 ? 0.1 : 0.2;
         // +20 to the top because for some reason subheaderY + subheader height isn't actually the bottom of the subheader... fix
-        topOfBox = (int) (subheaderY + fontRendererObj.FONT_HEIGHT * subheaderScale + 20);
+        topOfBox = (int) (subheaderY + fontRenderer.FONT_HEIGHT * subheaderScale + 20);
 
         boxWidth = (int) (width * (1 - (boxMargins * 2)));
         boxHeight = height - topOfBox;
@@ -210,7 +211,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         for(ConfigElement element : configElements) {
             if(previousCategory == null || !previousCategory.equals(I18n.format(element.optionInfo.category()))) {
-                componentList.add(new QuickplayGuiString(null, nextButtonId, width / 2, getElementY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.category()), true, true));
+                componentList.add(new QuickplayGuiString(null, nextButtonId, width / 2, getElementY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRenderer.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.category()), true, true));
                 nextButtonId++;
             }
             previousCategory = I18n.format(element.optionInfo.category());
@@ -279,7 +280,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         if(opacity > 0) {
             // Scale up to header size
             GL11.glScaled(headerScale, headerScale, headerScale);
-            drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.title"), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
+            drawCenteredString(fontRenderer, I18n.format("quickplay.config.gui.title"), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
                     // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
                     (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             // Scale back down
@@ -287,7 +288,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
             // Scale up to subheader size
             GL11.glScaled(subheaderScale, subheaderScale, subheaderScale);
-            drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.version") + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
+            drawCenteredString(fontRenderer, I18n.format("quickplay.config.gui.version") + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
                     subheaderY,
                     // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
                     (Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
@@ -330,7 +331,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                         if(element != null && element.optionInfo != null && I18n.format(element.optionInfo.category()).length() > 0) {
                             final List<String> text = new ArrayList<>();
                             text.add(I18n.format(element.optionInfo.helpText()));
-                            drawHoveringText(text, mouseX, mouseY, mc.fontRendererObj);
+                            drawHoveringText(text, mouseX, mouseY, mc.fontRenderer);
                         }
                         break;
                     }
@@ -446,7 +447,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             }
         } catch (IOException | IllegalAccessException | NoSuchFieldException e) {
             System.out.println("Failed to save option " + element.configFieldName + ".");
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.config.saveerror").setStyle(new Style().setColor(TextFormatting.RED))));
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
@@ -482,7 +483,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
          * @param p_175321_2_ Value
          */
         @Override
-        public void func_175321_a(int p_175321_1_, boolean p_175321_2_) {
+        public void setEntryValue(int p_175321_1_, boolean p_175321_2_) {
 
         }
 
@@ -492,7 +493,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
          * @param value Value
          */
         @Override
-        public void onTick(int id, float value) {
+        public void setEntryValue(int id, float value) {
             ConfigElement element = (ConfigElement) componentList.get(id).origin;
             element.element = ((Number) value).doubleValue();
             save(element);
@@ -504,7 +505,8 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
          * @param p_175319_2_ Value
          */
         @Override
-        public void func_175319_a(int p_175319_1_, String p_175319_2_) {
+        @ParametersAreNonnullByDefault
+        public void setEntryValue(int p_175319_1_, String p_175319_2_) {
 
         }
     }

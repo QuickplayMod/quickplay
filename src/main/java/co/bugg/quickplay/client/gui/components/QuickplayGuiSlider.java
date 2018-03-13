@@ -112,7 +112,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
                 // Update the display string
                 displayString = getDisplayString();
                 // Handle input change
-                responder.onTick(id, getValue());
+                responder.setEntryValue(id, getValue());
             }
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
@@ -120,8 +120,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
             GL11.glScaled(scale, scale, scale);
             drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)), scrollAdjustedY, 0, 66, 4, 20);
             drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)) + 4, scrollAdjustedY, 196, 66, 4, 20);
-            if (opacity > 0)
-                drawDisplayString(gui, opacity, scrollAdjustedY);
+            drawDisplayString(gui, opacity, scrollAdjustedY);
             GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
 
             GL11.glDisable(GL11.GL_BLEND);
@@ -157,7 +156,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
             }
 
             displayString = getDisplayString();
-            responder.onTick(id, getValue());
+            responder.setEntryValue(id, getValue());
             isMouseDown = true;
             return true;
         }

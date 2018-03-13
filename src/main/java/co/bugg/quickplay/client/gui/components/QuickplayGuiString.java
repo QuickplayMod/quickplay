@@ -39,9 +39,9 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
             if (centered)
-                drawCenteredString(gui.mc.fontRendererObj, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+                drawCenteredString(gui.mc.fontRenderer, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             else
-                drawString(gui.mc.fontRendererObj, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+                drawString(gui.mc.fontRenderer, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             GL11.glPopMatrix();
         }
     }

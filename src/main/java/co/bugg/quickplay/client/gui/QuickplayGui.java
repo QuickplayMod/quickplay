@@ -8,11 +8,11 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiContextMenu;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -405,7 +405,7 @@ public class QuickplayGui extends GuiScreen {
             // Make a bunch of dumb noises
             Quickplay.INSTANCE.threadPool.submit(() -> {
                 while(Minecraft.getMinecraft().currentScreen == this) {
-                    mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("mob.chicken.hurt"), 1.0F));
+                    mc.player.playSound(new SoundEvent(new ResourceLocation("mob.chicken.hurt")), 1.0F, 1.0F);
                     try {
                         Thread.sleep(200);
                     } catch (InterruptedException e) {
@@ -546,6 +546,6 @@ public class QuickplayGui extends GuiScreen {
      */
     public void componentClicked(QuickplayGuiComponent component) {
         // Play clicky sound
-        mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+        mc.player.playSound(new SoundEvent(new ResourceLocation("gui.button.press")), 1.0F, 1.0F);
     }
 }

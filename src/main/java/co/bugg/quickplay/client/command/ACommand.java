@@ -3,8 +3,10 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.BlockPos;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,28 +47,29 @@ public abstract class ACommand implements ICommand {
     }
 
     @Override
-    public List<String> getCommandAliases() {
+    public List<String> getAliases() {
         return aliases;
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return aliases.get(0);
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "/" + getCommandName() + " " + subCommands.get(0).getName();
+    @ParametersAreNonnullByDefault
+    public String getUsage(ICommandSender sender) {
+        return "/" + getName() + " " + subCommands.get(0).getName();
     }
 
-    @Override
-    public void processCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) {
+
         // Send analytical data to Google
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
             Quickplay.INSTANCE.threadPool.submit(() -> {
                 try {
                     Quickplay.INSTANCE.ga.createEvent("commands", "Execute Command")
-                            .setEventLabel("/" + getCommandName() + " " + String.join(" ", args))
+                            .setEventLabel("/" + getName() + " " + String.join(" ", args))
                             .send();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -92,12 +95,14 @@ public abstract class ACommand implements ICommand {
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+    @ParametersAreNonnullByDefault
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
         return true;
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+    @ParametersAreNonnullByDefault
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
         List<String> tabCompletionOptions = new ArrayList<>();
 
         if(args.length < 2) {
