@@ -126,7 +126,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             if (Quickplay.INSTANCE.gameList.size() > 0) {
                 // Calculate the average width of all strings & what the longest one is
                 for (Game game : Quickplay.INSTANCE.gameList) {
-                    final int stringWidth = fontRendererObj.getStringWidth(game.name);
+                    final int stringWidth = fontRenderer.getStringWidth(game.name);
                     averageStringWidth += stringWidth;
                     if (stringWidth > longestStringWidth) longestStringWidth = stringWidth;
                 }
@@ -209,7 +209,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                         // Draw text
                         GL11.glScaled(stringScale, stringScale, stringScale);
                         final int color = component.mouseHovering(this, mouseX, mouseY) && contextMenu == null ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
-                        drawString(mc.fontRendererObj, ((Game) component.origin).name, (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale), (int) ((((scrollAdjustedY + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                        drawString(mc.fontRenderer, ((Game) component.origin).name, (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale), (int) ((((scrollAdjustedY + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
                         GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
                     }
                 }
@@ -233,7 +233,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             }
         }
 
-        drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        drawCenteredString(fontRenderer, copyright, width / 2, height - fontRenderer.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
@@ -260,35 +260,35 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         final String lineThree = I18n.format("quickplay.gui.main.nogames.contact");
 
         // Calculate longest string for scaling
-        int longestStringLength = mc.fontRendererObj.getStringWidth(lineOne) + boxMargins * 2;
-        if(longestStringLength < mc.fontRendererObj.getStringWidth(lineTwo) + boxMargins * 2) longestStringLength = mc.fontRendererObj.getStringWidth(lineTwo) + boxMargins * 2;
-        if(longestStringLength < mc.fontRendererObj.getStringWidth(lineThree) + boxMargins * 2) longestStringLength = mc.fontRendererObj.getStringWidth(lineThree) + boxMargins * 2;
+        int longestStringLength = mc.fontRenderer.getStringWidth(lineOne) + boxMargins * 2;
+        if(longestStringLength < mc.fontRenderer.getStringWidth(lineTwo) + boxMargins * 2) longestStringLength = mc.fontRenderer.getStringWidth(lineTwo) + boxMargins * 2;
+        if(longestStringLength < mc.fontRenderer.getStringWidth(lineThree) + boxMargins * 2) longestStringLength = mc.fontRenderer.getStringWidth(lineThree) + boxMargins * 2;
 
         // Calculate scale and Y locations
         final int oopsHeaderY = (int) (height * 0.4);
         final double oopsHeaderScale = 2.0;
         final double errorScale = longestStringLength < width ? 1.0 : width / (double) (longestStringLength + stringMargins * 2);
-        final int lineOneY = (int) (oopsHeaderY + mc.fontRendererObj.FONT_HEIGHT * oopsHeaderScale) + stringMargins;
-        final int lineTwoY = (int) (lineOneY + mc.fontRendererObj.FONT_HEIGHT * errorScale) + stringMargins;
-        final int lineThreeY = (int) (lineTwoY + mc.fontRendererObj.FONT_HEIGHT * errorScale) + stringMargins;
+        final int lineOneY = (int) (oopsHeaderY + mc.fontRenderer.FONT_HEIGHT * oopsHeaderScale) + stringMargins;
+        final int lineTwoY = (int) (lineOneY + mc.fontRenderer.FONT_HEIGHT * errorScale) + stringMargins;
+        final int lineThreeY = (int) (lineTwoY + mc.fontRenderer.FONT_HEIGHT * errorScale) + stringMargins;
 
         // Draw background box
-        drawRect(width / 2 - longestStringLength / 2 - boxMargins, oopsHeaderY - boxMargins, width / 2 + longestStringLength / 2 + boxMargins, (int) (lineThreeY + mc.fontRendererObj.FONT_HEIGHT * errorScale + boxMargins), (int) (opacity * 255 * 0.5) << 24);
+        drawRect(width / 2 - longestStringLength / 2 - boxMargins, oopsHeaderY - boxMargins, width / 2 + longestStringLength / 2 + boxMargins, (int) (lineThreeY + mc.fontRenderer.FONT_HEIGHT * errorScale + boxMargins), (int) (opacity * 255 * 0.5) << 24);
         GL11.glEnable(GL11.GL_BLEND);
 
         // Draw header
         GL11.glScaled(oopsHeaderScale, oopsHeaderScale, oopsHeaderScale);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.header"),
+        drawCenteredString(mc.fontRenderer, I18n.format("quickplay.gui.main.nogames.header"),
                 (int) (width / 2 / oopsHeaderScale), (int) (oopsHeaderY / oopsHeaderScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         GL11.glScaled(1 / oopsHeaderScale, 1 / oopsHeaderScale, 1 / oopsHeaderScale);
 
         // Draw error text
         GL11.glScaled(errorScale, errorScale, errorScale);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.issue"),
+        drawCenteredString(mc.fontRenderer, I18n.format("quickplay.gui.main.nogames.issue"),
                 (int) (width / 2 / errorScale), (int) (lineOneY / errorScale), Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.why"),
+        drawCenteredString(mc.fontRenderer, I18n.format("quickplay.gui.main.nogames.why"),
                 (int) (width / 2 / errorScale), (int) (lineTwoY / errorScale), Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.contact"),
+        drawCenteredString(mc.fontRenderer, I18n.format("quickplay.gui.main.nogames.contact"),
                 (int) (width / 2 / errorScale), (int) (lineThreeY / errorScale), Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         GL11.glScaled(1 / errorScale, 1 / errorScale, 1 / errorScale);
 

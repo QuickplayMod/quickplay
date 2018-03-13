@@ -31,9 +31,9 @@ public class InstanceDisplay extends MoveableHudElement {
     public void render(double x, double y, double opacity) {
         super.render(x, y, opacity);
 
-        final String instance = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
-        final int stringHeight = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
-        final int stringWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(instance);
+        String instance = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
+        int stringHeight = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
+        int stringWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth(instance);
 
         final double scale = Quickplay.INSTANCE.settings.instanceDisplayScale.getScale();
         final int scaledX = (int) (x * screenWidth / scale);
@@ -50,7 +50,7 @@ public class InstanceDisplay extends MoveableHudElement {
                 0x000000 | (int) (opacity * 100 * 0.5) << 24);
         GL11.glEnable(GL11.GL_BLEND);
 
-        drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        drawCenteredString(Minecraft.getMinecraft().fontRenderer, instance, scaledX, scaledY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
         GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
         GL11.glPopMatrix();

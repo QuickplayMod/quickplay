@@ -155,7 +155,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         headerScale = height > 300 ? 1.5 : 1.0;
         logoScale = height > 300 ? 0.25 : 0.15;
 
-        topOfBackgroundBox = (int) (headerHeight + fontRendererObj.FONT_HEIGHT * headerScale + headerBottomMargins + logoSize * logoScale) + logoBottomMargins;
+        topOfBackgroundBox = (int) (headerHeight + fontRenderer.FONT_HEIGHT * headerScale + headerBottomMargins + logoSize * logoScale) + logoBottomMargins;
 
         buttonWidth = 200;
         columnCount = (int) Math.floor((double) (width - windowPadding) / (buttonWidth + buttonMargins));
@@ -238,14 +238,14 @@ public class QuickplayGuiGame extends QuickplayGui {
         drawDefaultBackground();
 
         GL11.glScaled(headerScale, headerScale, headerScale);
-        drawCenteredString(fontRendererObj, game.name, (int) (width / 2 / headerScale), (int) (headerHeight / headerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        drawCenteredString(fontRenderer, game.name, (int) (width / 2 / headerScale), (int) (headerHeight / headerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
 
         GL11.glScaled(logoScale, logoScale, logoScale);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glColor4f(1, 1, 1, opacity);
         mc.getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"));
-        drawTexturedModalRect((float) ((width / 2 - logoSize * logoScale / 2) / logoScale), (float) ((headerHeight + fontRendererObj.FONT_HEIGHT * headerScale + headerBottomMargins) / logoScale), 0, 0, logoSize, logoSize);
+        drawTexturedModalRect((float) ((width / 2 - logoSize * logoScale / 2) / logoScale), (float) ((headerHeight + fontRenderer.FONT_HEIGHT * headerScale + headerBottomMargins) / logoScale), 0, 0, logoSize, logoSize);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glScaled(1 / logoScale, 1 / logoScale, 1 / logoScale);
 
@@ -266,7 +266,7 @@ public class QuickplayGuiGame extends QuickplayGui {
 
         drawScrollbar(rightOfBox);
 
-        drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        drawCenteredString(fontRenderer, copyright, width / 2, height - fontRenderer.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();

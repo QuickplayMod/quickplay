@@ -81,13 +81,13 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
         // Draw the stats token if it's available
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null) {
             tokenText = I18n.format("quickplay.gui.stats.token", Quickplay.INSTANCE.usageStats.statsToken.toString());
-            componentList.add(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2, buttonY - fontRendererObj.FONT_HEIGHT - 3, fontRendererObj.getStringWidth(tokenText), fontRendererObj.FONT_HEIGHT, tokenText, true, true));
+            componentList.add(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2, buttonY - fontRenderer.FONT_HEIGHT - 3, fontRenderer.getStringWidth(tokenText), fontRenderer.FONT_HEIGHT, tokenText, true, true));
         }
-        componentList.add(new QuickplayGuiString("https://bugg.co/quickplay/privacy", 3, width / 2, buttonY - (fontRendererObj.FONT_HEIGHT + 3) * 2, fontRendererObj.getStringWidth(privacyText), fontRendererObj.FONT_HEIGHT, privacyText, true, true));
+        componentList.add(new QuickplayGuiString("https://bugg.co/quickplay/privacy", 3, width / 2, buttonY - (fontRenderer.FONT_HEIGHT + 3) * 2, fontRenderer.getStringWidth(privacyText), fontRenderer.FONT_HEIGHT, privacyText, true, true));
 
         descriptionWidth = (int) (width * 0.8);
         final String description = I18n.format("quickplay.gui.stats.description");
-        descriptionLines = fontRendererObj.listFormattedStringToWidth(description, descriptionWidth).toArray(new String[0]);
+        descriptionLines = fontRenderer.listFormattedStringToWidth(description, descriptionWidth).toArray(new String[0]);
     }
 
     @Override
@@ -98,12 +98,12 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
         drawDefaultBackground();
 
         final int headerY = (int) (height * 0.1);
-        drawCenteredString(fontRendererObj, I18n.format("quickplay.gui.stats.title"), width / 2, headerY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        drawCenteredString(fontRenderer, I18n.format("quickplay.gui.stats.title"), width / 2, headerY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
-        int lineHeight = headerY + fontRendererObj.FONT_HEIGHT + 5;
+        int lineHeight = headerY + fontRenderer.FONT_HEIGHT + 5;
         for(String line : descriptionLines) {
-            drawCenteredString(fontRendererObj, line, width / 2, lineHeight, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-            lineHeight += fontRendererObj.FONT_HEIGHT;
+            drawCenteredString(fontRenderer, line, width / 2, lineHeight, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            lineHeight += fontRenderer.FONT_HEIGHT;
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);

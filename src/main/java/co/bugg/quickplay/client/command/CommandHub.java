@@ -4,9 +4,10 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 
 /**
  * Improved Hypixel /hub command
@@ -50,14 +51,14 @@ public class CommandHub extends ACommand {
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
         Quickplay.INSTANCE.threadPool.submit(() -> {
             if(Quickplay.INSTANCE.checkEnabledStatus()) {
                 // sendChatMessage is used here instead of chatBuffer.push, as chatBuffer.push would try
                 // to execute as a client command which would loop infinitely
                 if(Quickplay.INSTANCE.onHypixel) {
                     if(args.length == 0) {
-                        Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand);
+                        Minecraft.getMinecraft().player.sendChatMessage("/" + serverCommand);
                     } else if(args.length == 1) {
                         // Check if the user is trying to swap lobbies by checking
                         // if they sent a lobby number instead of a lobby name
@@ -66,7 +67,7 @@ public class CommandHub extends ACommand {
                             Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
                         } catch(NumberFormatException e) {
                             // It's a string so just send them to that lobby instead of lobby number
-                            Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand + " " + args[0]);
+                            Minecraft.getMinecraft().player.sendChatMessage("/" + serverCommand + " " + args[0]);
                         }
                     } else {
                         // Two parameters or greater were sent
@@ -74,7 +75,7 @@ public class CommandHub extends ACommand {
                             // Lobby number we're going to go to
                             final int lobbyNumber = Integer.parseInt(args[1]);
                             // First go to the lobby itself
-                            Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand + " " + args[0]);
+                            Minecraft.getMinecraft().player.sendChatMessage("/" + serverCommand + " " + args[0]);
 
                             try {
                                 Thread.sleep(1000);
@@ -85,7 +86,7 @@ public class CommandHub extends ACommand {
                             Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
                         } catch(NumberFormatException e) {
                             // Send usage
-                            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.hub.numberexception", "/" + command + " " + commandSyntax).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.commands.hub.numberexception", "/" + command + " " + commandSyntax).setStyle(new Style().setColor(TextFormatting.RED))));
                         }
                     }
 
@@ -95,7 +96,7 @@ public class CommandHub extends ACommand {
 
             // Fallback
             final String argsString = String.join(" " , args);
-            Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand + " " + argsString);
+            Minecraft.getMinecraft().player.sendChatMessage("/" + serverCommand + " " + argsString);
         });
     }
 }
