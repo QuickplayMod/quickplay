@@ -40,11 +40,11 @@ public class PremiumCommandAbout implements IPremiumCommand {
         } else {
             final String premiumLink = "https://bugg.co/quickplay/premium";
 
-            final ITextComponent TextComponent = new TextComponentTranslation("quickplay.commands.quickplay.premium.about.menuMissing", premiumLink).setStyle(new Style().setColor(TextFormatting.RED));
+            final ITextComponent chatComponent = new TextComponentTranslation("quickplay.commands.quickplay.premium.about.menuMissing", premiumLink).setStyle(new Style().setColor(TextFormatting.RED));
             final Style Style = new Style().setColor(TextFormatting.RED);
             Style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentTranslation("quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen", premiumLink).setStyle(new Style().setColor(TextFormatting.GRAY))));
             Style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, premiumLink));
-            TextComponent.setStyle(Style);
+            chatComponent.setStyle(Style);
 
             Quickplay.INSTANCE.messageBuffer.push(new Message(TextComponent, true, false));
         }
