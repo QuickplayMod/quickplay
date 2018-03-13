@@ -24,10 +24,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.command.ICommand;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -46,7 +46,7 @@ import java.util.concurrent.Future;
         name = Reference.MOD_NAME,
         version = Reference.VERSION,
         clientSideOnly = true,
-        acceptedMinecraftVersions = "[1.8.8, 1.8.9]"
+        acceptedMinecraftVersions = "[1.9, 1.11.2]"
 )
 public class Quickplay {
 
@@ -141,7 +141,7 @@ public class Quickplay {
      * Help menu for Quickplay Premium
      * retrieved from the <code>enable</code> endpoint on mod enable from the content field <code>premiumInfo</code>
      */
-    public IChatComponent premiumAbout = null;
+    public ITextComponent premiumAbout = null;
     /**
      * List of all player glyphs, which contains the URL to the glyph as well as the owner's UUID
      */
@@ -220,7 +220,7 @@ public class Quickplay {
                     // File couldn't be saved
                     e1.printStackTrace();
                     sendExceptionRequest(e1);
-                    Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                    Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.config.saveerror").setStyle(new Style().setColor(TextFormatting.RED))));
                 }
             }
 
@@ -248,7 +248,7 @@ public class Quickplay {
                             if (response.ok && response.content != null) {
                                 // Add the premium about information
                                 if(response.content.getAsJsonObject().get("premiumInfo") != null)
-                                    premiumAbout = IChatComponent.Serializer.jsonToComponent(response.content.getAsJsonObject().get("premiumInfo").toString());
+                                    premiumAbout = ITextComponent.Serializer.jsonToComponent(response.content.getAsJsonObject().get("premiumInfo").toString());
                                 // Add all glyphs
                                 if(response.content.getAsJsonObject().get("glyphs") != null)
                                     glyphs.addAll(Arrays.asList(new Gson().fromJson(response.content.getAsJsonObject().get("glyphs"), PlayerGlyph[].class)));
@@ -310,8 +310,8 @@ public class Quickplay {
      */
     public boolean checkEnabledStatus() {
         if(!enabled) {
-            IChatComponent message = new ChatComponentTranslation("quickplay.disabled", this.disabledReason);
-            message.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
+            ITextComponent message = new TextComponentTranslation("quickplay.disabled", this.disabledReason);
+            message.setStyle(new Style().setColor(TextFormatting.RED));
 
         }
 
@@ -354,7 +354,7 @@ public class Quickplay {
 
                 // Send commencement message if delay is greater than 0 seconds
                 if(settings.partyModeDelay > 0) {
-                    messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.commencing").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE))));
+                    messageBuffer.push(new Message(new TextComponentTranslation("quickplay.party.commencing").setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE))));
                 }
 
                 // Calculate mode
@@ -373,11 +373,11 @@ public class Quickplay {
                     e.printStackTrace();
                 }
 
-                messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
+                messageBuffer.push(new Message(new TextComponentTranslation("quickplay.party.sendingYou", mode.name).setStyle(new Style().setColor(TextFormatting.GREEN))));
                 chatBuffer.push(mode.command);
             }
         } else {
-            messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.nogames").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            messageBuffer.push(new Message(new TextComponentTranslation("quickplay.party.nogames").setStyle(new Style().setColor(TextFormatting.RED))));
         }
     }
 

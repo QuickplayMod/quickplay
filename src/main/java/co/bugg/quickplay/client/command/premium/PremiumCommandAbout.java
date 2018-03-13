@@ -2,12 +2,12 @@ package co.bugg.quickplay.client.command.premium;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.event.ClickEvent;
-import net.minecraft.event.HoverEvent;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.HoverEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +40,13 @@ public class PremiumCommandAbout implements IPremiumCommand {
         } else {
             final String premiumLink = "https://bugg.co/quickplay/premium";
 
-            final IChatComponent chatComponent = new ChatComponentTranslation("quickplay.commands.quickplay.premium.about.menuMissing", premiumLink).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
-            final ChatStyle chatStyle = new ChatStyle().setColor(EnumChatFormatting.RED);
-            chatStyle.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentTranslation("quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen", premiumLink).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY))));
-            chatStyle.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, premiumLink));
-            chatComponent.setChatStyle(chatStyle);
+            final ITextComponent TextComponent = new TextComponentTranslation("quickplay.commands.quickplay.premium.about.menuMissing", premiumLink).setStyle(new Style().setColor(TextFormatting.RED));
+            final Style Style = new Style().setColor(TextFormatting.RED);
+            Style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentTranslation("quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen", premiumLink).setStyle(new Style().setColor(TextFormatting.GRAY))));
+            Style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, premiumLink));
+            TextComponent.setStyle(Style);
 
-            Quickplay.INSTANCE.messageBuffer.push(new Message(chatComponent, true, false));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(TextComponent, true, false));
         }
     }
 
