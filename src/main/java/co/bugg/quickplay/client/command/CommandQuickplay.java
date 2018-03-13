@@ -36,7 +36,7 @@ public class CommandQuickplay extends ACommand {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
         if(Quickplay.INSTANCE.checkEnabledStatus()) {
-            super.execute(sender, args);
+            super.execute(server, sender, args);
         }
     }
 }
