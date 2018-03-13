@@ -29,6 +29,11 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.command.ICommand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -164,6 +169,7 @@ public class Quickplay {
      * Google Analytics API tracker
      */
     public GoogleAnalytics ga;
+
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -443,8 +449,7 @@ public class Quickplay {
         }
         resourceManagerField.setAccessible(true);
         SimpleReloadableResourceManager resourceManager = (SimpleReloadableResourceManager) resourceManagerField.get(Minecraft.getMinecraft());
-
-        resourceManager.reloadResourcePack(resourcePack);
+        resourceManager.reloadResourcePack(Quickplay.INSTANCE.resourcePack);
     }
 
     /**

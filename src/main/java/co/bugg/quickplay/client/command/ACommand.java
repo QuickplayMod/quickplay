@@ -67,7 +67,7 @@ public abstract class ACommand implements ICommand {
             Quickplay.INSTANCE.threadPool.submit(() -> {
                 try {
                     Quickplay.INSTANCE.ga.createEvent("commands", "Execute Command")
-                            .setEventLabel("/" + getCommandName() + " " + String.join(" ", args))
+                            .setEventLabel("/" + getName() + " " + String.join(" ", args))
                             .send();
                 } catch (IOException e) {
                     e.printStackTrace();

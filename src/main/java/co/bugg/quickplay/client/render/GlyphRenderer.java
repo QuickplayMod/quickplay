@@ -76,7 +76,7 @@ public class GlyphRenderer {
      * @param y y position
      * @param z z position
      */
-    public synchronized void renderGlyph(RenderPlayer renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
+    public void renderGlyph(RenderPlayer renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
 
         final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.path.toString(), Charset.forName("UTF-8")).toString() + ".png");
         if(Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {
