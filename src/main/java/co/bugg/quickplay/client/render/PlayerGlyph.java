@@ -3,8 +3,6 @@ package co.bugg.quickplay.client.render;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.config.AssetFactory;
 import com.google.common.hash.Hashing;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -13,7 +11,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.UUID;
@@ -87,16 +84,7 @@ public class PlayerGlyph {
             }
             httpResponse.close();
 
-            // Reload the resource pack
-            Field resourceManagerField;
-            try {
-                resourceManagerField = Minecraft.class.getDeclaredField("field_110451_am");
-            } catch(NoSuchFieldException e) {
-                resourceManagerField = Minecraft.class.getDeclaredField("mcResourceManager");
-            }
-            resourceManagerField.setAccessible(true);
-            SimpleReloadableResourceManager resourceManager = (SimpleReloadableResourceManager) resourceManagerField.get(Minecraft.getMinecraft());
-            resourceManager.reloadResourcePack(Quickplay.INSTANCE.resourcePack);
+            Quickplay.INSTANCE.reloadResourcePack();
         } catch (IOException | NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);

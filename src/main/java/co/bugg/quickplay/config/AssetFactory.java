@@ -119,7 +119,12 @@ public class AssetFactory {
             resourceLocations.add(new ResourceLocation(file.getName()));
         }
 
-        // Minecraft.getMinecraft().refreshResources();
+        try {
+            Quickplay.INSTANCE.reloadResourcePack();
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            Quickplay.INSTANCE.sendExceptionRequest(e);
+        }
         return resourceLocations;
     }
 
@@ -253,9 +258,6 @@ public class AssetFactory {
         }
 
         return null;
-
-        // Refresh the resources of the game
-        // Minecraft.getMinecraft().refreshResources();
     }
 
     /**
