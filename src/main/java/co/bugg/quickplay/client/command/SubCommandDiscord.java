@@ -35,8 +35,8 @@ public class SubCommandDiscord extends ASubCommand {
     public void run(String[] args) {
         final String link = "https://bugg.co/quickplay/discord";
 
-        final ITextComponent TextComponent = new TextComponentTranslation("quickplay.commands.quickplay.discord.message");
-        TextComponent.setStyle(new Style().setColor(TextFormatting.YELLOW));
+        final ITextComponent chatComponent = new TextComponentTranslation("quickplay.commands.quickplay.discord.message");
+        chatComponent.setStyle(new Style().setColor(TextFormatting.YELLOW));
         final ITextComponent linkComponent = new TextComponentString(link);
         linkComponent.setStyle(new Style()
                 .setColor(TextFormatting.AQUA)
