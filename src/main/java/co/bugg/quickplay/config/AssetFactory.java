@@ -118,15 +118,15 @@ public class AssetFactory {
                 }
             }
 
-            final ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, file.getName());
-
-            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-                Quickplay.INSTANCE.reloadResource(file, resourceLocation);
-            });
-
-            resourceLocations.add(resourceLocation);
+            resourceLocations.add(new ResourceLocation(file.getName()));
         }
 
+        try {
+            Quickplay.INSTANCE.reloadResourcePack();
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            Quickplay.INSTANCE.sendExceptionRequest(e);
+        }
         return resourceLocations;
     }
 
