@@ -44,11 +44,11 @@ public class PremiumCommandHelp implements IPremiumCommand {
         } else {
             List<IPremiumCommand> filteredList = parent.premiumCommands.stream().filter(cmd -> cmd.getName().equals(args[1])).collect(Collectors.toList());
             if(filteredList.size() > 0) {
-                final ITextComponent TextComponent = new TextComponentString(filteredList.get(0).getHelpText() + "\n")
+                final ITextComponent chatComponent = new TextComponentString(filteredList.get(0).getHelpText() + "\n")
                         .appendSibling(new TextComponentTranslation("quickplay.commands.usage").appendText("\n"))
                         .appendSibling(new TextComponentString("/" + parent.getParent().getName() + " " + parent.getName() + " " + filteredList.get(0).getName() + " " + filteredList.get(0).getUsage()))
                         .setStyle(new Style().setColor(TextFormatting.YELLOW));
-                Quickplay.INSTANCE.messageBuffer.push(new Message(TextComponent, true));
+                Quickplay.INSTANCE.messageBuffer.push(new Message(chatComponent, true));
             } else {
                 sendBaseHelpMessage();
             }

@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -30,7 +30,7 @@ targetCompatibility = sourceCompatibility = 1.8
 
 version = "2.0.1"
 group= "co.bugg.quickplay" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Quickplay-1.9"
+archivesBaseName = "Quickplay-1.12"
 
 idea {
     module {
@@ -39,7 +39,7 @@ idea {
 }
 
 minecraft {
-    version = "1.11.2-13.20.1.2588"
+    version = "1.12.2-14.23.2.2625"
     runDir = "run"
 
     // the mappings can be changed at any time, and must be in the following format.
@@ -47,7 +47,7 @@ minecraft {
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not allways work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "stable_32"
+    mappings = "snapshot_20180313"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 

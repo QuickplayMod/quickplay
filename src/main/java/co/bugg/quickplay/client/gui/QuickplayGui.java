@@ -5,12 +5,12 @@ import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Reference;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 

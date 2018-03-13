@@ -6,6 +6,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,6 +57,7 @@ public abstract class ACommand implements ICommand {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public String getUsage(ICommandSender sender) {
         return "/" + getName() + " " + subCommands.get(0).getName();
     }
@@ -93,11 +95,13 @@ public abstract class ACommand implements ICommand {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
         return true;
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
         List<String> tabCompletionOptions = new ArrayList<>();
 

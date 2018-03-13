@@ -5,9 +5,11 @@ import co.bugg.quickplay.Reference;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,7 +50,7 @@ public class GlyphRenderer {
             final EntityPlayer self = Minecraft.getMinecraft().player;
 
             // If both players aren't null, player is visible, and player isn't dead
-            if (player != null && self != null && !player.isInvisible() && !player.isDead && self.canEntityBeSeen(player) && self.getDistanceSqToEntity(player) < drawDistance * drawDistance) {
+            if (player != null && self != null && !player.isInvisible() && !player.isDead && self.canEntityBeSeen(player) && self.getDistanceSq(player) < drawDistance * drawDistance) {
                 // If not rendering self or inventory isn't open (don't render self while inventory is open)
                 if(player != self || !(Minecraft.getMinecraft().currentScreen instanceof GuiInventory)) {
                     // If the player being rendered isn't this player OR the client's settings allow rendering of own glyph
@@ -105,7 +107,7 @@ public class GlyphRenderer {
 
             // Draw texture
             Tessellator tessellator = Tessellator.getInstance();
-            VertexBuffer worldrenderer = tessellator.getBuffer();
+            BufferBuilder worldrenderer = tessellator.getBuffer();
             renderer.bindTexture(resource);
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldrenderer.pos((double) (-16), (double) (-16), 0.0D).tex(0, 0).endVertex();
