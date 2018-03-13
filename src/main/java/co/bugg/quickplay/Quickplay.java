@@ -174,6 +174,7 @@ public class Quickplay {
      */
     public int currentPing = 0;
 
+
     @EventHandler
     public void init(FMLInitializationEvent event) {
         // The message buffer should remain online even
@@ -462,8 +463,7 @@ public class Quickplay {
         }
         resourceManagerField.setAccessible(true);
         SimpleReloadableResourceManager resourceManager = (SimpleReloadableResourceManager) resourceManagerField.get(Minecraft.getMinecraft());
-
-        resourceManager.reloadResourcePack(resourcePack);
+        resourceManager.reloadResourcePack(Quickplay.INSTANCE.resourcePack);
     }
 
     /**
