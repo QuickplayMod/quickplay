@@ -113,22 +113,23 @@ public class ServerChecker {
         final ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();
         if(serverData != null) {
             final String motd = Minecraft.getMinecraft().getCurrentServerData().serverMOTD;
-            if(motd != null && motd.toLowerCase().contains("hypixel network")) {
+            if (motd != null && motd.toLowerCase().contains("hypixel network")) {
                 return VerificationMethod.MOTD;
             }
-        }
 
-        try {
-            // Next check server favicon
-            final String faviconBase64 = Minecraft.getMinecraft().getCurrentServerData().getBase64EncodedIconData();
-            if(faviconBase64 != null) {
-                final String hypixelBase64 = Base64.encodeBase64String(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("HypixelMCLogo.png")));
-                if(faviconBase64.equals(hypixelBase64))
-                    return VerificationMethod.FAVICON;
+
+            try {
+                // Next check server favicon
+                final String faviconBase64 = serverData.getBase64EncodedIconData();
+                if (faviconBase64 != null) {
+                    final String hypixelBase64 = Base64.encodeBase64String(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("HypixelMCLogo.png")));
+                    if (faviconBase64.equals(hypixelBase64))
+                        return VerificationMethod.FAVICON;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Quickplay.INSTANCE.sendExceptionRequest(e);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            Quickplay.INSTANCE.sendExceptionRequest(e);
         }
 
         // Return null if none of these conditions matched
