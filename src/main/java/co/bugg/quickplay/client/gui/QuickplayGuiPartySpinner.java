@@ -97,8 +97,8 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                             currentlySelectedMode = Quickplay.INSTANCE.settings.partyModes.get(nextSelectedModeIndex);
                             spinnerText = currentlySelectedMode.name;
 
-                            // Play clicky sound
-                            mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("note.harp"), 1.5F));
+                            // Play sound
+                            mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("block.lava.pop"), 2.0F));
 
                             // Sleep for 1/5th of the length this spinner has been running
                             // This creates a fast spinning speed to start that slows down over time
