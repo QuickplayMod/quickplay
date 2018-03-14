@@ -134,7 +134,11 @@ public class QuickplayGui extends GuiScreen {
         super.onGuiClosed();
         if(disableShaderOnGuiClose) {
             // Stop using shaders
-            Minecraft.getMinecraft().entityRenderer.stopUseShader();
+            try {
+                Minecraft.getMinecraft().entityRenderer.stopUseShader();
+            } catch(RuntimeException e) {
+                // TODO OpenGL context exception sometimes occurs. This temporarily silences it
+            }
         }
 
         // Show HUD again
