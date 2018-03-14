@@ -98,7 +98,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                             spinnerText = currentlySelectedMode.name;
 
                             // Play sound
-                            mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_NOTE_FLUTE, 1.3F));
+                            mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_LAVA_POP, 2.0F));
 
                             // Sleep for 1/5th of the length this spinner has been running
                             // This creates a fast spinning speed to start that slows down over time
