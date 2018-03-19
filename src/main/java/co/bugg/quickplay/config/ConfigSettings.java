@@ -69,6 +69,16 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     public boolean fadeInGuis = true;
 
     /**
+     * Whether Quickplay GUI backgrounds should be 100% transparent
+     */
+    @GuiOption(
+            name="quickplay.settings.transparentBackgrounds.name",
+            helpText = "quickplay.settings.transparentBackgrounds.help",
+            category = "quickplay.settings.category.gui"
+    )
+    public boolean transparentBackgrounds = false;
+
+    /**
      * The scale of items in the Quickplay main menu
      */
     @GuiOption(

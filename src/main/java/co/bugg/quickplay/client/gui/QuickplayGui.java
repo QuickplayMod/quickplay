@@ -200,13 +200,15 @@ public class QuickplayGui extends GuiScreen {
 
     @Override
     public void drawDefaultBackground() {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
-        // Prepend opacity to 24-bit color
-        drawRect(0, 0, width, height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
-        // drawRect disables blend (Grr!)
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        if(!Quickplay.INSTANCE.settings.transparentBackgrounds) {
+            GL11.glPushMatrix();
+            GL11.glEnable(GL11.GL_BLEND);
+            // Prepend opacity to 24-bit color
+            drawRect(0, 0, width, height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
+            // drawRect disables blend (Grr!)
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glPopMatrix();
+        }
     }
 
     @Override
