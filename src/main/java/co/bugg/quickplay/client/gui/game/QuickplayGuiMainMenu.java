@@ -383,7 +383,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             // Send analytical data to Google
             if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
                 Quickplay.INSTANCE.ga.event()
-                        .eventCategory("GUI")
+                        .eventCategory("GUIs")
                         .eventAction("Main Menu Option Pressed")
                         .eventLabel(((Game) component.origin).name)
                         .send();
