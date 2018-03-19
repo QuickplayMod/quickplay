@@ -1,13 +1,9 @@
 package co.bugg.quickplay.util.buffer;
 
 
-import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.util.*;
-
-import java.util.ArrayList;
 
 /**
  * Buffer for chat messages sent to the
@@ -30,11 +26,11 @@ public class MessageBuffer extends ABuffer {
      * buffer, whenever possible
      */
     public void run() {
-        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
 
         // Only send a message if the player exists & there is a message to send
         if(size() > 0 && player != null) {
-            player.addChatMessage(((Message) pull()).getMessage());
+            player.sendMessage(((Message) pull()).getMessage());
         }
     }
 

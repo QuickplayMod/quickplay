@@ -109,7 +109,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
             // Update the display string
             displayString = getDisplayString();
             // Handle input change
-            responder.onTick(id, getValue());
+            responder.setEntryValue(id, getValue());
         }
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
@@ -153,7 +153,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
             }
 
             displayString = getDisplayString();
-            responder.onTick(id, getValue());
+            responder.setEntryValue(id, getValue());
             isMouseDown = true;
             return true;
         }

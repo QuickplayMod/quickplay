@@ -4,10 +4,12 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
@@ -67,14 +69,14 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
             int buttonId = 0;
 
             final String randomizingString = I18n.format("quickplay.gui.party.randomizing");
-            componentList.add(new QuickplayGuiString(null, buttonId++, width / 2, randomizingTextHeight, fontRendererObj.getStringWidth(randomizingString), fontRendererObj.FONT_HEIGHT, randomizingString, true, false));
+            componentList.add(new QuickplayGuiString(null, buttonId++, width / 2, randomizingTextHeight, fontRenderer.getStringWidth(randomizingString), fontRenderer.FONT_HEIGHT, randomizingString, true, false));
 
             if (spinningThreadFuture == null)
                 startSpinner();
         } else {
             // close the GUI and send an error
             Minecraft.getMinecraft().displayGuiScreen(null);
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.nogames").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.party.nogames").setStyle(new Style().setColor(TextFormatting.RED))));
         }
     }
 
@@ -96,7 +98,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                             spinnerText = currentlySelectedMode.name;
 
                             // Play sound
-                            mc.thePlayer.playSound("liquid.lavapop", 1.0f, 2.0f);
+                            mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_LAVA_POP, 2.0F));
 
                             // Sleep for 1/5th of the length this spinner has been running
                             // This creates a fast spinning speed to start that slows down over time
@@ -117,7 +119,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
                 // After spinning complete, start finalization
                 // Play dingy sound
-                mc.thePlayer.playSound("random.levelup", 1.0f, 0.7f);
+                mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_PLAYER_LEVELUP, 0.7F));
                 final String textToFlash = spinnerText;
                 // While less than 100% of the spinnerDelay and finalization period combined has passed
                 while (startedAt > System.currentTimeMillis() - (spinnerDelay + finalizationLength) * 1000) {
@@ -151,13 +153,13 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
         drawDefaultBackground();
 
         // draw background box
-        drawRect(0, randomizingTextHeight - boxPadding, width, (int) (randomizingTextHeight + fontRendererObj.FONT_HEIGHT * spinnerScale * 3 + boxPadding), (int) (opacity * 255 * 0.5) << 24);
+        drawRect(0, randomizingTextHeight - boxPadding, width, (int) (randomizingTextHeight + fontRenderer.FONT_HEIGHT * spinnerScale * 3 + boxPadding), (int) (opacity * 255 * 0.5) << 24);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         // Draw spinner
         GL11.glScaled(spinnerScale, spinnerScale, spinnerScale);
-        drawCenteredString(fontRendererObj, spinnerText, (int) (width / 2 / spinnerScale), (int) ((randomizingTextHeight + fontRendererObj.FONT_HEIGHT * spinnerScale * 2) / spinnerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        drawCenteredString(fontRenderer, spinnerText, (int) (width / 2 / spinnerScale), (int) ((randomizingTextHeight + fontRenderer.FONT_HEIGHT * spinnerScale * 2) / spinnerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         GL11.glScaled(1 / spinnerScale, 1 / spinnerScale, 1 / spinnerScale);
 
         GL11.glDisable(GL11.GL_BLEND);
