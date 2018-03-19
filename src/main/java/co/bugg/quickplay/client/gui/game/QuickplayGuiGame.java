@@ -211,7 +211,16 @@ public class QuickplayGuiGame extends QuickplayGui {
             final Mode mode = (Mode) component.origin;
             // For security purposes, only actual commands are sent and chat messages can't be sent.
             if(mode.command.startsWith("/"))
-                Quickplay.INSTANCE.chatBuffer.push(((Mode) component.origin).command);
+                Quickplay.INSTANCE.chatBuffer.push(mode.command);
+
+            // Send analytical data to Google
+            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
+                Quickplay.INSTANCE.ga.event()
+                        .eventCategory("GUIs")
+                        .eventAction("Game Option Pressed")
+                        .eventLabel(mode.name + " : " + mode.command)
+                        .send();
+            }
         } else if(component.displayString.equals(I18n.format("quickplay.gui.back"))) {
             Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiMainMenu());
         }

@@ -60,6 +60,15 @@ public abstract class ACommand implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
+        // Send analytical data to Google
+        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
+            Quickplay.INSTANCE.ga.event()
+                    .eventCategory("Commands")
+                    .eventAction("Execute Command")
+                    .eventLabel("/" + getCommandName() + " " + String.join(" ", args))
+                    .send();
+        }
+
         // Only run if there are actually sub commands available; Otherwise it's pointless
         if(subCommands.size() > 0) {
             Quickplay.INSTANCE.threadPool.submit(() -> {

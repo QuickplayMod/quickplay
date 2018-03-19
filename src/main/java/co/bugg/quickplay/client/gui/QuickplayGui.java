@@ -132,6 +132,16 @@ public class QuickplayGui extends GuiScreen {
     @Override
     public void onGuiClosed() {
         super.onGuiClosed();
+
+        // Send analytical data to Google
+        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
+            Quickplay.INSTANCE.ga.event()
+                    .eventCategory("GUIs")
+                    .eventAction("GUI Closed")
+                    .eventLabel(getClass().getName())
+                    .send();
+        }
+
         if(disableShaderOnGuiClose) {
             // Stop using shaders
             try {
@@ -147,6 +157,15 @@ public class QuickplayGui extends GuiScreen {
 
     @Override
     public void initGui() {
+        // Send analytical data to Google
+        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
+            Quickplay.INSTANCE.ga.event()
+                    .eventCategory("GUIs")
+                    .eventAction("GUI Initialized")
+                    .eventLabel(getClass().getName())
+                    .send();
+        }
+
         closeContextMenu();
         componentList.clear();
 

@@ -354,9 +354,27 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                     if(element.element instanceof Boolean) {
                         element.element = !(boolean) element.element;
                         component.displayString = I18n.format(element.optionInfo.name()) + ": " + I18n.format((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false");
+
+                        // Send analytical data to Google
+                        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
+                            Quickplay.INSTANCE.ga.event()
+                                    .eventCategory("Config")
+                                    .eventAction("Boolean Changed")
+                                    .eventLabel(element.configFieldName + " : " + element.element)
+                                    .send();
+                        }
                     } else if(element.element instanceof Runnable) {
                         mc.displayGuiScreen(null);
                         ((Runnable) element.element).run();
+
+                        // Send analytical data to Google
+                        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
+                            Quickplay.INSTANCE.ga.event()
+                                    .eventCategory("Config")
+                                    .eventAction("Runnable Clicked")
+                                    .eventLabel(element.configFieldName)
+                                    .send();
+                        }
                     } else if(element.element instanceof QuickplayColor) {
                         mc.displayGuiScreen(new QuickplayGuiEditColor((QuickplayColor) element.element, I18n.format(element.optionInfo.name()), config, this));
                     }
@@ -438,6 +456,15 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             ConfigElement element = (ConfigElement) componentList.get(id).origin;
             element.element = ((Number) value).doubleValue();
             save(element);
+
+            // Send analytical data to Google
+            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
+                Quickplay.INSTANCE.ga.event()
+                        .eventCategory("Config")
+                        .eventAction("Slider Changed")
+                        .eventLabel(element.configFieldName + " : " + element.element)
+                        .send();
+            }
         }
 
         /**

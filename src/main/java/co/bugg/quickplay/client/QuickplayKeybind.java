@@ -115,6 +115,16 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
 
                 Minecraft.getMinecraft().displayGuiScreen((GuiScreen) clazz.getDeclaredConstructor(paramsClasses).newInstance(constructorParams));
 
+                // Send analytical data to Google
+                if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
+                    Quickplay.INSTANCE.ga.event()
+                            .eventCategory("Keybinds")
+                            .eventAction("Keybind Pressed")
+                            .eventLabel(clazz.getName())
+                            // Event value 0 for GUI, event value 1 for command
+                            .eventValue(0)
+                            .send();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.keybinds.illegal", name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
@@ -127,6 +137,17 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
 
             System.out.println(chatCommand);
             Quickplay.INSTANCE.chatBuffer.push(chatCommand);
+
+            // Send analytical data to Google
+            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
+                Quickplay.INSTANCE.ga.event()
+                        .eventCategory("Keybinds")
+                        .eventAction("Keybind Pressed")
+                        .eventLabel(chatCommand)
+                        // Event value 0 for GUI, event value 1 for command
+                        .eventValue(1)
+                        .send();
+            }
         }
     }
 

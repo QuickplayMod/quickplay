@@ -140,6 +140,16 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
             Quickplay.INSTANCE.promptUserForUsageStats = false;
             Quickplay.INSTANCE.usageStats = new ConfigUsageStats();
             Quickplay.INSTANCE.usageStats.sendUsageStats = component.displayString.equals(yesText);
+
+            // Report the user's decision. This is one of the few things that is reported regardless of decision
+            if(Quickplay.INSTANCE.usageStats.statsToken != null) {
+                Quickplay.INSTANCE.ga.event()
+                        .eventCategory("Privacy")
+                        .eventAction("Privacy Settings Changed")
+                        .eventLabel("Report usage: " + Quickplay.INSTANCE.usageStats.sendUsageStats)
+                        .send();
+            }
+
             try {
                 Quickplay.INSTANCE.usageStats.save();
             } catch (IOException e) {

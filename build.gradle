@@ -52,6 +52,8 @@ minecraft {
 }
 
 dependencies {
+    compile 'com.brsanthu:google-analytics-java:2.0.0'
+
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
