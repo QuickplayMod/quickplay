@@ -1,6 +1,7 @@
 package co.bugg.quickplay.config;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.games.Game;
 import com.google.common.hash.HashCode;
@@ -118,10 +119,23 @@ public class AssetFactory {
             }
 
             final ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, file.getName());
-            Quickplay.INSTANCE.reloadResource(file, resourceLocation);
+
+            // 1.12 resource refreshing is handled differently. See down there.
+//            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+//                Quickplay.INSTANCE.reloadResource(file, resourceLocation);
+//            });
 
             resourceLocations.add(resourceLocation);
         }
+
+        // 1.12 Resource reloading is handled differently
+        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+            try {
+                Quickplay.INSTANCE.reloadResourcePack();
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
 
         return resourceLocations;
     }

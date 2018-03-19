@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Main event handler for Quickplay
@@ -25,7 +24,7 @@ public class QuickplayEventHandler {
      * This is mainly used for things that need Minecraft's OpenGL context
      * All items in this list are called before a frame is rendered
      */
-    public static List<Runnable> mainThreadScheduledTasks = new ArrayList<>();
+    public static ArrayList<Runnable> mainThreadScheduledTasks = new ArrayList<>();
 
     @SubscribeEvent
     public void onJoin(FMLNetworkEvent.ClientConnectedToServerEvent event) {
@@ -58,10 +57,10 @@ public class QuickplayEventHandler {
     public void onRender(TickEvent.RenderTickEvent event) {
         // handle any runnables that need to be ran with OpenGL context
         if(event.phase == TickEvent.Phase.START && !mainThreadScheduledTasks.isEmpty()) {
-            for(Runnable runnable : mainThreadScheduledTasks) {
+            for(Runnable runnable : (ArrayList<Runnable>) mainThreadScheduledTasks.clone()) {
                 runnable.run();
+                mainThreadScheduledTasks.remove(runnable);
             }
-            mainThreadScheduledTasks.clear();
         }
     }
 

@@ -5,9 +5,9 @@ import co.bugg.quickplay.Reference;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
@@ -105,7 +105,7 @@ public class GlyphRenderer {
 
             // Draw texture
             Tessellator tessellator = Tessellator.getInstance();
-            VertexBuffer worldrenderer = tessellator.getBuffer();
+            BufferBuilder worldrenderer = tessellator.getBuffer();
             renderer.bindTexture(resource);
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldrenderer.pos((double) (-16), (double) (-16), 0.0D).tex(0, 0).endVertex();
