@@ -1,6 +1,7 @@
 package co.bugg.quickplay.config;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.games.Game;
 import com.google.common.hash.HashCode;
@@ -118,7 +119,10 @@ public class AssetFactory {
             }
 
             final ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, file.getName());
-            Quickplay.INSTANCE.reloadResource(file, resourceLocation);
+
+            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+                Quickplay.INSTANCE.reloadResource(file, resourceLocation);
+            });
 
             resourceLocations.add(resourceLocation);
         }
