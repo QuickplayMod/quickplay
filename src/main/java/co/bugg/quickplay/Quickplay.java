@@ -236,7 +236,7 @@ public class Quickplay {
                     // File couldn't be saved
                     e1.printStackTrace();
                     sendExceptionRequest(e1);
-                    Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.config.saveerror").setStyle(new Style().setColor(TextFormatting.RED))));
                 }
             }
 

@@ -4,9 +4,9 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -98,7 +98,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                             spinnerText = currentlySelectedMode.name;
 
                             // Play sound
-                            mc.player.playSound(new SoundEvent(new ResourceLocation("liquid.lavapop")), 1.0f, 2.0f);
+                            mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_LAVA_POP, 2.0F));
 
                             // Sleep for 1/5th of the length this spinner has been running
                             // This creates a fast spinning speed to start that slows down over time
@@ -119,7 +119,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
                 // After spinning complete, start finalization
                 // Play dingy sound
-                mc.player.playSound(new SoundEvent(new ResourceLocation("random.levelup")), 1.0f, 0.7f);
+                mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_PLAYER_LEVELUP, 0.7F));
                 final String textToFlash = spinnerText;
                 // While less than 100% of the spinnerDelay and finalization period combined has passed
                 while (startedAt > System.currentTimeMillis() - (spinnerDelay + finalizationLength) * 1000) {
