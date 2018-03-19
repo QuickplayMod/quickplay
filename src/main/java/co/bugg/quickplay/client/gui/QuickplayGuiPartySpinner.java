@@ -4,12 +4,10 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
@@ -98,7 +96,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                             spinnerText = currentlySelectedMode.name;
 
                             // Play sound
-                            mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("liquid.lavapop"), 2.0F));
+                            mc.thePlayer.playSound("liquid.lavapop", 1.0f, 2.0f);
 
                             // Sleep for 1/5th of the length this spinner has been running
                             // This creates a fast spinning speed to start that slows down over time
@@ -119,7 +117,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
                 // After spinning complete, start finalization
                 // Play dingy sound
-                mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("random.levelup"), 0.7F));
+                mc.thePlayer.playSound("random.levelup", 1.0f, 0.7f);
                 final String textToFlash = spinnerText;
                 // While less than 100% of the spinnerDelay and finalization period combined has passed
                 while (startedAt > System.currentTimeMillis() - (spinnerDelay + finalizationLength) * 1000) {
