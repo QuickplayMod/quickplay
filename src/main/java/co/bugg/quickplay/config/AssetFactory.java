@@ -118,15 +118,25 @@ public class AssetFactory {
                 }
             }
 
-            resourceLocations.add(new ResourceLocation(file.getName()));
+            final ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, file.getName());
+
+            // 1.12 resource refreshing is handled differently. See down there.
+//            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+//                Quickplay.INSTANCE.reloadResource(file, resourceLocation);
+//            });
+
+            resourceLocations.add(resourceLocation);
         }
 
-        try {
-            Quickplay.INSTANCE.reloadResourcePack();
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-            Quickplay.INSTANCE.sendExceptionRequest(e);
-        }
+        // 1.12 Resource reloading is handled differently
+        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+            try {
+                Quickplay.INSTANCE.reloadResourcePack();
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
         return resourceLocations;
     }
 
