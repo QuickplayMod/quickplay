@@ -15,5 +15,5 @@ public class Reference {
     /**
      * Version of this forge mod
      */
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = "2.0.1-beta";
 }
