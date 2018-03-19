@@ -104,6 +104,15 @@ public class InstanceWatcher {
 
                 if(server != null && (instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(server))) {
                     instanceHistory.add(0, server);
+
+                    // Send analytical data to Google
+                    if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
+                        Quickplay.INSTANCE.ga.event()
+                                .eventCategory("Instance")
+                                .eventAction("Instance Changed")
+                                .eventLabel(server)
+                                .send();
+                    }
                 }
             });
         return this;

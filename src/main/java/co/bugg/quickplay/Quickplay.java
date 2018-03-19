@@ -19,7 +19,6 @@ import co.bugg.quickplay.util.ServerChecker;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
 import com.brsanthu.googleanalytics.GoogleAnalytics;
-import com.brsanthu.googleanalytics.request.DefaultRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.Minecraft;
@@ -35,7 +34,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import org.lwjgl.opengl.Display;
 
 import java.io.File;
 import java.io.IOException;
@@ -162,10 +160,6 @@ public class Quickplay {
             .withTrackingId("UA-60675209-4")
             .withAppName(Reference.MOD_NAME)
             .withAppVersion(Reference.VERSION)
-            .withDefaultRequest(new DefaultRequest()
-                    .clientId(Minecraft.getMinecraft().getSession().getPlayerID())
-                    .screenResolution(Display.getWidth() + "x" + Display.getHeight())
-            )
             .build();
 
     @EventHandler
@@ -202,7 +196,6 @@ public class Quickplay {
      * Enable the mod
      */
     public void enable() {
-        System.out.println(Display.getWidth() + "x" + Display.getHeight());
         if(!this.enabled) {
 
             this.enabled = true;
