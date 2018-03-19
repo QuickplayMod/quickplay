@@ -29,6 +29,7 @@ public class CommandQuickplay extends ACommand {
         addSubCommand(new SubCommandDiscord(this));
         addSubCommand(new SubCommandParty(this));
         addSubCommand(new SubCommandRefreshResource(this));
+        addSubCommand(new SubCommandWiki(this));
     }
 
     @Override
