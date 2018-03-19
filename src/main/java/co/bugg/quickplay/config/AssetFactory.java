@@ -1,6 +1,7 @@
 package co.bugg.quickplay.config;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.games.Game;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
@@ -116,15 +117,12 @@ public class AssetFactory {
                 }
             }
 
-            resourceLocations.add(new ResourceLocation(file.getName()));
+            final ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, file.getName());
+            Quickplay.INSTANCE.reloadResource(file, resourceLocation);
+
+            resourceLocations.add(resourceLocation);
         }
 
-        try {
-            Quickplay.INSTANCE.reloadResourcePack();
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-            Quickplay.INSTANCE.sendExceptionRequest(e);
-        }
         return resourceLocations;
     }
 

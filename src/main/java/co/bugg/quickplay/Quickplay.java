@@ -21,19 +21,20 @@ import co.bugg.quickplay.util.buffer.MessageBuffer;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.renderer.texture.ITextureObject;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.command.ICommand;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.*;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -394,6 +395,22 @@ public class Quickplay {
         }
         resourceManagerField.setAccessible(true);
         SimpleReloadableResourceManager resourceManager = (SimpleReloadableResourceManager) resourceManagerField.get(Minecraft.getMinecraft());
-        resourceManager.reloadResourcePack(Quickplay.INSTANCE.resourcePack);
+
+        resourceManager.reloadResourcePack(resourcePack);
+    }
+
+    /**
+     * Reload the provided resourceLocation with the provided file
+     * @param file The file of the newly changed resource
+     * @param resourceLocation The resourceLocation to change/set
+     */
+    public void reloadResource(File file, ResourceLocation resourceLocation) {
+        if (file != null && file.exists()) {
+
+            TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
+            texturemanager.deleteTexture(resourceLocation);
+            ITextureObject object = new ThreadDownloadImageData(file, null, resourceLocation, null);
+            texturemanager.loadTexture(resourceLocation, object);
+        }
     }
 }

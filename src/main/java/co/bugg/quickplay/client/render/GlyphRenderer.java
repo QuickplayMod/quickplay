@@ -76,10 +76,10 @@ public class GlyphRenderer {
      * @param y y position
      * @param z z position
      */
-    public void renderGlyph(RendererLivingEntity renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
+    public synchronized void renderGlyph(RendererLivingEntity renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
 
         final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.path.toString(), Charset.forName("UTF-8")).toString() + ".png");
-        if(Quickplay.INSTANCE.resourcePack.resourceExists(resource)) {
+        if(Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {
             float scale = (float) (glyph.height * 0.0015);
 
             // Apply GL properties
@@ -118,7 +118,7 @@ public class GlyphRenderer {
             GlStateManager.enableLighting();
             GlStateManager.disableBlend();
             GlStateManager.popMatrix();
-        } else if(!glyph.downloadAttempted) {
+        } else {
             Quickplay.INSTANCE.threadPool.submit(glyph::download);
         }
     }
