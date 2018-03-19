@@ -8,7 +8,6 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;

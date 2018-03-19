@@ -127,6 +127,15 @@ public class AssetFactory {
             resourceLocations.add(resourceLocation);
         }
 
+        // 1.12 Resource reloading is handled differently
+        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+            try {
+                Quickplay.INSTANCE.reloadResourcePack();
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
         return resourceLocations;
     }
 
