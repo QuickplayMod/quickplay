@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Reference;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
@@ -144,11 +145,9 @@ public class QuickplayGui extends GuiScreen {
 
         if(disableShaderOnGuiClose) {
             // Stop using shaders
-            try {
+            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
                 Minecraft.getMinecraft().entityRenderer.stopUseShader();
-            } catch(RuntimeException e) {
-                // TODO OpenGL context exception sometimes occurs. This temporarily silences it
-            }
+            });
         }
 
         // Show HUD again
