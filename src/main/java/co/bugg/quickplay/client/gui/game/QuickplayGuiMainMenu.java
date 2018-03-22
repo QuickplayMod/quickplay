@@ -381,12 +381,16 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             mc.displayGuiScreen(new QuickplayGuiGame((Game) component.origin));
 
             // Send analytical data to Google
-            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-                Quickplay.INSTANCE.ga.event()
-                        .eventCategory("GUIs")
-                        .eventAction("Main Menu Option Pressed")
-                        .eventLabel(((Game) component.origin).name)
-                        .send();
+            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                Quickplay.INSTANCE.threadPool.submit(() -> {
+                    try {
+                        Quickplay.INSTANCE.ga.createEvent("GUIs", "Main Menu Option Pressed")
+                                .setEventLabel(((Game) component.origin).name)
+                                .send();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         }
     }

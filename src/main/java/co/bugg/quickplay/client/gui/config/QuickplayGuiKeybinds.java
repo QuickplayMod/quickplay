@@ -207,12 +207,16 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                     default:
                         keybind.key = keyCode;
                         // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-                            Quickplay.INSTANCE.ga.event()
-                                    .eventCategory("Keybinds")
-                                    .eventAction("Keybind Changed")
-                                    .eventLabel(keybind.name + " : " + keybind.key)
-                                    .send();
+                        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                            Quickplay.INSTANCE.threadPool.submit(() -> {
+                                try {
+                                    Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Changed")
+                                            .setEventLabel(keybind.name + " : " + keybind.key)
+                                            .send();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
                         }
                         break;
                 }

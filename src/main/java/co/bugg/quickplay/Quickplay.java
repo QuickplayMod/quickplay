@@ -16,9 +16,10 @@ import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.InstanceWatcher;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.ServerChecker;
+import co.bugg.quickplay.util.analytics.GoogleAnalytics;
+import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
-import com.brsanthu.googleanalytics.GoogleAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.Minecraft;
@@ -35,10 +36,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -156,11 +159,7 @@ public class Quickplay {
     /**
      * Google Analytics API tracker
      */
-    public GoogleAnalytics ga = GoogleAnalytics.builder()
-            .withTrackingId("UA-60675209-4")
-            .withAppName(Reference.MOD_NAME)
-            .withAppVersion(Reference.VERSION)
-            .build();
+    public GoogleAnalytics ga;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -235,12 +234,20 @@ public class Quickplay {
                 }
             }
 
+            // Create new Google Analytics instance if possible
+            if(usageStats != null && usageStats.statsToken != null) {
+                createGoogleAnalytics();
+            }
+
             // Send analytical data to Google
-            if(usageStats.statsToken != null && usageStats.sendUsageStats) {
-                ga.event()
-                        .eventCategory("Systematic Events")
-                        .eventAction("Mod Enable")
-                        .send();
+            if(usageStats.statsToken != null && usageStats.sendUsageStats && ga != null) {
+                threadPool.submit(() -> {
+                    try {
+                        ga.createEvent("Systematic Events", "Mod Enable").send();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
 
             // Try to load the previous game list from cache
@@ -302,6 +309,16 @@ public class Quickplay {
             commands.add(new CommandHub("quickplaylobby", "hub"));
             commands.forEach(ClientCommandHandler.instance::registerCommand);
         }
+    }
+
+    /**
+     * Create the Google Analytics instance with customized settings for this Quickplay instance
+     */
+    public void createGoogleAnalytics() {
+        ga = GoogleAnalyticsFactory.create(Reference.ANALYTICS_TRACKING_ID, usageStats.statsToken.toString(), Reference.MOD_NAME, Reference.VERSION);
+        ga.getDefaultRequest().setLanguage(Minecraft.getMinecraft().gameSettings.language);
+        final GraphicsDevice screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        ga.getDefaultRequest().setScreenResolution(screen.getDisplayMode().getWidth() + "x" + screen.getDisplayMode().getHeight());
     }
 
     /**

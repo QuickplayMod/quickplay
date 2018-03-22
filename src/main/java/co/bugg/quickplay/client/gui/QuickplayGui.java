@@ -135,12 +135,16 @@ public class QuickplayGui extends GuiScreen {
         super.onGuiClosed();
 
         // Send analytical data to Google
-        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-            Quickplay.INSTANCE.ga.event()
-                    .eventCategory("GUIs")
-                    .eventAction("GUI Closed")
-                    .eventLabel(getClass().getName())
-                    .send();
+        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+            Quickplay.INSTANCE.threadPool.submit(() -> {
+                try {
+                    Quickplay.INSTANCE.ga.createEvent("GUIs", "GUI Closed")
+                            .setEventLabel(getClass().getName())
+                            .send();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }
 
         if(disableShaderOnGuiClose) {
@@ -157,12 +161,16 @@ public class QuickplayGui extends GuiScreen {
     @Override
     public void initGui() {
         // Send analytical data to Google
-        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-            Quickplay.INSTANCE.ga.event()
-                    .eventCategory("GUIs")
-                    .eventAction("GUI Initialized")
-                    .eventLabel(getClass().getName())
-                    .send();
+        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+            Quickplay.INSTANCE.threadPool.submit(() -> {
+                try {
+                    Quickplay.INSTANCE.ga.createEvent("GUIs", "GUI Initialized")
+                            .setEventLabel(getClass().getName())
+                            .send();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }
 
         closeContextMenu();
@@ -181,29 +189,32 @@ public class QuickplayGui extends GuiScreen {
         // Load the blur background shader
         if(Quickplay.INSTANCE.settings.blurGuiBackgrounds) {
 
-            // This method isn't public in some versions of Forge seemingly.
-            // Reflection is used just in case
-            Method loadShaderMethod = null;
-            try {
-                loadShaderMethod = EntityRenderer.class.getDeclaredMethod("loadShader", ResourceLocation.class);
-            } catch (NoSuchMethodException e) {
+            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+                // This method isn't public in some versions of Forge seemingly.
+                // Reflection is used just in case
+                Method loadShaderMethod = null;
                 try {
-                    loadShaderMethod = EntityRenderer.class.getDeclaredMethod("func_175069_a", ResourceLocation.class);
-                } catch (NoSuchMethodException e1) {
-                    e1.printStackTrace();
-                    Quickplay.INSTANCE.sendExceptionRequest(e);
+                    loadShaderMethod = EntityRenderer.class.getDeclaredMethod("loadShader", ResourceLocation.class);
+                } catch (NoSuchMethodException e) {
+                    try {
+                        loadShaderMethod = EntityRenderer.class.getDeclaredMethod("func_175069_a", ResourceLocation.class);
+                    } catch (NoSuchMethodException e1) {
+                        e1.printStackTrace();
+                        Quickplay.INSTANCE.sendExceptionRequest(e);
+                    }
                 }
-            }
 
-            if(loadShaderMethod != null) {
-                loadShaderMethod.setAccessible(true);
-                try {
-                    loadShaderMethod.invoke(Minecraft.getMinecraft().entityRenderer, new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                    Quickplay.INSTANCE.sendExceptionRequest(e);
+                if (loadShaderMethod != null) {
+                    loadShaderMethod.setAccessible(true);
+                    try {
+                        loadShaderMethod.invoke(Minecraft.getMinecraft().entityRenderer, new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                        Quickplay.INSTANCE.sendExceptionRequest(e);
+                    }
                 }
-            }
+
+            });
         }
 
         setScrollingValues();

@@ -5,6 +5,7 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -61,12 +62,16 @@ public abstract class ACommand implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         // Send analytical data to Google
-        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-            Quickplay.INSTANCE.ga.event()
-                    .eventCategory("Commands")
-                    .eventAction("Execute Command")
-                    .eventLabel("/" + getCommandName() + " " + String.join(" ", args))
-                    .send();
+        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+            Quickplay.INSTANCE.threadPool.submit(() -> {
+                try {
+                    Quickplay.INSTANCE.ga.createEvent("commands", "Execute Command")
+                            .setEventLabel("/" + getCommandName() + " " + String.join(" ", args))
+                            .send();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }
 
         // Only run if there are actually sub commands available; Otherwise it's pointless

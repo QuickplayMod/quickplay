@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -116,14 +117,18 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
                 Minecraft.getMinecraft().displayGuiScreen((GuiScreen) clazz.getDeclaredConstructor(paramsClasses).newInstance(constructorParams));
 
                 // Send analytical data to Google
-                if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-                    Quickplay.INSTANCE.ga.event()
-                            .eventCategory("Keybinds")
-                            .eventAction("Keybind Pressed")
-                            .eventLabel(clazz.getName())
-                            // Event value 0 for GUI, event value 1 for command
-                            .eventValue(0)
-                            .send();
+                if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                    Quickplay.INSTANCE.threadPool.submit(() -> {
+                        try {
+                            Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Pressed")
+                                    .setEventLabel(clazz.getName())
+                                    // Event value 0 for GUI, event value 1 for command
+                                    .setEventValue(0)
+                                    .send();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -139,14 +144,18 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
             Quickplay.INSTANCE.chatBuffer.push(chatCommand);
 
             // Send analytical data to Google
-            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-                Quickplay.INSTANCE.ga.event()
-                        .eventCategory("Keybinds")
-                        .eventAction("Keybind Pressed")
-                        .eventLabel(chatCommand)
-                        // Event value 0 for GUI, event value 1 for command
-                        .eventValue(1)
-                        .send();
+            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                Quickplay.INSTANCE.threadPool.submit(() -> {
+                    try {
+                        Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Pressed")
+                                .setEventLabel(chatCommand)
+                                // Event value 0 for GUI, event value 1 for command
+                                .setEventValue(1)
+                                .send();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         }
     }

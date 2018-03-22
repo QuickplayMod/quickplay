@@ -356,24 +356,32 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                         component.displayString = I18n.format(element.optionInfo.name()) + ": " + I18n.format((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false");
 
                         // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-                            Quickplay.INSTANCE.ga.event()
-                                    .eventCategory("Config")
-                                    .eventAction("Boolean Changed")
-                                    .eventLabel(element.configFieldName + " : " + element.element)
-                                    .send();
+                        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                            Quickplay.INSTANCE.threadPool.submit(() -> {
+                                try {
+                                    Quickplay.INSTANCE.ga.createEvent("Config", "Boolean Changed")
+                                            .setEventLabel(element.configFieldName + " : " + element.element)
+                                            .send();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
                         }
                     } else if(element.element instanceof Runnable) {
                         mc.displayGuiScreen(null);
                         ((Runnable) element.element).run();
 
                         // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-                            Quickplay.INSTANCE.ga.event()
-                                    .eventCategory("Config")
-                                    .eventAction("Runnable Clicked")
-                                    .eventLabel(element.configFieldName)
-                                    .send();
+                        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                            Quickplay.INSTANCE.threadPool.submit(() -> {
+                                try {
+                                    Quickplay.INSTANCE.ga.createEvent("Config", "Runnable Clicked")
+                                            .setEventLabel(element.configFieldName)
+                                            .send();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
                         }
                     } else if(element.element instanceof QuickplayColor) {
                         mc.displayGuiScreen(new QuickplayGuiEditColor((QuickplayColor) element.element, I18n.format(element.optionInfo.name()), config, this));
@@ -458,12 +466,16 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             save(element);
 
             // Send analytical data to Google
-            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-                Quickplay.INSTANCE.ga.event()
-                        .eventCategory("Config")
-                        .eventAction("Slider Changed")
-                        .eventLabel(element.configFieldName + " : " + element.element)
-                        .send();
+            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                Quickplay.INSTANCE.threadPool.submit(() -> {
+                    try {
+                        Quickplay.INSTANCE.ga.createEvent("Config", "Slider Changed")
+                                .setEventLabel(element.configFieldName + " : " + element.element)
+                                .send();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         }
 

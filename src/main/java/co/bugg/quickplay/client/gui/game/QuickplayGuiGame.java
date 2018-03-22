@@ -214,12 +214,16 @@ public class QuickplayGuiGame extends QuickplayGui {
                 Quickplay.INSTANCE.chatBuffer.push(mode.command);
 
             // Send analytical data to Google
-            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-                Quickplay.INSTANCE.ga.event()
-                        .eventCategory("GUIs")
-                        .eventAction("Game Option Pressed")
-                        .eventLabel(mode.name + " : " + mode.command)
-                        .send();
+            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                Quickplay.INSTANCE.threadPool.submit(() -> {
+                    try {
+                        Quickplay.INSTANCE.ga.createEvent("GUIs", "Game Option Pressed")
+                                .setEventLabel(mode.name + " : " + mode.command)
+                                .send();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         } else if(component.displayString.equals(I18n.format("quickplay.gui.back"))) {
             Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiMainMenu());

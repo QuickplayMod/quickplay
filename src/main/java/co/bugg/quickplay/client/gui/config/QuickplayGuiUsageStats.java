@@ -141,13 +141,20 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
             Quickplay.INSTANCE.usageStats = new ConfigUsageStats();
             Quickplay.INSTANCE.usageStats.sendUsageStats = component.displayString.equals(yesText);
 
+            // Create a new Google Analytics instance in case it wasn't set before
+            Quickplay.INSTANCE.createGoogleAnalytics();
+
             // Report the user's decision. This is one of the few things that is reported regardless of decision
-            if(Quickplay.INSTANCE.usageStats.statsToken != null) {
-                Quickplay.INSTANCE.ga.event()
-                        .eventCategory("Privacy")
-                        .eventAction("Privacy Settings Changed")
-                        .eventLabel("Report usage: " + Quickplay.INSTANCE.usageStats.sendUsageStats)
-                        .send();
+            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.ga != null) {
+                Quickplay.INSTANCE.threadPool.submit(() -> {
+                    try {
+                        Quickplay.INSTANCE.ga.createEvent("Privacy", "Privacy Settings Changed")
+                                .setEventLabel("Report usage: " + Quickplay.INSTANCE.usageStats.sendUsageStats)
+                                .send();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
 
             try {

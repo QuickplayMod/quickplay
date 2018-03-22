@@ -5,6 +5,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,12 +107,16 @@ public class InstanceWatcher {
                     instanceHistory.add(0, server);
 
                     // Send analytical data to Google
-                    if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
-                        Quickplay.INSTANCE.ga.event()
-                                .eventCategory("Instance")
-                                .eventAction("Instance Changed")
-                                .eventLabel(server)
-                                .send();
+                    if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                        Quickplay.INSTANCE.threadPool.submit(() -> {
+                            try {
+                                Quickplay.INSTANCE.ga.createEvent("Instance", "Instance Changed")
+                                        .setEventLabel(server)
+                                        .send();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
                     }
                 }
             });
