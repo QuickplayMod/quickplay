@@ -24,6 +24,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -220,6 +221,8 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                 componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()), true));
             else if(element.element instanceof Double)
                 componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper, true));
+            else if(element.element.getClass().isEnum())
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()) + ": " + I18n.format(String.valueOf(element.element)), true));
 
             nextButtonId++;
         }
@@ -385,6 +388,14 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                         }
                     } else if(element.element instanceof QuickplayColor) {
                         mc.displayGuiScreen(new QuickplayGuiEditColor((QuickplayColor) element.element, I18n.format(element.optionInfo.name()), config, this));
+                    } else if(element.element.getClass().isEnum()) {
+                        // Find out what the next enum in the list is
+                        final List list = Arrays.asList(element.element.getClass().getEnumConstants());
+                        final int index = list.indexOf(element.element);
+                        final int nextIndex = list.size() > index + 1 ? index + 1 : 0;
+                        element.element = list.get(nextIndex);
+
+                        component.displayString = I18n.format(element.optionInfo.name()) + ": " + I18n.format(String.valueOf(element.element));
                     }
 
                     save(element);
