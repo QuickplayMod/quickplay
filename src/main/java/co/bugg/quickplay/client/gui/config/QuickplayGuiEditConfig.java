@@ -348,7 +348,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
         // Only do something if the component is visible
-        if(component.y - scrollPixel > scrollFrameTop - fadeDistance) {
+        if(component.y - scrollPixel > scrollFrameTop - fadeDistance || !component.scrollable) {
             super.componentClicked(component);
 
             if(component.origin instanceof ConfigElement) {
