@@ -246,7 +246,7 @@ public class QuickplayGui extends GuiScreen {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
 
-            int textXMargins = 4;
+            int textXMargins = 6;
             int boxMargins = 10;
             int textYMargins = 2;
             int textWidth = 0;
@@ -297,7 +297,7 @@ public class QuickplayGui extends GuiScreen {
 
             }
             // Calculate how high the tooltip should be
-            int tooltipHeight = textLines.size() * (font.FONT_HEIGHT + textYMargins) + textYMargins * 2;
+            int tooltipHeight = textLines.size() * (font.FONT_HEIGHT + textYMargins) + textYMargins;
 
             // Move up if falling off bottom of screen
             if(y + tooltipHeight > height)
@@ -310,7 +310,7 @@ public class QuickplayGui extends GuiScreen {
             // Draw text
             int currentLineY = y + textYMargins;
             for(String line : textLines) {
-                drawString(font, line, x + textXMargins, currentLineY, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                drawString(font, line, x + textXMargins / 2, currentLineY, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
                 currentLineY += font.FONT_HEIGHT + textYMargins;
             }
 
