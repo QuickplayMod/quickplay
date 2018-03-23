@@ -18,8 +18,10 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 
 /**
  * Quickplay's main menu GUI
@@ -99,6 +101,12 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
      */
     String favoriteString = "Bind to key...";
 
+    /**
+     * Whether this GUI should be rendered in compact mode or not
+     * @see co.bugg.quickplay.config.ConfigSettings#compactMainMenu
+     */
+    boolean compact = Quickplay.INSTANCE.settings.compactMainMenu;
+
     @Override
     public void initGui() {
         super.initGui();
@@ -113,24 +121,28 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         if(Quickplay.INSTANCE.settings != null && Quickplay.INSTANCE.settings.mainMenuYPadding > 0)
             scrollContentMargins = Quickplay.INSTANCE.settings.mainMenuYPadding;
 
-        if(Quickplay.INSTANCE.gameList.size() > 0) {
-            // Calculate the average width of all strings & what the longest one is
-            for (Game game : Quickplay.INSTANCE.gameList) {
-                final int stringWidth = fontRendererObj.getStringWidth(game.name);
-                averageStringWidth += stringWidth;
-                if (stringWidth > longestStringWidth) longestStringWidth = stringWidth;
+        // Strings aren't rendered in compact mode so forget about this
+        if(!compact) {
+            if (Quickplay.INSTANCE.gameList.size() > 0) {
+                // Calculate the average width of all strings & what the longest one is
+                for (Game game : Quickplay.INSTANCE.gameList) {
+                    final int stringWidth = fontRendererObj.getStringWidth(game.name);
+                    averageStringWidth += stringWidth;
+                    if (stringWidth > longestStringWidth) longestStringWidth = stringWidth;
+                }
+                averageStringWidth /= Quickplay.INSTANCE.gameList.size();
             }
-            averageStringWidth /= Quickplay.INSTANCE.gameList.size();
-        }
 
-        // String scales up with size of game images
-        if(gameImgSize * scaleMultiplier > 100) {
-            stringScale = 2.0;
-        } else if(gameImgSize * scaleMultiplier > 50) {
-            stringScale = 1.5;
-        } else {
-            stringScale = 1.0;
-        }
+            // String scales up with size of game images
+            if (gameImgSize * scaleMultiplier > 100) {
+                stringScale = 2.0;
+            } else if (gameImgSize * scaleMultiplier > 50) {
+                stringScale = 1.5;
+            } else {
+                stringScale = 1.0;
+            }
+        } else
+            stringScale = 0;
 
         final int itemWidth = (int) (gameImgSize * scaleMultiplier + longestStringWidth * stringScale + stringLeftMargins + boxXMargins);
         // Calculate column count
@@ -193,11 +205,13 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                     drawTexturedModalRect((int) (component.x / scaleMultiplier), (int) (scrollAdjustedY / scaleMultiplier), 0, 0, gameImgSize, gameImgSize);
                     GL11.glScaled(1 / scaleMultiplier, 1 / scaleMultiplier, 1 / scaleMultiplier);
 
-                    // Draw text
-                    GL11.glScaled(stringScale, stringScale, stringScale);
-                    final int color = component.mouseHovering(this, mouseX, mouseY) && contextMenu == null ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
-                    drawString(mc.fontRendererObj, ((Game) component.origin).name, (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale), (int) ((((scrollAdjustedY + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
-                    GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
+                    if(!compact) {
+                        // Draw text
+                        GL11.glScaled(stringScale, stringScale, stringScale);
+                        final int color = component.mouseHovering(this, mouseX, mouseY) && contextMenu == null ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
+                        drawString(mc.fontRendererObj, ((Game) component.origin).name, (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale), (int) ((((scrollAdjustedY + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                        GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
+                    }
                 }
             }
 
@@ -211,6 +225,12 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         //super.drawScreen(mouseX, mouseY, partialTicks);
         for (QuickplayGuiComponent component : componentList) {
             component.draw(this, mouseX, mouseY, (component instanceof QuickplayGuiContextMenu) ? opacity : 0);
+
+            // If hovering & in compact mode, draw hover text
+            if(compact && component.origin instanceof Game && component.mouseHovering(this, mouseX, mouseY)) {
+                final Game game = (Game) component.origin;
+                drawHoveringText(new ArrayList<>(Collections.singletonList(game.name)), mouseX, mouseY);
+            }
         }
 
         drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);

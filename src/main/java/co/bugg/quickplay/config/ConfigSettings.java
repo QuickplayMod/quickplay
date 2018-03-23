@@ -113,6 +113,17 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     public boolean anyKeyClosesGui = false;
 
     /**
+     * Whether the Quickplay Main Menu should be compacted to hide strings & only display game
+     * names when you hover over the game's icon
+     */
+    @GuiOption(
+            name="quickplay.settings.compactMainMenu.name",
+            helpText = "quickplay.settings.compactMainMenu.help",
+            category = "quickplay.settings.category.gui"
+    )
+    public boolean compactMainMenu = false;
+
+    /**
      * Whether Quickplay's instance displayer should be displayed
      */
     @GuiOption(
