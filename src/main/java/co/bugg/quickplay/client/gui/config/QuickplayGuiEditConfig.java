@@ -396,6 +396,19 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                         element.element = list.get(nextIndex);
 
                         component.displayString = I18n.format(element.optionInfo.name()) + ": " + I18n.format(String.valueOf(element.element));
+                    } else if(element.element instanceof Double) {
+                        // Send analytical data to Google
+                        if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                            Quickplay.INSTANCE.threadPool.submit(() -> {
+                                try {
+                                    Quickplay.INSTANCE.ga.createEvent("Config", "Slider Changed")
+                                            .setEventLabel(element.configFieldName + " : " + element.element)
+                                            .send();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                        }
                     }
 
                     save(element);
@@ -475,19 +488,6 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             ConfigElement element = (ConfigElement) componentList.get(id).origin;
             element.element = ((Number) value).doubleValue();
             save(element);
-
-            // Send analytical data to Google
-            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
-                Quickplay.INSTANCE.threadPool.submit(() -> {
-                    try {
-                        Quickplay.INSTANCE.ga.createEvent("Config", "Slider Changed")
-                                .setEventLabel(element.configFieldName + " : " + element.element)
-                                .send();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
         }
 
         /**
