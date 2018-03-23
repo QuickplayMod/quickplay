@@ -2,6 +2,7 @@ package co.bugg.quickplay.config;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayColor;
+import co.bugg.quickplay.client.gui.MoveableHudElement;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
 import co.bugg.quickplay.games.PartyMode;
@@ -152,6 +153,16 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             category = "quickplay.settings.category.instanceDisplay"
     )
     public boolean displayInstanceWithChatOpen = true;
+
+    /**
+     * The scale of the Quickplay Instance Display
+     */
+    @GuiOption(
+            name = "quickplay.settings.instanceDisplayScale.name",
+            helpText = "quickplay.settings.instanceDisplayScale.help",
+            category = "quickplay.settings.category.instanceDisplay"
+    )
+    public MoveableHudElement.Size instanceDisplayScale = MoveableHudElement.Size.MEDIUM;
 
     /**
      * Hashmap of custom game priorities for the main game selection GUI

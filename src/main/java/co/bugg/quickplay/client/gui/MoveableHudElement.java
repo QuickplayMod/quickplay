@@ -84,4 +84,53 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
      * Save this element's position
      */
     public abstract void save();
+
+    /**
+     * Display size enum for the element
+     *
+     * Because rendering is handled differently for each element, this needs to be
+     * handled by individual elements that extend off of this class.
+     */
+    public enum Size {
+        SMALL("quickplay.moveableHudElement.small", 0.5),
+        MEDIUM("quickplay.moveableHudElement.medium", 1.0),
+        LARGE("quickplay.moveableHudElement.large", 1.5),
+        XLARGE("quickplay.moveableHudElement.xlarge", 2.0);
+
+        /**
+         * Translation key when displaying this enum value as a string
+         */
+        private String translationKey;
+        /**
+         * Scale associated with this value
+         */
+        private double scale;
+
+        /**
+         * Constructor
+         *
+         * @param translationKey Translation key for displaying this enum value as a string
+         * @param scale Scale associated with this enum value
+         */
+        Size(String translationKey, double scale) {
+            this.translationKey = translationKey;
+            this.scale = scale;
+        }
+
+        /**
+         * Get {@link #translationKey}
+         * @return {@link #translationKey}
+         */
+        public String toString() {
+            return translationKey;
+        }
+
+        /**
+         * Get {@link #scale}
+         * @return {@link #scale}
+         */
+        public double getScale() {
+            return scale;
+        }
+    }
 }

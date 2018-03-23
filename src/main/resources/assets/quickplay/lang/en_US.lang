@@ -62,6 +62,8 @@ quickplay.settings.instanceOpacity.name=Instance Display Opacity
 quickplay.settings.instanceOpacity.help=Opacity of the instance display.
 quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
 quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display should be rendered even when chat is open.
+quickplay.settings.instanceDisplayScale.name=Scale
+quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display
 
 quickplay.settings.sendUsageStatsButton.name=Usage Statistics...
 quickplay.settings.sendUsageStatsButton.help=Send anonymous usage statistics to help me create better mods for you!
@@ -127,3 +129,8 @@ quickplay.keybinds.title=Keybinds
 quickplay.keybinds.reset=Reset Keybinds
 quickplay.gui.keybinds.delete=Delete
 quickplay.gui.keybinds.taken=That key is already assigned to a Quickplay function!
+
+quickplay.moveableHudElement.small=SMALL
+quickplay.moveableHudElement.medium=MEDIUM
+quickplay.moveableHudElement.large=LARGE
+quickplay.moveableHudElement.xlarge=EXTRA LARGE
