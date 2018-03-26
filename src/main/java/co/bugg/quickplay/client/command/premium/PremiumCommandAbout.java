@@ -46,7 +46,7 @@ public class PremiumCommandAbout implements IPremiumCommand {
             Style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, premiumLink));
             chatComponent.setStyle(Style);
 
-            Quickplay.INSTANCE.messageBuffer.push(new Message(TextComponent, true, false));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(chatComponent, true, false));
         }
     }
 
