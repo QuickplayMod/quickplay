@@ -1,5 +1,5 @@
 # Quickplay
-### Current version: v2.0.0
+### Current version: v2.0.1
 
 Website: https://bugg.co/quickplay/
 
