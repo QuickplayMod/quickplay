@@ -256,8 +256,9 @@ public class Quickplay {
                 final Game[] gameListArray = this.assetFactory.loadCachedGamelist();
                 if(gameListArray != null)
                     this.gameList = java.util.Arrays.asList(gameListArray);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                sendExceptionRequest(e);
             }
 
             this.threadPool.submit(() -> {
