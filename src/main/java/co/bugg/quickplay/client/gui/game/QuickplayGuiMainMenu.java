@@ -209,7 +209,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                         // Draw text
                         GL11.glScaled(stringScale, stringScale, stringScale);
                         final int color = component.mouseHovering(this, mouseX, mouseY) && contextMenu == null ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
-                        drawString(mc.fontRenderer, ((Game) component.origin).name, (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale), (int) ((((scrollAdjustedY + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                        drawString(mc.fontRenderer, ((Game) component.origin).name, (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale), (int) ((((scrollAdjustedY + component.height / 2)) - fontRenderer.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
                         GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
                     }
                 }
