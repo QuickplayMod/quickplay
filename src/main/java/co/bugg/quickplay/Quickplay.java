@@ -376,6 +376,14 @@ public class Quickplay {
             if(response != null)
                 for(ResponseAction action : response.actions)
                     action.run();
+
+            if(ga != null) {
+                try {
+                    ga.createException().setExceptionDescription(e.getMessage()).send();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
     }
 
