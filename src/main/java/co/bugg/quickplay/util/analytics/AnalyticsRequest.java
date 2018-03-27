@@ -216,6 +216,35 @@ public class AnalyticsRequest {
     }
 
     /**
+     * Set the session control
+     * START = force new session
+     * END = force close session
+     * @see SessionControl
+     * @param sessionControl Session control value
+     * @return This
+     */
+    public AnalyticsRequest setSessionControl(SessionControl sessionControl) {
+        if(sessionControl == null)
+            parameters.remove("sc");
+        else
+            parameters.put("sc", sessionControl.toString());
+        return this;
+    }
+
+    /**
+     * Set the user agent override
+     * @param ua New user agent, or null/empty string to remove
+     * @return This
+     */
+    public AnalyticsRequest setUserAgent(String ua) {
+        if(ua == null || ua.length() == 0)
+            parameters.remove("ua");
+        else
+            parameters.put("ua", ua);
+        return this;
+    }
+
+    /**
      * All the supported types of Analytics requests
      */
     public enum RequestType {
@@ -233,6 +262,26 @@ public class AnalyticsRequest {
 
         public String getName() {
             return name;
+        }
+    }
+
+    /**
+     * Valid values for Session control
+     */
+    public enum SessionControl {
+        // Start a new session
+        START("start"),
+        // Force end the current session
+        END("end");
+
+        private String text;
+
+        SessionControl(String text) {
+            this.text = text;
+        }
+
+        public String toString() {
+            return text;
         }
     }
 }

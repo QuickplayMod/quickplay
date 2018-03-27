@@ -16,6 +16,7 @@ import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.InstanceWatcher;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.ServerChecker;
+import co.bugg.quickplay.util.analytics.AnalyticsRequest;
 import co.bugg.quickplay.util.analytics.GoogleAnalytics;
 import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
@@ -155,11 +156,14 @@ public class Quickplay {
      * Quickplay's resource pack
      */
     public IResourcePack resourcePack;
-
     /**
      * Google Analytics API tracker
      */
     public GoogleAnalytics ga;
+    /**
+     * How many ping requests have been sent out
+     */
+    public int currentPing = 0;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -243,7 +247,9 @@ public class Quickplay {
             if(usageStats.statsToken != null && usageStats.sendUsageStats && ga != null) {
                 threadPool.submit(() -> {
                     try {
-                        ga.createEvent("Systematic Events", "Mod Enable").send();
+                        ga.createEvent("Systematic Events", "Mod Enable")
+                                .setSessionControl(AnalyticsRequest.SessionControl.START)
+                                .send();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -317,9 +323,17 @@ public class Quickplay {
      */
     public void createGoogleAnalytics() {
         ga = GoogleAnalyticsFactory.create(Reference.ANALYTICS_TRACKING_ID, usageStats.statsToken.toString(), Reference.MOD_NAME, Reference.VERSION);
-        ga.getDefaultRequest().setLanguage(Minecraft.getMinecraft().gameSettings.language);
+        final AnalyticsRequest defaultRequest = ga.getDefaultRequest();
+
+        defaultRequest.setLanguage(String.valueOf(Minecraft.getMinecraft().gameSettings.language).toLowerCase());
+
         final GraphicsDevice screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        ga.getDefaultRequest().setScreenResolution(screen.getDisplayMode().getWidth() + "x" + screen.getDisplayMode().getHeight());
+        defaultRequest.setScreenResolution(screen.getDisplayMode().getWidth() + "x" + screen.getDisplayMode().getHeight());
+
+        // Determine User-Agent/OS
+        // Example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36
+        final String systemDetails = System.getProperty("os.name") + " " + System.getProperty("os.version") + "; " + System.getProperty("os.arch");
+        defaultRequest.setUserAgent("Mozilla/5.0 (" + systemDetails + ") " + Reference.MOD_NAME + " " + Reference.VERSION);
     }
 
     /**
