@@ -274,7 +274,11 @@ public class AssetFactory {
             return null;
 
         final String contents = new String(Files.readAllBytes(gameListFile.toPath()));
-        return Quickplay.organizeGameList(new Gson().fromJson(contents, Game[].class));
+        try {
+            return Quickplay.organizeGameList(new Gson().fromJson(contents, Game[].class));
+        } catch(Exception e) {
+            return new Game[0];
+        }
     }
 
     /**
