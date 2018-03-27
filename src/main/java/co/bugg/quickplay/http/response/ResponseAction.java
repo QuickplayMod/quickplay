@@ -187,6 +187,19 @@ public class ResponseAction {
                                 action.run();
                             }
                     }
+
+                    if(Quickplay.INSTANCE.ga != null) {
+                        try {
+                            Quickplay.INSTANCE.ga.createEvent("Systematic Events", "Ping")
+                                    .setEventLabel(String.valueOf(Quickplay.INSTANCE.currentPing))
+                                    .setEventValue(Quickplay.INSTANCE.currentPing)
+                                    .send();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    // Increase ping count
+                    Quickplay.INSTANCE.currentPing++;
                 });
                 break;
         }
