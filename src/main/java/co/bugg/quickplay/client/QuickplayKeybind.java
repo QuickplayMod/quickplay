@@ -10,6 +10,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
+import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -121,7 +122,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
                     Quickplay.INSTANCE.threadPool.submit(() -> {
                         try {
                             Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Pressed")
-                                    .setEventLabel(clazz.getName())
+                                    .setEventLabel(clazz.getName() + " (" + StringUtils.join(constructorParams, ", ") + ")")
                                     // Event value 0 for GUI, event value 1 for command
                                     .setEventValue(0)
                                     .send();
