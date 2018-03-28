@@ -107,7 +107,7 @@ public class InstanceWatcher {
                     instanceHistory.add(0, server);
 
                     // Send analytical data to Google
-                    if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                    if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
                         Quickplay.INSTANCE.threadPool.submit(() -> {
                             try {
                                 Quickplay.INSTANCE.ga.createEvent("Instance", "Instance Changed")
