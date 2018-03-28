@@ -389,7 +389,7 @@ public class Quickplay {
      * @param e Exception that occurred
      */
     public void sendExceptionRequest(Exception e) {
-        if(usageStats.sendUsageStats) {
+        if(usageStats != null && usageStats.sendUsageStats) {
             final WebResponse response = requestFactory.newExceptionRequest(e).execute();
             if(response != null)
                 for(ResponseAction action : response.actions)
