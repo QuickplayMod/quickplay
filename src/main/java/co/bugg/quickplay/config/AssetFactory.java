@@ -120,9 +120,9 @@ public class AssetFactory {
 
             final ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, file.getName());
 
-            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-                Quickplay.INSTANCE.reloadResource(file, resourceLocation);
-            });
+//            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+//                Quickplay.INSTANCE.reloadResource(file, resourceLocation);
+//            });
 
             resourceLocations.add(resourceLocation);
         }
