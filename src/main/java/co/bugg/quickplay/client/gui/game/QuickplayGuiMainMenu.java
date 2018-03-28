@@ -401,7 +401,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             mc.displayGuiScreen(new QuickplayGuiGame((Game) component.origin));
 
             // Send analytical data to Google
-            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+            if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
                 Quickplay.INSTANCE.threadPool.submit(() -> {
                     try {
                         Quickplay.INSTANCE.ga.createEvent("GUIs", "Main Menu Option Pressed")

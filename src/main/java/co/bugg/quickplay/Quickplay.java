@@ -244,7 +244,7 @@ public class Quickplay {
             }
 
             // Send analytical data to Google
-            if(usageStats.statsToken != null && usageStats.sendUsageStats && ga != null) {
+            if(usageStats != null && usageStats.statsToken != null && usageStats.sendUsageStats && ga != null) {
                 threadPool.submit(() -> {
                     try {
                         ga.createEvent("Systematic Events", "Mod Enable")
@@ -385,7 +385,7 @@ public class Quickplay {
      * @param e Exception that occurred
      */
     public void sendExceptionRequest(Exception e) {
-        if(usageStats.sendUsageStats) {
+        if(usageStats != null && usageStats.sendUsageStats) {
             final WebResponse response = requestFactory.newExceptionRequest(e).execute();
             if(response != null)
                 for(ResponseAction action : response.actions)
