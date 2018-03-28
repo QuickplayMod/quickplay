@@ -35,11 +35,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.*;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -254,7 +249,7 @@ public class Quickplay {
             }
 
             // Send analytical data to Google
-            if(usageStats.statsToken != null && usageStats.sendUsageStats && ga != null) {
+            if(usageStats != null && usageStats.statsToken != null && usageStats.sendUsageStats && ga != null) {
                 threadPool.submit(() -> {
                     try {
                         ga.createEvent("Systematic Events", "Mod Enable").send();
@@ -394,7 +389,7 @@ public class Quickplay {
      * @param e Exception that occurred
      */
     public void sendExceptionRequest(Exception e) {
-        if(usageStats.sendUsageStats) {
+        if(usageStats != null && usageStats.sendUsageStats) {
             final WebResponse response = requestFactory.newExceptionRequest(e).execute();
             if(response != null)
                 for(ResponseAction action : response.actions)
