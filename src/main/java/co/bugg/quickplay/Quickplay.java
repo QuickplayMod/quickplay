@@ -249,7 +249,7 @@ public class Quickplay {
             }
 
             // Send analytical data to Google
-            if(usageStats.statsToken != null && usageStats.sendUsageStats && ga != null) {
+            if(usageStats != null && usageStats.statsToken != null && usageStats.sendUsageStats && ga != null) {
                 threadPool.submit(() -> {
                     try {
                         ga.createEvent("Systematic Events", "Mod Enable").send();
