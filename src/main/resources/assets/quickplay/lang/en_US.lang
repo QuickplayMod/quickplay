@@ -84,6 +84,11 @@ quickplay.settings.partyModeDelay.help=Number of seconds Launch randomization sh
 quickplay.settings.partyModeGui.name=Launch Randomization GUI
 quickplay.settings.partyModeGui.help=Whether a special spinner GUI should be opened when the user launches party mode.
 
+quickplay.settings.category.premium=Premium Features
+quickplay.settings.ingameDailyReward.name=Ingame Daily Reward
+quickplay.settings.ingameDailyReward.help=Whether the handling of Daily Rewards should be in-game rather than in-browser, so you don't have to open a web page. (Quickplay Premium feature, type "/qp premium about" for more info)
+quickplay.settings.displayOwnGlyph.name=Display Own Glyph
+quickplay.settings.displayOwnGlyph.help=Whether your own Glyph should be displayed over your head in F5 mode.
 quickplay.config.keybinds.openmain=Open Main GUI
 quickplay.config.saveerror=There was an error saving your configuration. Settings may not be saved!
 quickplay.config.gui.title=Quickplay Config
