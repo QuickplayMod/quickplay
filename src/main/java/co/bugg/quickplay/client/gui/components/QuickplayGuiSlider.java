@@ -1,5 +1,6 @@
-package co.bugg.quickplay.client.gui;
+package co.bugg.quickplay.client.gui.components;
 
+import co.bugg.quickplay.client.gui.QuickplayGui;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
@@ -96,33 +97,36 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
 
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
-        super.draw(gui, mouseX, mouseY, opacity);
+        if(opacity > 0) {
+            super.draw(gui, mouseX, mouseY, opacity);
 
-        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+            final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
+            ;
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+            GL11.glPushMatrix();
+            GL11.glEnable(GL11.GL_BLEND);
 
-        if (isMouseDown) {
-            // Calculate the new slider position
-            calculateSliderPos(mouseX);
-            // Update the display string
-            displayString = getDisplayString();
-            // Handle input change
-            responder.onTick(id, getValue());
+            if (isMouseDown) {
+                // Calculate the new slider position
+                calculateSliderPos(mouseX);
+                // Update the display string
+                displayString = getDisplayString();
+                // Handle input change
+                responder.onTick(id, getValue());
+            }
+
+            GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
+            gui.mc.getTextureManager().bindTexture(buttonTextures);
+            GL11.glScaled(scale, scale, scale);
+            drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)), scrollAdjustedY, 0, 66, 4, 20);
+            drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)) + 4, scrollAdjustedY, 196, 66, 4, 20);
+            if (opacity > 0)
+                drawDisplayString(gui, opacity, scrollAdjustedY);
+            GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
+
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glPopMatrix();
         }
-
-        GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
-        gui.mc.getTextureManager().bindTexture(buttonTextures);
-        GL11.glScaled(scale, scale, scale);
-        drawTexturedModalRect(x + (int)(sliderPercentage * (float)(width - 8)), scrollAdjustedY, 0, 66, 4, 20);
-        drawTexturedModalRect(x + (int)(sliderPercentage * (float)(width - 8)) + 4, scrollAdjustedY, 196, 66, 4, 20);
-        if(opacity > 0)
-            drawDisplayString(gui, opacity, scrollAdjustedY);
-        GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
-
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
     }
 
     /**

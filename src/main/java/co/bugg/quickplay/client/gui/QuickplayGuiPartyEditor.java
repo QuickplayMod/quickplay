@@ -1,6 +1,8 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.Mode;
 import co.bugg.quickplay.games.PartyMode;

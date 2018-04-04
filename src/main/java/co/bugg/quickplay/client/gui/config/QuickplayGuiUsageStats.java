@@ -2,9 +2,9 @@ package co.bugg.quickplay.client.gui.config;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.QuickplayGui;
-import co.bugg.quickplay.client.gui.QuickplayGuiButton;
-import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
-import co.bugg.quickplay.client.gui.QuickplayGuiString;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.config.ConfigUsageStats;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -97,13 +97,15 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
 
         drawDefaultBackground();
 
-        final int headerY = (int) (height * 0.1);
-        drawCenteredString(fontRendererObj, I18n.format("quickplay.gui.stats.title"), width / 2, headerY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        if(opacity > 0) {
+            final int headerY = (int) (height * 0.1);
+            drawCenteredString(fontRendererObj, I18n.format("quickplay.gui.stats.title"), width / 2, headerY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
-        int lineHeight = headerY + fontRendererObj.FONT_HEIGHT + 5;
-        for(String line : descriptionLines) {
-            drawCenteredString(fontRendererObj, line, width / 2, lineHeight, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-            lineHeight += fontRendererObj.FONT_HEIGHT;
+            int lineHeight = headerY + fontRendererObj.FONT_HEIGHT + 5;
+            for (String line : descriptionLines) {
+                drawCenteredString(fontRendererObj, line, width / 2, lineHeight, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                lineHeight += fontRendererObj.FONT_HEIGHT;
+            }
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);

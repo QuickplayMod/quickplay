@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui;
 
+import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;

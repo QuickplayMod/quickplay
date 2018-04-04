@@ -3,7 +3,11 @@ package co.bugg.quickplay.client.gui.config;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.client.QuickplayColor;
-import co.bugg.quickplay.client.gui.*;
+import co.bugg.quickplay.client.gui.QuickplayGui;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiSlider;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.config.AssetFactory;
 import co.bugg.quickplay.config.GuiOption;
@@ -272,22 +276,24 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
          * Draw the header text
          */
 
-        // Scale up to header size
-        GL11.glScaled(headerScale, headerScale, headerScale);
-        drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.title"), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
-                       // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
-                (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-        // Scale back down
-        GL11.glScaled( 1 / headerScale, 1 / headerScale, 1 / headerScale);
+        if(opacity > 0) {
+            // Scale up to header size
+            GL11.glScaled(headerScale, headerScale, headerScale);
+            drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.title"), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
+                    // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
+                    (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+            // Scale back down
+            GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
 
-        // Scale up to subheader size
-        GL11.glScaled(subheaderScale, subheaderScale, subheaderScale);
-        drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.version") + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
+            // Scale up to subheader size
+            GL11.glScaled(subheaderScale, subheaderScale, subheaderScale);
+            drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.version") + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
                     subheaderY,
-                       // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
-                (Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-        // Scale back down
-        GL11.glScaled(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
+                    // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
+                    (Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+            // Scale back down
+            GL11.glScaled(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
+        }
 
         /*
          * Draw options list background
@@ -299,7 +305,9 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         /*
          * Draw buttons
+         * super.drawScreen override
          */
+        updateOpacity();
         for (QuickplayGuiComponent component : componentList) {
             if(!component.displayString.equals(openFolderText)) {
                 double scrollOpacity = ((component.y - scrollPixel) > topOfBox ? 1 : (component.y - scrollPixel) + ConfigElement.ELEMENT_HEIGHT < topOfBox ? 0 : (fadeDistance - ((double) topOfBox - (double) (component.y - scrollPixel))) / (double) fadeDistance);

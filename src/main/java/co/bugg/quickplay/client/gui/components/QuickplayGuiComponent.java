@@ -1,5 +1,6 @@
-package co.bugg.quickplay.client.gui;
+package co.bugg.quickplay.client.gui.components;
 
+import co.bugg.quickplay.client.gui.QuickplayGui;
 import net.minecraft.client.gui.Gui;
 
 /**

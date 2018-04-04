@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
@@ -156,9 +157,11 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         // Draw spinner
-        GL11.glScaled(spinnerScale, spinnerScale, spinnerScale);
-        drawCenteredString(fontRendererObj, spinnerText, (int) (width / 2 / spinnerScale), (int) ((randomizingTextHeight + fontRendererObj.FONT_HEIGHT * spinnerScale * 2) / spinnerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        GL11.glScaled(1 / spinnerScale, 1 / spinnerScale, 1 / spinnerScale);
+        if(opacity > 0) {
+            GL11.glScaled(spinnerScale, spinnerScale, spinnerScale);
+            drawCenteredString(fontRendererObj, spinnerText, (int) (width / 2 / spinnerScale), (int) ((randomizingTextHeight + fontRendererObj.FONT_HEIGHT * spinnerScale * 2) / spinnerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            GL11.glScaled(1 / spinnerScale, 1 / spinnerScale, 1 / spinnerScale);
+        }
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
