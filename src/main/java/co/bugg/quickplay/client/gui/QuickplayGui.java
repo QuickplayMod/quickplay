@@ -173,9 +173,11 @@ public class QuickplayGui extends GuiScreen {
         scrollPixel = 0;
 
         super.initGui();
-        if(Quickplay.INSTANCE.settings.fadeInGuis && opacity < 1)
-            fadeAnimation.start();
-        else opacity = 1;
+        Quickplay.INSTANCE.threadPool.submit(() -> {
+            if(Quickplay.INSTANCE.settings.fadeInGuis && opacity < 1)
+                fadeAnimation.start();
+            else opacity = 1;
+        });
 
         // Hide HUD (health & scoreboard & such)
         mc.gameSettings.hideGUI = true;

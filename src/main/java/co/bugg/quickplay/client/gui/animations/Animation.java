@@ -40,12 +40,34 @@ public class Animation {
 
     /**
      * Start this animation, starting from 0
+     * Thread-blocking until {@link #updateFrame()} is called and {@link #progress} >= 1 post-update
      * @return This
      */
     public Animation start() {
         startedMillis = System.currentTimeMillis();
         progress = 0;
         started = true;
+
+        synchronized (this) {
+            while (progress < 1) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return this;
+    }
+
+    /**
+     * Stop this animation from progressing any further
+     * @return This
+     */
+    public Animation stop() {
+        startedMillis = -1;
+        started = false;
         return this;
     }
 
@@ -55,7 +77,7 @@ public class Animation {
      */
     public synchronized Animation updateFrame() {
         // If started
-        if(startedMillis >= 0) {
+        if(started) {
             final long now = System.currentTimeMillis();
 
             if(now - startedMillis < 0) {
@@ -65,6 +87,10 @@ public class Animation {
             } else progress = 1;
 
         } else throw new IllegalStateException("This animation has not been started yet. You must call start() first.");
+
+        if(progress >= 1)
+            notify();
+
         return this;
     }
 }
