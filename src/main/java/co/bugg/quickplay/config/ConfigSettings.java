@@ -131,7 +131,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             helpText = "quickplay.settings.instanceDisplay.help",
             category = "quickplay.settings.category.instanceDisplay"
     )
-    public boolean displayInstance = true;
+    public boolean displayInstance = false;
 
     /**
      * Runnable to move the instance display to a different location

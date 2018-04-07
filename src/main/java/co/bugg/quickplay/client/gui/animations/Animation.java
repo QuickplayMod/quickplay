@@ -63,11 +63,15 @@ public class Animation {
 
     /**
      * Stop this animation from progressing any further
+     * <code>notify()</code> is called
      * @return This
      */
     public Animation stop() {
         startedMillis = -1;
         started = false;
+        synchronized (this) {
+            notify();
+        }
         return this;
     }
 
