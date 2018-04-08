@@ -8,6 +8,7 @@
   "url": "https://bugg.co/quickplay",
   "updateUrl": "",
   "authorList": ["bugfroggy"],
-  "logoFile": "logo.png"
+  "logoFile": "logo.png",
+  "dependants": ["quickplay"]
 }
 ]

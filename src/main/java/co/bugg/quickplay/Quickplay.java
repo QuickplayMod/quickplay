@@ -52,7 +52,8 @@ import java.util.concurrent.Future;
         name = Reference.MOD_NAME,
         version = Reference.VERSION,
         clientSideOnly = true,
-        acceptedMinecraftVersions = "[1.8.8, 1.8.9]"
+        acceptedMinecraftVersions = "[1.8.8, 1.8.9]",
+        dependencies = "before:quickplaypremium@[1.0.1,]"
 )
 public class Quickplay {
 
