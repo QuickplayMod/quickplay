@@ -168,7 +168,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
-        if(Keyboard.isKeyDown(key))
+        if(key != Keyboard.KEY_NONE && Keyboard.isKeyDown(key))
             keyPressed();
     }
 }

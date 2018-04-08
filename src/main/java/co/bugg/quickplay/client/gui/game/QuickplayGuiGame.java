@@ -4,9 +4,9 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.client.QuickplayKeybind;
 import co.bugg.quickplay.client.gui.QuickplayGui;
-import co.bugg.quickplay.client.gui.QuickplayGuiButton;
-import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
-import co.bugg.quickplay.client.gui.QuickplayGuiContextMenu;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiContextMenu;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.Mode;
@@ -237,9 +237,11 @@ public class QuickplayGuiGame extends QuickplayGui {
 
         drawDefaultBackground();
 
-        GL11.glScaled(headerScale, headerScale, headerScale);
-        drawCenteredString(fontRenderer, game.name, (int) (width / 2 / headerScale), (int) (headerHeight / headerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
+        if(opacity > 0) {
+            GL11.glScaled(headerScale, headerScale, headerScale);
+            drawCenteredString(fontRenderer, game.name, (int) (width / 2 / headerScale), (int) (headerHeight / headerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
+        }
 
         GL11.glScaled(logoScale, logoScale, logoScale);
         GL11.glEnable(GL11.GL_BLEND);
@@ -257,6 +259,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         //drawRect(columnZeroRowZeroX - backgroundBoxPadding, topOfBackgroundBox, rightOfBox, bottomOfBox, (int) (opacity * 255 * 0.5) << 24);
 
         // Modified super.drawScreen()
+        updateOpacity();
         final int scrollFadeDistance = 10;
         for (QuickplayGuiComponent component : componentList) {
             double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfBackgroundBox + backgroundBoxPadding ? 1 : (component.y - scrollPixel) + scrollFadeDistance < topOfBackgroundBox + backgroundBoxPadding ? 0 : (scrollFadeDistance - ((double) topOfBackgroundBox + backgroundBoxPadding - (double) (component.y - scrollPixel))) / (double) scrollFadeDistance) : 1;
@@ -266,7 +269,8 @@ public class QuickplayGuiGame extends QuickplayGui {
 
         drawScrollbar(rightOfBox);
 
-        drawCenteredString(fontRenderer, copyright, width / 2, height - fontRenderer.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        if(opacity > 0)
+            drawCenteredString(fontRenderer, copyright, width / 2, height - fontRenderer.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();

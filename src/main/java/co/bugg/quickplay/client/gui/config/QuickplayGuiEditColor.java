@@ -3,9 +3,9 @@ package co.bugg.quickplay.client.gui.config;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.QuickplayGui;
-import co.bugg.quickplay.client.gui.QuickplayGuiButton;
-import co.bugg.quickplay.client.gui.QuickplayGuiComponent;
-import co.bugg.quickplay.client.gui.QuickplayGuiSlider;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiSlider;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.gui.GuiPageButtonList;
@@ -15,6 +15,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.*;
 import java.io.IOException;
 
@@ -110,12 +111,14 @@ public class QuickplayGuiEditColor extends QuickplayGui {
 
         drawDefaultBackground();
 
-        GL11.glScaled(nameTextScale, nameTextScale, nameTextScale);
-        drawCenteredString(mc.fontRenderer, colorName, (int) (width / 2 / nameTextScale), (int) (nameTextY / nameTextScale), 0xFFFFFF);
-        GL11.glScaled(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
-        GL11.glScaled(sampleTextScale, sampleTextScale, sampleTextScale);
-        drawCenteredString(mc.fontRenderer, I18n.format("quickplay.config.color.gui.sampletext"), (int) (width / 2 / sampleTextScale), (int) (sampleTextY / sampleTextScale), color.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        GL11.glScaled(1 / sampleTextScale, 1 / sampleTextScale, 1 / sampleTextScale);
+        if(opacity > 0) {
+            GL11.glScaled(nameTextScale, nameTextScale, nameTextScale);
+            drawCenteredString(mc.fontRenderer, colorName, (int) (width / 2 / nameTextScale), (int) (nameTextY / nameTextScale), 0xFFFFFF);
+            GL11.glScaled(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
+            GL11.glScaled(sampleTextScale, sampleTextScale, sampleTextScale);
+            drawCenteredString(mc.fontRenderer, I18n.format("quickplay.config.color.gui.sampletext"), (int) (width / 2 / sampleTextScale), (int) (sampleTextY / sampleTextScale), color.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            GL11.glScaled(1 / sampleTextScale, 1 / sampleTextScale, 1 / sampleTextScale);
+        }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
@@ -239,6 +242,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
          * @param p_175319_2_ Value
          */
         @Override
+        @ParametersAreNonnullByDefault
         public void setEntryValue(int p_175319_1_, String p_175319_2_) {
 
         }

@@ -3,6 +3,9 @@ package co.bugg.quickplay.client.gui;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Reference;
+import co.bugg.quickplay.client.gui.animations.Animation;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiContextMenu;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -13,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -89,23 +93,9 @@ public class QuickplayGui extends GuiScreen {
      */
     public List<QuickplayGuiComponent> componentList = new ArrayList<>();
     /**
-     * The opacity of this screen
+     * The opacity of this screen between 0 and 1
      */
     public float opacity = 0;
-    /**
-     * The amount that {@link #opacity} should be increased by every opacity frame on fade in
-     * Absolute value calculated to avoid negative values.
-     *
-     * @see #fadeIn()
-     */
-    public float opacityPerFadeFrame = 0.05f;
-    /**
-     * The number of milliseconds between {@link #opacity} being increased by {@link #opacityPerFadeFrame} on fade in
-     * Absolute value calculated to avoid negative values.
-     *
-     * @see #fadeIn()
-     */
-    public int opacityFrameDelay = 10;
     /**
      * Y location of the mouse when the mouse was last clicked
      * Used for scrolling via dragging
@@ -129,6 +119,10 @@ public class QuickplayGui extends GuiScreen {
      * the shader is applied until the user restarts the game, removes the shader manually, or re-enables the setting.
      */
     public boolean disableShaderOnGuiClose = Quickplay.INSTANCE.settings.blurGuiBackgrounds;
+    /**
+     * Animation for GUI fade-in
+     */
+    public Animation fadeAnimation = new Animation(200);
 
     @Override
     public void onGuiClosed() {
@@ -149,9 +143,7 @@ public class QuickplayGui extends GuiScreen {
 
         if(disableShaderOnGuiClose) {
             // Stop using shaders
-            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-                Minecraft.getMinecraft().entityRenderer.stopUseShader();
-            });
+            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> Minecraft.getMinecraft().entityRenderer.stopUseShader());
         }
 
         // Show HUD again
@@ -179,9 +171,11 @@ public class QuickplayGui extends GuiScreen {
         scrollPixel = 0;
 
         super.initGui();
-        if(Quickplay.INSTANCE.settings.fadeInGuis && opacity < 1)
-            fadeIn();
-        else opacity = 1;
+        Quickplay.INSTANCE.threadPool.submit(() -> {
+            if(Quickplay.INSTANCE.settings.fadeInGuis && opacity < 1)
+                fadeAnimation.start();
+            else opacity = 1;
+        });
 
         // Hide HUD (health & scoreboard & such)
         mc.gameSettings.hideGUI = true;
@@ -197,6 +191,7 @@ public class QuickplayGui extends GuiScreen {
                     loadShaderMethod = EntityRenderer.class.getDeclaredMethod("loadShader", ResourceLocation.class);
                 } catch (NoSuchMethodException e) {
                     try {
+                        //noinspection JavaReflectionMemberAccess
                         loadShaderMethod = EntityRenderer.class.getDeclaredMethod("func_175069_a", ResourceLocation.class);
                     } catch (NoSuchMethodException e1) {
                         e1.printStackTrace();
@@ -222,6 +217,8 @@ public class QuickplayGui extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        updateOpacity();
+
         for (QuickplayGuiComponent component : componentList) {
             component.draw(this, mouseX, mouseY, opacity);
         }
@@ -233,7 +230,7 @@ public class QuickplayGui extends GuiScreen {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
             // Prepend opacity to 24-bit color
-            drawRect(0, 0, width, height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
+            drawRect(0, 0, width, height, ((int) (opacity * 0.5 * 255) << 24));
             // drawRect disables blend (Grr!)
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glPopMatrix();
@@ -241,8 +238,9 @@ public class QuickplayGui extends GuiScreen {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     protected void drawHoveringText(List<String> textLines, int x, int y, FontRenderer font) {
-        if(textLines.size() > 0) {
+        if(textLines.size() > 0 && opacity > 0) {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
 
@@ -324,33 +322,19 @@ public class QuickplayGui extends GuiScreen {
      */
     public void closeContextMenu() {
         if(contextMenu != null) {
-            if(componentList.contains(contextMenu))
-                componentList.remove(contextMenu);
+            componentList.remove(contextMenu);
             contextMenu = null;
         }
     }
 
     /**
-     * Fades this GUI in to 100% opacity if applicable
-     *
-     * Does NOT set opacity to 0 before fading, as that is sometimes
-     * undesired. Set opacity to 0 before calling this if you want this.
-     *
-     * @see #opacityPerFadeFrame
-     * @see #opacityFrameDelay
+     * Update the opacity/animation of this GUI
      */
-    public void fadeIn() {
-        if(opacity < 1)
-            Quickplay.INSTANCE.threadPool.submit(() -> {
-                while(opacity < 1) {
-                    opacity+= Math.abs(opacityPerFadeFrame);
-                    try {
-                        Thread.sleep(Math.abs(opacityFrameDelay));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+    public void updateOpacity() {
+        if(fadeAnimation != null && fadeAnimation.started) {
+            fadeAnimation.updateFrame();
+            opacity = (float) fadeAnimation.progress;
+        }
     }
 
     @Override

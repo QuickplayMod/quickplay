@@ -3,7 +3,11 @@ package co.bugg.quickplay.client.gui.config;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.client.QuickplayColor;
-import co.bugg.quickplay.client.gui.*;
+import co.bugg.quickplay.client.gui.QuickplayGui;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiSlider;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.config.AssetFactory;
 import co.bugg.quickplay.config.GuiOption;
@@ -273,34 +277,38 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
          * Draw the header text
          */
 
-        // Scale up to header size
-        GL11.glScaled(headerScale, headerScale, headerScale);
-        drawCenteredString(fontRenderer, I18n.format("quickplay.config.gui.title"), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
-                       // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
-                (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-        // Scale back down
-        GL11.glScaled( 1 / headerScale, 1 / headerScale, 1 / headerScale);
+        if(opacity > 0) {
+            // Scale up to header size
+            GL11.glScaled(headerScale, headerScale, headerScale);
+            drawCenteredString(fontRenderer, I18n.format("quickplay.config.gui.title"), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
+                    // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
+                    (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+            // Scale back down
+            GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
 
-        // Scale up to subheader size
-        GL11.glScaled(subheaderScale, subheaderScale, subheaderScale);
-        drawCenteredString(fontRenderer, I18n.format("quickplay.config.gui.version") + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
+            // Scale up to subheader size
+            GL11.glScaled(subheaderScale, subheaderScale, subheaderScale);
+            drawCenteredString(fontRenderer, I18n.format("quickplay.config.gui.version") + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
                     subheaderY,
-                       // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
-                (Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-        // Scale back down
-        GL11.glScaled(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
+                    // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
+                    (Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+            // Scale back down
+            GL11.glScaled(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
+        }
 
         /*
          * Draw options list background
          */
 
-        drawRect((int) (width * boxMargins), topOfBox, (int) (width * (1 - boxMargins)), height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
+        drawRect((int) (width * boxMargins), topOfBox, (int) (width * (1 - boxMargins)), height, ((int) (opacity * 0.5 * 255) << 24));
 
         drawScrollbar((int) ((width * (1 - boxMargins)) - scrollbarWidth) - ConfigElement.ELEMENT_MARGINS);
 
         /*
          * Draw buttons
+         * super.drawScreen override
          */
+        updateOpacity();
         for (QuickplayGuiComponent component : componentList) {
             if(!component.displayString.equals(openFolderText)) {
                 double scrollOpacity = ((component.y - scrollPixel) > topOfBox ? 1 : (component.y - scrollPixel) + ConfigElement.ELEMENT_HEIGHT < topOfBox ? 0 : (fadeDistance - ((double) topOfBox - (double) (component.y - scrollPixel))) / (double) fadeDistance);
@@ -320,7 +328,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
                     if((component.x < mouseX && component.x + component.width > mouseX) && (y < mouseY && y + component.height > mouseY)) {
                         final ConfigElement element = (ConfigElement) component.origin;
-                        if(element != null && element.optionInfo != null && I18n.format(element.optionInfo.category()).length() > 0) {
+                        if(element.optionInfo != null && I18n.format(element.optionInfo.category()).length() > 0) {
                             final List<String> text = new ArrayList<>();
                             text.add(I18n.format(element.optionInfo.helpText()));
                             drawHoveringText(text, mouseX, mouseY, mc.fontRenderer);
@@ -354,66 +362,64 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
             if(component.origin instanceof ConfigElement) {
                 final ConfigElement element = (ConfigElement) component.origin;
-                if(element != null) {
-                    if(element.element instanceof Boolean) {
-                        element.element = !(boolean) element.element;
-                        component.displayString = I18n.format(element.optionInfo.name()) + ": " + I18n.format((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false");
+                if(element.element instanceof Boolean) {
+                    element.element = !(boolean) element.element;
+                    component.displayString = I18n.format(element.optionInfo.name()) + ": " + I18n.format((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false");
 
-                        // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
-                            Quickplay.INSTANCE.threadPool.submit(() -> {
-                                try {
-                                    Quickplay.INSTANCE.ga.createEvent("Config", "Boolean Changed")
-                                            .setEventLabel(element.configFieldName + " : " + element.element)
-                                            .send();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                        }
-                    } else if(element.element instanceof Runnable) {
-                        mc.displayGuiScreen(null);
-                        ((Runnable) element.element).run();
-
-                        // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
-                            Quickplay.INSTANCE.threadPool.submit(() -> {
-                                try {
-                                    Quickplay.INSTANCE.ga.createEvent("Config", "Runnable Clicked")
-                                            .setEventLabel(element.configFieldName)
-                                            .send();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                        }
-                    } else if(element.element instanceof QuickplayColor) {
-                        mc.displayGuiScreen(new QuickplayGuiEditColor((QuickplayColor) element.element, I18n.format(element.optionInfo.name()), config, this));
-                    } else if(element.element.getClass().isEnum()) {
-                        // Find out what the next enum in the list is
-                        final List list = Arrays.asList(element.element.getClass().getEnumConstants());
-                        final int index = list.indexOf(element.element);
-                        final int nextIndex = list.size() > index + 1 ? index + 1 : 0;
-                        element.element = list.get(nextIndex);
-
-                        component.displayString = I18n.format(element.optionInfo.name()) + ": " + I18n.format(String.valueOf(element.element));
-                    } else if(element.element instanceof Double) {
-                        // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
-                            Quickplay.INSTANCE.threadPool.submit(() -> {
-                                try {
-                                    Quickplay.INSTANCE.ga.createEvent("Config", "Slider Changed")
-                                            .setEventLabel(element.configFieldName + " : " + element.element)
-                                            .send();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                        }
+                    // Send analytical data to Google
+                    if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                        Quickplay.INSTANCE.threadPool.submit(() -> {
+                            try {
+                                Quickplay.INSTANCE.ga.createEvent("Config", "Boolean Changed")
+                                        .setEventLabel(element.configFieldName + " : " + element.element)
+                                        .send();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
                     }
+                } else if(element.element instanceof Runnable) {
+                    mc.displayGuiScreen(null);
+                    ((Runnable) element.element).run();
 
-                    save(element);
+                    // Send analytical data to Google
+                    if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                        Quickplay.INSTANCE.threadPool.submit(() -> {
+                            try {
+                                Quickplay.INSTANCE.ga.createEvent("Config", "Runnable Clicked")
+                                        .setEventLabel(element.configFieldName)
+                                        .send();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+                } else if(element.element instanceof QuickplayColor) {
+                    mc.displayGuiScreen(new QuickplayGuiEditColor((QuickplayColor) element.element, I18n.format(element.optionInfo.name()), config, this));
+                } else if(element.element.getClass().isEnum()) {
+                    // Find out what the next enum in the list is
+                    final List list = Arrays.asList(element.element.getClass().getEnumConstants());
+                    final int index = list.indexOf(element.element);
+                    final int nextIndex = list.size() > index + 1 ? index + 1 : 0;
+                    element.element = list.get(nextIndex);
+
+                    component.displayString = I18n.format(element.optionInfo.name()) + ": " + I18n.format(String.valueOf(element.element));
+                } else if(element.element instanceof Double) {
+                    // Send analytical data to Google
+                    if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                        Quickplay.INSTANCE.threadPool.submit(() -> {
+                            try {
+                                Quickplay.INSTANCE.ga.createEvent("Config", "Slider Changed")
+                                        .setEventLabel(element.configFieldName + " : " + element.element)
+                                        .send();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
                 }
+
+                save(element);
             } else if(component.displayString.equals(openFolderText)) {
                 try {
                     Desktop.getDesktop().open(new File(AssetFactory.configDirectory));

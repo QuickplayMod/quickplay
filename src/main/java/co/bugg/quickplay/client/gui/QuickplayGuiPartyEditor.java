@@ -1,6 +1,8 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.Mode;
 import co.bugg.quickplay.games.PartyMode;
@@ -88,6 +90,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         // Add launch, "All On" and "All Off" buttons
         componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2  - topButtonWidth / 2, 10, topButtonWidth, buttonHeight, I18n.format("quickplay.gui.party.launch"), false)); // Launch
         componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2 - topButtonWidth / 2 - topButtonWidth - topButtonMargins, 10, topButtonWidth, 20, I18n.format("quickplay.gui.party.allon"), false)); // All on
+        //noinspection UnusedAssignment
         componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2 + topButtonWidth / 2 + topButtonMargins, 10, topButtonWidth, 20, I18n.format("quickplay.gui.party.alloff"), false)); // All off
 
         setScrollingValues();
@@ -123,6 +126,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         drawScrollbar(width / 2 + buttonWidth / 2 + 3);
 
         //Override super.drawScreen(mouseX, mouseY, partialTicks);
+        updateOpacity();
         for (QuickplayGuiComponent component : componentList) {
             double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfButtons ? 1 : (component.y - scrollPixel) + scrollFadeDistance < topOfButtons ? 0 : (scrollFadeDistance - ((double) topOfButtons - (double) (component.y - scrollPixel))) / (double) scrollFadeDistance) : 1;
             component.draw(this, mouseX, mouseY, opacity * scrollOpacity);

@@ -56,7 +56,8 @@ import java.util.concurrent.Future;
         name = Reference.MOD_NAME,
         version = Reference.VERSION,
         clientSideOnly = true,
-        acceptedMinecraftVersions = "[1.9, 1.11.2]"
+        acceptedMinecraftVersions = "[1.9, 1.11.2]",
+        dependencies = "before:quickplaypremium@[1.0.1,]"
 )
 public class Quickplay {
 
@@ -195,8 +196,7 @@ public class Quickplay {
      * @param handler Object to unregister
      */
     public void unregisterEventHandler(Object handler) {
-        if(eventHandlers.contains(handler))
-            eventHandlers.remove(handler);
+        eventHandlers.remove(handler);
         MinecraftForge.EVENT_BUS.unregister(handler);
     }
 
@@ -451,6 +451,7 @@ public class Quickplay {
     public void reloadResourcePack() throws NoSuchFieldException, IllegalAccessException {
         Field resourceManagerField;
         try {
+            //noinspection JavaReflectionMemberAccess
             resourceManagerField = Minecraft.class.getDeclaredField("field_110451_am");
         } catch(NoSuchFieldException e) {
             resourceManagerField = Minecraft.class.getDeclaredField("mcResourceManager");

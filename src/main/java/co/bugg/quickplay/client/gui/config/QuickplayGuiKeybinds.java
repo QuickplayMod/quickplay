@@ -2,7 +2,11 @@ package co.bugg.quickplay.client.gui.config;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayKeybind;
-import co.bugg.quickplay.client.gui.*;
+import co.bugg.quickplay.client.gui.QuickplayGui;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiContextMenu;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.config.ConfigKeybinds;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextFormatting;
@@ -139,6 +143,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                     public void optionSelected(int index) {
                         switch(index) {
                             case 0:
+                                //noinspection SuspiciousMethodCalls
                                 Quickplay.INSTANCE.keybinds.keybinds.remove(component.origin);
                                 Quickplay.INSTANCE.unregisterEventHandler(component.origin);
                                 try {

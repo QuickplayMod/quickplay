@@ -131,7 +131,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             helpText = "quickplay.settings.instanceDisplay.help",
             category = "quickplay.settings.category.instanceDisplay"
     )
-    public boolean displayInstance = true;
+    public boolean displayInstance = false;
 
     /**
      * Runnable to move the instance display to a different location
@@ -232,6 +232,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * The delay in the number of seconds for party mode to "calculate"
      * Cosmetic, used for suspense & for the spinner
      */
+    @SuppressWarnings("DefaultAnnotationParam")
     @GuiOption(
             name = "quickplay.settings.partyModeDelay.name",
             helpText = "quickplay.settings.partyModeDelay.help",
@@ -246,16 +247,31 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether the client should use the party mode spinner GUI or not
      */
     @GuiOption(
-            name="quickplay.settings.partyModeGui.name",
+            name = "quickplay.settings.partyModeGui.name",
             helpText = "quickplay.settings.partyModeGui.help",
             category = "quickplay.settings.category.partyMode"
     )
     public boolean partyModeGui = true;
 
     /**
+     * Whether the user's daily reward should be displayed in-game rather than in-browser
+     */
+    @GuiOption(
+            name = "quickplay.settings.ingameDailyReward.name",
+            helpText = "quickplay.settings.ingameDailyReward.help",
+            category = "quickplay.settings.category.premium"
+    )
+    public boolean ingameDailyReward = true;
+
+    /**
      * Whether the client's own glyph should be visible or not
      * Should be set via QuickplayPremium jar.
      */
+    @GuiOption(
+            name = "quickplay.settings.displayOwnGlyph.name",
+            helpText = "quickplay.settings.displayOwnGlyph.help",
+            category = "quickplay.settings.category.premium"
+    )
     public boolean displayOwnGlyph = true;
 
     /**

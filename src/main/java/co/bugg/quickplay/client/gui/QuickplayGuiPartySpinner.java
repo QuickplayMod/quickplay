@@ -1,20 +1,11 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -78,6 +69,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
             int buttonId = 0;
 
             final String randomizingString = I18n.format("quickplay.gui.party.randomizing");
+            //noinspection UnusedAssignment
             componentList.add(new QuickplayGuiString(null, buttonId++, width / 2, randomizingTextHeight, fontRenderer.getStringWidth(randomizingString), fontRenderer.FONT_HEIGHT, randomizingString, true, false));
 
             if (spinningThreadFuture == null)
@@ -167,9 +159,11 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         // Draw spinner
-        GL11.glScaled(spinnerScale, spinnerScale, spinnerScale);
-        drawCenteredString(fontRenderer, spinnerText, (int) (width / 2 / spinnerScale), (int) ((randomizingTextHeight + fontRenderer.FONT_HEIGHT * spinnerScale * 2) / spinnerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        GL11.glScaled(1 / spinnerScale, 1 / spinnerScale, 1 / spinnerScale);
+        if(opacity > 0) {
+            GL11.glScaled(spinnerScale, spinnerScale, spinnerScale);
+            drawCenteredString(fontRenderer, spinnerText, (int) (width / 2 / spinnerScale), (int) ((randomizingTextHeight + fontRenderer.FONT_HEIGHT * spinnerScale * 2) / spinnerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            GL11.glScaled(1 / spinnerScale, 1 / spinnerScale, 1 / spinnerScale);
+        }
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();

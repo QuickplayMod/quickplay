@@ -1,5 +1,6 @@
-package co.bugg.quickplay.client.gui;
+package co.bugg.quickplay.client.gui.components;
 
+import co.bugg.quickplay.client.gui.QuickplayGui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -84,34 +85,35 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
 
-        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
+        if(opacity > 0) {
+            final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
-        gui.mc.getTextureManager().bindTexture(texture);
-        GlStateManager.color(1, 1, 1, (float) opacity);
+            GL11.glPushMatrix();
+            GL11.glEnable(GL11.GL_BLEND);
+            gui.mc.getTextureManager().bindTexture(texture);
+            GlStateManager.color(1, 1, 1, (float) opacity);
 
-        // Update whether user is currently hovering over button
-        hovering = (mouseX >= x && mouseX < x + width) && (mouseY >= scrollAdjustedY && mouseY < scrollAdjustedY + height);
-        // Get the default button texture depending on if mouse is hovering or is enabled
-        int buttonTextureMultiplier = getDefaultButtonTexture(hovering);
+            // Update whether user is currently hovering over button
+            hovering = (mouseX >= x && mouseX < x + width) && (mouseY >= scrollAdjustedY && mouseY < scrollAdjustedY + height);
+            // Get the default button texture depending on if mouse is hovering or is enabled
+            int buttonTextureMultiplier = getDefaultButtonTexture(hovering);
 
-        // If default button
-        GL11.glScaled(scale, scale, scale);
-        if(texture == buttonTextures || textureX < 0 || textureY < 0) {
-            // Draw the different parts of the button
-            drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY  / scale), 0, 46 + buttonTextureMultiplier * 20, width / 2, height);
-            drawTexturedModalRect((int) (x + width / 2 / scale), (int) (scrollAdjustedY / scale), 200 - width / 2, 46 + buttonTextureMultiplier * 20, width / 2, height);
-        } else {
-            drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), textureX, textureY, (int) (width / scale), (int) (height / scale));
-        }
-        GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
+            // If default button
+            GL11.glScaled(scale, scale, scale);
+            if (texture == buttonTextures || textureX < 0 || textureY < 0) {
+                // Draw the different parts of the button
+                drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), 0, 46 + buttonTextureMultiplier * 20, width / 2, height);
+                drawTexturedModalRect((int) (x + width / 2 / scale), (int) (scrollAdjustedY / scale), 200 - width / 2, 46 + buttonTextureMultiplier * 20, width / 2, height);
+            } else {
+                drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), textureX, textureY, (int) (width / scale), (int) (height / scale));
+            }
+            GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
 
-        if(opacity > 0)
             drawDisplayString(gui, opacity, scrollAdjustedY);
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glPopMatrix();
+        }
 
     }
 

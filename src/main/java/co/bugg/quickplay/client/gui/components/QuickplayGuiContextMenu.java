@@ -1,7 +1,8 @@
-package co.bugg.quickplay.client.gui;
+package co.bugg.quickplay.client.gui.components;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.ContextMenu;
+import co.bugg.quickplay.client.gui.QuickplayGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import org.lwjgl.input.Keyboard;
@@ -113,7 +114,7 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
      * @return The index of the option the mouse is currently hovering over, or -1 if none
      */
     private int mouseHoveringOverOption(QuickplayGui gui, int mouseX, int mouseY) {
-        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
         for(ListIterator<String> iter = options.listIterator(); iter.hasNext();) {
             final int index = iter.nextIndex();
@@ -128,38 +129,40 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
-        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+        if(opacity > 0) {
+            final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+            GL11.glPushMatrix();
+            GL11.glEnable(GL11.GL_BLEND);
 
-        GL11.glScaled(scale, scale, scale);
+            GL11.glScaled(scale, scale, scale);
 
-        // Draw right click box
-        drawRect((int) (x / scale), (int) (scrollAdjustedY / scale), (int) (x / scale + width), (int) (scrollAdjustedY / scale + height), (int) (opacity * boxOpacity * 255) << 24);
-        GL11.glEnable(GL11.GL_BLEND);
+            // Draw right click box
+            drawRect((int) (x / scale), (int) (scrollAdjustedY / scale), (int) (x / scale + width), (int) (scrollAdjustedY / scale + height), (int) (opacity * boxOpacity * 255) << 24);
+            GL11.glEnable(GL11.GL_BLEND);
 
-        for(ListIterator<String> iter = options.listIterator(); iter.hasNext();) {
-            final int index = iter.nextIndex();
-            final String string = iter.next();
-            final int stringY = (int) (scrollAdjustedY / scale + boxPadding + index * (fontRenderer.FONT_HEIGHT + stringBottomMargin));
-            final int color = highlightedOptionIndex == index ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
-            drawString(fontRenderer, string, (int) (x / scale + boxPadding), stringY, color & 0xFFFFFF | (int) (opacity * 255) << 24);
-            if(mouseX > x && mouseX < x + width * scale && mouseY > stringY * scale && mouseY < (stringY + fontRenderer.FONT_HEIGHT) * scale)
-                drawRect((int) (x / scale + boxPadding), stringY + fontRenderer.FONT_HEIGHT, (int) (x / scale + boxPadding + fontRenderer.getStringWidth(string)), stringY + fontRenderer.FONT_HEIGHT + 1, color & 0xFFFFFF | (int) (opacity * 255) << 24);
+            for (ListIterator<String> iter = options.listIterator(); iter.hasNext(); ) {
+                final int index = iter.nextIndex();
+                final String string = iter.next();
+                final int stringY = (int) (scrollAdjustedY / scale + boxPadding + index * (fontRenderer.FONT_HEIGHT + stringBottomMargin));
+                final int color = highlightedOptionIndex == index ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
+                drawString(fontRenderer, string, (int) (x / scale + boxPadding), stringY, color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                if (mouseX > x && mouseX < x + width * scale && mouseY > stringY * scale && mouseY < (stringY + fontRenderer.FONT_HEIGHT) * scale)
+                    drawRect((int) (x / scale + boxPadding), stringY + fontRenderer.FONT_HEIGHT, (int) (x / scale + boxPadding + fontRenderer.getStringWidth(string)), stringY + fontRenderer.FONT_HEIGHT + 1, color & 0xFFFFFF | (int) (opacity * 255) << 24);
+            }
+
+            GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
+
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glPopMatrix();
         }
-
-        GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
-
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
     }
 
 
 
     @Override
     public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY) {
-        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
         return mouseX > x && mouseX < x + width * scale && mouseY > scrollAdjustedY && mouseY < scrollAdjustedY + height * scale;
     }
 

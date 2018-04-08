@@ -1,6 +1,7 @@
-package co.bugg.quickplay.client.gui;
+package co.bugg.quickplay.client.gui.components;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.client.gui.QuickplayGui;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -32,15 +33,17 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
 
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
-        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+        if(opacity > 0) {
+            final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
-        if(centered)
-            drawCenteredString(gui.mc.fontRenderer, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-        else
-            drawString(gui.mc.fontRenderer, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-        GL11.glPopMatrix();
+            GL11.glPushMatrix();
+            GL11.glEnable(GL11.GL_BLEND);
+            if (centered)
+                drawCenteredString(gui.mc.fontRenderer, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+            else
+                drawString(gui.mc.fontRenderer, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+            GL11.glPopMatrix();
+        }
     }
 
     @Override
