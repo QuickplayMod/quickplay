@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.command.premium.SubCommandPremium;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 
@@ -36,7 +37,11 @@ public class CommandQuickplay extends ACommand {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
         if(Quickplay.INSTANCE.checkEnabledStatus()) {
-            super.execute(server, sender, args);
+            try {
+                super.execute(server, sender, args);
+            } catch (CommandException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -8,7 +9,6 @@ import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -63,7 +63,9 @@ public abstract class ACommand implements ICommand {
         return "/" + getName() + " " + subCommands.get(0).getName();
     }
 
-    public void execute(ICommandSender sender, String[] args) {
+    @Override
+    @ParametersAreNonnullByDefault
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 
         // Send analytical data to Google
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {

@@ -125,6 +125,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         drawScrollbar(width / 2 + buttonWidth / 2 + 3);
 
         //Override super.drawScreen(mouseX, mouseY, partialTicks);
+        updateOpacity();
         for (QuickplayGuiComponent component : componentList) {
             double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfButtons ? 1 : (component.y - scrollPixel) + scrollFadeDistance < topOfButtons ? 0 : (scrollFadeDistance - ((double) topOfButtons - (double) (component.y - scrollPixel))) / (double) scrollFadeDistance) : 1;
             component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
