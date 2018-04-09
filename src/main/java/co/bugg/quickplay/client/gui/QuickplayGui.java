@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Basic GUI screen for all Quickplay GUIs
@@ -219,7 +220,9 @@ public class QuickplayGui extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         updateOpacity();
 
-        for (QuickplayGuiComponent component : componentList) {
+        //noinspection ForLoopReplaceableByForEach
+        for (ListIterator<QuickplayGuiComponent> iter = componentList.listIterator(); iter.hasNext();) {
+            final QuickplayGuiComponent component = iter.next();
             component.draw(this, mouseX, mouseY, opacity);
         }
     }
