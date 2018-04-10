@@ -1,8 +1,3 @@
-# Quickplay
-### Current version: v2.0.2
+This branch is for Quickplay Premium releases. Quickplay Premium source code is not available to the public. 
 
-Website: https://bugg.co/quickplay/
-
-If you plan on reimplementing this concept, you are welcome to (and it would be appreciated if) you use my backend services for game and analytics collection. Get in touch with me.
-
-Quickplay Premium & Quickplay Backend source is unavailable to the public.
+[https://bugg.co/quickplay/premium/](https://bugg.co/quickplay/premium/)
