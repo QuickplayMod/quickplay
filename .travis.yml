@@ -8,3 +8,5 @@ before_install:
   
 install: ./gradlew setupDecompWorkspace
 script: ./gradlew build
+notifications:
+  email: false
