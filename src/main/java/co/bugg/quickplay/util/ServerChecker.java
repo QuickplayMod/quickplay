@@ -1,20 +1,18 @@
 package co.bugg.quickplay.util;
 
+import cc.hyperium.event.InvokeEvent;
+import cc.hyperium.event.WorldChangeEvent;
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.util.IChatComponent;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,10 +61,10 @@ public class ServerChecker {
     /**
      * Called when a Minecraft world is loaded
      * @param event Event data
-     * @see WorldEvent.Load
+     * @see WorldChangeEvent
      */
-    @SubscribeEvent
-    public void onJoinWorld(WorldEvent.Load event) {
+    @InvokeEvent
+    public void onJoinWorld(WorldChangeEvent event) {
         // Only one world load is necessary
         Quickplay.INSTANCE.unregisterEventHandler(this);
         // Wait one second for everything to load properly
@@ -158,27 +156,28 @@ public class ServerChecker {
         if(headerField != null) {
             headerField.setAccessible(true);
 
-            // OrangeMarshall's Vanilla Enhancements conflicts with this mod. He has a field called
-            // FieldWrapper which wraps IChatComponent, and you must call .get() on the wrapper as well
-            // i.e. instead of headerField.get(tabOverlay), headerField.get(tabOverlay).get(tabOverlay).
+//            // OrangeMarshall's Vanilla Enhancements conflicts with this mod. He has a field called
+//            // FieldWrapper which wraps IChatComponent, and you must call .get() on the wrapper as well
+//            // i.e. instead of headerField.get(tabOverlay), headerField.get(tabOverlay).get(tabOverlay).
+//
+//            final Object headerObj = headerField.get(tabOverlay);
+//            IChatComponent component;
+//            // If user is using Vanilla Enhancements
+//            if(Loader.instance().getModList().stream().anyMatch(mod -> mod.getName().equals("Vanilla Enhancements"))) {
+//                final String type = "com.orangemarshall.enhancements.util.FieldWrapper";
+//                final Class<?> clazz = Class.forName(type);
+//
+//                // Cast to FieldWrapper, then get the method "get" taking one parameger Object obj
+//                final Method fieldWrapperGetMethod = clazz.cast(headerObj).getClass().getDeclaredMethod("get", Object.class);
+//                fieldWrapperGetMethod.setAccessible(true);
+//
+//                // Execute the method on headerObj, passing tabOverlay as parameter obj
+//                component = (IChatComponent) fieldWrapperGetMethod.invoke(headerObj, tabOverlay);
+//            } else {
+//                component = (IChatComponent) headerObj;
+//            }
 
-            final Object headerObj = headerField.get(tabOverlay);
-            IChatComponent component;
-            // If user is using Vanilla Enhancements
-            if(Loader.instance().getModList().stream().anyMatch(mod -> mod.getName().equals("Vanilla Enhancements"))) {
-                final String type = "com.orangemarshall.enhancements.util.FieldWrapper";
-                final Class<?> clazz = Class.forName(type);
-
-                // Cast to FieldWrapper, then get the method "get" taking one parameger Object obj
-                final Method fieldWrapperGetMethod = clazz.cast(headerObj).getClass().getDeclaredMethod("get", Object.class);
-                fieldWrapperGetMethod.setAccessible(true);
-
-                // Execute the method on headerObj, passing tabOverlay as parameter obj
-                component = (IChatComponent) fieldWrapperGetMethod.invoke(headerObj, tabOverlay);
-            } else {
-                component = (IChatComponent) headerObj;
-            }
-
+            final IChatComponent component = (IChatComponent) headerField.get(tabOverlay);
             return component != null && component.getUnformattedText() != null && component.getUnformattedText().toLowerCase().contains("hypixel.net");
         }
 

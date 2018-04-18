@@ -1,5 +1,10 @@
 package co.bugg.quickplay;
 
+import cc.hyperium.Hyperium;
+import cc.hyperium.commands.BaseCommand;
+import cc.hyperium.event.EventBus;
+import cc.hyperium.internal.addons.IAddon;
+import cc.hyperium.internal.addons.annotations.Instance;
 import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandQuickplay;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
@@ -29,13 +34,7 @@ import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
-import net.minecraft.command.ICommand;
 import net.minecraft.util.*;
-import net.minecraftforge.client.ClientCommandHandler;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 import java.awt.*;
 import java.io.File;
@@ -47,17 +46,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-@Mod(
-        modid = Reference.MOD_ID,
-        name = Reference.MOD_NAME,
-        version = Reference.VERSION,
-        clientSideOnly = true,
-        acceptedMinecraftVersions = "[1.8.8, 1.8.9]",
-        dependencies = "before:quickplaypremium@[1.0.1,]"
-)
-public class Quickplay {
+public class Quickplay implements IAddon {
 
-    @Mod.Instance
+    @Instance
     public static Quickplay INSTANCE = new Quickplay();
 
     /**
@@ -87,7 +78,7 @@ public class Quickplay {
     /**
      * A list of all registered commands
      */
-    public final List<ICommand> commands = new ArrayList<>();
+    public final List<BaseCommand> commands = new ArrayList<>();
     /**
      * Buffer for sending messages to the client
      */
@@ -166,14 +157,21 @@ public class Quickplay {
      */
     public int currentPing = 0;
 
-    @EventHandler
-    public void init(FMLInitializationEvent event) {
+
+
+    @Override
+    public void onLoad() {
         // The message buffer should remain online even
         // if the mod is disabled - this allows for
         // communicating important information about why
         // the mod is currently disabled, or how to fix.
         messageBuffer = (MessageBuffer) new MessageBuffer(100).start();
         enable();
+    }
+
+    @Override
+    public void onClose() {
+
     }
 
     /**
@@ -183,7 +181,7 @@ public class Quickplay {
     public void registerEventHandler(Object handler) {
         if(!eventHandlers.contains(handler))
             eventHandlers.add(handler);
-        MinecraftForge.EVENT_BUS.register(handler);
+        EventBus.INSTANCE.register(handler);
     }
 
     /**
@@ -193,7 +191,7 @@ public class Quickplay {
     public void unregisterEventHandler(Object handler) {
         if(eventHandlers.contains(handler))
             eventHandlers.remove(handler);
-        MinecraftForge.EVENT_BUS.unregister(handler);
+        EventBus.INSTANCE.unregister(this);
     }
 
     /**
@@ -315,7 +313,7 @@ public class Quickplay {
             // Copy of the lobby command that doesn't override server commands
             // Used for "Go to Lobby" buttons
             commands.add(new CommandHub("quickplaylobby", "hub"));
-            commands.forEach(ClientCommandHandler.instance::registerCommand);
+            commands.forEach(Hyperium.INSTANCE.getHandlers().getHyperiumCommandHandler()::registerCommand);
         }
     }
 

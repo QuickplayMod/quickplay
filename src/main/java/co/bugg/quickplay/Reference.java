@@ -11,7 +11,7 @@ public class Reference {
     /**
      * Display name for this Forge mod
      */
-    public static final String MOD_NAME = "Quickplay";
+    public static final String MOD_NAME = "Hyperium Quickplay";
     /**
      * Version of this forge mod
      */

@@ -1,5 +1,7 @@
 package co.bugg.quickplay.client.gui.config;
 
+import cc.hyperium.event.InvokeEvent;
+import cc.hyperium.event.TickEvent;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.client.QuickplayColor;
@@ -17,8 +19,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -330,7 +330,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                         if(element != null && element.optionInfo != null && I18n.format(element.optionInfo.category()).length() > 0) {
                             final List<String> text = new ArrayList<>();
                             text.add(I18n.format(element.optionInfo.helpText()));
-                            drawHoveringText(text, mouseX, mouseY, mc.fontRendererObj);
+                            drawHoveringText(text, mouseX, mouseY);
                         }
                         break;
                     }
@@ -461,12 +461,11 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
     }
 
-    @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent event) {
+    @InvokeEvent
+    public void onTick(TickEvent event) {
         // Increase the number of ticks the mouse has been standing still if necessary
-        if(event.phase == TickEvent.Phase.START)
-            if(Math.abs(lastTwoMouseX[0] - lastTwoMouseX[1]) < mouseStandStillMargin && Math.abs(lastTwoMouseY[0] - lastTwoMouseY[1]) < mouseStandStillMargin)
-                mouseStandStillTicks++;
+        if(Math.abs(lastTwoMouseX[0] - lastTwoMouseX[1]) < mouseStandStillMargin && Math.abs(lastTwoMouseY[0] - lastTwoMouseY[1]) < mouseStandStillMargin)
+            mouseStandStillTicks++;
     }
 
     // ------

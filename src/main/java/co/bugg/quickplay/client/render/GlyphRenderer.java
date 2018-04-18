@@ -1,5 +1,7 @@
 package co.bugg.quickplay.client.render;
 
+import cc.hyperium.event.InvokeEvent;
+import cc.hyperium.event.RenderPlayerEvent;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import com.google.common.hash.Hashing;
@@ -8,12 +10,10 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.charset.Charset;
@@ -39,12 +39,12 @@ public class GlyphRenderer {
      */
     public static final Pattern gameServerPattern = Pattern.compile("^(?:mini|mega)[0-9]{1,3}[A-Z]$");
 
-    @SubscribeEvent
-    public void onPlayerRender(RenderPlayerEvent.Pre e) {
+    @InvokeEvent
+    public void onPlayerRender(RenderPlayerEvent e) {
         final String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
         // Don't render at all if F1 is hit or if the client is in a game (or unknown location)
         if(!Minecraft.getMinecraft().gameSettings.hideGUI) {
-            final EntityPlayer player = e.entityPlayer;
+            final EntityPlayer player = e.getEntity();
             final EntityPlayer self = Minecraft.getMinecraft().thePlayer;
 
             // If both players aren't null, player is visible, and player isn't dead
@@ -58,7 +58,7 @@ public class GlyphRenderer {
                             final PlayerGlyph glyph = Quickplay.INSTANCE.glyphs.stream().filter(thisGlyph -> thisGlyph.uuid.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0);
                             // If this client is currently not in a game OR if the glyph is set to display in-game
                             if ((currentServer != null && !gameServerPattern.matcher(currentServer).matches()) || glyph.displayInGames)
-                                renderGlyph(e.renderer, glyph, e.entityPlayer, e.x, e.y + offset + player.height, e.z);
+                                renderGlyph(e.getRenderManager(), glyph, e.getEntity(), e.getX(), e.getY() + offset + player.height, e.getZ());
                         }
                     }
                 }
@@ -76,7 +76,7 @@ public class GlyphRenderer {
      * @param y y position
      * @param z z position
      */
-    public synchronized void renderGlyph(RendererLivingEntity renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
+    public synchronized void renderGlyph(RenderManager renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
 
         final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.path.toString(), Charset.forName("UTF-8")).toString() + ".png");
         if(Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {
@@ -91,14 +91,14 @@ public class GlyphRenderer {
             GlStateManager.enableBlend();
 
             // Rotate rendering axes
-            GlStateManager.rotate(-renderer.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-renderer.playerViewY, 0.0F, 1.0F, 0.0F);
 
             // Calculate x-axis rotation
             int xRotationMultiplier = 1;
             // Flip x rotation if in front-facing 3rd person
             if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 2)
                 xRotationMultiplier = -1;
-            GlStateManager.rotate(renderer.getRenderManager().playerViewX * xRotationMultiplier, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(renderer.playerViewX * xRotationMultiplier, 1.0F, 0.0F, 0.0F);
 
             // Scale
             GlStateManager.scale(-scale, -scale, scale);
@@ -106,7 +106,7 @@ public class GlyphRenderer {
             // Draw texture
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-            renderer.bindTexture(resource);
+            Minecraft.getMinecraft().getTextureManager().bindTexture(resource);
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldrenderer.pos((double) (-16), (double) (-16), 0.0D).tex(0, 0).endVertex();
             worldrenderer.pos((double) (-16), (double) (16), 0.0D).tex(0, 1).endVertex();

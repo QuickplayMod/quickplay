@@ -1,9 +1,9 @@
 package co.bugg.quickplay.util;
 
+import cc.hyperium.event.InvokeEvent;
+import cc.hyperium.event.TickEvent;
+import cc.hyperium.event.WorldChangeEvent;
 import co.bugg.quickplay.Quickplay;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,16 +37,16 @@ public class InstanceWatcher {
 
     public int tick;
 
-    @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent event) {
-        if(event.phase == TickEvent.Phase.START && tick++ > whereamiFrequency * 20) {
+    @InvokeEvent
+    public void onTick(TickEvent event) {
+        if(tick++ > whereamiFrequency * 20) {
             tick = 0;
             runWhereami();
         }
     }
 
-    @SubscribeEvent
-    public void onWorldChange(WorldEvent.Load event) {
+    @InvokeEvent
+    public void onWorldChange(WorldChangeEvent event) {
         // Run twice, just in case first one doesn't trigger
         new TickDelay(this::runWhereami, 15);
         new TickDelay(this::runWhereami, 60);

@@ -1,6 +1,6 @@
 package co.bugg.quickplay.util;
 
-import net.minecraftforge.common.ForgeVersion;
+import net.minecraft.client.Minecraft;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -44,21 +44,10 @@ public class ReflectionUtil {
     /**
      * Get the current Minecraft version
      * @return String containing the Minecraft version
-     * @throws NoSuchFieldException Minecraft version couldn't be found for some reason
      * @throws IllegalAccessException Couldn't access the minecraft version for some reason
      */
-    public static String getMCVersion() throws NoSuchFieldException, IllegalAccessException {
-        return (String) getField(ForgeVersion.class, "mcVersion").get(null);
+    public static String getMCVersion() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        return (String) getMethod(Minecraft.class, "getVersion").invoke(Minecraft.getMinecraft());
     }
 
-    /**
-     * Get the current Forge version
-     * @return String containing the Forge version
-     * @throws InvocationTargetException Exception caused by getVersion method
-     * @throws IllegalAccessException Couldn't access the Forge version for some reason
-     * @throws NoSuchMethodException Forge version method doesn't exist for some reason
-     */
-    public static String getForgeVersion() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-        return (String) getMethod(ForgeVersion.class, "getVersion").invoke(null);
-    }
 }

@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.gui.components;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.QuickplayGui;
+import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -39,9 +40,9 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
             if (centered)
-                drawCenteredString(gui.mc.fontRendererObj, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+                drawCenteredString(Minecraft.getMinecraft().fontRendererObj, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             else
-                drawString(gui.mc.fontRendererObj, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+                drawString(Minecraft.getMinecraft().fontRendererObj, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             GL11.glPopMatrix();
         }
     }

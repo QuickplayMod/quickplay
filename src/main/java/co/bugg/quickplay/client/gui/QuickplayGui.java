@@ -9,7 +9,6 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiContextMenu;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -187,34 +186,31 @@ public class QuickplayGui extends GuiScreen {
         if(Quickplay.INSTANCE.settings.blurGuiBackgrounds) {
 
             QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-                // This method isn't public in some versions of Forge seemingly.
-                // Reflection is used just in case
-                Method loadShaderMethod = null;
                 try {
-                    loadShaderMethod = EntityRenderer.class.getDeclaredMethod("loadShader", ResourceLocation.class);
-                } catch (NoSuchMethodException e) {
-                    try {
-                        loadShaderMethod = EntityRenderer.class.getDeclaredMethod("func_175069_a", ResourceLocation.class);
-                    } catch (NoSuchMethodException e1) {
-                        e1.printStackTrace();
-                        Quickplay.INSTANCE.sendExceptionRequest(e);
-                    }
+                    loadShader(new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
+                } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+                    e.printStackTrace();
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
-
-                if (loadShaderMethod != null) {
-                    loadShaderMethod.setAccessible(true);
-                    try {
-                        loadShaderMethod.invoke(Minecraft.getMinecraft().entityRenderer, new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                        Quickplay.INSTANCE.sendExceptionRequest(e);
-                    }
-                }
-
             });
         }
 
         setScrollingValues();
+    }
+
+    public void loadShader(ResourceLocation shader) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        // Try both obf and deobf
+        Method loadShaderMethod = null;
+        try {
+            loadShaderMethod = EntityRenderer.class.getDeclaredMethod("loadShader", ResourceLocation.class);
+        } catch (NoSuchMethodException e) {
+            loadShaderMethod = EntityRenderer.class.getDeclaredMethod("func_175069_a", ResourceLocation.class);
+        }
+
+        if (loadShaderMethod != null) {
+            loadShaderMethod.setAccessible(true);
+            loadShaderMethod.invoke(Minecraft.getMinecraft().entityRenderer, shader);
+        }
     }
 
     @Override
@@ -241,8 +237,9 @@ public class QuickplayGui extends GuiScreen {
         }
     }
 
+
     @Override
-    protected void drawHoveringText(List<String> textLines, int x, int y, FontRenderer font) {
+    protected void drawHoveringText(List<String> textLines, int x, int y) {
         if(textLines.size() > 0 && opacity > 0) {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
@@ -254,8 +251,8 @@ public class QuickplayGui extends GuiScreen {
 
             // Calculate the max width of the text
             for(String line : textLines) {
-                if(font.getStringWidth(line) > textWidth)
-                    textWidth = font.getStringWidth(line);
+                if(fontRendererObj.getStringWidth(line) > textWidth)
+                    textWidth = fontRendererObj.getStringWidth(line);
             }
 
             boolean sidesSwapped = false;
@@ -278,10 +275,10 @@ public class QuickplayGui extends GuiScreen {
                 int wrappedTextWidth = 0;
                 for(String line : textLines) {
                     final int wrapWidth = sidesSwapped ? x + textWidth + textXMargins : width - x - boxMargins - textXMargins;
-                    final List<String> wrappedLine = font.listFormattedStringToWidth(line, wrapWidth);
+                    final List<String> wrappedLine = fontRendererObj.listFormattedStringToWidth(line, wrapWidth);
 
                     for(String wrappedFragment : wrappedLine) {
-                        final int wrappedFragmentWidth = font.getStringWidth(wrappedFragment);
+                        final int wrappedFragmentWidth = fontRendererObj.getStringWidth(wrappedFragment);
                         if(wrappedFragmentWidth > wrappedTextWidth)
                             wrappedTextWidth = wrappedFragmentWidth;
 
@@ -298,7 +295,7 @@ public class QuickplayGui extends GuiScreen {
 
             }
             // Calculate how high the tooltip should be
-            int tooltipHeight = textLines.size() * (font.FONT_HEIGHT + textYMargins) + textYMargins;
+            int tooltipHeight = textLines.size() * (fontRendererObj.FONT_HEIGHT + textYMargins) + textYMargins;
 
             // Move up if falling off bottom of screen
             if(y + tooltipHeight > height)
@@ -311,8 +308,8 @@ public class QuickplayGui extends GuiScreen {
             // Draw text
             int currentLineY = y + textYMargins;
             for(String line : textLines) {
-                drawString(font, line, x + textXMargins / 2, currentLineY, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                currentLineY += font.FONT_HEIGHT + textYMargins;
+                drawString(fontRendererObj, line, x + textXMargins / 2, currentLineY, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                currentLineY += fontRendererObj.FONT_HEIGHT + textYMargins;
             }
 
             GL11.glDisable(GL11.GL_BLEND);
@@ -402,7 +399,15 @@ public class QuickplayGui extends GuiScreen {
         if(trisTribute.toUpperCase().endsWith(magicWord.toUpperCase())) {
             // Abra kadabra! Open sesame!
             // Load the fancy shader
-            Minecraft.getMinecraft().entityRenderer.loadShader(new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_rainbow_gui.json"));
+            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+                try {
+                    loadShader(new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_rainbow_gui.json"));
+                } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+                    e.printStackTrace();
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
+                }
+            });
+
             // Make it so the shader goes bye bye when the GUI closes
             disableShaderOnGuiClose = true;
             // Make a bunch of dumb noises

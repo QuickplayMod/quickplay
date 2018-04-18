@@ -1,10 +1,9 @@
 package co.bugg.quickplay.client.gui.components;
 
 import co.bugg.quickplay.client.gui.QuickplayGui;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -116,7 +115,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
             }
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
-            gui.mc.getTextureManager().bindTexture(buttonTextures);
+            Minecraft.getMinecraft().getTextureManager().bindTexture(buttonTextures);
             GL11.glScaled(scale, scale, scale);
             drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)), scrollAdjustedY, 0, 66, 4, 20);
             drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)) + 4, scrollAdjustedY, 196, 66, 4, 20);
@@ -173,7 +172,6 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
         isMouseDown = false;
     }
 
-    @SideOnly(Side.CLIENT)
     public interface FormatHelper
     {
         String getText(int id, String name, float value);

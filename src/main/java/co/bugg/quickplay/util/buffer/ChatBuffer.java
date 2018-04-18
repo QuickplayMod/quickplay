@@ -1,12 +1,12 @@
 package co.bugg.quickplay.util.buffer;
 
 
+import cc.hyperium.Hyperium;
+import cc.hyperium.event.InvokeEvent;
+import cc.hyperium.event.ServerLeaveEvent;
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraftforge.client.ClientCommandHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 /**
  * Buffer for chat messages sent AS the client.
@@ -37,7 +37,7 @@ public class ChatBuffer extends ABuffer {
             final String message = (String) pull();
 
             // Handle as a command
-            if(message.startsWith("/") && ClientCommandHandler.instance.executeCommand(player, message) == 0)
+            if(message.startsWith("/") && !Hyperium.INSTANCE.getHandlers().getHyperiumCommandHandler().executeCommand(message))
                 player.sendChatMessage(message);
         }
     }
@@ -54,8 +54,8 @@ public class ChatBuffer extends ABuffer {
         return super.stop();
     }
 
-    @SubscribeEvent
-    public void onDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+    @InvokeEvent
+    public void onDisconnect(ServerLeaveEvent event) {
         clear();
     }
 

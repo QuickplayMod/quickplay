@@ -1,5 +1,7 @@
 package co.bugg.quickplay.client;
 
+import cc.hyperium.event.InvokeEvent;
+import cc.hyperium.event.KeypressEvent;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.GsonPostProcessorFactory;
 import co.bugg.quickplay.util.Message;
@@ -8,8 +10,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 
@@ -166,9 +166,9 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
         registerAsEventHandler();
     }
 
-    @SubscribeEvent
-    public void onKeyPress(InputEvent.KeyInputEvent event) {
-        if(key != Keyboard.KEY_NONE && Keyboard.isKeyDown(key))
+    @InvokeEvent
+    public void onKeyPress(KeypressEvent event) {
+        if(key != Keyboard.KEY_NONE && event.getKey() == key)
             keyPressed();
     }
 }

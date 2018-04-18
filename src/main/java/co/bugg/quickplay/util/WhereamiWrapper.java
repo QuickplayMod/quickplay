@@ -1,8 +1,8 @@
 package co.bugg.quickplay.util;
 
+import cc.hyperium.event.ChatEvent;
+import cc.hyperium.event.InvokeEvent;
 import co.bugg.quickplay.Quickplay;
-import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -66,9 +66,9 @@ public class WhereamiWrapper {
         }
     }
 
-    @SubscribeEvent
-    public void onChat(ClientChatReceivedEvent event) {
-        final String message = event.message.getUnformattedText();
+    @InvokeEvent
+    public void onChat(ChatEvent event) {
+        final String message = event.getChat().getUnformattedText();
         // Regex for the /whereami response
         // §bYou are currently connected to server §r§6lobby5§r
         final Pattern pattern = Pattern.compile("^You are currently (?:(?:in |connected to server )(limbo|(?:(?:[A-Za-z]+)?lobby(?:\\d{1,3})|(?:mega|mini)\\d{1,3}[A-Z])))$");
@@ -77,13 +77,13 @@ public class WhereamiWrapper {
         if(
                 Quickplay.INSTANCE.enabled &&
                 Quickplay.INSTANCE.onHypixel &&
-                !event.isCanceled() &&
+                !event.isCancelled() &&
                 matcher.find() &&
                 listening
         ) {
 
             if(this.cancel)
-                event.setCanceled(true);
+                event.setCancelled(true);
 
             // Get the regex group containing the current instance
             final String instance = matcher.group(1);

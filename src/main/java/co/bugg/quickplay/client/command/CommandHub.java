@@ -3,7 +3,6 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
@@ -50,7 +49,7 @@ public class CommandHub extends ACommand {
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) {
+    public void onExecute(String[] args) {
         Quickplay.INSTANCE.threadPool.submit(() -> {
             if(Quickplay.INSTANCE.checkEnabledStatus()) {
                 // sendChatMessage is used here instead of chatBuffer.push, as chatBuffer.push would try

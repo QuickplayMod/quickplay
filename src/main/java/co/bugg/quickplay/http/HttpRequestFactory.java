@@ -5,8 +5,6 @@ import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.util.ReflectionUtil;
 import co.bugg.quickplay.util.ServerChecker;
 import com.google.gson.Gson;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
@@ -122,9 +120,9 @@ public class HttpRequestFactory {
             params.put("os", System.getProperty("os.name"));
             params.put("osVersion", System.getProperty("os.version"));
             params.put("osArch", System.getProperty("os.arch")); // OS Architecture
-            // Add a JSON list of all registered mods names
-            params.put("installedMods", gson.toJson(Loader.instance().getModList()
-                    .stream().map(ModContainer::getName).toArray()));
+//            // Add a JSON list of all registered mods names
+//            params.put("installedMods", gson.toJson(Loader.instance().getModList()
+//                    .stream().map(ModContainer::getName).toArray()));
             // Add settings
             if(Quickplay.INSTANCE.settings != null)
                 params.put("settings", gson.toJson(Quickplay.INSTANCE.settings));
@@ -133,17 +131,9 @@ public class HttpRequestFactory {
 
             try {
                 params.put("mcVersion", ReflectionUtil.getMCVersion());
-            } catch (IllegalAccessException | NoSuchFieldException e) {
+            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
                 params.put("mcVersion", "unknown");
-                Quickplay.INSTANCE.sendExceptionRequest(e);
-            }
-
-            try {
-                params.put("forgeVersion", ReflectionUtil.getForgeVersion());
-            } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-                e.printStackTrace();
-                params.put("forgeVersion", "unknown");
                 Quickplay.INSTANCE.sendExceptionRequest(e);
             }
         }

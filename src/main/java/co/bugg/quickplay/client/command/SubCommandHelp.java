@@ -57,7 +57,7 @@ public class SubCommandHelp extends ASubCommand {
             if(commandToDisplay != null) {
                 helpMessage.appendSibling(new ChatComponentTranslation("quickplay.commands.usage"));
                 helpMessage.appendText("\n");
-                helpMessage.appendText("/" + commandToDisplay.getParent().getCommandName() + " " + commandToDisplay.getName() + " " + commandToDisplay.getUsage());
+                helpMessage.appendText("/" + commandToDisplay.getParent().getName() + " " + commandToDisplay.getName() + " " + commandToDisplay.getUsage());
                 helpMessage.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
             }
         }
@@ -89,7 +89,7 @@ public class SubCommandHelp extends ASubCommand {
      * @return A chat-ready formatted help message
      */
     public IChatComponent getFormattedHelpMessage(ASubCommand subCommand) {
-        final String fullCommand = "/" + subCommand.getParent().getCommandName() + " " + subCommand.getName();
+        final String fullCommand = "/" + subCommand.getParent().getName() + " " + subCommand.getName();
 
         final IChatComponent msg = new ChatComponentText("");
 

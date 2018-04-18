@@ -1,9 +1,7 @@
 package co.bugg.quickplay.client.command;
 
+import cc.hyperium.commands.BaseCommand;
 import co.bugg.quickplay.Quickplay;
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.util.BlockPos;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Parent command for all sub commands
  */
-public abstract class ACommand implements ICommand {
+public abstract class ACommand implements BaseCommand {
     /**
      * All possible aliases for the command (including the main
      * command, which is in index 0)
@@ -44,29 +42,30 @@ public abstract class ACommand implements ICommand {
         subCommands.add(subCommand);
     }
 
+
     @Override
     public List<String> getCommandAliases() {
         return aliases;
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return aliases.get(0);
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "/" + getCommandName() + " " + subCommands.get(0).getName();
+    public String getUsage() {
+        return "/" + getName() + " " + subCommands.get(0).getName();
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) {
+    public void onExecute(String[] args) {
         // Send analytical data to Google
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
             Quickplay.INSTANCE.threadPool.submit(() -> {
                 try {
                     Quickplay.INSTANCE.ga.createEvent("commands", "Execute Command")
-                            .setEventLabel("/" + getCommandName() + " " + String.join(" ", args))
+                            .setEventLabel("/" + getName() + " " + String.join(" ", args))
                             .send();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -92,12 +91,7 @@ public abstract class ACommand implements ICommand {
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender sender) {
-        return true;
-    }
-
-    @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+    public List<String> onTabComplete(String[] args) {
         List<String> tabCompletionOptions = new ArrayList<>();
 
         if(args.length < 2) {
@@ -110,16 +104,6 @@ public abstract class ACommand implements ICommand {
         }
 
         return tabCompletionOptions;
-    }
-
-    @Override
-    public boolean isUsernameIndex(String[] args, int index) {
-        return false;
-    }
-
-    @Override
-    public int compareTo(ICommand o) {
-        return 0;
     }
 
     /**
