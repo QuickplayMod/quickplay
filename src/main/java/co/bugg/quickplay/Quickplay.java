@@ -190,7 +190,7 @@ public class Quickplay implements IAddon {
     public void unregisterEventHandler(Object handler) {
         if(eventHandlers.contains(handler))
             eventHandlers.remove(handler);
-        EventBus.INSTANCE.unregister(this);
+        EventBus.INSTANCE.unregister(handler);
     }
 
     /**
