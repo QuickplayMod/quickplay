@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.command;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.resources.I18n;
@@ -33,7 +34,7 @@ public class SubCommandLimbo extends ASubCommand {
 
     @Override
     public void run(String[] args) {
-        if(Quickplay.INSTANCE.onHypixel) {
+        if(Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel()) {
             String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
             if(currentServer == null) currentServer = "null";
 

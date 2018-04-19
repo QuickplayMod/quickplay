@@ -1,5 +1,6 @@
 package co.bugg.quickplay.util;
 
+import cc.hyperium.Hyperium;
 import cc.hyperium.event.InvokeEvent;
 import cc.hyperium.event.TickEvent;
 import cc.hyperium.event.WorldChangeEvent;
@@ -39,7 +40,7 @@ public class InstanceWatcher {
 
     @InvokeEvent
     public void onTick(TickEvent event) {
-        if(tick++ > whereamiFrequency * 20) {
+        if(started && tick++ > whereamiFrequency * 20) {
             tick = 0;
             runWhereami();
         }
@@ -78,7 +79,7 @@ public class InstanceWatcher {
      * @return this
      */
     public InstanceWatcher runWhereami() {
-        if(Quickplay.INSTANCE.onHypixel && Quickplay.INSTANCE.enabled)
+        if(Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel() && Quickplay.INSTANCE.enabled)
             new WhereamiWrapper((server) -> {
 
                 // Automatic lobby 1 swapper

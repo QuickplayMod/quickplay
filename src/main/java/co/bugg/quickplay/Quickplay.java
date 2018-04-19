@@ -3,6 +3,8 @@ package co.bugg.quickplay;
 import cc.hyperium.Hyperium;
 import cc.hyperium.commands.BaseCommand;
 import cc.hyperium.event.EventBus;
+import cc.hyperium.event.InitializationEvent;
+import cc.hyperium.event.InvokeEvent;
 import cc.hyperium.internal.addons.IAddon;
 import cc.hyperium.internal.addons.annotations.Instance;
 import co.bugg.quickplay.client.command.CommandHub;
@@ -20,7 +22,6 @@ import co.bugg.quickplay.http.response.ResponseAction;
 import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.InstanceWatcher;
 import co.bugg.quickplay.util.Message;
-import co.bugg.quickplay.util.ServerChecker;
 import co.bugg.quickplay.util.analytics.AnalyticsRequest;
 import co.bugg.quickplay.util.analytics.GoogleAnalytics;
 import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
@@ -49,12 +50,8 @@ import java.util.concurrent.Future;
 public class Quickplay implements IAddon {
 
     @Instance
-    public static Quickplay INSTANCE = new Quickplay();
+    public static Quickplay INSTANCE;
 
-    /**
-     * Whether the client is currently connected to the Hypixel network
-     */
-    public boolean onHypixel = false;
     /**
      * Whether the mod is currently enabled
      */
@@ -63,10 +60,6 @@ public class Quickplay implements IAddon {
      * The reason the mod has been disabled, if it is disabled
      */
     public String disabledReason = null;
-    /**
-     * Verification method used to verify the client is online Hypixel, or null if not on Hypixel.
-     */
-    public ServerChecker.VerificationMethod verificationMethod;
     /**
      * Thread pool for blocking code
      */
@@ -161,17 +154,23 @@ public class Quickplay implements IAddon {
 
     @Override
     public void onLoad() {
+        registerEventHandler(this);
+    }
+
+    @Override
+    public void onClose() {
+
+    }
+
+    @InvokeEvent
+    public void init(InitializationEvent event) {
+        INSTANCE = this;
         // The message buffer should remain online even
         // if the mod is disabled - this allows for
         // communicating important information about why
         // the mod is currently disabled, or how to fix.
         messageBuffer = (MessageBuffer) new MessageBuffer(100).start();
         enable();
-    }
-
-    @Override
-    public void onClose() {
-
     }
 
     /**

@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.command;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
@@ -54,7 +55,7 @@ public class CommandHub extends ACommand {
             if(Quickplay.INSTANCE.checkEnabledStatus()) {
                 // sendChatMessage is used here instead of chatBuffer.push, as chatBuffer.push would try
                 // to execute as a client command which would loop infinitely
-                if(Quickplay.INSTANCE.onHypixel) {
+                if(Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel()) {
                     if(args.length == 0) {
                         Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand);
                     } else if(args.length == 1) {

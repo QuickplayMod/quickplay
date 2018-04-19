@@ -1,5 +1,6 @@
 package co.bugg.quickplay.http;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.util.ReflectionUtil;
@@ -114,8 +115,7 @@ public class HttpRequestFactory {
             final Gson gson = new Gson();
             params.put("enabled", String.valueOf(Quickplay.INSTANCE.enabled));
             params.put("currentIP", ServerChecker.getCurrentIP());
-            params.put("onHypixel", String.valueOf(Quickplay.INSTANCE.onHypixel));
-            params.put("hypixelVerificationMethod", String.valueOf(Quickplay.INSTANCE.verificationMethod));
+            params.put("onHypixel", String.valueOf(Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel()));
             params.put("javaVersion", System.getProperty("java.version"));
             params.put("os", System.getProperty("os.name"));
             params.put("osVersion", System.getProperty("os.version"));

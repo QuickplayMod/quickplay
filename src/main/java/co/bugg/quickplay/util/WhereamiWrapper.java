@@ -1,5 +1,6 @@
 package co.bugg.quickplay.util;
 
+import cc.hyperium.Hyperium;
 import cc.hyperium.event.ChatEvent;
 import cc.hyperium.event.InvokeEvent;
 import co.bugg.quickplay.Quickplay;
@@ -76,7 +77,7 @@ public class WhereamiWrapper {
 
         if(
                 Quickplay.INSTANCE.enabled &&
-                Quickplay.INSTANCE.onHypixel &&
+                Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel() &&
                 !event.isCancelled() &&
                 matcher.find() &&
                 listening
