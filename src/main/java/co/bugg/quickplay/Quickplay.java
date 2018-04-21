@@ -5,8 +5,8 @@ import cc.hyperium.commands.BaseCommand;
 import cc.hyperium.event.EventBus;
 import cc.hyperium.event.InitializationEvent;
 import cc.hyperium.event.InvokeEvent;
+import cc.hyperium.event.PreInitializationEvent;
 import cc.hyperium.internal.addons.IAddon;
-import cc.hyperium.internal.addons.annotations.Instance;
 import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandQuickplay;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
@@ -49,7 +49,6 @@ import java.util.concurrent.Future;
 
 public class Quickplay implements IAddon {
 
-    @Instance
     public static Quickplay INSTANCE;
 
     /**
@@ -163,6 +162,16 @@ public class Quickplay implements IAddon {
     }
 
     @InvokeEvent
+    public void preInit(PreInitializationEvent event) {
+        requestFactory = new HttpRequestFactory();
+        assetFactory = new AssetFactory();
+
+        assetFactory.createDirectories();
+        assetFactory.dumpOldCache();
+        resourcePack = assetFactory.registerResourcePack();
+    }
+
+    @InvokeEvent
     public void init(InitializationEvent event) {
         INSTANCE = this;
         // The message buffer should remain online even
@@ -200,12 +209,7 @@ public class Quickplay implements IAddon {
         if(!this.enabled) {
 
             this.enabled = true;
-            requestFactory = new HttpRequestFactory();
-            assetFactory = new AssetFactory();
 
-            assetFactory.createDirectories();
-            assetFactory.dumpOldCache();
-            resourcePack = assetFactory.registerResourcePack();
 
             try {
                 settings = (ConfigSettings) AConfiguration.load("settings.json", ConfigSettings.class);
