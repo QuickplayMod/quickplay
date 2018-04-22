@@ -221,7 +221,7 @@ public class AssetFactory {
 
         // Create the mcmeta file for the "resource pack"
         final File mcmetaFile = new File(resourcesDirectory + "pack.mcmeta");
-        final String mcmetaFileContents = "{\"pack\": {\"pack_format\": 1, \"description\": \"Dynamic mod resources are stored in this pack.\"}}";
+        final String mcmetaFileContents = "{\"pack\": {\"pack_format\": 3, \"description\": \"Dynamic mod resources are stored in this pack.\"}}";
 
         try {
             if (!mcmetaFile.exists())
@@ -247,7 +247,7 @@ public class AssetFactory {
             Field defaultResourcePacksField;
             try {
                 // Try to get the field for the obfuscated "defaultResourcePacks" field
-                defaultResourcePacksField = Minecraft.class.getDeclaredField("field_110449_ao");
+                defaultResourcePacksField = Minecraft.class.getDeclaredField("aA");
             } catch(NoSuchFieldException e) {
                 // Obfuscated name wasn't found. Let's try the deobfuscated name.
                 defaultResourcePacksField = Minecraft.class.getDeclaredField("defaultResourcePacks");
