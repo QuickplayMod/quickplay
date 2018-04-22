@@ -1,0 +1,12 @@
+language: java
+before_install:
+  # Download gradle wrapper
+  - wget -P ./gradle/wrapper "raw.githubusercontent.com/MinecraftForge/ForgeGradle/FG_2.3/gradle/wrapper/gradle-wrapper.jar"
+  - wget -P ./gradle/wrapper "https://raw.githubusercontent.com/MinecraftForge/ForgeGradle/FG_2.3/gradle/wrapper/gradle-wrapper.properties"
+  - wget "https://raw.githubusercontent.com/MinecraftForge/ForgeGradle/FG_2.3/gradlew"
+  - chmod +x ./gradlew
+  
+install: ./gradlew setupDecompWorkspace
+script: ./gradlew build
+notifications:
+  email: false
