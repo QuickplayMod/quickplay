@@ -58,7 +58,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.HyperiumClient:Hyperium:53bc928754'
+    compile 'com.github.HyperiumClient:Hyperium:master'
 
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..

@@ -6,6 +6,7 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.GsonPostProcessorFactory;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
@@ -168,7 +169,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
 
     @InvokeEvent
     public void onKeyPress(KeypressEvent event) {
-        if(key != Keyboard.KEY_NONE && event.getKey() == key)
+        if(key != Keyboard.KEY_NONE && event.getKey() == key && Minecraft.getMinecraft().currentScreen == null)
             keyPressed();
     }
 }
