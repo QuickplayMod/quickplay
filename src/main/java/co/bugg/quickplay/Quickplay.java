@@ -163,16 +163,6 @@ public class Quickplay implements IAddon {
 
     @InvokeEvent
     public void preInit(PreInitializationEvent event) {
-        requestFactory = new HttpRequestFactory();
-        assetFactory = new AssetFactory();
-
-        assetFactory.createDirectories();
-        assetFactory.dumpOldCache();
-        resourcePack = assetFactory.registerResourcePack();
-    }
-
-    @InvokeEvent
-    public void init(InitializationEvent event) {
         INSTANCE = this;
         // The message buffer should remain online even
         // if the mod is disabled - this allows for
@@ -210,6 +200,12 @@ public class Quickplay implements IAddon {
 
             this.enabled = true;
 
+            requestFactory = new HttpRequestFactory();
+            assetFactory = new AssetFactory();
+
+            assetFactory.createDirectories();
+            assetFactory.dumpOldCache();
+            resourcePack = assetFactory.registerResourcePack();
 
             try {
                 settings = (ConfigSettings) AConfiguration.load("settings.json", ConfigSettings.class);
