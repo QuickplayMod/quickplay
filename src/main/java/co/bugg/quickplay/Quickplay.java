@@ -318,6 +318,8 @@ public class Quickplay implements IAddon {
             // Used for "Go to Lobby" buttons
             commands.add(new CommandHub("quickplaylobby", "hub"));
             commands.forEach(Hyperium.INSTANCE.getHandlers().getHyperiumCommandHandler()::registerCommand);
+
+            EventBus.INSTANCE.post(new QuickplayEnabledEvent(this));
         }
     }
 
