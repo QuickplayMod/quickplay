@@ -42,15 +42,15 @@ public class InstanceWatcher {
     public void onTick(TickEvent event) {
         if(started && tick++ > whereamiFrequency * 20) {
             tick = 0;
-            runWhereami();
+            updateInstance();
         }
     }
 
     @InvokeEvent
     public void onWorldChange(WorldChangeEvent event) {
         // Run twice, just in case first one doesn't trigger
-        new TickDelay(this::runWhereami, 15);
-        new TickDelay(this::runWhereami, 60);
+        new TickDelay(this::updateInstance, 15);
+        new TickDelay(this::updateInstance, 60);
     }
 
     /**
@@ -60,7 +60,7 @@ public class InstanceWatcher {
     public InstanceWatcher start() {
         Quickplay.INSTANCE.registerEventHandler(this);
         started = true;
-        runWhereami();
+        updateInstance();
         return this;
     }
 
@@ -75,52 +75,52 @@ public class InstanceWatcher {
     }
 
     /**
-     * Send the /whereami message if possible
+     * Determine where the client is currently at and update
      * @return this
      */
-    public InstanceWatcher runWhereami() {
-        if(Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel() && Quickplay.INSTANCE.enabled)
-            new WhereamiWrapper((server) -> {
+    public InstanceWatcher updateInstance() {
+        if(Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel() && Quickplay.INSTANCE.enabled) {
+            final String server = Hyperium.INSTANCE.getHandlers().getLocationHandler().getLocation();
 
-                // Automatic lobby 1 swapper
-                if(Quickplay.INSTANCE.settings.lobbyOneSwap) {
-                    // Swap if this is true by the end of this if statement
-                    boolean swapToLobbyOne = true;
-                    // Don't swap if we aren't in a lobby or we don't know where we are
-                    if(server == null || !server.contains("lobby"))
-                        swapToLobbyOne = false;
+            // Automatic lobby 1 swapper
+            if (Quickplay.INSTANCE.settings.lobbyOneSwap) {
+                // Swap if this is true by the end of this if statement
+                boolean swapToLobbyOne = true;
+                // Don't swap if we aren't in a lobby or we don't know where we are
+                if (server == null || !server.contains("lobby"))
+                    swapToLobbyOne = false;
                     // If we have been in another server before this one
-                    else if(instanceHistory.size() > 0) {
-                        // Get what server/lobby type this is
-                        final String serverType = server.replaceAll("\\d", "");
-                        // Get what server/lobby type the previous server is
-                        final String previousServerType = instanceHistory.get(0).replaceAll("\\d", "");
-                        // Swap if they aren't the same
-                        swapToLobbyOne = !serverType.equals(previousServerType);
-                    }
-                    // Swap if: you're in a lobby & you just joined the server to a lobby or you just left an instance that was not the same type of lobby as this
-                    if(swapToLobbyOne)
-                        Quickplay.INSTANCE.chatBuffer.push("/swaplobby 1");
-
+                else if (instanceHistory.size() > 0) {
+                    // Get what server/lobby type this is
+                    final String serverType = server.replaceAll("\\d", "");
+                    // Get what server/lobby type the previous server is
+                    final String previousServerType = instanceHistory.get(0).replaceAll("\\d", "");
+                    // Swap if they aren't the same
+                    swapToLobbyOne = !serverType.equals(previousServerType);
                 }
+                // Swap if: you're in a lobby & you just joined the server to a lobby or you just left an instance that was not the same type of lobby as this
+                if (swapToLobbyOne)
+                    Quickplay.INSTANCE.chatBuffer.push("/swaplobby 1");
 
-                if(server != null && (instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(server))) {
-                    instanceHistory.add(0, server);
+            }
 
-                    // Send analytical data to Google
-                    if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
-                        Quickplay.INSTANCE.threadPool.submit(() -> {
-                            try {
-                                Quickplay.INSTANCE.ga.createEvent("Instance", "Instance Changed")
-                                        .setEventLabel(server)
-                                        .send();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                    }
+            if (server != null && (instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(server))) {
+                instanceHistory.add(0, server);
+
+                // Send analytical data to Google
+                if (Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                    Quickplay.INSTANCE.threadPool.submit(() -> {
+                        try {
+                            Quickplay.INSTANCE.ga.createEvent("Instance", "Instance Changed")
+                                    .setEventLabel(server)
+                                    .send();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
-            });
+            }
+        }
         return this;
     }
 
