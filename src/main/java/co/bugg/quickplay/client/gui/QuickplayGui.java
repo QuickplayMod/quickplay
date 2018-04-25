@@ -194,7 +194,7 @@ public class QuickplayGui extends GuiScreen {
                     loadShaderMethod = EntityRenderer.class.getDeclaredMethod("loadShader", ResourceLocation.class);
                 } catch (NoSuchMethodException e) {
                     try {
-                        loadShaderMethod = EntityRenderer.class.getDeclaredMethod("a", ResourceLocation.class);
+                        loadShaderMethod = EntityRenderer.class.getDeclaredMethod("func_175069_a", ResourceLocation.class);
                     } catch (NoSuchMethodException e1) {
                         e1.printStackTrace();
                         Quickplay.INSTANCE.sendExceptionRequest(e);

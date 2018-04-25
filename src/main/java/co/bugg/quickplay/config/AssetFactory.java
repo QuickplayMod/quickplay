@@ -247,7 +247,7 @@ public class AssetFactory {
             Field defaultResourcePacksField;
             try {
                 // Try to get the field for the obfuscated "defaultResourcePacks" field
-                defaultResourcePacksField = Minecraft.class.getDeclaredField("aA");
+                defaultResourcePacksField = Minecraft.class.getDeclaredField("field_110449_ao");
             } catch(NoSuchFieldException e) {
                 // Obfuscated name wasn't found. Let's try the deobfuscated name.
                 defaultResourcePacksField = Minecraft.class.getDeclaredField("defaultResourcePacks");
