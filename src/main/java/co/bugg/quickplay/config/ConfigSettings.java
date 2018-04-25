@@ -49,15 +49,16 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     )
     public QuickplayColor secondaryColor = new QuickplayColor(0.7f, 0.7f, 0.7f);
 
-    /**
-     * Whether Quickplay GUIs should be blurred
-     */
-    @GuiOption(
-            name = "quickplay.settings.blurGuiBackgrounds.name",
-            helpText = "quickplay.settings.blurGuiBackgrounds.help",
-            category = "quickplay.settings.category.gui"
-    )
-    public boolean blurGuiBackgrounds = true;
+    // Ignored in Hyperium due to Hyperium's shaders
+//    /**
+//     * Whether Quickplay GUIs should be blurred
+//     */
+//    @GuiOption(
+//            name = "quickplay.settings.blurGuiBackgrounds.name",
+//            helpText = "quickplay.settings.blurGuiBackgrounds.help",
+//            category = "quickplay.settings.category.gui"
+//    )
+//    public boolean blurGuiBackgrounds = true;
 
     /**
      * Whether Quickplay GUIs should fade in

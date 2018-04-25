@@ -117,8 +117,10 @@ public class QuickplayGui extends GuiScreen {
      * Whether the GUI blurred background shader needs to be removed when the GUI closes
      * Assigned on GUI opening, otherwise if the user opens the GUI, the setting changes, and then closes the GUI,
      * the shader is applied until the user restarts the game, removes the shader manually, or re-enables the setting.
+     *
+     * In Hyperium, this is always false, unless the user enables the easter egg
      */
-    public boolean disableShaderOnGuiClose = Quickplay.INSTANCE.settings.blurGuiBackgrounds;
+    public boolean disableShaderOnGuiClose = false;
     /**
      * Animation for GUI fade-in
      */
@@ -182,18 +184,19 @@ public class QuickplayGui extends GuiScreen {
         // Hide HUD (health & scoreboard & such)
         mc.gameSettings.hideGUI = true;
 
-        // Load the blur background shader
-        if(Quickplay.INSTANCE.settings.blurGuiBackgrounds) {
-
-            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-                try {
-                    loadShader(new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
-                } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-                    e.printStackTrace();
-                    Quickplay.INSTANCE.sendExceptionRequest(e);
-                }
-            });
-        }
+        // Use Hyperium shaders instead
+//        // Load the blur background shader
+//        if(Quickplay.INSTANCE.settings.blurGuiBackgrounds) {
+//
+//            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+//                try {
+//                    loadShader(new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
+//                } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+//                    e.printStackTrace();
+//                    Quickplay.INSTANCE.sendExceptionRequest(e);
+//                }
+//            });
+//        }
 
         setScrollingValues();
     }
