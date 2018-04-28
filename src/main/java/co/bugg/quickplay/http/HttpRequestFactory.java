@@ -101,7 +101,6 @@ public class HttpRequestFactory {
      * @param params HashMap to add to
      */
     public void addStatisticsParameters(HashMap<String, String> params) {
-        Hyperium.LOGGER.error("Finding caller", new Exception("Finding caller"));
         // These values are always sent regardless of usage stats setting
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null)
             params.put("token", Quickplay.INSTANCE.usageStats.statsToken.toString()); // Unique token users can use to link their data to themselves
