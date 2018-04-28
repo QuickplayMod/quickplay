@@ -218,7 +218,7 @@ public class Quickplay implements IAddon {
                 usageStats = (ConfigUsageStats) AConfiguration.load("privacy.json", ConfigUsageStats.class);
             } catch (IOException | JsonSyntaxException e) {
                 // Config either doesn't exist or couldn't be parsed
-                e.printStackTrace();
+                Hyperium.LOGGER.error(e.getMessage(), e);
                 assetFactory.createDirectories();
 
                 if(settings == null)
@@ -235,7 +235,7 @@ public class Quickplay implements IAddon {
                     keybinds.save();
                 } catch (IOException e1) {
                     // File couldn't be saved
-                    e1.printStackTrace();
+                    Hyperium.LOGGER.error(e1.getMessage(), e1);
                     sendExceptionRequest(e1);
                     Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 }
@@ -254,7 +254,7 @@ public class Quickplay implements IAddon {
                                 .setSessionControl(AnalyticsRequest.SessionControl.START)
                                 .send();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Hyperium.LOGGER.error(e.getMessage(), e);
                     }
                 });
             }
@@ -266,7 +266,7 @@ public class Quickplay implements IAddon {
                 if(gameListArray != null)
                     this.gameList = java.util.Arrays.asList(gameListArray);
             } catch (Exception e) {
-                e.printStackTrace();
+                Hyperium.LOGGER.error(e.getMessage(), e);
                 sendExceptionRequest(e);
             }
 
@@ -290,7 +290,7 @@ public class Quickplay implements IAddon {
                                     glyphs.addAll(Arrays.asList(new Gson().fromJson(response.content.getAsJsonObject().get("glyphs"), PlayerGlyph[].class)));
                             }
                         } catch (IllegalStateException e) {
-                            e.printStackTrace();
+                            Hyperium.LOGGER.error(e.getMessage(), e);
                             sendExceptionRequest(e);
                         }
                     }
@@ -400,7 +400,7 @@ public class Quickplay implements IAddon {
                 try {
                     ga.createException().setExceptionDescription(e.getMessage()).send();
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    Hyperium.LOGGER.error(e1.getMessage(), e1);
                 }
             }
         }
@@ -434,7 +434,7 @@ public class Quickplay implements IAddon {
                 try {
                     Thread.sleep((long) (settings.partyModeDelay * 1000));
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                 }
 
                 messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
@@ -452,7 +452,7 @@ public class Quickplay implements IAddon {
     public void reloadResourcePack() throws NoSuchFieldException, IllegalAccessException {
         Field resourceManagerField;
         try {
-            resourceManagerField = Minecraft.class.getDeclaredField("field_110451_am");
+            resourceManagerField = Minecraft.class.getDeclaredField("ay");
         } catch(NoSuchFieldException e) {
             resourceManagerField = Minecraft.class.getDeclaredField("mcResourceManager");
         }

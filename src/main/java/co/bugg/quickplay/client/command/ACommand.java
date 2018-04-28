@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.command;
 
+import cc.hyperium.Hyperium;
 import cc.hyperium.commands.BaseCommand;
 import co.bugg.quickplay.Quickplay;
 
@@ -68,7 +69,7 @@ public abstract class ACommand implements BaseCommand {
                             .setEventLabel("/" + getName() + " " + String.join(" ", args))
                             .send();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                 }
             });
         }

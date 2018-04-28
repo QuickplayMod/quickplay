@@ -1,5 +1,7 @@
 package co.bugg.quickplay.util.analytics;
 
+import cc.hyperium.Hyperium;
+
 import java.net.MalformedURLException;
 
 /**
@@ -141,7 +143,7 @@ public class GoogleAnalytics {
             eventRequest.parameters.putAll(defaultRequest.parameters);
             return eventRequest;
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
         }
         return null;
     }
@@ -156,7 +158,7 @@ public class GoogleAnalytics {
             exceptionRequest.parameters.putAll(defaultRequest.parameters);
             return exceptionRequest;
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
         }
         return null;
     }
@@ -171,7 +173,7 @@ public class GoogleAnalytics {
             pageviewRequest.parameters.putAll(defaultRequest.parameters);
             return pageviewRequest;
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
         }
         return null;
     }
@@ -187,7 +189,7 @@ public class GoogleAnalytics {
             screenviewRequest.parameters.putAll(defaultRequest.parameters);
             return screenviewRequest;
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
         }
         return null;
     }
@@ -204,7 +206,7 @@ public class GoogleAnalytics {
             final TimingRequest timingRequest = new TimingRequest(this, timingCategory, timingVariableName, time);
             timingRequest.parameters.putAll(defaultRequest.parameters);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
         }
         return null;
     }

@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui.animations;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 
 import java.util.concurrent.Future;
@@ -45,7 +46,7 @@ public class StaticAnimation extends Animation {
                     updateFrame();
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Hyperium.LOGGER.error(e.getMessage(), e);
             }
         });
 

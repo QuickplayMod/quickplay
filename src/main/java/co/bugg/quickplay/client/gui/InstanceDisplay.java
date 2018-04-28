@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
@@ -86,7 +87,7 @@ public class InstanceDisplay extends MoveableHudElement {
             Quickplay.INSTANCE.settings.save();
         } catch (IOException e) {
             System.out.println("Error saving config!");
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
         }
     }
 }

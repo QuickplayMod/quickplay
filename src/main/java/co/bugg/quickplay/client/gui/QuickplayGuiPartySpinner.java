@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.games.PartyMode;
@@ -139,7 +140,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                     Minecraft.getMinecraft().displayGuiScreen(null);
                 }
             } catch(InterruptedException e) {
-                e.printStackTrace();
+                Hyperium.LOGGER.error(e.getMessage(), e);
             }
         });
     }

@@ -115,7 +115,7 @@ public class InstanceWatcher {
                                     .setEventLabel(server)
                                     .send();
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            Hyperium.LOGGER.error(e.getMessage(), e);
                         }
                     });
                 }

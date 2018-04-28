@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui.game;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.client.QuickplayKeybind;
@@ -318,7 +319,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                                 try {
                                     Quickplay.INSTANCE.keybinds.save();
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    Hyperium.LOGGER.error(e.getMessage(), e);
                                     Quickplay.INSTANCE.sendExceptionRequest(e);
                                 }
                                 Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
@@ -376,7 +377,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                                     try {
                                         Quickplay.INSTANCE.settings.save();
                                     } catch (IOException e) {
-                                        e.printStackTrace();
+                                        Hyperium.LOGGER.error(e.getMessage(), e);
                                     }
                                 }
                                 break;
@@ -411,7 +412,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                                 .setEventLabel(((Game) component.origin).name)
                                 .send();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Hyperium.LOGGER.error(e.getMessage(), e);
                     }
                 });
             }

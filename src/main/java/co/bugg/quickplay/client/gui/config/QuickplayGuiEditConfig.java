@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui.config;
 
+import cc.hyperium.Hyperium;
 import cc.hyperium.event.InvokeEvent;
 import cc.hyperium.event.TickEvent;
 import co.bugg.quickplay.Quickplay;
@@ -180,7 +181,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                 try {
                     configElements.add(new ConfigElement(field.get(config), guiOptionDisplay, I18n.format(field.getName())));
                 } catch (IllegalAccessException | IllegalArgumentException e) {
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                     Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
             }
@@ -374,7 +375,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                                             .setEventLabel(element.configFieldName + " : " + element.element)
                                             .send();
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    Hyperium.LOGGER.error(e.getMessage(), e);
                                 }
                             });
                         }
@@ -390,7 +391,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                                             .setEventLabel(element.configFieldName)
                                             .send();
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    Hyperium.LOGGER.error(e.getMessage(), e);
                                 }
                             });
                         }
@@ -413,7 +414,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                                             .setEventLabel(element.configFieldName + " : " + element.element)
                                             .send();
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    Hyperium.LOGGER.error(e.getMessage(), e);
                                 }
                             });
                         }
@@ -425,7 +426,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                 try {
                     Desktop.getDesktop().open(new File(AssetFactory.configDirectory));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                     Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
             }
@@ -447,7 +448,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         } catch (IOException | IllegalAccessException | NoSuchFieldException e) {
             System.out.println("Failed to save option " + element.configFieldName + ".");
             Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
     }

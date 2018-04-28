@@ -50,7 +50,7 @@ public class SubCommandDelivery extends ASubCommand {
                 try {
                     Thread.sleep(1500);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                     Quickplay.INSTANCE.chatBuffer.push("/delivery");
                     Quickplay.INSTANCE.sendExceptionRequest(e);
                     return;

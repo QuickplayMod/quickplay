@@ -48,10 +48,8 @@ public class HttpRequestFactory {
      * @return Response from the website
      */
     public Request newRequest(String endpoint, HashMap<String, String> params) {
-
         try {
             URIBuilder builder = new URIBuilder(endpoint);
-
             HttpPost post = new HttpPost(builder.toString());
 
             if(params != null) {
@@ -62,7 +60,7 @@ public class HttpRequestFactory {
 
             return new Request(post, this);
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
 
@@ -103,9 +101,11 @@ public class HttpRequestFactory {
      * @param params HashMap to add to
      */
     public void addStatisticsParameters(HashMap<String, String> params) {
+        Hyperium.LOGGER.error("Finding caller", new Exception("Finding caller"));
         // These values are always sent regardless of usage stats setting
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null)
             params.put("token", Quickplay.INSTANCE.usageStats.statsToken.toString()); // Unique token users can use to link their data to themselves
+
         params.put("manager", Reference.MOD_NAME + " v" + Reference.VERSION); // manager of this data, who sent it (e.g. Quickplay, HCC)
         params.put("version", Reference.VERSION);
         // Tells the web server if the client wants to be notified of any new updates
@@ -126,13 +126,14 @@ public class HttpRequestFactory {
             // Add settings
             if(Quickplay.INSTANCE.settings != null)
                 params.put("settings", gson.toJson(Quickplay.INSTANCE.settings));
+
             if(Quickplay.INSTANCE.keybinds != null)
                 params.put("keybinds", gson.toJson(Quickplay.INSTANCE.keybinds));
 
             try {
                 params.put("mcVersion", ReflectionUtil.getMCVersion());
             } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                e.printStackTrace();
+                Hyperium.LOGGER.error(e.getMessage(), e);
                 params.put("mcVersion", "unknown");
                 Quickplay.INSTANCE.sendExceptionRequest(e);
             }

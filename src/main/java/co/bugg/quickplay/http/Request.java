@@ -1,5 +1,6 @@
 package co.bugg.quickplay.http;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.http.response.WebResponse;
 import org.apache.commons.io.IOUtils;
@@ -60,7 +61,7 @@ public class Request {
 
             httpResponse.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
             // Don't send error report if the issue arose from an /exception request. Otherwise it'll probably create an infinite loop.
             if(!apacheRequestObj.getURI().toString().endsWith("/exception"))
                 Quickplay.INSTANCE.sendExceptionRequest(e);

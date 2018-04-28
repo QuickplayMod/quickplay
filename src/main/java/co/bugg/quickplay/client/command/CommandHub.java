@@ -79,7 +79,7 @@ public class CommandHub extends ACommand {
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                Hyperium.LOGGER.error(e.getMessage(), e);
                             }
                             // Swap lobbies after waiting a sec
                             Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);

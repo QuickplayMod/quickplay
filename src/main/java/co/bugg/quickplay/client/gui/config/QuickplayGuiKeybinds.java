@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui.config;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayKeybind;
 import co.bugg.quickplay.client.gui.QuickplayGui;
@@ -148,7 +149,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                                 try {
                                     Quickplay.INSTANCE.keybinds.save();
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    Hyperium.LOGGER.error(e.getMessage(), e);
                                     Quickplay.INSTANCE.sendExceptionRequest(e);
                                 }
 
@@ -182,7 +183,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                 Quickplay.INSTANCE.keybinds.save();
                 initGui();
             } catch (IOException e) {
-                e.printStackTrace();
+                Hyperium.LOGGER.error(e.getMessage(), e);
             }
         }
     }
@@ -199,7 +200,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Hyperium.LOGGER.error(e.getMessage(), e);
                     }
                     drawTakenPopup = false;
                 });
@@ -218,7 +219,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                                             .setEventLabel(keybind.name + " : " + keybind.key)
                                             .send();
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    Hyperium.LOGGER.error(e.getMessage(), e);
                                 }
                             });
                         }
@@ -229,7 +230,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
             try {
                 formatComponentString(selectedComponent, false);
             } catch(IllegalArgumentException e) {
-                e.printStackTrace();
+                Hyperium.LOGGER.error(e.getMessage(), e);
                 Quickplay.INSTANCE.sendExceptionRequest(e);
             }
             selectedComponent = null;

@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.command;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.resources.I18n;
 
@@ -36,7 +37,7 @@ public class SubCommandWiki extends ASubCommand {
         try {
             Desktop.getDesktop().browse(new URI("https://bugg.co/quickplay/wiki/"));
         } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
     }

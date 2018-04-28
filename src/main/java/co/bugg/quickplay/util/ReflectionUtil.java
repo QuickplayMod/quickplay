@@ -46,8 +46,12 @@ public class ReflectionUtil {
      * @return String containing the Minecraft version
      * @throws IllegalAccessException Couldn't access the minecraft version for some reason
      */
-    public static String getMCVersion() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        return (String) getMethod(Minecraft.class, "getVersion").invoke(Minecraft.getMinecraft());
+    public static String getMCVersion() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        try {
+            return (String) getMethod(Minecraft.class, "getVersion").invoke(Minecraft.getMinecraft());
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            return (String) getMethod(Minecraft.class, "c").invoke(Minecraft.getMinecraft());
+        }
     }
 
 }

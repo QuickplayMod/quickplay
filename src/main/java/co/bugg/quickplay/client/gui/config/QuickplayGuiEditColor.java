@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui.config;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.QuickplayGui;
@@ -174,7 +175,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
         } catch (IOException e) {
             System.out.println("Failed to save color " + colorName + ".");
             Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
     }

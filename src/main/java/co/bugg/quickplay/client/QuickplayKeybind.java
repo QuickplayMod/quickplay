@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client;
 
+import cc.hyperium.Hyperium;
 import cc.hyperium.event.InvokeEvent;
 import cc.hyperium.event.KeypressEvent;
 import co.bugg.quickplay.Quickplay;
@@ -128,12 +129,12 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
                                     .setEventValue(0)
                                     .send();
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            Hyperium.LOGGER.error(e.getMessage(), e);
                         }
                     });
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Hyperium.LOGGER.error(e.getMessage(), e);
                 Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.keybinds.illegal", name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 Quickplay.INSTANCE.sendExceptionRequest(e);
             }
@@ -155,7 +156,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
                                 .setEventValue(1)
                                 .send();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Hyperium.LOGGER.error(e.getMessage(), e);
                     }
                 });
             }

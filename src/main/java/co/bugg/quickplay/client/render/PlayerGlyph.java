@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.render;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Reference;
@@ -103,7 +104,7 @@ public class PlayerGlyph {
                     });
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Hyperium.LOGGER.error(e.getMessage(), e);
                 Quickplay.INSTANCE.sendExceptionRequest(e);
                 downloading = false;
             }

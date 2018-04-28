@@ -1,5 +1,7 @@
 package co.bugg.quickplay.util.analytics;
 
+import cc.hyperium.Hyperium;
+
 import java.net.MalformedURLException;
 import java.util.UUID;
 
@@ -48,7 +50,7 @@ public class GoogleAnalyticsFactory {
                     .setApplicationName(appName)
                     .setApplicationVersion(appVersion);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
         }
         return null;
     }

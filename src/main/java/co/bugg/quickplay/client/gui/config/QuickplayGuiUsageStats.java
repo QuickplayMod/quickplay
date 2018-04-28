@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui.config;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
@@ -127,7 +128,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
             try {
                 Desktop.getDesktop().browse(new URI((String) component.origin));
             } catch (IOException | URISyntaxException | ClassCastException e) {
-                e.printStackTrace();
+                Hyperium.LOGGER.error(e.getMessage(), e);
                 Quickplay.INSTANCE.sendExceptionRequest(e);
                 // If origin isn't string for some reason, just put "contact bugfroggy" instead of a url.
                 final String url = (component.origin instanceof String) ? "Visit " + component.origin : "Contact @bugfroggy.";
@@ -154,7 +155,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
                                 .setEventLabel("Report usage: " + Quickplay.INSTANCE.usageStats.sendUsageStats)
                                 .send();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Hyperium.LOGGER.error(e.getMessage(), e);
                     }
                 });
             }
@@ -162,7 +163,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
             try {
                 Quickplay.INSTANCE.usageStats.save();
             } catch (IOException e) {
-                e.printStackTrace();
+                Hyperium.LOGGER.error(e.getMessage(), e);
                 Quickplay.INSTANCE.sendExceptionRequest(e);
             }
             Minecraft.getMinecraft().displayGuiScreen(null);

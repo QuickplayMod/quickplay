@@ -1,5 +1,6 @@
 package co.bugg.quickplay.http.response;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.config.ConfigKeybinds;
 import co.bugg.quickplay.config.ConfigSettings;
@@ -61,7 +62,7 @@ public class ResponseAction {
                     Quickplay.INSTANCE.keybinds.save();
                 } catch (IOException e) {
                     System.out.println("Failed to save file while overwriting settings");
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                     Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
                 break;
@@ -130,7 +131,7 @@ public class ResponseAction {
                                 // Save the retrieved game list to cache
                                 Quickplay.INSTANCE.assetFactory.saveCachedGameList(Quickplay.INSTANCE.gameList.toArray(new Game[Quickplay.INSTANCE.gameList.size()]));
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Hyperium.LOGGER.error(e.getMessage(), e);
                                 Quickplay.INSTANCE.sendExceptionRequest(e);
                             }
 
@@ -149,7 +150,7 @@ public class ResponseAction {
                     Message message = Message.fromJson(value);
                     Quickplay.INSTANCE.messageBuffer.push(message);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                     Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
                 break;
@@ -194,7 +195,7 @@ public class ResponseAction {
                                         .setEventValue(Quickplay.INSTANCE.currentPing)
                                         .send();
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                Hyperium.LOGGER.error(e.getMessage(), e);
                             }
                         }
                         // Increase ping count

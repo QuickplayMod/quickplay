@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
@@ -177,7 +178,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         try {
             Quickplay.INSTANCE.settings.save();
         } catch (IOException e) {
-            e.printStackTrace();
+            Hyperium.LOGGER.error(e.getMessage(), e);
             Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror")));
         }
     }

@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Reference;
@@ -138,7 +139,7 @@ public class QuickplayGui extends GuiScreen {
                             .setEventLabel(getClass().getName())
                             .send();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                 }
             });
         }
@@ -164,7 +165,7 @@ public class QuickplayGui extends GuiScreen {
                             .setEventLabel(getClass().getName())
                             .send();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                 }
             });
         }
@@ -192,7 +193,7 @@ public class QuickplayGui extends GuiScreen {
 //                try {
 //                    loadShader(new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
 //                } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-//                    e.printStackTrace();
+//                    Hyperium.LOGGER.error(e.getMessage(), e);
 //                    Quickplay.INSTANCE.sendExceptionRequest(e);
 //                }
 //            });
@@ -406,7 +407,7 @@ public class QuickplayGui extends GuiScreen {
                 try {
                     loadShader(new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_rainbow_gui.json"));
                 } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                     Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
             });
@@ -513,7 +514,7 @@ public class QuickplayGui extends GuiScreen {
                         try {
                             Thread.sleep(Math.abs(scrollDelay));
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            Hyperium.LOGGER.error(e.getMessage(), e);
                             break;
                         }
                     } else {

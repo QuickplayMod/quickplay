@@ -1,5 +1,7 @@
 package co.bugg.quickplay.client.gui.animations;
 
+import cc.hyperium.Hyperium;
+
 /**
  * Basic class capable of timing GUI animations and their progress
  */
@@ -53,7 +55,7 @@ public class Animation {
                 try {
                     wait();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                 }
             }
         }

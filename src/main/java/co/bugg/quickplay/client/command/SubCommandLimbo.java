@@ -47,7 +47,7 @@ public class SubCommandLimbo extends ASubCommand {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Hyperium.LOGGER.error(e.getMessage(), e);
                     Quickplay.INSTANCE.chatBuffer.push("/achat §");
                     Quickplay.INSTANCE.sendExceptionRequest(e);
                     return;
