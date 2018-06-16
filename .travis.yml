@@ -6,7 +6,14 @@ before_install:
   - wget "https://raw.githubusercontent.com/MinecraftForge/ForgeGradle/FG_2.3/gradlew"
   - chmod +x ./gradlew
   
-install: ./gradlew setupDecompWorkspace
-script: ./gradlew build
+install: ./gradlew setupCIWorkspace -s
+script: ./gradlew build -s
 notifications:
   email: false
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
