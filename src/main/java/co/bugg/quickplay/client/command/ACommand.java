@@ -129,9 +129,7 @@ public abstract class ACommand implements ICommand {
      * @return Modified array
      */
     public String[] removeFirstArgument(String[] args) {
-        ArrayList<String> argsList = new ArrayList<>(Arrays.asList(args));
-        argsList.remove(0);
-        return argsList.toArray(new String[argsList.size()]);
+        return Arrays.copyOfRange(args, 1, args.length);
     }
 
     /**
