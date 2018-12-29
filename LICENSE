@@ -1,26 +1,80 @@
-# DON'T BE A DICK PUBLIC LICENSE
+> Copyright Erik Roberts 2018
 
-> Version 1.1, December 2016
+> Last updated: December 28th 2018
 
-> Copyright (C) 2018 Erik Roberts
+### 1. Introduction
+This is a legal agreement between you, the end-user, and the developers of
+Quickplay and Quickplay Premium. By using, installing, or purchasing Quickplay,
+Quickplay Premium, or any related services or products, you must agree to and
+abide by the terms outlined by this agreement. You confirm that you are of
+legal age of majority within your jurisdiction and are capable of entering
+this agreement.
 
-Everyone is permitted to copy and distribute verbatim or modified
-copies of this license document.
+### 2. Grant of License
+This agreement covers both Quickplay and Quickplay Premium. By agreeing to this
+agreement, you are granted a limited revocable license to Quickplay and NOT
+Quickplay Premium. A license to Quickplay Premium will be granted with the
+non-refundable payment of $5.00 USD or more. This is a limited non-transferable
+license. Transferring the service to another account does not transfer the
+license and the original purchaser remains the license holder, and is therefore
+responsible for making sure the account this license is associated with abides
+by this agreement. Each license may not be associated with or used by more than
+one account at any given moment. Either of these licenses may be revoked upon
+breach of this agreement or as seen fit by the developers of Quickplay and
+Quickplay Premium.
 
-> DON'T BE A DICK PUBLIC LICENSE
-> TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+### 3. Restrictions
+You may not (a) attempt to decompile, reverse engineer, or decrypt the provided
+(compiled) software. Source code for Quickplay is available on the Quickplay
+Github. (b) attempt to make a profit off of Quickplay, Quickplay Premium, or any
+portion of it that is not within the scope of this software without explicit
+written permission from the developers of Quickplay and Quickplay Premium. (c) use
+the software in any way to directly or indirectly create a substitute or competition
+to the software granted by this license or any other software or services created
+by the developers of Quickplay or Quickplay Premium. (d) use the software
+maliciously or in a way that would violate relevant laws or Hypixel Network rules.
+(e) use the software, API, or interfaces in a way that they are not intended to be
+used without explicit written permission from the developers of Quickplay and
+Quickplay Premium.
 
-1. Do whatever you like with the original work, just don't be a dick.
+### 4. Redistribution
+You may redistribute exact copies of Quickplay and Quickplay Premium, provided you
+clearly publish the relevant copyright information, this license, and do not claim
+the software as your own.
 
-   Being a dick includes - but is not limited to - the following instances:
+You may not redistribute modified versions of this program or sections of this
+programs code (snippets) that serve the same purpose of the original software
+without explicit written permission from the developers of Quickplay and Quickplay
+Premium. Upon approval, all modifications must be clearly outlined and copyrights
+and licenses retained. If your software does not serve as an alternative to the
+original software or any other software or services created by the developers of
+Quickplay or Quickplay Premium, then explicit written permission is unnecessary.
 
- 1a. Outright copyright infringement - Don't just copy this and change the name.
- 1b. Selling the unmodified original with no work done what-so-ever, that's REALLY being a dick.
- 1c. Modifying the original work to contain hidden harmful content. That would make you a PROPER dick.
+### 5. Termination of License
+Failure to comply with points outlined in this license may result in an automatic
+disabling of the software. You may terminate this agreement by ceasing all use of
+this software and any relevant modifications or snippets. Developers of Quickplay
+and Quickplay Premium reserve the right to terminate this agreement and disable
+your software without notice and for any reason if deemed necessary.
 
-2. If you become rich through modifications, related works/services, or supporting the original work,
-share the love. Only a dick would make loads off this work and not buy the original work's
-creator(s) a pint.
+### 6. Liability
+The developers of Quickplay and Quickplay Premium are not liable for damages
+occurring as a result of use of or inability to use the provided software except
+for what is legally required of them. Damages include, but are not limited to
+(a) profit or revenue loss (b) data loss (c) personal injury or software
+malfunctions (d) loss of access to the provided software.
 
-3. Code is provided with no warranty. Using somebody else's code and bitching when it goes wrong makes
-you a DONKEY dick. Fix the problem yourself. A non-dick would submit the fix back.
+The developers of Quickplay and Quickplay Premium shall not be monetarily liable
+for more than that spent by the user on the software.
+
+### 7. Warranty
+Quickplay, Quickplay Premium, and all related software and services are provided
+as is. Updates to or bug fixes for this software are not guaranteed. The
+developers of Quickplay and Quickplay Premium are not responsible for misuse of
+this software, and are not required to assist in resolving issues or complications.
+
+### 8. Copyright
+All materials provided by this license are protected under copyright by the
+developers of Quickplay and Quickplay Premium. This license does not grant you
+copyright rights over these materials. Use of this software outside of the guidelines
+outlined in this license is prohibited.
