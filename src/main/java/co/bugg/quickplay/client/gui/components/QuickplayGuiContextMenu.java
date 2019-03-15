@@ -21,28 +21,28 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
     /**
      * Opacity of the background box behind the menu
      */
-    public final double boxOpacity = 0.7;
+    private static final double boxOpacity = 0.7;
     /**
      * Scale of the menu
      */
-    public final double scale = 1.0;
+    public static final double scale = 1.0;
     /**
      * Padding between the text and the edges of the background box
      */
-    public final int boxPadding = 3;
+    private static final int boxPadding = 3;
     /**
      * Margin on the bottom of strings (between each string)
      */
-    public final int stringBottomMargin = 3;
+    private static final int stringBottomMargin = 3;
     /**
      * The index of the currently highlighted option
      * -1 for none
      */
-    public int highlightedOptionIndex = -1;
+    private static int highlightedOptionIndex = -1;
     /**
      * The font renderer to use
      */
-    final FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRendererObj;
+    private static final FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRendererObj;
 
     /**
      * Constructor
@@ -54,7 +54,7 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
      * @param x       The X position of this context menu
      * @param y       The Y position of this context menu
      */
-    public QuickplayGuiContextMenu(List<String> options, QuickplayGuiComponent origin, int id, int x, int y) {
+    protected QuickplayGuiContextMenu(List<String> options, QuickplayGuiComponent origin, int id, int x, int y) {
         // Width / height calculated later
         super(origin, id, x, y, 0, 0, "", false);
 

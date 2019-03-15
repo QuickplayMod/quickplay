@@ -31,7 +31,7 @@ public class HttpRequestFactory {
         httpClient = newClient();
     }
 
-    public HttpClient newClient() {
+    private HttpClient newClient() {
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
         connectionManager.setMaxTotal(100);
 

@@ -236,7 +236,6 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             name = "quickplay.settings.partyModeDelay.name",
             helpText = "quickplay.settings.partyModeDelay.help",
             category = "quickplay.settings.category.partyMode",
-            minValue = 0,
             maxValue = 10,
             decimalFormat = "0.0"
     )

@@ -21,18 +21,11 @@ public class QuickplayColor implements Serializable, GsonPostProcessorFactory.Po
      * the hue changes every frame 20ms frame.
      * This is a value between 0 and 1.
      */
-    protected float chromaSpeed;
+    private float chromaSpeed;
     /**
      * The future thread that calculate's this color's chroma values
      */
-    protected transient Future chromaFuture;
-
-    /**
-     * Constructor
-     */
-    public QuickplayColor() {
-        this(1.0f, 1.0f, 1.0f, 0);
-    }
+    private transient Future chromaFuture;
 
     /**
      * Constructor
@@ -53,7 +46,7 @@ public class QuickplayColor implements Serializable, GsonPostProcessorFactory.Po
      * @param b           Blue value
      * @param chromaSpeed Amount at which chroma value changes at each interval
      */
-    public QuickplayColor(float r, float g, float b, float chromaSpeed) {
+    private QuickplayColor(float r, float g, float b, float chromaSpeed) {
         this.color = new Color(r, g, b);
         this.chromaSpeed = chromaSpeed;
         startChromaThread();
@@ -63,7 +56,7 @@ public class QuickplayColor implements Serializable, GsonPostProcessorFactory.Po
      * Start a thread initializing the chroma animation
      * Cancel any old threads if one exists
      */
-    protected synchronized void startChromaThread() {
+    private synchronized void startChromaThread() {
         if (this.chromaFuture != null) this.chromaFuture.cancel(true);
 
         this.chromaFuture = Quickplay.INSTANCE.threadPool.submit(() -> {

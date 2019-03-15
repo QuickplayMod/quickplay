@@ -26,12 +26,6 @@ public class Animation {
 
     /**
      * Constructor
-     */
-    public Animation() {
-    }
-
-    /**
-     * Constructor
      *
      * @param length The length of this animation in milliseconds
      */
@@ -60,21 +54,6 @@ public class Animation {
             }
         }
 
-        return this;
-    }
-
-    /**
-     * Stop this animation from progressing any further
-     * <code>notify()</code> is called
-     *
-     * @return This
-     */
-    public Animation stop() {
-        startedMillis = -1;
-        started = false;
-        synchronized (this) {
-            notify();
-        }
         return this;
     }
 

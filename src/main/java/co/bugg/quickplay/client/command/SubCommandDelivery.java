@@ -20,7 +20,7 @@ public class SubCommandDelivery extends ASubCommand {
      *
      * @param parent Parent command
      */
-    public SubCommandDelivery(ACommand parent) {
+    SubCommandDelivery(ACommand parent) {
         super(
                 parent,
                 "delivery",

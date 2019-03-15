@@ -98,7 +98,7 @@ public class ResponseAction {
                                         for (final ListIterator<PartyMode> iter = Quickplay.INSTANCE.settings.partyModes.listIterator(); iter.hasNext(); ) {
                                             final PartyMode mode = iter.next();
                                             // Split the namespace
-                                            final String[] splitNamespace = mode.namespace.split("/");
+                                            final String[] splitNamespace = mode.getNamespace().split("/");
                                             // If no games have the given unlocalized game name
                                             if (Quickplay.INSTANCE.gameList.stream().noneMatch(game -> game.unlocalizedName.replace("/", "").equals(splitNamespace[0]))) {
                                                 iter.remove();

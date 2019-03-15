@@ -8,6 +8,7 @@ import java.util.concurrent.Future;
  * {@link Animation} running on a static timer calling {@link #updateFrame()}, as opposed to
  * calling the method manually (i.e. before drawing each frame).
  */
+@SuppressWarnings("unused")
 public class StaticAnimation extends Animation {
 
     /**
@@ -16,12 +17,12 @@ public class StaticAnimation extends Animation {
      * <p>
      * Default 25ms, or 40 frames per second
      */
-    public int updateFrequency;
+    private int updateFrequency;
 
     /**
      * Future containing the thread that updates the progress
      */
-    public Future threadFuture;
+    private Future threadFuture;
 
     /**
      * Construction

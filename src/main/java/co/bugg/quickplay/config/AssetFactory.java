@@ -21,7 +21,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,12 +33,12 @@ public class AssetFactory {
      * Root directory for all things Quickplay
      * Relative to Minecraft root
      */
-    public static final String rootDirectory = "quickplay/";
+    private static final String rootDirectory = "quickplay/";
     /**
      * File path to the Quickplay game list cache
      * Relative to Minecraft root
      */
-    public static final String gamelistCacheFile = rootDirectory + "cached_gamelist.json";
+    private static final String gamelistCacheFile = rootDirectory + "cached_gamelist.json";
     /**
      * Directory to all Quickplay configurations
      * Relative to Minecraft root
@@ -49,7 +48,7 @@ public class AssetFactory {
      * Directory to all Quickplay resources
      * Relative to Minecraft root
      */
-    public static final String resourcesDirectory = rootDirectory + "resources/";
+    private static final String resourcesDirectory = rootDirectory + "resources/";
     /**
      * Directory to all Quickplay resource pack assets
      * Relative to Minecraft root
@@ -65,23 +64,20 @@ public class AssetFactory {
      * Cache life for glyphs in milliseconds
      * 2 days
      */
-    public static final long glyphCacheLife = 2L * 24 * 60 * 60 * 1000;
+    private static final long glyphCacheLife = 2L * 24 * 60 * 60 * 1000;
     /**
      * Cache life for game icons in milliseconds
      * 14 days
      */
-    public static final long iconCacheLife = 14L * 24 * 60 * 60 * 1000;
+    private static final long iconCacheLife = 14L * 24 * 60 * 60 * 1000;
 
     /**
      * Download all icons from the specified URLs
      *
      * @param urls List of URLs to download from
-     * @return List of ResourceLocations for all icons
      */
-    public List<ResourceLocation> loadIcons(List<URL> urls) {
+    public void loadIcons(List<URL> urls) {
         createDirectories();
-
-        List<ResourceLocation> resourceLocations = new ArrayList<>();
 
         for (URL url : urls) {
             File file = getIconFile(url);
@@ -121,14 +117,8 @@ public class AssetFactory {
 
             final ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, file.getName());
 
-            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-                Quickplay.INSTANCE.reloadResource(file, resourceLocation);
-            });
-
-            resourceLocations.add(resourceLocation);
+            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> Quickplay.INSTANCE.reloadResource(file, resourceLocation));
         }
-
-        return resourceLocations;
     }
 
     /**
@@ -145,7 +135,8 @@ public class AssetFactory {
         if (glyphFiles != null) {
             for (final File file : glyphFiles) {
                 if (file.exists() && file.isFile() && file.lastModified() + glyphCacheLife < now)
-                    file.delete();
+                    if (!file.delete())
+                        throw new IllegalStateException("Unable to delete old cached glyph");
             }
         }
 
@@ -154,7 +145,8 @@ public class AssetFactory {
         if (iconFiles != null) {
             for (final File file : iconFiles) {
                 if (file.exists() && file.isFile() && file.lastModified() + iconCacheLife < now)
-                    file.delete();
+                    if (!file.delete())
+                        throw new IllegalStateException("Unable to delete old cached icons");
             }
         }
     }
@@ -169,7 +161,8 @@ public class AssetFactory {
         if (glyphFiles != null) {
             for (final File file : glyphFiles) {
                 if (file.exists() && file.isFile())
-                    file.delete();
+                    if (!file.delete())
+                        throw new IllegalStateException("Unable to delete cached glyph");
             }
         }
 
@@ -178,14 +171,16 @@ public class AssetFactory {
         if (iconFiles != null) {
             for (final File file : iconFiles) {
                 if (file.exists() && file.isFile())
-                    file.delete();
+                    if (!file.delete())
+                        throw new IllegalStateException("Unable to delete cached icons");
             }
         }
 
         // Delete cached gamelist
         final File gameList = new File(gamelistCacheFile);
         if (gameList.exists() && gameList.isFile())
-            gameList.delete();
+            if (!gameList.delete())
+                throw new IllegalStateException("Unable to delete cached gamelist");
     }
 
     /**
@@ -199,16 +194,20 @@ public class AssetFactory {
         final File glyphsDirFile = new File(glyphsDirectory);
 
         if (!configDirFile.isDirectory())
-            configDirFile.mkdirs();
+            if (!configDirFile.mkdirs())
+                throw new IllegalStateException("Unable to create config directory");
 
         if (!resourcesDirFile.isDirectory())
-            resourcesDirFile.mkdirs();
+            if (!resourcesDirFile.mkdirs())
+                throw new IllegalStateException("Unable to create resources directory");
 
         if (!assetsDirFile.isDirectory())
-            assetsDirFile.mkdirs();
+            if (!assetsDirFile.mkdirs())
+                throw new IllegalStateException("Unable to create assets directory");
 
         if (!glyphsDirFile.isDirectory())
-            glyphsDirFile.mkdirs();
+            if (!glyphsDirFile.mkdirs())
+                throw new IllegalStateException("Unable to create glyphs directory");
 
         // Create the mcmeta file for the "resource pack"
         final File mcmetaFile = new File(resourcesDirectory + "pack.mcmeta");
@@ -216,7 +215,8 @@ public class AssetFactory {
 
         try {
             if (!mcmetaFile.exists())
-                mcmetaFile.createNewFile();
+                if (!mcmetaFile.createNewFile())
+                    throw new IllegalStateException("Unable to create mcmeta file");
             Files.write(mcmetaFile.toPath(), mcmetaFileContents.getBytes());
         } catch (IOException e) {
             System.out.println("Failed to generate mcmeta file! Mod may or may not work properly.");
@@ -231,6 +231,7 @@ public class AssetFactory {
      *
      * @return resource pack that is added
      */
+    @SuppressWarnings({"JavaReflectionMemberAccess", "unchecked"})
     public IResourcePack registerResourcePack() {
         FolderResourcePack resourcePack = new FolderResourcePack(new File(resourcesDirectory));
 
@@ -315,7 +316,8 @@ public class AssetFactory {
      * @param url URL the icon can be found at
      * @return A new {@link File}
      */
-    public File getIconFile(URL url) {
+    @SuppressWarnings("UnstableApiUsage")
+    private File getIconFile(URL url) {
         HashCode hash = Hashing.md5().hashString(url.toString(), Charset.forName("UTF-8"));
         return new File(assetsDirectory + hash.toString() + "." + FilenameUtils.getExtension(url.getPath()));
     }

@@ -97,7 +97,7 @@ public abstract class ASubCommand {
      *
      * @return {@link #helpMessage}
      */
-    public String getHelpMessage() {
+    String getHelpMessage() {
         return helpMessage;
     }
 
@@ -106,7 +106,7 @@ public abstract class ASubCommand {
      *
      * @return {@link #usage}
      */
-    public String getUsage() {
+    String getUsage() {
         return usage;
     }
 
@@ -115,7 +115,7 @@ public abstract class ASubCommand {
      *
      * @return {@link #displayInHelpMenu}
      */
-    public boolean canDisplayInHelpMenu() {
+    boolean canDisplayInHelpMenu() {
         return displayInHelpMenu;
     }
 
@@ -124,7 +124,7 @@ public abstract class ASubCommand {
      *
      * @return {@link #displayInTabList}
      */
-    public boolean canDisplayInTabList() {
+    boolean canDisplayInTabList() {
         return displayInTabList;
     }
 
@@ -133,7 +133,7 @@ public abstract class ASubCommand {
      *
      * @return {@link #priority}
      */
-    public double getPriority() {
+    double getPriority() {
         return priority;
     }
 }

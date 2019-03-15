@@ -14,23 +14,22 @@ public class WhereamiWrapper {
     /**
      * Whether this wrapper should listen for & action on chat messages
      */
-    boolean listening;
+    private boolean listening;
     /**
      * Whether this wrapper should cancel whereami messages it finds
      */
-    boolean cancel;
+    private boolean cancel;
     /**
      * Callback when this wrapper finds a /whereami message
      */
-    final WhereamiListenerCallback callback;
+    private final WhereamiListenerCallback callback;
 
     /**
      * Constructor
      *
      * @param callback Callback when this wrapper finds a /whereami message
      */
-    public WhereamiWrapper(WhereamiListenerCallback callback) {
-
+    WhereamiWrapper(WhereamiListenerCallback callback) {
         Quickplay.INSTANCE.registerEventHandler(this);
         this.callback = callback;
         this.listening = true;
@@ -48,7 +47,7 @@ public class WhereamiWrapper {
      * Don't cancel the chat message if it comes
      * in, but still listen & call the callback
      */
-    public void stopCancelling() {
+    private void stopCancelling() {
         this.cancel = false;
     }
 
@@ -58,7 +57,7 @@ public class WhereamiWrapper {
      *
      * @param instance Current instance to pass to callback
      */
-    public void stopListening(String instance) {
+    private void stopListening(String instance) {
         if (listening) {
             this.listening = false;
             Quickplay.INSTANCE.unregisterEventHandler(this);

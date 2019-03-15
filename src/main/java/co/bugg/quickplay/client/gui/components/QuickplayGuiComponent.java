@@ -41,7 +41,7 @@ public abstract class QuickplayGuiComponent extends Gui {
     /**
      * Whether the user is currently hovering over this component or not
      */
-    public boolean hovering;
+    boolean hovering;
     /**
      * The arbitrary origin of this component
      * Can be used however the user finds necessary. Is a useful alternative to keeping track of IDs
@@ -75,15 +75,6 @@ public abstract class QuickplayGuiComponent extends Gui {
         this.height = height;
         this.displayString = displayString;
         this.scrollable = scrollable;
-    }
-
-    /**
-     * Move this component vertically a certain distance
-     *
-     * @param distance the distance to move this component. Distance is added (positive values move the component down).
-     */
-    public synchronized void move(int distance) {
-        this.y = y + distance;
     }
 
     /**

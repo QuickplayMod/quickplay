@@ -11,7 +11,7 @@ public class PartyMode extends Mode {
      * Command and unlocalized game name should both have slashes stripped.
      * e.x.: <code>skywars/play solo_insane</code>
      */
-    public String namespace;
+    private String namespace;
 
     /**
      * Constructor
@@ -25,5 +25,7 @@ public class PartyMode extends Mode {
         this.namespace = namespace;
     }
 
-    // TODO getNamespace() method instead of field, that way people can't spoof it by editing files
+    public String getNamespace() {
+        return namespace;
+    }
 }

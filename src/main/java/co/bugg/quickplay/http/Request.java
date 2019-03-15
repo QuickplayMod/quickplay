@@ -19,11 +19,11 @@ public class Request {
     /**
      * Apache HttpComponents object for the request
      */
-    public HttpRequestBase apacheRequestObj;
+    private HttpRequestBase apacheRequestObj;
     /**
      * Factory this request was born in
      */
-    public HttpRequestFactory factory;
+    private HttpRequestFactory factory;
 
     /**
      * Constructor
@@ -31,7 +31,7 @@ public class Request {
      * @param apacheRequestObj Apache HttpComponents object
      * @param factory          Parent factory
      */
-    public Request(HttpRequestBase apacheRequestObj, HttpRequestFactory factory) {
+    Request(HttpRequestBase apacheRequestObj, HttpRequestFactory factory) {
         this.apacheRequestObj = apacheRequestObj;
         this.factory = factory;
     }
@@ -59,8 +59,6 @@ public class Request {
                 httpResponse.close();
                 return WebResponse.fromJson(writer.toString());
             }
-
-            httpResponse.close();
         } catch (IOException e) {
             e.printStackTrace();
             // Don't send error report if the issue arose from an /exception request. Otherwise it'll probably create an infinite loop.

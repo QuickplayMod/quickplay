@@ -16,7 +16,7 @@ public class ConfigKeybinds extends AConfiguration {
     /**
      * Constructor
      */
-    public ConfigKeybinds() {
+    private ConfigKeybinds() {
         super("keybinds.json");
     }
 

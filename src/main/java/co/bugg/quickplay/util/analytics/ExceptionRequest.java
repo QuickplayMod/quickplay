@@ -33,17 +33,4 @@ public class ExceptionRequest extends AnalyticsRequest {
         return this;
     }
 
-    /**
-     * Set whether this exception is fatal or not
-     *
-     * @param fatal Whether this exception is fatal or not
-     * @return This
-     */
-    public ExceptionRequest setIsFatal(boolean fatal) {
-        if (fatal)
-            parameters.put("exf", "1");
-        else
-            parameters.remove("exf");
-        return this;
-    }
 }

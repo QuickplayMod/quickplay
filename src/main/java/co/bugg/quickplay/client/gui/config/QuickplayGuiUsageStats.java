@@ -28,19 +28,15 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
     /**
      * Width of each button on the screen
      */
-    public final int buttonWidth = 150;
+    private static final int buttonWidth = 150;
     /**
      * Height of each button on the screen
      */
-    public final int buttonHeight = 20;
+    private static final int buttonHeight = 20;
     /**
      * Margins between each button on the screen
      */
-    public final int buttonMargins = 5;
-    /**
-     * Y levels of the yes and no buttons
-     */
-    public int buttonY;
+    private static final int buttonMargins = 5;
     /**
      * Usage stats configuration that is being altered
      */
@@ -48,32 +44,28 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
     /**
      * Display string for the "YES" button
      */
-    public final String yesText = I18n.format("quickplay.gui.stats.yes");
+    private final String yesText = I18n.format("quickplay.gui.stats.yes");
     /**
      * Display string for the "NO" button
      */
-    public final String noText = I18n.format("quickplay.gui.stats.no");
+    private final String noText = I18n.format("quickplay.gui.stats.no");
     /**
      * String displaying the user's current Quickplay statistics token
      */
-    public String tokenText = null;
+    private String tokenText = null;
     /**
      * String for the user to click to visit the privacy policy
      */
-    public String privacyText = I18n.format("quickplay.gui.stats.privacy");
-    /**
-     * The max width of the description text on what data Quickplay collects & such
-     */
-    public int descriptionWidth;
+    private String privacyText = I18n.format("quickplay.gui.stats.privacy");
     /**
      * The lines that need to be rendered for the description on how Quickplay collects data & such
      */
-    public String[] descriptionLines;
+    private String[] descriptionLines;
 
     @Override
     public void initGui() {
         super.initGui();
-        buttonY = (int) (height * 0.8);
+        int buttonY = (int) (height * 0.8);
         componentList.add(new QuickplayGuiButton(usageStats, 0, width / 2 - buttonWidth - buttonMargins / 2, buttonY, buttonWidth, buttonHeight, yesText, true));
         componentList.add(new QuickplayGuiButton(usageStats, 1, width / 2 + buttonMargins / 2, buttonY, buttonWidth, buttonHeight, noText, true));
 
@@ -85,7 +77,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
         }
         componentList.add(new QuickplayGuiString("https://bugg.co/quickplay/privacy", 3, width / 2, buttonY - (fontRendererObj.FONT_HEIGHT + 3) * 2, fontRendererObj.getStringWidth(privacyText), fontRendererObj.FONT_HEIGHT, privacyText, true, true));
 
-        descriptionWidth = (int) (width * 0.8);
+        int descriptionWidth = (int) (width * 0.8);
         final String description = I18n.format("quickplay.gui.stats.description");
         descriptionLines = fontRendererObj.listFormattedStringToWidth(description, descriptionWidth).toArray(new String[0]);
     }

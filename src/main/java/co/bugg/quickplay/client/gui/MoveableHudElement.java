@@ -15,32 +15,21 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
     /**
      * Width of the screen
      */
-    public int screenWidth;
+    int screenWidth;
     /**
      * Height of the screen
      */
-    public int screenHeight;
+    int screenHeight;
     /**
      * Opacity of this element
      */
     public double opacity = 1;
-    /**
-     * Minecraft's resolution calculator
-     */
-    public ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
 
     /**
      * Edit this element in the {@link MoveableHudElementEditor}
      */
     public void edit() {
         Minecraft.getMinecraft().displayGuiScreen(new MoveableHudElementEditor(this));
-    }
-
-    /**
-     * Render this element at the default location with full opacity
-     */
-    public void render() {
-        this.render(getxRatio(), getyRatio(), 1);
     }
 
     /**
@@ -52,9 +41,10 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
      */
     public void render(double x, double y, double opacity) {
         this.opacity = opacity;
-        scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
-        screenWidth = scaledResolution.getScaledWidth();
-        screenHeight = scaledResolution.getScaledHeight();
+
+        ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
+        this.screenWidth = scaledResolution.getScaledWidth();
+        this.screenHeight = scaledResolution.getScaledHeight();
     }
 
     /**

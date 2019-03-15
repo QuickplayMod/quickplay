@@ -27,7 +27,7 @@ public abstract class ABuffer implements Runnable {
      *
      * @param sleepTime Time in milliseconds between {@link #run()} calls. See {@link #sleepTime}
      */
-    public ABuffer(int sleepTime) {
+    ABuffer(int sleepTime) {
         this.sleepTime = sleepTime;
         this.buffer = new ArrayList<>();
     }
@@ -37,7 +37,7 @@ public abstract class ABuffer implements Runnable {
      *
      * @return The next buffer item
      */
-    public Object peek() {
+    private Object peek() {
         return size() > 0 ? buffer.get(0) : null;
     }
 
@@ -46,7 +46,7 @@ public abstract class ABuffer implements Runnable {
      *
      * @return The next buffer item
      */
-    public Object pull() {
+    Object pull() {
         Object returnValue = peek();
         if (returnValue != null)
             buffer.remove(0);
@@ -68,11 +68,9 @@ public abstract class ABuffer implements Runnable {
     /**
      * Empty the buffer of all values
      *
-     * @return this
      */
-    public ABuffer clear() {
+    void clear() {
         buffer.clear();
-        return this;
     }
 
     /**
@@ -82,15 +80,6 @@ public abstract class ABuffer implements Runnable {
      */
     public int size() {
         return buffer.size();
-    }
-
-    /**
-     * Getter for {@link #started}
-     *
-     * @return {@link #started}
-     */
-    public boolean isStarted() {
-        return started;
     }
 
     /**

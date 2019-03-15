@@ -18,7 +18,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     /**
      * Whether the mouse is currently pressed down or not
      */
-    public boolean isMouseDown;
+    private boolean isMouseDown;
     /**
      * Display name of this slider
      */

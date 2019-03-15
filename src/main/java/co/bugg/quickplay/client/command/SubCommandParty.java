@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class SubCommandParty extends ASubCommand {
 
-    public SubCommandParty(ACommand parent) {
+    SubCommandParty(ACommand parent) {
         super(parent, "party", I18n.format("quickplay.commands.quickplay.party.help"), "[launch]", true, true, 88);
     }
 

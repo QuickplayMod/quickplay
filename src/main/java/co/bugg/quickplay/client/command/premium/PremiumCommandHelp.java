@@ -16,7 +16,7 @@ public class PremiumCommandHelp implements IPremiumCommand {
 
     public final SubCommandPremium parent;
 
-    public PremiumCommandHelp(SubCommandPremium parent) {
+    PremiumCommandHelp(SubCommandPremium parent) {
         this.parent = parent;
     }
 
@@ -58,7 +58,7 @@ public class PremiumCommandHelp implements IPremiumCommand {
     /**
      * Send the basic help message for premium commands
      */
-    public void sendBaseHelpMessage() {
+    private void sendBaseHelpMessage() {
         final IChatComponent message = new ChatComponentText("");
         if (parent.premiumCommands.size() > 0) {
             for (ListIterator<IPremiumCommand> iter = parent.premiumCommands.listIterator(); iter.hasNext(); ) {

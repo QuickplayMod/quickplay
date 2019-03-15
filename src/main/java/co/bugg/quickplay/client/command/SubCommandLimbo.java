@@ -20,7 +20,7 @@ public class SubCommandLimbo extends ASubCommand {
      *
      * @param parent Parent command
      */
-    public SubCommandLimbo(ACommand parent) {
+    SubCommandLimbo(ACommand parent) {
         super(
                 parent,
                 "limbo",

@@ -20,7 +20,7 @@ public class AnalyticsRequest {
     /**
      * URL to the endpoint this request is being sent to
      */
-    URL requestEndpoint;
+    private URL requestEndpoint;
 
     /**
      * All parameters to be sent in the POST body
@@ -30,7 +30,7 @@ public class AnalyticsRequest {
     /**
      * Parent Google Analytics this request was created from/for
      */
-    final GoogleAnalytics analytics;
+    private final GoogleAnalytics analytics;
 
     /**
      * Constructor
@@ -123,104 +123,27 @@ public class AnalyticsRequest {
     }
 
     /**
-     * Set whether this request's IP should be anonymous
-     *
-     * @param anonymizeIP Whether this request's IP should be anonymous
-     * @return This
-     * @see "https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#aip"
-     */
-    public AnalyticsRequest setAnonymizeIP(boolean anonymizeIP) {
-        if (anonymizeIP)
-            parameters.put("aip", "1");
-        else
-            parameters.remove("aip");
-        return this;
-    }
-
-    /**
      * Set the user's screen resolution
      *
      * @param resolution Resolution of the screen, or null/empty string to remove
-     * @return This
      */
-    public AnalyticsRequest setScreenResolution(String resolution) {
+    public void setScreenResolution(String resolution) {
         if (resolution == null || resolution.length() == 0)
             parameters.remove("sr");
         else
             parameters.put("sr", resolution);
-        return this;
-    }
-
-    /**
-     * Set the data source of this request
-     * By default, the data source is "java-app"
-     *
-     * @param dataSource Data source, or null/empty string to remove
-     * @return this
-     * @see "https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ds"
-     */
-    public AnalyticsRequest setDataSource(String dataSource) {
-        if (dataSource == null || dataSource.length() == 0)
-            parameters.remove("ds");
-        else
-            parameters.put("ds", dataSource);
-        return this;
     }
 
     /**
      * Set the user's language
      *
      * @param language Language of the user, or null/empty string to remove
-     * @return This
      */
-    public AnalyticsRequest setLanguage(String language) {
+    public void setLanguage(String language) {
         if (language == null || language.length() == 0)
             parameters.remove("ul");
         else
             parameters.put("ul", language);
-        return this;
-    }
-
-    /**
-     * Set the hostname of this page
-     *
-     * @param hostname Hostname, or null/empty string to remove
-     * @return This
-     */
-    public AnalyticsRequest setHostname(String hostname) {
-        if (hostname == null || hostname.length() == 0)
-            parameters.remove("dh");
-        else
-            parameters.put("dh", hostname);
-        return this;
-    }
-
-    /**
-     * Set the path to the page
-     *
-     * @param page Path, or null/empty string to remove
-     * @return This
-     */
-    public AnalyticsRequest setPage(String page) {
-        if (page == null || page.length() == 0)
-            parameters.remove("dp");
-        else
-            parameters.put("dp", page);
-        return this;
-    }
-
-    /**
-     * Set the title of the page
-     *
-     * @param title Title, or null/empty string to remove
-     * @return This
-     */
-    public AnalyticsRequest setTitle(String title) {
-        if (title == null || title.length() == 0)
-            parameters.remove("dt");
-        else
-            parameters.put("dt", title);
-        return this;
     }
 
     /**
@@ -244,14 +167,12 @@ public class AnalyticsRequest {
      * Set the user agent override
      *
      * @param ua New user agent, or null/empty string to remove
-     * @return This
      */
-    public AnalyticsRequest setUserAgent(String ua) {
+    public void setUserAgent(String ua) {
         if (ua == null || ua.length() == 0)
             parameters.remove("ua");
         else
             parameters.put("ua", ua);
-        return this;
     }
 
     /**

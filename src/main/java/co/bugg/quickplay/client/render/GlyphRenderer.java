@@ -30,15 +30,15 @@ public class GlyphRenderer {
     /**
      * Vertical offset from the player's head
      */
-    public static final double offset = 1.0;
+    private static final double offset = 1.0;
     /**
      * How far away glyphs should render
      */
-    public static final int drawDistance = 64;
+    private static final int drawDistance = 64;
     /**
      * Regex pattern for determining if the client is currently in a game or not
      */
-    public static final Pattern gameServerPattern = Pattern.compile("^(?:mini|mega)[0-9]{1,3}[A-Z]$");
+    private static final Pattern gameServerPattern = Pattern.compile("^(?:mini|mega)[0-9]{1,3}[A-Z]$");
 
     @SubscribeEvent
     public void onPlayerRender(RenderPlayerEvent.Pre e) {
@@ -59,7 +59,7 @@ public class GlyphRenderer {
                             final PlayerGlyph glyph = Quickplay.INSTANCE.glyphs.stream().filter(thisGlyph -> thisGlyph.uuid.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0);
                             // If this client is currently not in a game OR if the glyph is set to display in-game
                             if ((currentServer != null && !gameServerPattern.matcher(currentServer).matches()) || glyph.displayInGames)
-                                renderGlyph(e.renderer, glyph, e.entityPlayer, e.x, e.y + offset + player.height, e.z);
+                                renderGlyph(e.renderer, glyph, e.x, e.y + offset + player.height, e.z);
                         }
                     }
                 }
@@ -73,12 +73,12 @@ public class GlyphRenderer {
      *
      * @param renderer Renderer to use
      * @param glyph    Glyph to render
-     * @param player   Player to render it over
      * @param x        x position
      * @param y        y position
      * @param z        z position
      */
-    public synchronized void renderGlyph(RendererLivingEntity renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
+    @SuppressWarnings("UnstableApiUsage")
+    private synchronized void renderGlyph(RendererLivingEntity renderer, PlayerGlyph glyph, double x, double y, double z) {
 
         final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.path.toString(), Charset.forName("UTF-8")).toString() + ".png");
         if (Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {

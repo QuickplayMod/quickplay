@@ -14,11 +14,11 @@ public class InstanceDisplay extends MoveableHudElement {
     /**
      * Horizontal padding for the transparent background
      */
-    int backgroundHorizontalPadding = 4;
+    private static final int backgroundHorizontalPadding = 4;
     /**
      * Vertical padding for the transparent background
      */
-    int backgroungVerticalPadding = 3;
+    private static final int backgroungVerticalPadding = 3;
 
     /**
      * Constructor
@@ -42,11 +42,11 @@ public class InstanceDisplay extends MoveableHudElement {
         GL11.glPushMatrix();
         GL11.glScaled(scale, scale, scale);
 
-        drawRect((scaledX - this.backgroundHorizontalPadding - stringWidth / 2),
-                (scaledY - this.backgroungVerticalPadding),
-                (scaledX + stringWidth + this.backgroundHorizontalPadding - stringWidth / 2 - 1), // -1 due to a padding issue I don't
+        drawRect((scaledX - backgroundHorizontalPadding - stringWidth / 2),
+                (scaledY - backgroungVerticalPadding),
+                (scaledX + stringWidth + backgroundHorizontalPadding - stringWidth / 2 - 1), // -1 due to a padding issue I don't
                 // understand it but it's uneven without.
-                (scaledY + stringHeight + this.backgroungVerticalPadding),
+                (scaledY + stringHeight + backgroungVerticalPadding),
                 (int) (opacity * 100 * 0.5) << 24);
         GL11.glEnable(GL11.GL_BLEND);
 

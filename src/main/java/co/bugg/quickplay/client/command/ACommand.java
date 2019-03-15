@@ -20,7 +20,7 @@ public abstract class ACommand implements ICommand {
      * All possible aliases for the command (including the main
      * command, which is in index 0)
      */
-    final List<String> aliases = new ArrayList<>();
+    private final List<String> aliases = new ArrayList<>();
     /**
      * All sub commands under this command
      * Default command, in case of invalid command provided
@@ -42,7 +42,7 @@ public abstract class ACommand implements ICommand {
      *
      * @param subCommand Sub command to add
      */
-    public void addSubCommand(ASubCommand subCommand) {
+    void addSubCommand(ASubCommand subCommand) {
         subCommands.add(subCommand);
     }
 
@@ -119,6 +119,7 @@ public abstract class ACommand implements ICommand {
         return false;
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public int compareTo(ICommand o) {
         return 0;
@@ -131,7 +132,7 @@ public abstract class ACommand implements ICommand {
      * @param args Args to remove first arg from
      * @return Modified array
      */
-    public String[] removeFirstArgument(String[] args) {
+    private String[] removeFirstArgument(String[] args) {
         ArrayList<String> argsList = new ArrayList<>(Arrays.asList(args));
         argsList.remove(0);
         return argsList.toArray(new String[0]);
@@ -146,7 +147,7 @@ public abstract class ACommand implements ICommand {
      * @param limiter only returns sub commands that have names that start with this
      * @return List of command names
      */
-    public List<String> getDefaultTabCompletions(String limiter) {
+    private List<String> getDefaultTabCompletions(String limiter) {
         return subCommands.stream()
                 .filter(ASubCommand::canDisplayInTabList)
                 .filter(scmd -> scmd.getName().startsWith(limiter))
@@ -162,7 +163,7 @@ public abstract class ACommand implements ICommand {
      * @param name Name of command to get
      * @return The sub command, or null if nonexistant
      */
-    public ASubCommand getCommand(String name) {
+    ASubCommand getCommand(String name) {
         return subCommands.stream()
                 .filter(subCommand -> subCommand.getName().equals(name))
                 .findFirst().orElse(null);
@@ -173,7 +174,7 @@ public abstract class ACommand implements ICommand {
      *
      * @return A list of sub commands
      */
-    public List<ASubCommand> getSubCommands() {
+    List<ASubCommand> getSubCommands() {
         return subCommands;
     }
 }

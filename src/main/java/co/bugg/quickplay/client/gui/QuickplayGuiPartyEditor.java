@@ -24,41 +24,41 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
     /**
      * A list of every single mode the client is aware of
      */
-    List<PartyMode> modes = new ArrayList<>();
+    private List<PartyMode> modes = new ArrayList<>();
     /**
      * A list of all the modes toggled on
      * CURRENTLY A REFERENCE to the Quickplay settings, not a value
      */
-    List<PartyMode> toggledModes = new ArrayList<>();
+    private List<PartyMode> toggledModes = new ArrayList<>();
 
     /**
      * The width of buttons
      */
-    public final int buttonWidth = 300;
+    private static final int buttonWidth = 300;
     /**
      * The height of buttons
      */
-    public final int buttonHeight = 20;
+    private static final int buttonHeight = 20;
     /**
      * Vertical spacing between buttons
      */
-    public final int buttonYMargins = 5;
+    private static final int buttonYMargins = 5;
     /**
      * The Y value at which point values should start being drawn
      */
-    public int topOfButtons;
+    private int topOfButtons;
     /**
      * Across how many pixels buttons fade while scrolling
      */
-    public final int scrollFadeDistance = 20;
+    private final int scrollFadeDistance = 20;
     /**
      * Width of the three buttons along the top
      */
-    public int topButtonWidth = 100;
+    private static final int topButtonWidth = 100;
     /**
      * Margins between the buttons along the top
      */
-    public int topButtonMargins = 5;
+    private static final int topButtonMargins = 5;
 
     @Override
     public void initGui() {
@@ -90,7 +90,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         // Add launch, "All On" and "All Off" buttons
         componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2 - topButtonWidth / 2, 10, topButtonWidth, buttonHeight, I18n.format("quickplay.gui.party.launch"), false)); // Launch
         componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2 - topButtonWidth / 2 - topButtonWidth - topButtonMargins, 10, topButtonWidth, 20, I18n.format("quickplay.gui.party.allon"), false)); // All on
-        componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2 + topButtonWidth / 2 + topButtonMargins, 10, topButtonWidth, 20, I18n.format("quickplay.gui.party.alloff"), false)); // All off
+        componentList.add(new QuickplayGuiButton(null, buttonId, width / 2 + topButtonWidth / 2 + topButtonMargins, 10, topButtonWidth, 20, I18n.format("quickplay.gui.party.alloff"), false)); // All off
 
         setScrollingValues();
     }
@@ -101,8 +101,8 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
      * @param mode Mode to check
      * @return The reference to the mode in {@link #toggledModes}, or null if not in the list.
      */
-    public PartyMode checkIfModeToggled(PartyMode mode) {
-        return toggledModes.stream().filter(settingMode -> settingMode.namespace.equals(mode.namespace)).findFirst().orElse(null);
+    private PartyMode checkIfModeToggled(PartyMode mode) {
+        return toggledModes.stream().filter(settingMode -> settingMode.getNamespace().equals(mode.getNamespace())).findFirst().orElse(null);
     }
 
     @Override

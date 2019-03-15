@@ -37,87 +37,70 @@ public class QuickplayGuiGame extends QuickplayGui {
     /**
      * The height at which the header (game name) is rendered
      */
-    public int headerHeight;
+    private int headerHeight;
     /**
      * Scale of the header
      */
-    public double headerScale = 1.5;
+    private double headerScale = 1.5;
     /**
      * Margins on the bottom of the header between the header & the item below it
      */
-    public final int headerBottomMargins = 3;
+    private final int headerBottomMargins = 3;
     /**
      * Scale of the game's logo
      */
-    public double logoScale = 0.25;
+    private double logoScale = 0.25;
     /**
      * UV size of the logo
      */
-    public final int logoSize = 256;
+    private final int logoSize = 256;
     /**
      * Margins on the bottom of the logo between the logo & the item below it
      */
-    public final int logoBottomMargins = 10;
+    private static final int logoBottomMargins = 10;
     /**
      * Y level of the box in the background of the buttons
      */
-    public int topOfBackgroundBox;
+    private int topOfBackgroundBox;
     /**
      * Padding between the background box's edge and the items inside it
      */
-    public int backgroundBoxPadding = 10;
+    private int backgroundBoxPadding = 10;
 
     // Used for button positions
     /**
-     * Percentage padding between the sides of the window and the columns
-     */
-    public int windowPadding;
-    /**
      * Number of columns the client should try to render
      */
-    public int columnCount = 1;
-    /**
-     * The X position of the first column
-     */
-    public int columnZeroX;
-
-    /**
-     * The column currently being calculated by {@link #initGui()}
-     */
-    public int currentColumn;
-    /**
-     * The row currently being calculated by {@link #initGui()}
-     */
-    public int currentRow;
+    private int columnCount = 1;
 
     /**
      * The margins between each mode button both vertically and horizontally
      */
-    public final int buttonMargins = 5;
+    private final int buttonMargins = 5;
     /**
      * The width of each mode button
      */
-    public int buttonWidth = 200;
+    private int buttonWidth = 200;
     /**
      * The height of each mode button
      */
-    public int buttonHeight = 20;
+    private static final int buttonHeight = 20;
 
     /**
      * The string containing the current copyright
      */
-    public String copyright;
+    private String copyright;
     /**
      * The margins between the copyright string and the bottom of the screen
      */
-    public final int copyrightMargins = 3;
+    private static final int copyrightMargins = 3;
 
     /**
      * Constructor
      *
      * @param game Game this GUI is for
      */
-    public QuickplayGuiGame(Game game) {
+    QuickplayGuiGame(Game game) {
         if (game != null)
             this.game = game;
         else
@@ -146,11 +129,13 @@ public class QuickplayGuiGame extends QuickplayGui {
     @Override
     public void initGui() {
         super.initGui();
-        currentColumn = currentRow = 0;
+
+        int currentRow;
+        int currentColumn = currentRow = 0;
 
         copyright = I18n.format("quickplay.gui.copyright", Calendar.getInstance().get(Calendar.YEAR));
 
-        windowPadding = (int) (width * (width > 500 ? 0.25 : 0.15));
+        int windowPadding = (int) (width * (width > 500 ? 0.25 : 0.15));
         headerHeight = (int) (height * 0.05);
         // Responsive size
         headerScale = height > 300 ? 1.5 : 1.0;
@@ -170,7 +155,7 @@ public class QuickplayGuiGame extends QuickplayGui {
             columnCount = game.modes.size();
 
         // Calculate X position of column zero
-        columnZeroX = width / 2 - (buttonWidth + buttonMargins) * columnCount / 2;
+        int columnZeroX = width / 2 - (buttonWidth + buttonMargins) * columnCount / 2;
 
         // add buttons
         for (ListIterator<Mode> iter = game.modes.listIterator(); iter.hasNext(); ) {
@@ -231,6 +216,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         }
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         GL11.glPushMatrix();

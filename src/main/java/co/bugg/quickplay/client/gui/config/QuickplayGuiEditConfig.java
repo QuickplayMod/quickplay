@@ -46,7 +46,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
      * A list of elements this GUI is handling
      * Taken directly from {@link #config} in {@link #initGui()}
      */
-    public List<ConfigElement> configElements = new ArrayList<>();
+    private List<ConfigElement> configElements = new ArrayList<>();
 
     /**
      * Constructor
@@ -63,79 +63,67 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
      * Set in {@link #initGui()}
      * Responsive
      */
-    public double headerScale;
+    private double headerScale;
     /**
      * The scale of the subheader below the header
      * Set in {@link #initGui()}
      * Responsive
      */
-    public double subheaderScale;
+    private double subheaderScale;
     /**
      * Y location of the subheader
      */
-    public int subheaderY;
+    private int subheaderY;
     /**
      * Margins of the gray background box
      * Percentage-based, e.g. 0.1 or 0.2
      * Multiplied by two to account for both sides of the box
      */
-    public double boxMargins;
+    private double boxMargins;
     /**
      * Y level that is the top of the background box
      */
-    public int topOfBox;
-    /**
-     * How wide the background box is (e.g. width - boxMargins * 2)
-     */
-    public int boxWidth;
-    /**
-     * How high the background box is (e.g. height - topOfBox)
-     */
-    public int boxHeight;
-    /**
-     * The size of each element in the config, including margins
-     */
-    public int elementSize;
+    private int topOfBox;
     /**
      * The distance vertically elements must move to go from opacity 0 to opacity 1 at the fade line
      */
-    final int fadeDistance = 10;
+    private static final int fadeDistance = 10;
     /**
      * Last two logged Y positions of the mouse on the screen
      * This is used for hovering tooltips, as you must hover for a certain
      * period of time before the tooltip appears
      */
-    public int[] lastTwoMouseX = new int[2];
+    private int[] lastTwoMouseX = new int[2];
     /**
      * Last two logged X positions of the mouse on the screen
      * This is used for hovering tooltips, as you must hover for a certain
      * period of time before the tooltip appears
      */
-    public int[] lastTwoMouseY = new int[2];
+    private int[] lastTwoMouseY = new int[2];
     /**
      * How many game ticks the mouse has been standing still (within the provided margin)
      */
-    public int mouseStandStillTicks = 0;
+    private int mouseStandStillTicks = 0;
     /**
      * How many ticks the mouse must be standing still for the tooltip to appear
      */
-    public final int hoverDelayTicks = 10;
+    private static final int hoverDelayTicks = 10;
     /**
      * How many pixels the mouse may move each tick before {@link #mouseStandStillTicks} is invalidated
      */
-    public final int mouseStandStillMargin = 2;
+    private final int mouseStandStillMargin = 2;
     /**
      * How wide the button to open the Quickplay configuration folder iis
      */
-    public final int openFolderButtonWidth = 90;
+    private static final int openFolderButtonWidth = 90;
     /**
      * The margins around the Quickplay configuration folder button
      */
-    public final int openFolderButtonMargins = 4;
+    private static final int openFolderButtonMargins = 4;
     /**
      * The text displayed on the open folder button
      */
-    public final String openFolderText = I18n.format("quickplay.config.openfolder");
+    private final String openFolderText = I18n.format("quickplay.config.openfolder");
 
     @Override
     public void onGuiClosed() {
@@ -164,10 +152,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         // +20 to the top because for some reason subheaderY + subheader height isn't actually the bottom of the subheader... fix
         topOfBox = (int) (subheaderY + fontRendererObj.FONT_HEIGHT * subheaderScale + 20);
 
-        boxWidth = (int) (width * (1 - (boxMargins * 2)));
-        boxHeight = height - topOfBox;
-
-        elementSize = (ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS);
+        int boxWidth = (int) (width * (1 - (boxMargins * 2)));
 
         /*
          * Get the config elements that can be changed
@@ -351,7 +336,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
      * @param id ID of the element to check
      * @return The value along the Y axis that this element rests on
      */
-    public int getElementY(int id) {
+    private int getElementY(int id) {
         return (topOfBox + ConfigElement.ELEMENT_MARGINS + ((ConfigElement.ELEMENT_HEIGHT + ConfigElement.ELEMENT_MARGINS) * (id)));
     }
 

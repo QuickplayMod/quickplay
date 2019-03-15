@@ -31,90 +31,70 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     /**
      * UV size of each game's image
      */
-    final int gameImgSize = 256;
+    private final int gameImgSize = 256;
 
     // Margins & padding for GUI elements
     /**
      * Vertical padding between each game element (image + text)
      * Minimum of 10
      */
-    final int BoxYPadding = Math.max((int) (10 * Quickplay.INSTANCE.settings.gameLogoScale), 10);
+    private final int BoxYPadding = Math.max((int) (10 * Quickplay.INSTANCE.settings.gameLogoScale), 10);
     /**
      * Margins between the game's image and the game's title string
      */
-    final int stringLeftMargins = 15;
+    private final int stringLeftMargins = 15;
     /**
      * Horizontal margins between each game element (image + text)
      */
-    final int boxXMargins = 10;
+    private static final int boxXMargins = 10;
     /**
      * Padding between the edge of the window and the game images
      */
-    final int windowXPadding = 20;
+    private static final int windowXPadding = 20;
     /**
      * Copyright text at the bottom of the screen
      */
-    String copyright;
+    private String copyright;
     /**
      * Margins between the copyright text & the bottom of the window
      */
-    final int copyrightMargins = 3;
+    private static final int copyrightMargins = 3;
     /**
      * Longest display string for any of the games
      */
-    int longestStringWidth = 0;
-    /**
-     * Average calculated length of each display string
-     * UNUSED at the moment
-     */
-    int averageStringWidth = 0;
+    private int longestStringWidth = 0;
     /**
      * Base multiplier for scaling. The user's settings multiplier is multiplied by this
      */
-    final double baseScaleMultiplier = 0.25;
+    private final double baseScaleMultiplier = 0.25;
     /**
      * Finalized multiplier, taking the user's settings into account
      */
-    final double scaleMultiplier = baseScaleMultiplier * Quickplay.INSTANCE.settings.gameLogoScale;
-    /**
-     * The X position of the first column of game elements
-     */
-    int columnZeroX;
+    private final double scaleMultiplier = baseScaleMultiplier * Quickplay.INSTANCE.settings.gameLogoScale;
     /**
      * The scale of display strings for games
      */
-    double stringScale = 1.0;
-    /**
-     * The number of columns of games
-     */
-    int columnCount = 1;
-    /**
-     * The column currently being calculated by {@link #initGui()}
-     */
-    int currentColumn = 0;
-    /**
-     * The row currently being calcluated by {@link #initGui()}
-     */
-    int currentRow = 0;
+    private double stringScale = 1.0;
     /**
      * The string displayed in the context menu to bind a game to a key
      */
-    String favoriteString = "Bind to key...";
+    private String favoriteString = "Bind to key...";
 
     /**
      * Whether this GUI should be rendered in compact mode or not
      *
      * @see co.bugg.quickplay.config.ConfigSettings#compactMainMenu
      */
-    boolean compact = Quickplay.INSTANCE.settings.compactMainMenu;
+    private boolean compact = Quickplay.INSTANCE.settings.compactMainMenu;
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void initGui() {
         super.initGui();
 
         // Reset column/row number used for determining button positions
-        currentColumn = 0;
-        currentRow = 0;
+        int currentColumn = 0;
+        int currentRow = 0;
 
         copyright = I18n.format("quickplay.gui.copyright", Calendar.getInstance().get(Calendar.YEAR));
 
@@ -128,10 +108,8 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                 // Calculate the average width of all strings & what the longest one is
                 for (Game game : Quickplay.INSTANCE.gameList) {
                     final int stringWidth = fontRendererObj.getStringWidth(game.name);
-                    averageStringWidth += stringWidth;
                     if (stringWidth > longestStringWidth) longestStringWidth = stringWidth;
                 }
-                averageStringWidth /= Quickplay.INSTANCE.gameList.size();
             }
 
             // String scales up with size of game images
@@ -147,11 +125,11 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
         final int itemWidth = (int) (gameImgSize * scaleMultiplier + longestStringWidth * stringScale + stringLeftMargins + boxXMargins);
         // Calculate column count
-        columnCount = (int) Math.floor((double) (width - windowXPadding) / itemWidth);
+        int columnCount = (int) Math.floor((double) (width - windowXPadding) / itemWidth);
         if (columnCount <= 0) columnCount = 1;
 
         // Calculate X location of the furthest left column (i.e. column zero)
-        columnZeroX = (width / 2 - columnCount * itemWidth / 2);
+        int columnZeroX = (width / 2 - columnCount * itemWidth / 2);
         // Column zero can't be off the screen
         if (columnZeroX < 0) columnZeroX = 0;
 
@@ -182,6 +160,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         scrollDelay = 1;
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         GL11.glPushMatrix();
@@ -249,7 +228,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
      * they cannot connect to the Quickplay web server for whatever reason (or have not
      * been instructed to contact the web server due to some server error)
      */
-    protected void drawNoGamesMenu() {
+    private void drawNoGamesMenu() {
 
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);

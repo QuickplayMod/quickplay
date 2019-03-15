@@ -20,14 +20,6 @@ public class GoogleAnalytics {
      * The Client ID this Analytics instance is reporting for
      */
     String clientId;
-    /**
-     * This instance's application name
-     */
-    String appName;
-    /**
-     * This instances application version
-     */
-    String appVersion;
 
     /**
      * Whether this instance of GoogleAnalytics should be in debug mode
@@ -38,7 +30,7 @@ public class GoogleAnalytics {
     /**
      * Default request that all Analytics requests extend off of
      */
-    AnalyticsRequest defaultRequest;
+    private AnalyticsRequest defaultRequest;
 
     /**
      * Package-private Constructor
@@ -70,32 +62,10 @@ public class GoogleAnalytics {
      * @param id Client ID
      * @return This
      */
-    public GoogleAnalytics setClientId(String id) {
+    GoogleAnalytics setClientId(String id) {
         if (id == null)
             throw new IllegalArgumentException("Invalid client ID! Client ID cannot be null.");
         this.clientId = id;
-        return this;
-    }
-
-    /**
-     * Set the name of this Application
-     *
-     * @param name Application name
-     * @return This
-     */
-    public GoogleAnalytics setApplicationName(String name) {
-        this.appName = name;
-        return this;
-    }
-
-    /**
-     * Set the version of this application
-     *
-     * @param version Version of this application
-     * @return This
-     */
-    public GoogleAnalytics setApplicationVersion(String version) {
-        this.appVersion = version;
         return this;
     }
 
@@ -109,24 +79,6 @@ public class GoogleAnalytics {
     GoogleAnalytics setDebug(boolean debug) {
         this.debug = debug;
         return this;
-    }
-
-    /**
-     * Get {@link #appName}
-     *
-     * @return {@link #appName}
-     */
-    public String getAppName() {
-        return appName;
-    }
-
-    /**
-     * Get {@link #appVersion}
-     *
-     * @return {@link #appVersion}
-     */
-    public String getAppVersion() {
-        return appVersion;
     }
 
     /**
@@ -172,54 +124,4 @@ public class GoogleAnalytics {
         return null;
     }
 
-    /**
-     * Create a new pageview request
-     *
-     * @return New pageview request
-     */
-    public PageviewRequest createPageview() {
-        try {
-            final PageviewRequest pageviewRequest = new PageviewRequest(this);
-            pageviewRequest.parameters.putAll(defaultRequest.parameters);
-            return pageviewRequest;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Create a new screenview request
-     *
-     * @param screenName Name of the screen
-     * @return New screenview request
-     */
-    public ScreenviewRequest createScreenview(String screenName) {
-        try {
-            final ScreenviewRequest screenviewRequest = new ScreenviewRequest(this, screenName);
-            screenviewRequest.parameters.putAll(defaultRequest.parameters);
-            return screenviewRequest;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Create a new timing request
-     *
-     * @param timingCategory     Category of the timing request
-     * @param timingVariableName Name of the timing request
-     * @param time               Timing value for the request
-     * @return New timing request
-     */
-    public TimingRequest createTiming(String timingCategory, String timingVariableName, int time) {
-        try {
-            final TimingRequest timingRequest = new TimingRequest(this, timingCategory, timingVariableName, time);
-            timingRequest.parameters.putAll(defaultRequest.parameters);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

@@ -18,18 +18,18 @@ public class MoveableHudElementEditor extends QuickplayGui {
     /**
      * Ratio from the left of the screen this element is at
      */
-    double xRatio;
+    private double xRatio;
     /**
      * Ratio from the top of the screen this element is at
      */
-    double yRatio;
+    private double yRatio;
 
     /**
      * Constructor
      *
      * @param element Element to edit
      */
-    public MoveableHudElementEditor(MoveableHudElement element) {
+    MoveableHudElementEditor(MoveableHudElement element) {
         this.element = element;
         this.xRatio = element.getxRatio();
         this.yRatio = element.getyRatio();
@@ -119,7 +119,7 @@ public class MoveableHudElementEditor extends QuickplayGui {
      * @param mouseX X position to move to
      * @param mouseY Y position to move to
      */
-    public void moveTo(int mouseX, int mouseY) {
+    private void moveTo(int mouseX, int mouseY) {
         xRatio = (double) mouseX / (double) element.screenWidth;
         yRatio = (double) mouseY / (double) element.screenHeight;
     }

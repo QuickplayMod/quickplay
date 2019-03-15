@@ -35,17 +35,17 @@ public class QuickplayGui extends GuiScreen {
     /**
      * Multiplier for the number of pixels the screen should scroll per call to {@link #mouseScrolled(int)}
      */
-    public double scrollMultiplier = 2;
+    protected double scrollMultiplier = 2;
     /**
      * Number of ms between "scroll frames"
      * Absolute value is taken to avoid negatives.
      */
-    public int scrollDelay = 2;
+    protected int scrollDelay = 2;
     /**
      * How many pixels high the content that can be scrolled is
      * Includes {@link #scrollContentMargins}
      */
-    public int scrollContentHeight = 0;
+    protected int scrollContentHeight = 0;
     /**
      * Vertical Y margins on the scrollable content.
      * DOES NOT include both the top and bottom. If you want the margins
@@ -59,7 +59,7 @@ public class QuickplayGui extends GuiScreen {
      * @see #scrollFrameTop
      * @see #scrollFrameBottom
      */
-    public int scrollContentMargins = 30;
+    protected int scrollContentMargins = 30;
     /**
      * Top of the frame for scrollable content
      * When scrolling up, content SHOULD stop at this pixel
@@ -68,7 +68,7 @@ public class QuickplayGui extends GuiScreen {
      * <p>
      * Default <code>0</code>, as set in {@link #initGui()}
      */
-    public int scrollFrameTop;
+    protected int scrollFrameTop;
     /**
      * Bottom of the frame for scrollable content
      * When scrolling down, content SHOULD stop at this pixel
@@ -77,18 +77,18 @@ public class QuickplayGui extends GuiScreen {
      * <p>
      * Default <code>height</code>, as set in {@link #initGui()}
      */
-    public int scrollFrameBottom;
+    protected int scrollFrameBottom;
     /**
      * Width in pixels of the scrollbar
      *
      * @see #drawScrollbar(int)
      */
-    public int scrollbarWidth = 3;
+    protected static final int scrollbarWidth = 3;
     /**
      * Default scrollbar vertical margins
      * to avoid the scrollbar touching the edges of the frame
      */
-    public int scrollbarYMargins = 5;
+    protected int scrollbarYMargins = 5;
     /**
      * The list of all components that should be rendered
      */
@@ -106,7 +106,7 @@ public class QuickplayGui extends GuiScreen {
      * @see #mouseScrolled(int)
      * @see #mouseClickMove(int, int, int, long)
      */
-    int lastMouseY = 0;
+    private int lastMouseY = 0;
     /**
      * The currently open right-click context menu
      * <code>null</code> if none open
@@ -114,17 +114,17 @@ public class QuickplayGui extends GuiScreen {
      * Use {@link #closeContextMenu()} to close the context menu instead of just
      * setting this to <code>null</code>, otherwise the context menu will not close.
      */
-    public QuickplayGuiContextMenu contextMenu = null;
+    protected QuickplayGuiContextMenu contextMenu = null;
     /**
      * Whether the GUI blurred background shader needs to be removed when the GUI closes
      * Assigned on GUI opening, otherwise if the user opens the GUI, the setting changes, and then closes the GUI,
      * the shader is applied until the user restarts the game, removes the shader manually, or re-enables the setting.
      */
-    public boolean disableShaderOnGuiClose = Quickplay.INSTANCE.settings.blurGuiBackgrounds;
+    private boolean disableShaderOnGuiClose = Quickplay.INSTANCE.settings.blurGuiBackgrounds;
     /**
      * Animation for GUI fade-in
      */
-    public Animation fadeAnimation = new Animation(200);
+    private Animation fadeAnimation = new Animation(200);
 
     @Override
     public void onGuiClosed() {
@@ -152,6 +152,7 @@ public class QuickplayGui extends GuiScreen {
         mc.gameSettings.hideGUI = false;
     }
 
+    @SuppressWarnings("JavaReflectionMemberAccess")
     @Override
     public void initGui() {
         // Send analytical data to Google
@@ -332,7 +333,7 @@ public class QuickplayGui extends GuiScreen {
     /**
      * Update the opacity/animation of this GUI
      */
-    public void updateOpacity() {
+    protected void updateOpacity() {
         if (fadeAnimation != null && fadeAnimation.started) {
             fadeAnimation.updateFrame();
             opacity = (float) fadeAnimation.progress;
@@ -377,7 +378,7 @@ public class QuickplayGui extends GuiScreen {
     /**
      * Keyword to trigger the easter egg
      */
-    private final String magicWord = "TRIS";
+    private static final String magicWord = "TRIS";
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
@@ -441,7 +442,7 @@ public class QuickplayGui extends GuiScreen {
      *
      * @return the Y value of the highest component on the user's screen minus {@link #scrollContentMargins}
      */
-    public int calcScrollHeight() {
+    protected int calcScrollHeight() {
         if (componentList.size() > 0) {
             // component with the highest Y value
             QuickplayGuiComponent lowestComponent = null;
@@ -524,7 +525,7 @@ public class QuickplayGui extends GuiScreen {
      *
      * @param x X column of the left of the scrollbar
      */
-    public void drawScrollbar(final int x) {
+    protected void drawScrollbar(final int x) {
         final int scrollbarSectionHeight = scrollFrameBottom - scrollFrameTop - scrollbarYMargins;
         if (scrollbarSectionHeight > 0) {
 

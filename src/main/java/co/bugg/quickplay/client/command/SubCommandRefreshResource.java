@@ -20,7 +20,7 @@ public class SubCommandRefreshResource extends ASubCommand {
      *
      * @param parent Parent command
      */
-    public SubCommandRefreshResource(ACommand parent) {
+    SubCommandRefreshResource(ACommand parent) {
         super(
                 parent,
                 "refreshresource",

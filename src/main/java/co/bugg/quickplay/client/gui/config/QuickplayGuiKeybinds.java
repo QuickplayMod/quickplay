@@ -24,65 +24,61 @@ import java.util.List;
 public class QuickplayGuiKeybinds extends QuickplayGui {
 
     /**
-     * Y position that the buttons for each keybind start at
-     */
-    public int topOfButtons;
-    /**
      * The width of each button in the GUI
      */
-    public int buttonWidth = 200;
+    private static final int buttonWidth = 200;
     /**
      * The height of each button in the GUI
      */
-    public int buttonHeight = 20;
+    private static final int buttonHeight = 20;
     /**
      * The margins between each button on the GUI
      */
-    public int buttonMargins = 3;
+    private static final int buttonMargins = 3;
     /**
      * How wide the "Reset" button on the screen is
      */
-    public int resetButtonWidth = 90;
+    private static final int resetButtonWidth = 90;
     /**
      * The display text of the reset button
      */
-    public final String resetButtonText = I18n.format("quickplay.keybinds.reset");
+    private final String resetButtonText = I18n.format("quickplay.keybinds.reset");
     /**
      * The color of keybinds on buttons when they are not being edited
      */
-    public final EnumChatFormatting keybindColor = EnumChatFormatting.YELLOW;
+    private final EnumChatFormatting keybindColor = EnumChatFormatting.YELLOW;
     /**
      * The color of keybinds when the keybind is currently selected & being edited
      */
-    public final EnumChatFormatting keybindEditingColor = EnumChatFormatting.GOLD;
+    private final EnumChatFormatting keybindEditingColor = EnumChatFormatting.GOLD;
     /**
      * The separating characters between a keybind's name and the key it's mapped to
      */
-    public final String keybindNameSeparator = " : ";
+    private static final String keybindNameSeparator = " : ";
     /**
      * Characters that are prepended to the keybind button display string when it is being edited
      */
-    public final String keybindPrependedEditingText = "> ";
+    private static final String keybindPrependedEditingText = "> ";
     /**
      * Characters that are appended to the keybind button display string when it is being edited
      */
-    public final String keybindAppendedEditingText = " <";
+    private static final String keybindAppendedEditingText = " <";
     /**
      * The GUI component for the keybind that is currently selected and being edited
      */
-    public QuickplayGuiComponent selectedComponent = null;
+    private QuickplayGuiComponent selectedComponent = null;
     /**
      * Whether a popup telling the client that the key they tried to assign is already taken
      * This is set to true whenever the user tries to bind a key that's already set to something else
      * It disappears shortly afterwards by setting this back to false.
      */
-    public boolean drawTakenPopup;
+    private boolean drawTakenPopup;
 
     @Override
     public void initGui() {
         super.initGui();
 
-        topOfButtons = (int) (height * 0.1);
+        int topOfButtons = (int) (height * 0.1);
 
         int buttonId = 0;
 
@@ -139,6 +135,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
             if (mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(this, mouseX, mouseY)) {
                 //noinspection ArraysAsListWithZeroOrOneArgument
                 contextMenu = new QuickplayGuiContextMenu(Arrays.asList(I18n.format("quickplay.gui.keybinds.delete")), component, -1, mouseX, mouseY) {
+                    @SuppressWarnings("SuspiciousMethodCalls")
                     @Override
                     public void optionSelected(int index) {
                         if (index == 0) {
@@ -241,7 +238,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
      * @param selected  Whether this component is currently selected/being edited or not
      * @throws IllegalArgumentException when the component provided's origin isn't a QuickplayKeybind
      */
-    public void formatComponentString(QuickplayGuiComponent component, boolean selected) {
+    private void formatComponentString(QuickplayGuiComponent component, boolean selected) {
         if (component.origin instanceof QuickplayKeybind) {
             final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
             if (selected)

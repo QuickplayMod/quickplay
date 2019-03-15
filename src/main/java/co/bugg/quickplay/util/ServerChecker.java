@@ -28,11 +28,11 @@ public class ServerChecker {
     /**
      * Callback to run when the checks are complete
      */
-    public ServerCheckerCallback callback;
+    private ServerCheckerCallback callback;
     /**
      * IP the client is connected to
      */
-    public String ip = "unknown";
+    private String ip = "unknown";
 
     /**
      * Constructor
@@ -93,7 +93,7 @@ public class ServerChecker {
      *
      * @return Which of the above checks were true, or null otherwise.
      */
-    public VerificationMethod checkServerMetadataForHypixel() {
+    private VerificationMethod checkServerMetadataForHypixel() {
 
         // First check tab list, if it contains any references to Hypixel in the header & footer.
         final GuiPlayerTabOverlay tab = Minecraft.getMinecraft().ingameGUI.getTabList();
@@ -150,7 +150,7 @@ public class ServerChecker {
      * @throws NoSuchFieldException   The field couldn't be found
      * @throws IllegalAccessException The field couldn't be accessed
      */
-    public boolean checkTabField(GuiPlayerTabOverlay tabOverlay, String fieldName, String srgName) throws NoSuchFieldException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
+    private boolean checkTabField(GuiPlayerTabOverlay tabOverlay, String fieldName, String srgName) throws NoSuchFieldException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
         Field headerField;
         try {
             // Try deobfuscated
@@ -196,7 +196,7 @@ public class ServerChecker {
      * @param onHypixel whether online Hypixel
      * @param ip        IP the user is connected to
      */
-    public void runCallback(boolean onHypixel, String ip, VerificationMethod method) {
+    private void runCallback(boolean onHypixel, String ip, VerificationMethod method) {
         callback.run(onHypixel, ip, method);
         Quickplay.INSTANCE.unregisterEventHandler(this);
     }

@@ -16,7 +16,7 @@ public class SubCommandPremium extends ASubCommand {
     /**
      * List of Quickplay Premium commands
      */
-    public List<IPremiumCommand> premiumCommands = new ArrayList<>();
+    List<IPremiumCommand> premiumCommands = new ArrayList<>();
 
     /**
      * Constructor

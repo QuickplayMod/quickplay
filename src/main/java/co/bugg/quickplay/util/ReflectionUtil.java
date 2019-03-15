@@ -24,7 +24,8 @@ public class ReflectionUtil {
      * @return The field
      * @throws NoSuchFieldException The field doesn't exist
      */
-    public static Field getField(Class<?> clazz, String name) throws NoSuchFieldException {
+    @SuppressWarnings("SameParameterValue")
+    private static Field getField(Class<?> clazz, String name) throws NoSuchFieldException {
         Field field = clazz.getField(name);
         field.setAccessible(true);
         return field;
@@ -39,7 +40,8 @@ public class ReflectionUtil {
      * @return The method
      * @throws NoSuchMethodException The method doesn't exist
      */
-    public static Method getMethod(Class<?> clazz, String name) throws NoSuchMethodException {
+    @SuppressWarnings("SameParameterValue")
+    private static Method getMethod(Class<?> clazz, String name) throws NoSuchMethodException {
         Method method = clazz.getMethod(name);
         method.setAccessible(true);
         return method;

@@ -23,7 +23,7 @@ public class SubCommandHelp extends ASubCommand {
      *
      * @param parent Parent command
      */
-    public SubCommandHelp(ACommand parent) {
+    SubCommandHelp(ACommand parent) {
         super(
                 parent,
                 "help",
@@ -90,7 +90,7 @@ public class SubCommandHelp extends ASubCommand {
      * @param subCommand Sub command to format for
      * @return A chat-ready formatted help message
      */
-    public IChatComponent getFormattedHelpMessage(ASubCommand subCommand) {
+    private IChatComponent getFormattedHelpMessage(ASubCommand subCommand) {
         final String fullCommand = "/" + subCommand.getParent().getCommandName() + " " + subCommand.getName();
 
         final IChatComponent msg = new ChatComponentText("");

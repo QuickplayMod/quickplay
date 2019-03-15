@@ -19,5 +19,5 @@ public class Reference {
     /**
      * Google Analytics tracking ID
      */
-    public static final String ANALYTICS_TRACKING_ID = "UA-60675209-4";
+    static final String ANALYTICS_TRACKING_ID = "UA-60675209-4";
 }

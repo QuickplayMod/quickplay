@@ -18,7 +18,7 @@ public class SubCommandHistory extends ASubCommand {
      *
      * @param parent Parent command
      */
-    public SubCommandHistory(ACommand parent) {
+    SubCommandHistory(ACommand parent) {
         super(
                 parent,
                 "history",

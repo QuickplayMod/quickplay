@@ -20,7 +20,7 @@ public class SubCommandWiki extends ASubCommand {
      *
      * @param parent Parent command
      */
-    public SubCommandWiki(ACommand parent) {
+    SubCommandWiki(ACommand parent) {
         super(
                 parent,
                 "wiki",

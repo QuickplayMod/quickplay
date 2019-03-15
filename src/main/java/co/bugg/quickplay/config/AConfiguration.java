@@ -20,36 +20,19 @@ public abstract class AConfiguration implements Serializable {
     /**
      * Pretty-printing GSON instance
      */
-    public transient final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    /**
-     * Name of the file for this configuration
-     */
-    public transient String fileName;
+    private transient final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     /**
      * File for this configuration
      */
-    public transient File file;
+    private transient File file;
 
     /**
      * Constructor
      *
      * @param fileName name of the file this configuration should save to
      */
-    public AConfiguration(String fileName) {
-        setFile(new File(AssetFactory.configDirectory + fileName));
-    }
-
-    /**
-     * Set the file of this configuration
-     *
-     * @param file File to set
-     * @return this
-     */
-    public AConfiguration setFile(File file) {
-        this.fileName = file.toPath().getFileName().toString();
-        this.file = file;
-
-        return this;
+    AConfiguration(String fileName) {
+        this.file = new File(AssetFactory.configDirectory + fileName);
     }
 
     /**
@@ -58,6 +41,7 @@ public abstract class AConfiguration implements Serializable {
      * @return This
      * @throws IOException on a writing error
      */
+    @SuppressWarnings("UnstableApiUsage")
     public AConfiguration save() throws IOException {
         String contents = GSON.toJson(this);
         Files.write(contents.getBytes(), file);
@@ -73,6 +57,7 @@ public abstract class AConfiguration implements Serializable {
      * @throws IOException         Reading error
      * @throws JsonSyntaxException Invalid JSON
      */
+    @SuppressWarnings("UnstableApiUsage")
     public static AConfiguration load(String name, Class<? extends AConfiguration> type) throws IOException, JsonSyntaxException {
         final File file = new File(AssetFactory.configDirectory + name);
 
@@ -87,5 +72,14 @@ public abstract class AConfiguration implements Serializable {
         newConfig.setFile(file);
 
         return newConfig;
+    }
+
+    /**
+     * Set the file of this configuration
+     *
+     * @param file File to set
+     */
+    private void setFile(File file) {
+        this.file = file;
     }
 }

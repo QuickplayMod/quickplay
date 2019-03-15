@@ -11,7 +11,7 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
     /**
      * Whether the string should be centered
      */
-    public boolean centered;
+    private boolean centered;
 
     /**
      * Constructor

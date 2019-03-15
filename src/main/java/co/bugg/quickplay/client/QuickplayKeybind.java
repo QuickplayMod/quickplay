@@ -39,17 +39,17 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
      * If this keybind runs a command:
      * The chat command this keybind triggers
      */
-    public String chatCommand = null;
+    private String chatCommand = null;
     /**
      * If this keybind opens a GUI:
      * The name of the class to the GUI
      */
-    public String className = null;
+    private String className = null;
     /**
      * If this keybind opens a GUI:
      * The parameters to the constructor for the GUI
      */
-    public Object[] constructorParams = null;
+    private Object[] constructorParams = null;
 
     /**
      * Constructor
@@ -85,7 +85,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
      * @param name       Name of this keybind
      * @param defaultKey Default key for this keybind
      */
-    public QuickplayKeybind(String name, int defaultKey) {
+    private QuickplayKeybind(String name, int defaultKey) {
         this.name = name;
         this.key = defaultKey;
 
@@ -102,7 +102,8 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
     /**
      * Called whenever this keybind is triggered
      */
-    public void keyPressed() {
+    @SuppressWarnings("unchecked")
+    private void keyPressed() {
         // Open a GUI if one is available
         if (className != null && constructorParams != null)
             try {

@@ -25,22 +25,13 @@ public class TickDelay {
     }
 
     /**
-     * Default 20 ticks when unprovided
-     *
-     * @param fn Code to be delayed
-     */
-    public TickDelay(Runnable fn) {
-        this(fn, 20);
-    }
-
-    /**
      * Runnable code to delay
      */
-    public Runnable fn;
+    private Runnable fn;
     /**
      * Number of ticks to delay by
      */
-    public int delay;
+    private int delay;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -64,7 +55,7 @@ public class TickDelay {
     /**
      * Destroy this object by unregistering it from the event bus
      */
-    public void destroy() {
+    private void destroy() {
         Quickplay.INSTANCE.unregisterEventHandler(this);
     }
 }

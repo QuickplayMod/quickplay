@@ -20,7 +20,7 @@ public class SubCommandDiscord extends ASubCommand {
      *
      * @param parent Parent command
      */
-    public SubCommandDiscord(ACommand parent) {
+    SubCommandDiscord(ACommand parent) {
         super(
                 parent,
                 "discord",

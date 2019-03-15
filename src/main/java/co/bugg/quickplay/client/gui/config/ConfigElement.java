@@ -8,9 +8,9 @@ import co.bugg.quickplay.config.GuiOption;
  * Used for storing {@link GuiOption} annotations with their
  * respective config element if necessary
  */
-public class ConfigElement {
-    public static final int ELEMENT_HEIGHT = 20;
-    public static final int ELEMENT_MARGINS = 4;
+class ConfigElement {
+    static final int ELEMENT_HEIGHT = 20;
+    static final int ELEMENT_MARGINS = 4;
 
     /**
      * Value in the Quickplay configuration
@@ -32,7 +32,7 @@ public class ConfigElement {
      * @param optionInfo      This configuration element's {@link GuiOption} annotation
      * @param configFieldName Name of the field this configuration element is coming from
      */
-    public ConfigElement(Object element, GuiOption optionInfo, String configFieldName) {
+    ConfigElement(Object element, GuiOption optionInfo, String configFieldName) {
         // Only doubles, booleans, colors, runnables, and enums are allowed at the moment.
         if (
                 element instanceof Double ||

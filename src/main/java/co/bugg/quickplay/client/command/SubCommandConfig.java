@@ -19,7 +19,7 @@ public class SubCommandConfig extends ASubCommand {
      *
      * @param parent Parent command
      */
-    public SubCommandConfig(ACommand parent) {
+    SubCommandConfig(ACommand parent) {
         super(
                 parent,
                 "config",

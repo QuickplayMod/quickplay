@@ -12,7 +12,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     /**
      * Vanilla texture location for Minecraft buttons
      */
-    public static final ResourceLocation buttonTextures = new ResourceLocation("textures/gui/widgets.png");
+    static final ResourceLocation buttonTextures = new ResourceLocation("textures/gui/widgets.png");
     /**
      * Whether this button is enabled or not
      */
@@ -20,21 +20,21 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     /**
      * Texture location for this button in particular
      */
-    protected ResourceLocation texture = buttonTextures;
+    private ResourceLocation texture = buttonTextures;
     /**
      * X location corresponding to the left of this button's texture
      * -1 means draw as a vanilla button
      */
-    protected int textureX = -1;
+    private int textureX;
     /**
      * Y location corresponding to the top of this button's texture
      * -1 means draw as a vanilla button
      */
-    protected int textureY = -1;
+    private int textureY;
     /**
      * Scale of this button
      */
-    protected double scale = 1.0;
+    protected double scale;
 
     /**
      * Constructor
@@ -123,7 +123,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
      * @param opacity         Opacity of the button/text
      * @param scrollAdjustedY The Y position on the GUI this string should be drawn at, adjusted for scrolling
      */
-    public void drawDisplayString(QuickplayGui gui, double opacity, int scrollAdjustedY) {
+    void drawDisplayString(QuickplayGui gui, double opacity, int scrollAdjustedY) {
         if (displayString != null && displayString.length() > 0) {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
@@ -141,7 +141,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
      * @param opacity Opacity of the text
      * @return Color code for the text
      */
-    public int getDefaultTextColor(double opacity) {
+    private int getDefaultTextColor(double opacity) {
         int color;
         if (!enabled) {
             color = 0xA0A0A0;
@@ -170,18 +170,6 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
         }
 
         return i;
-    }
-
-    /**
-     * Called whenever the mouse is dragged
-     *
-     * @param gui     GUI this button is being drawn on
-     * @param mouseX  X position of the mouse
-     * @param mouseY  Y position of the mouse
-     * @param opacity Opacity of the screen
-     */
-    // Things like GUI sliders need the opacity in this method in order to draw the slider handle correctly
-    protected void mouseDragged(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
     }
 
     // We can ignore mouse release events for normal buttons

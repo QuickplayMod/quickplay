@@ -53,6 +53,7 @@ public class QuickplayEventHandler {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @SubscribeEvent
     public void onRender(TickEvent.RenderTickEvent event) {
         // handle any runnables that need to be ran with OpenGL context

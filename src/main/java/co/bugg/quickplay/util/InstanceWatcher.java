@@ -22,20 +22,15 @@ public class InstanceWatcher {
      */
     public List<String> instanceHistory = new ArrayList<>();
     /**
-     * Whether the instance is running & registered
-     * with the event handler
-     */
-    public boolean started = false;
-    /**
      * How often in seconds /whereami should be executed
      */
-    public int whereamiFrequency;
+    private int whereamiFrequency;
 
     public InstanceWatcher(int frequency) {
         whereamiFrequency = frequency;
     }
 
-    public int tick;
+    private int tick;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -59,28 +54,21 @@ public class InstanceWatcher {
      */
     public InstanceWatcher start() {
         Quickplay.INSTANCE.registerEventHandler(this);
-        started = true;
         runWhereami();
         return this;
     }
 
     /**
      * Stop the event handler
-     *
-     * @return this
      */
-    public InstanceWatcher stop() {
+    public void stop() {
         Quickplay.INSTANCE.unregisterEventHandler(this);
-        started = false;
-        return this;
     }
 
     /**
      * Send the /whereami message if possible
-     *
-     * @return this
      */
-    public InstanceWatcher runWhereami() {
+    private void runWhereami() {
         if (Quickplay.INSTANCE.onHypixel && Quickplay.INSTANCE.enabled)
             new WhereamiWrapper((server) -> {
 
@@ -123,7 +111,6 @@ public class InstanceWatcher {
                     }
                 }
             });
-        return this;
     }
 
     /**

@@ -36,7 +36,7 @@ public class PremiumCommandAbout implements IPremiumCommand {
     @Override
     public void run(String[] args) {
         if (Quickplay.INSTANCE.premiumAbout != null) {
-            Quickplay.INSTANCE.messageBuffer.push(new Message(Quickplay.INSTANCE.premiumAbout, true, false));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(Quickplay.INSTANCE.premiumAbout, true));
         } else {
             final String premiumLink = "https://bugg.co/quickplay/premium";
 
@@ -46,7 +46,7 @@ public class PremiumCommandAbout implements IPremiumCommand {
             chatStyle.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, premiumLink));
             chatComponent.setChatStyle(chatStyle);
 
-            Quickplay.INSTANCE.messageBuffer.push(new Message(chatComponent, true, false));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(chatComponent, true));
         }
     }
 

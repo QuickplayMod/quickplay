@@ -28,7 +28,6 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResourcePack;
-import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.*;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -40,9 +39,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -71,7 +69,7 @@ public class Quickplay {
     /**
      * The reason the mod has been disabled, if it is disabled
      */
-    public String disabledReason = null;
+    private String disabledReason = null;
     /**
      * Verification method used to verify the client is online Hypixel, or null if not on Hypixel.
      */
@@ -83,7 +81,7 @@ public class Quickplay {
     /**
      * A list of all registered event handlers
      */
-    public final List<Object> eventHandlers = new ArrayList<>();
+    private final List<Object> eventHandlers = new ArrayList<>();
     /**
      * A list of all registered commands
      */
@@ -324,7 +322,8 @@ public class Quickplay {
      * Create the Google Analytics instance with customized settings for this Quickplay instance
      */
     public void createGoogleAnalytics() {
-        ga = GoogleAnalyticsFactory.create(Reference.ANALYTICS_TRACKING_ID, usageStats.statsToken.toString(), Reference.MOD_NAME, Reference.VERSION);
+        ga = GoogleAnalyticsFactory.create(Reference.ANALYTICS_TRACKING_ID, usageStats.statsToken.toString(), false);
+        assert ga != null;
         final AnalyticsRequest defaultRequest = ga.getDefaultRequest();
 
         defaultRequest.setLanguage(String.valueOf(Minecraft.getMinecraft().gameSettings.language).toLowerCase());
@@ -443,24 +442,6 @@ public class Quickplay {
         } else {
             messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.nogames").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
-    }
-
-    /**
-     * Reload the Quickplay Resource pack that contains glyphs, icons, lang, etc.
-     *
-     * @throws NoSuchFieldException Neither field (obf or deobf) exist, according to the client.
-     */
-    public void reloadResourcePack() throws NoSuchFieldException, IllegalAccessException {
-        Field resourceManagerField;
-        try {
-            resourceManagerField = Minecraft.class.getDeclaredField("field_110451_am");
-        } catch (NoSuchFieldException e) {
-            resourceManagerField = Minecraft.class.getDeclaredField("mcResourceManager");
-        }
-        resourceManagerField.setAccessible(true);
-        SimpleReloadableResourceManager resourceManager = (SimpleReloadableResourceManager) resourceManagerField.get(Minecraft.getMinecraft());
-
-        resourceManager.reloadResourcePack(resourcePack);
     }
 
     /**

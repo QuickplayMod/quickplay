@@ -25,16 +25,16 @@ public class PlayerGlyph {
     /**
      * The maximum amount of times to try downloading before giving up
      */
-    public static final int maxDownloadAttempts = 5;
+    private static final int maxDownloadAttempts = 5;
 
     /**
      * UUID of the owner
      */
-    public final UUID uuid;
+    final UUID uuid;
     /**
      * URL to the glyph image
      */
-    public final URL path;
+    final URL path;
     /**
      * Height of the glyph
      */
@@ -42,19 +42,19 @@ public class PlayerGlyph {
     /**
      * Vertical offset from the default position that the glyph should be rendered at
      */
-    public Double yOffset = 0.0;
+    Double yOffset = 0.0;
     /**
      * Whether this glyph should be dipslayed in-game
      */
-    public boolean displayInGames = false;
+    boolean displayInGames = false;
     /**
      * Whether this Glyph is currently being downloaded or not
      */
-    public boolean downloading = false;
+    boolean downloading = false;
     /**
      * The number of times a download has been attempted on this Glyph.
      */
-    public int downloadCount = 0;
+    private int downloadCount = 0;
 
     /**
      * Constructor
@@ -70,7 +70,8 @@ public class PlayerGlyph {
     /**
      * Try to download this glyph to the Glyphs resource folder
      */
-    public synchronized void download() {
+    @SuppressWarnings("UnstableApiUsage")
+    synchronized void download() {
         if (!downloading && downloadCount < maxDownloadAttempts) {
             downloading = true;
             downloadCount++;
