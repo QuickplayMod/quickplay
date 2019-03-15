@@ -13,13 +13,13 @@ import co.bugg.quickplay.config.AssetFactory;
 import co.bugg.quickplay.config.GuiOption;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.gui.GuiPageButtonList;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.io.File;
@@ -248,8 +248,8 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         // Blend is enabled for the GUI fadein
         // Fade in opacity has to be applied individually to each component that you want to fade in
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         /*
          * Draw background
@@ -263,21 +263,21 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         if (opacity > 0) {
             // Scale up to header size
-            GL11.glScaled(headerScale, headerScale, headerScale);
+            GlStateManager.scale(headerScale, headerScale, headerScale);
             drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.title"), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
                     // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
                     (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             // Scale back down
-            GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
+            GlStateManager.scale(1 / headerScale, 1 / headerScale, 1 / headerScale);
 
             // Scale up to subheader size
-            GL11.glScaled(subheaderScale, subheaderScale, subheaderScale);
+            GlStateManager.scale(subheaderScale, subheaderScale, subheaderScale);
             drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.version") + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
                     subheaderY,
                     // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
                     (Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             // Scale back down
-            GL11.glScaled(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
+            GlStateManager.scale(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
         }
 
         /*
@@ -324,8 +324,8 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             }
         }
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     /**

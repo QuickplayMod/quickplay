@@ -2,7 +2,7 @@ package co.bugg.quickplay.client.gui.components;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.QuickplayGui;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
 
 /**
  * A simple, static string that is built into a component
@@ -36,13 +36,13 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
         if (opacity > 0) {
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
             if (centered)
                 drawCenteredString(gui.mc.fontRendererObj, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             else
                 drawString(gui.mc.fontRendererObj, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 

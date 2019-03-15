@@ -5,11 +5,11 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
 import java.util.concurrent.Future;
@@ -144,8 +144,8 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         drawDefaultBackground();
 
@@ -156,12 +156,12 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
         // Draw spinner
         if (opacity > 0) {
-            GL11.glScaled(spinnerScale, spinnerScale, spinnerScale);
+            GlStateManager.scale(spinnerScale, spinnerScale, spinnerScale);
             drawCenteredString(fontRendererObj, spinnerText, (int) (width / 2 / spinnerScale), (int) ((randomizingTextHeight + fontRendererObj.FONT_HEIGHT * spinnerScale * 2) / spinnerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-            GL11.glScaled(1 / spinnerScale, 1 / spinnerScale, 1 / spinnerScale);
+            GlStateManager.scale(1 / spinnerScale, 1 / spinnerScale, 1 / spinnerScale);
         }
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 }

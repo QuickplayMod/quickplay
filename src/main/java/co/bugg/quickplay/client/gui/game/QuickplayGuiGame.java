@@ -12,10 +12,10 @@ import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.Mode;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -219,24 +219,24 @@ public class QuickplayGuiGame extends QuickplayGui {
     @SuppressWarnings("UnstableApiUsage")
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         drawDefaultBackground();
 
         if (opacity > 0) {
-            GL11.glScaled(headerScale, headerScale, headerScale);
+            GlStateManager.scale(headerScale, headerScale, headerScale);
             drawCenteredString(fontRendererObj, game.name, (int) (width / 2 / headerScale), (int) (headerHeight / headerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-            GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
+            GlStateManager.scale(1 / headerScale, 1 / headerScale, 1 / headerScale);
         }
 
-        GL11.glScaled(logoScale, logoScale, logoScale);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glColor4f(1, 1, 1, opacity);
+        GlStateManager.scale(logoScale, logoScale, logoScale);
+        GlStateManager.enableBlend();
+        GlStateManager.color(1, 1, 1, opacity);
         mc.getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"));
         drawTexturedModalRect((float) ((width / 2 - logoSize * logoScale / 2) / logoScale), (float) ((headerHeight + fontRendererObj.FONT_HEIGHT * headerScale + headerBottomMargins) / logoScale), 0, 0, logoSize, logoSize);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glScaled(1 / logoScale, 1 / logoScale, 1 / logoScale);
+        GlStateManager.enableBlend();
+        GlStateManager.scale(1 / logoScale, 1 / logoScale, 1 / logoScale);
 
         final int columnZeroRowZeroX = width / 2 - (buttonWidth + buttonMargins) * columnCount / 2;
         final int rightOfBox = columnZeroRowZeroX + columnCount * (buttonWidth + buttonMargins) - buttonMargins + backgroundBoxPadding;
@@ -259,8 +259,8 @@ public class QuickplayGuiGame extends QuickplayGui {
         if (opacity > 0)
             drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     @Override

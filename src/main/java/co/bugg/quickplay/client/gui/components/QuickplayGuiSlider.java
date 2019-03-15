@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Component that extends off of Quickplay GUI buttons to add a number slider
@@ -101,8 +100,8 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
 
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
 
             if (isMouseDown) {
                 // Calculate the new slider position
@@ -115,15 +114,15 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
             gui.mc.getTextureManager().bindTexture(buttonTextures);
-            GL11.glScaled(scale, scale, scale);
+            GlStateManager.scale(scale, scale, scale);
             drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)), scrollAdjustedY, 0, 66, 4, 20);
             drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)) + 4, scrollAdjustedY, 196, 66, 4, 20);
             if (opacity > 0)
                 drawDisplayString(gui, opacity, scrollAdjustedY);
-            GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
+            GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 

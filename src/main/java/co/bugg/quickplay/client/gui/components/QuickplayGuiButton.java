@@ -3,7 +3,6 @@ package co.bugg.quickplay.client.gui.components;
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Quickplay's equivalent to a Minecraft button
@@ -87,8 +86,8 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
         if (opacity > 0) {
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
             gui.mc.getTextureManager().bindTexture(texture);
             GlStateManager.color(1, 1, 1, (float) opacity);
 
@@ -98,7 +97,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
             int buttonTextureMultiplier = getDefaultButtonTexture(hovering);
 
             // If default button
-            GL11.glScaled(scale, scale, scale);
+            GlStateManager.scale(scale, scale, scale);
             if (texture == buttonTextures || textureX < 0 || textureY < 0) {
                 // Draw the different parts of the button
                 drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), 0, 46 + buttonTextureMultiplier * 20, width / 2, height);
@@ -106,13 +105,13 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
             } else {
                 drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), textureX, textureY, (int) (width / scale), (int) (height / scale));
             }
-            GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
+            GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
 
             if (opacity > 0)
                 drawDisplayString(gui, opacity, scrollAdjustedY);
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 
@@ -125,13 +124,13 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
      */
     void drawDisplayString(QuickplayGui gui, double opacity, int scrollAdjustedY) {
         if (displayString != null && displayString.length() > 0) {
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
 
             drawCenteredString(gui.mc.fontRendererObj, displayString, x + width / 2, scrollAdjustedY + (height - 8) / 2, getDefaultTextColor(opacity));
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 
