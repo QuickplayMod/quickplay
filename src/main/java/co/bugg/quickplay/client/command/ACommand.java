@@ -30,6 +30,7 @@ public abstract class ACommand implements ICommand {
 
     /**
      * Constructor
+     *
      * @param aliases All aliases for the command
      */
     public ACommand(String... aliases) {
@@ -38,6 +39,7 @@ public abstract class ACommand implements ICommand {
 
     /**
      * Add the provided sub command to list of sub commands
+     *
      * @param subCommand Sub command to add
      */
     public void addSubCommand(ASubCommand subCommand) {
@@ -62,7 +64,7 @@ public abstract class ACommand implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         // Send analytical data to Google
-        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+        if (Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
             Quickplay.INSTANCE.threadPool.submit(() -> {
                 try {
                     Quickplay.INSTANCE.ga.createEvent("commands", "Execute Command")
@@ -75,13 +77,13 @@ public abstract class ACommand implements ICommand {
         }
 
         // Only run if there are actually sub commands available; Otherwise it's pointless
-        if(subCommands.size() > 0) {
+        if (subCommands.size() > 0) {
             Quickplay.INSTANCE.threadPool.submit(() -> {
-                if(args.length == 0) {
+                if (args.length == 0) {
                     subCommands.get(0).run(new String[]{});
                 } else {
                     ASubCommand subCommand = getCommand(args[0]);
-                    if(subCommand == null) {
+                    if (subCommand == null) {
                         subCommands.get(0).run(new String[]{});
                     } else {
                         subCommand.run(removeFirstArgument(args));
@@ -100,11 +102,11 @@ public abstract class ACommand implements ICommand {
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
         List<String> tabCompletionOptions = new ArrayList<>();
 
-        if(args.length < 2) {
+        if (args.length < 2) {
             tabCompletionOptions.addAll(getDefaultTabCompletions(args[args.length - 1]));
         } else {
             ASubCommand subCommand = getCommand(args[0]);
-            if(subCommand != null) {
+            if (subCommand != null) {
                 tabCompletionOptions.addAll(subCommand.getTabCompletions(removeFirstArgument(args)));
             }
         }
@@ -125,13 +127,14 @@ public abstract class ACommand implements ICommand {
     /**
      * Remove the first argument, for passing to
      * subcommands.
+     *
      * @param args Args to remove first arg from
      * @return Modified array
      */
     public String[] removeFirstArgument(String[] args) {
         ArrayList<String> argsList = new ArrayList<>(Arrays.asList(args));
         argsList.remove(0);
-        return argsList.toArray(new String[argsList.size()]);
+        return argsList.toArray(new String[0]);
     }
 
     /**
@@ -139,6 +142,7 @@ public abstract class ACommand implements ICommand {
      * all sub commands' names that are set
      * to be able to be displayed in the
      * tab completion list
+     *
      * @param limiter only returns sub commands that have names that start with this
      * @return List of command names
      */
@@ -154,6 +158,7 @@ public abstract class ACommand implements ICommand {
     /**
      * Get the subcommand with the provided name from
      * the list of subcommands in this object
+     *
      * @param name Name of command to get
      * @return The sub command, or null if nonexistant
      */
@@ -165,6 +170,7 @@ public abstract class ACommand implements ICommand {
 
     /**
      * Get all sub commands of this command
+     *
      * @return A list of sub commands
      */
     public List<ASubCommand> getSubCommands() {

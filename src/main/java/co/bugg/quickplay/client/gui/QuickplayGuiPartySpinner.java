@@ -62,7 +62,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
         super.initGui();
 
         // If there are any modes
-        if(Quickplay.INSTANCE.settings.partyModes.size() > 0) {
+        if (Quickplay.INSTANCE.settings.partyModes.size() > 0) {
             randomizingTextHeight = (int) (height * (height > 350 ? 0.4 : 0.3));
 
             int buttonId = 0;
@@ -88,10 +88,10 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
         spinningThreadFuture = Quickplay.INSTANCE.threadPool.submit(() -> {
             try {
-                if(spinnerDelay > 0) {
+                if (spinnerDelay > 0) {
                     // While less than 100% of the spinnerDelay has passed
                     while (startedAt > System.currentTimeMillis() - spinnerDelay * 1000) {
-                        if(Minecraft.getMinecraft().currentScreen == this) {
+                        if (Minecraft.getMinecraft().currentScreen == this) {
                             final int nextSelectedModeIndex = random.nextInt(Quickplay.INSTANCE.settings.partyModes.size());
                             currentlySelectedMode = Quickplay.INSTANCE.settings.partyModes.get(nextSelectedModeIndex);
                             spinnerText = currentlySelectedMode.name;
@@ -122,7 +122,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                 final String textToFlash = spinnerText;
                 // While less than 100% of the spinnerDelay and finalization period combined has passed
                 while (startedAt > System.currentTimeMillis() - (spinnerDelay + finalizationLength) * 1000) {
-                    if(Minecraft.getMinecraft().currentScreen == this) {
+                    if (Minecraft.getMinecraft().currentScreen == this) {
                         if (spinnerText.equals(textToFlash)) {
                             spinnerText = "";
                         } else
@@ -134,11 +134,11 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                 }
 
                 // Finally, if this GUI is still open, send the mode command & close GUI
-                if(Minecraft.getMinecraft().currentScreen == this) {
+                if (Minecraft.getMinecraft().currentScreen == this) {
                     Quickplay.INSTANCE.chatBuffer.push(currentlySelectedMode.command);
                     Minecraft.getMinecraft().displayGuiScreen(null);
                 }
-            } catch(InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
@@ -157,7 +157,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         // Draw spinner
-        if(opacity > 0) {
+        if (opacity > 0) {
             GL11.glScaled(spinnerScale, spinnerScale, spinnerScale);
             drawCenteredString(fontRendererObj, spinnerText, (int) (width / 2 / spinnerScale), (int) ((randomizingTextHeight + fontRendererObj.FONT_HEIGHT * spinnerScale * 2) / spinnerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
             GL11.glScaled(1 / spinnerScale, 1 / spinnerScale, 1 / spinnerScale);

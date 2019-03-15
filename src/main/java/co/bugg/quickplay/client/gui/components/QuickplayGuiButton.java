@@ -39,13 +39,13 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     /**
      * Constructor
      *
-     * @param origin The origin of this button
-     * @param id The ID of this button
-     * @param x The X position of this button when scrolling = 0
-     * @param y The Y position of this button when scrolling = 0
-     * @param widthIn The width of this button
-     * @param heightIn The height of this button
-     * @param text The text that should be rendered on top of this button
+     * @param origin     The origin of this button
+     * @param id         The ID of this button
+     * @param x          The X position of this button when scrolling = 0
+     * @param y          The Y position of this button when scrolling = 0
+     * @param widthIn    The width of this button
+     * @param heightIn   The height of this button
+     * @param text       The text that should be rendered on top of this button
      * @param scrollable Whether this button should be scrollable
      */
     public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text, boolean scrollable) {
@@ -55,17 +55,17 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     /**
      * Constructor
      *
-     * @param origin The origin of this button
-     * @param id The ID of this button
-     * @param x The X position of this button when scrolling = 0
-     * @param y The Y position of this button when scrolling = 0
-     * @param widthIn The width of this button
-     * @param heightIn The height of this button
-     * @param text The text to display on top of this button
-     * @param texture The resource location to the texture to render as this button
-     * @param textureX The X location within the texture that corresponds to the left of this button
-     * @param textureY The Y location within the texture that corresponds to the top of this button
-     * @param scale The scale of this button
+     * @param origin     The origin of this button
+     * @param id         The ID of this button
+     * @param x          The X position of this button when scrolling = 0
+     * @param y          The Y position of this button when scrolling = 0
+     * @param widthIn    The width of this button
+     * @param heightIn   The height of this button
+     * @param text       The text to display on top of this button
+     * @param texture    The resource location to the texture to render as this button
+     * @param textureX   The X location within the texture that corresponds to the left of this button
+     * @param textureY   The Y location within the texture that corresponds to the top of this button
+     * @param scale      The scale of this button
      * @param scrollable Whether this button should be scrollable
      */
     public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text, ResourceLocation texture, int textureX, int textureY, double scale, boolean scrollable) {
@@ -74,7 +74,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
         this.width = (int) (widthIn * scale);
         this.height = (int) (heightIn * scale);
 
-        if(texture != null) {
+        if (texture != null) {
             this.texture = texture;
         }
         this.textureX = textureX;
@@ -84,7 +84,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
 
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
-        if(opacity > 0) {
+        if (opacity > 0) {
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
             GL11.glPushMatrix();
@@ -119,12 +119,12 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     /**
      * Draw the string in the center of the button
      *
-     * @param gui GUI this is being drawn on
-     * @param opacity Opacity of the button/text
+     * @param gui             GUI this is being drawn on
+     * @param opacity         Opacity of the button/text
      * @param scrollAdjustedY The Y position on the GUI this string should be drawn at, adjusted for scrolling
      */
     public void drawDisplayString(QuickplayGui gui, double opacity, int scrollAdjustedY) {
-        if(displayString != null && displayString.length() > 0) {
+        if (displayString != null && displayString.length() > 0) {
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
 
@@ -137,6 +137,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
 
     /**
      * Get the text color for the button's display text, depending on if the button is enabled or being hovered over
+     *
      * @param opacity Opacity of the text
      * @return Color code for the text
      */
@@ -155,6 +156,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
 
     /**
      * Get the multiplier used by vanilla Minecraft to determine which texture to draw
+     *
      * @param mouseOver Whether the mouse is currently over the button
      * @return multiplier for which position the texture to be used is in
      */
@@ -172,9 +174,10 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
 
     /**
      * Called whenever the mouse is dragged
-     * @param gui GUI this button is being drawn on
-     * @param mouseX X position of the mouse
-     * @param mouseY Y position of the mouse
+     *
+     * @param gui     GUI this button is being drawn on
+     * @param mouseX  X position of the mouse
+     * @param mouseY  Y position of the mouse
      * @param opacity Opacity of the screen
      */
     // Things like GUI sliders need the opacity in this method in order to draw the slider handle correctly

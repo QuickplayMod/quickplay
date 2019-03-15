@@ -17,6 +17,7 @@ public class SubCommandLimbo extends ASubCommand {
 
     /**
      * Constructor
+     *
      * @param parent Parent command
      */
     public SubCommandLimbo(ACommand parent) {
@@ -33,12 +34,12 @@ public class SubCommandLimbo extends ASubCommand {
 
     @Override
     public void run(String[] args) {
-        if(Quickplay.INSTANCE.onHypixel) {
+        if (Quickplay.INSTANCE.onHypixel) {
             String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
-            if(currentServer == null) currentServer = "null";
+            if (currentServer == null) currentServer = "null";
 
             // TODO false positive in Megawalls lobby
-            if(currentServer.contains("mini") || currentServer.contains("mega")) {
+            if (currentServer.contains("mini") || currentServer.contains("mega")) {
                 Quickplay.INSTANCE.chatBuffer.push("/achat §");
 
                 // Sleep for a sec to give time to get to the lobby
@@ -53,7 +54,7 @@ public class SubCommandLimbo extends ASubCommand {
                 }
             }
 
-            if(!currentServer.equals("limbo"))
+            if (!currentServer.equals("limbo"))
                 Quickplay.INSTANCE.chatBuffer.push("/achat §");
             else
                 Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.quickplay.limbo.alreadythere").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));

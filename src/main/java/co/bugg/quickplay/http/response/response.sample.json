@@ -15,7 +15,6 @@
             {
               "text": "Play it now!",
               "color": "aqua",
-
               "clickEvent": {
                 "action": "run_command",
                 "value": "/play prototype_royale:solo"

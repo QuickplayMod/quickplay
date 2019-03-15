@@ -15,6 +15,7 @@ public class SubCommandHistory extends ASubCommand {
 
     /**
      * Constructor
+     *
      * @param parent Parent command
      */
     public SubCommandHistory(ACommand parent) {
@@ -31,8 +32,8 @@ public class SubCommandHistory extends ASubCommand {
 
     @Override
     public void run(String[] args) {
-        if(Quickplay.INSTANCE.onHypixel) {
-            if(Quickplay.INSTANCE.instanceWatcher != null && Quickplay.INSTANCE.instanceWatcher.instanceHistory != null) {
+        if (Quickplay.INSTANCE.onHypixel) {
+            if (Quickplay.INSTANCE.instanceWatcher != null && Quickplay.INSTANCE.instanceWatcher.instanceHistory != null) {
 
                 // Get how many isntances to display
                 // Default # of instances to display
@@ -41,7 +42,7 @@ public class SubCommandHistory extends ASubCommand {
                 if (args.length > 0) {
                     try {
                         instanceCount = Math.abs(Integer.parseInt(args[0]));
-                    } catch(NumberFormatException e) {
+                    } catch (NumberFormatException e) {
                         instanceCount = defaultInstanceCount;
                     }
                 } else {
@@ -53,7 +54,7 @@ public class SubCommandHistory extends ASubCommand {
 
                 final IChatComponent instanceList = new ChatComponentText("");
 
-                for(int i = 0; i < instanceCount; i++) {
+                for (int i = 0; i < instanceCount; i++) {
                     instanceList.appendText(Quickplay.INSTANCE.instanceWatcher.instanceHistory.get(i) + "\n");
                 }
 

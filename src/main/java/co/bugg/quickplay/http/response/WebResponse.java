@@ -12,11 +12,10 @@ import java.util.List;
 public class WebResponse {
     /**
      * Whether the request was valid & handled successfully
-     *
+     * <p>
      * It's protocol to execute {@link #actions} regardless of this value,
      * although anything to do with {@link #content} should be ignored
      * (with the exception of the <code>error</code> field, which says what went wrong)
-     *
      */
     public boolean ok;
     /**
@@ -28,7 +27,7 @@ public class WebResponse {
     public List<ResponseAction> actions = new ArrayList<>();
     /**
      * Any other content relating to the request.
-     *
+     * <p>
      * e.g. for game list requests, this should contain the
      * field <code>games</code>, which will contain a list of all games, modes,
      * and buttons available for each {@link co.bugg.quickplay.games.Game}.
@@ -40,6 +39,7 @@ public class WebResponse {
     /**
      * Deserializes a JSON response from the web server into an
      * instance of {@link this}
+     *
      * @param json JSON string to deserialize
      * @return Instance of {@link WebResponse} that {@param json} represented
      */

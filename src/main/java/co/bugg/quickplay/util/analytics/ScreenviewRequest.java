@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 
 /**
  * "screenview" requests
+ *
  * @see "https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide#screenView"
  */
 public class ScreenviewRequest extends AnalyticsRequest {
@@ -16,7 +17,7 @@ public class ScreenviewRequest extends AnalyticsRequest {
      */
     ScreenviewRequest(GoogleAnalytics analytics, String screenName) throws MalformedURLException {
         super(RequestType.SCREENVIEW, analytics);
-        if(screenName == null || screenName.length() == 0)
+        if (screenName == null || screenName.length() == 0)
             throw new IllegalArgumentException("screenName cannot be null and must be at least 1 character in length.");
 
         parameters.put("cd", screenName);

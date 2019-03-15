@@ -20,6 +20,7 @@ public class SubCommandPremium extends ASubCommand {
 
     /**
      * Constructor
+     *
      * @param parent Parent command
      */
     public SubCommandPremium(ACommand parent) {
@@ -39,10 +40,10 @@ public class SubCommandPremium extends ASubCommand {
 
     @Override
     public void run(String[] args) {
-        if(premiumCommands.size() > 0) {
+        if (premiumCommands.size() > 0) {
             if (args.length > 0) {
                 final List<IPremiumCommand> filteredList = premiumCommands.stream().filter(cmd -> cmd.getName().equals(args[0])).collect(Collectors.toList());
-                if(filteredList.size() > 0) {
+                if (filteredList.size() > 0) {
                     filteredList.get(0).run(args);
                 } else {
                     premiumCommands.get(0).run(args);
@@ -55,12 +56,12 @@ public class SubCommandPremium extends ASubCommand {
     @Override
     public List<String> getTabCompletions(String[] args) {
         final ArrayList<String> list = new ArrayList<>();
-        if(args.length == 1) {
+        if (args.length == 1) {
             // Add all premium commands that begin with what's already typed out
             list.addAll(premiumCommands.stream().filter(cmd -> cmd.getName().startsWith(args[0])).map(IPremiumCommand::getName).collect(Collectors.toList()));
         } else {
             final List<IPremiumCommand> filteredList = premiumCommands.stream().filter(cmd -> cmd.getName().equals(args[0])).collect(Collectors.toList());
-            if(filteredList.size() > 0) {
+            if (filteredList.size() > 0) {
                 list.addAll(filteredList.get(0).getTabCompletions(args));
             }
         }

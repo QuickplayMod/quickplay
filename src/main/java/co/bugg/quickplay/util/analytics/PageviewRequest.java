@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 
 /**
  * "pageview" requests
+ *
  * @see "https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide#page"
  */
 public class PageviewRequest extends AnalyticsRequest {

@@ -27,6 +27,7 @@ public class CommandHub extends ACommand {
     /**
      * Constructor
      * If only one argument is provided, that argument is used as both the {@link #command} and {@link #serverCommand}
+     *
      * @param command Command to use as {@link #command} and {@link #serverCommand}
      */
     public CommandHub(String command) {
@@ -35,36 +36,38 @@ public class CommandHub extends ACommand {
 
     /**
      * Constructor for having two different commands for the user & the client
-     * @param command Command the user sends to trigger this <code>ACommand</code>
+     *
+     * @param command       Command the user sends to trigger this <code>ACommand</code>
      * @param serverCommand Command this <code>ACommand</code> sends to the server when changing lobbies
      */
     public CommandHub(String command, String serverCommand) {
         super(command);
-        if(command != null && command.length() > 0)
+        if (command != null && command.length() > 0)
             this.command = command;
         else throw new IllegalArgumentException("command cannot be null and must be at least one character in length");
 
-        if(serverCommand != null && serverCommand.length() > 0)
+        if (serverCommand != null && serverCommand.length() > 0)
             this.serverCommand = serverCommand;
-        else throw new IllegalArgumentException("serverCommand cannot be null and must be at least one character in length");
+        else
+            throw new IllegalArgumentException("serverCommand cannot be null and must be at least one character in length");
     }
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         Quickplay.INSTANCE.threadPool.submit(() -> {
-            if(Quickplay.INSTANCE.checkEnabledStatus()) {
+            if (Quickplay.INSTANCE.checkEnabledStatus()) {
                 // sendChatMessage is used here instead of chatBuffer.push, as chatBuffer.push would try
                 // to execute as a client command which would loop infinitely
-                if(Quickplay.INSTANCE.onHypixel) {
-                    if(args.length == 0) {
+                if (Quickplay.INSTANCE.onHypixel) {
+                    if (args.length == 0) {
                         Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand);
-                    } else if(args.length == 1) {
+                    } else if (args.length == 1) {
                         // Check if the user is trying to swap lobbies by checking
                         // if they sent a lobby number instead of a lobby name
                         try {
                             final int lobbyNumber = Integer.parseInt(args[0]);
                             Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
-                        } catch(NumberFormatException e) {
+                        } catch (NumberFormatException e) {
                             // It's a string so just send them to that lobby instead of lobby number
                             Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand + " " + args[0]);
                         }
@@ -83,7 +86,7 @@ public class CommandHub extends ACommand {
                             }
                             // Swap lobbies after waiting a sec
                             Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
-                        } catch(NumberFormatException e) {
+                        } catch (NumberFormatException e) {
                             // Send usage
                             Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.hub.numberexception", "/" + command + " " + commandSyntax).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                         }
@@ -94,7 +97,7 @@ public class CommandHub extends ACommand {
             }
 
             // Fallback
-            final String argsString = String.join(" " , args);
+            final String argsString = String.join(" ", args);
             Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand + " " + argsString);
         });
     }

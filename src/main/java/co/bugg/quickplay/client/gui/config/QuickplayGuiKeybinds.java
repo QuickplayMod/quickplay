@@ -89,7 +89,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         // Header
         componentList.add(new QuickplayGuiString(null, buttonId, width / 2, topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight, I18n.format("quickplay.keybinds.title"), true, true));
 
-        for(QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds) {
+        for (QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds) {
             final QuickplayGuiComponent component = new QuickplayGuiButton(keybind, buttonId, width / 2 - buttonWidth / 2, topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight, keybind.name, true);
             formatComponentString(component, false);
             componentList.add(component);
@@ -119,7 +119,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        if(drawTakenPopup) {
+        if (drawTakenPopup) {
             final List<String> hoverText = new ArrayList<>();
             hoverText.add(I18n.format("quickplay.gui.keybinds.taken"));
             drawHoveringText(hoverText, mouseX, mouseY);
@@ -135,25 +135,23 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
-        for(QuickplayGuiComponent component : componentList) {
-            if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(this, mouseX, mouseY)) {
+        for (QuickplayGuiComponent component : componentList) {
+            if (mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(this, mouseX, mouseY)) {
                 //noinspection ArraysAsListWithZeroOrOneArgument
                 contextMenu = new QuickplayGuiContextMenu(Arrays.asList(I18n.format("quickplay.gui.keybinds.delete")), component, -1, mouseX, mouseY) {
                     @Override
                     public void optionSelected(int index) {
-                        switch(index) {
-                            case 0:
-                                Quickplay.INSTANCE.keybinds.keybinds.remove(component.origin);
-                                Quickplay.INSTANCE.unregisterEventHandler(component.origin);
-                                try {
-                                    Quickplay.INSTANCE.keybinds.save();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    Quickplay.INSTANCE.sendExceptionRequest(e);
-                                }
+                        if (index == 0) {
+                            Quickplay.INSTANCE.keybinds.keybinds.remove(component.origin);
+                            Quickplay.INSTANCE.unregisterEventHandler(component.origin);
+                            try {
+                                Quickplay.INSTANCE.keybinds.save();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Quickplay.INSTANCE.sendExceptionRequest(e);
+                            }
 
-                                initGui();
-                                break;
+                            initGui();
                         }
                     }
                 };
@@ -166,15 +164,15 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
-        if(component.origin instanceof QuickplayKeybind) {
-            if(selectedComponent != null)
+        if (component.origin instanceof QuickplayKeybind) {
+            if (selectedComponent != null)
                 formatComponentString(selectedComponent, false);
             selectedComponent = component;
             formatComponentString(component, true);
-        } else if(component.displayString.equals(resetButtonText)) {
+        } else if (component.displayString.equals(resetButtonText)) {
             try {
                 // Unsubscribe all keybinds
-                for(QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds)
+                for (QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds)
                     Quickplay.INSTANCE.unregisterEventHandler(keybind);
 
                 // Create a new keybind list
@@ -190,9 +188,9 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         closeContextMenu();
-        if(selectedComponent != null) {
+        if (selectedComponent != null) {
             final QuickplayKeybind keybind = (QuickplayKeybind) selectedComponent.origin;
-            if(Quickplay.INSTANCE.keybinds.keybinds.stream().anyMatch(keybind1 -> keybind1.key == keyCode && keybind != keybind1)) {
+            if (Quickplay.INSTANCE.keybinds.keybinds.stream().anyMatch(keybind1 -> keybind1.key == keyCode && keybind != keybind1)) {
                 // Key is already taken so cancel, draw a popup telling them, and hide it in 3 seconds
                 drawTakenPopup = true;
                 Quickplay.INSTANCE.threadPool.submit(() -> {
@@ -204,31 +202,28 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                     drawTakenPopup = false;
                 });
             } else {
-                switch (keyCode) {
-                    case Keyboard.KEY_ESCAPE:
-                        keybind.key = Keyboard.KEY_NONE;
-                        break;
-                    default:
-                        keybind.key = keyCode;
-                        // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
-                            Quickplay.INSTANCE.threadPool.submit(() -> {
-                                try {
-                                    Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Changed")
-                                            .setEventLabel(keybind.name + " : " + keybind.key)
-                                            .send();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                        }
-                        break;
+                if (keyCode == Keyboard.KEY_ESCAPE) {
+                    keybind.key = Keyboard.KEY_NONE;
+                } else {
+                    keybind.key = keyCode;
+                    // Send analytical data to Google
+                    if (Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                        Quickplay.INSTANCE.threadPool.submit(() -> {
+                            try {
+                                Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Changed")
+                                        .setEventLabel(keybind.name + " : " + keybind.key)
+                                        .send();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
                 }
             }
 
             try {
                 formatComponentString(selectedComponent, false);
-            } catch(IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
                 Quickplay.INSTANCE.sendExceptionRequest(e);
             }
@@ -241,14 +236,15 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
 
     /**
      * Format the display string for the given component & keybind
+     *
      * @param component Component to format
-     * @param selected Whether this component is currently selected/being edited or not
+     * @param selected  Whether this component is currently selected/being edited or not
      * @throws IllegalArgumentException when the component provided's origin isn't a QuickplayKeybind
      */
     public void formatComponentString(QuickplayGuiComponent component, boolean selected) {
-        if(component.origin instanceof QuickplayKeybind) {
+        if (component.origin instanceof QuickplayKeybind) {
             final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
-            if(selected)
+            if (selected)
                 component.displayString = keybindPrependedEditingText + keybind.name + keybindNameSeparator + keybindEditingColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET + keybindAppendedEditingText;
             else
                 component.displayString = keybind.name + keybindNameSeparator + keybindColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET;

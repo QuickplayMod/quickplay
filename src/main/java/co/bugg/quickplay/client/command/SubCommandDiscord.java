@@ -17,6 +17,7 @@ public class SubCommandDiscord extends ASubCommand {
 
     /**
      * Constructor
+     *
      * @param parent Parent command
      */
     public SubCommandDiscord(ACommand parent) {
@@ -42,13 +43,15 @@ public class SubCommandDiscord extends ASubCommand {
                 .setColor(EnumChatFormatting.AQUA)
                 .setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link))
                 .setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        new ChatComponentTranslation("quickplay.chat.clickToOpen")
-                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY))
-                        .appendSibling(new ChatComponentText(" " + link)
-                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA)
-                            )
+                                new ChatComponentTranslation("quickplay.chat.clickToOpen")
+                                        .setChatStyle(
+                                                new ChatStyle().setColor(EnumChatFormatting.GRAY)
+                                        )
+                                        .appendSibling(
+                                                new ChatComponentText(" " + link)
+                                                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA))
+                                        )
                         )
-                )
                 )
         );
 

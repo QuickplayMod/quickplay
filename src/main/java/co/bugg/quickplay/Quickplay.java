@@ -178,21 +178,22 @@ public class Quickplay {
 
     /**
      * Register a specific object as an event handler
+     *
      * @param handler Object to register
      */
     public void registerEventHandler(Object handler) {
-        if(!eventHandlers.contains(handler))
+        if (!eventHandlers.contains(handler))
             eventHandlers.add(handler);
         MinecraftForge.EVENT_BUS.register(handler);
     }
 
     /**
      * Unregister a specific object as an event handler
+     *
      * @param handler Object to unregister
      */
     public void unregisterEventHandler(Object handler) {
-        if(eventHandlers.contains(handler))
-            eventHandlers.remove(handler);
+        eventHandlers.remove(handler);
         MinecraftForge.EVENT_BUS.unregister(handler);
     }
 
@@ -200,7 +201,7 @@ public class Quickplay {
      * Enable the mod
      */
     public void enable() {
-        if(!this.enabled) {
+        if (!this.enabled) {
 
             this.enabled = true;
             requestFactory = new HttpRequestFactory();
@@ -219,11 +220,11 @@ public class Quickplay {
                 e.printStackTrace();
                 assetFactory.createDirectories();
 
-                if(settings == null)
+                if (settings == null)
                     settings = new ConfigSettings();
-                if(keybinds == null)
+                if (keybinds == null)
                     keybinds = new ConfigKeybinds(true);
-                if(usageStats == null) {
+                if (usageStats == null) {
                     promptUserForUsageStats = true;
                 }
 
@@ -240,12 +241,12 @@ public class Quickplay {
             }
 
             // Create new Google Analytics instance if possible
-            if(usageStats != null && usageStats.statsToken != null) {
+            if (usageStats != null && usageStats.statsToken != null) {
                 createGoogleAnalytics();
             }
 
             // Send analytical data to Google
-            if(usageStats != null && usageStats.statsToken != null && usageStats.sendUsageStats && ga != null) {
+            if (usageStats != null && usageStats.statsToken != null && usageStats.sendUsageStats && ga != null) {
                 threadPool.submit(() -> {
                     try {
                         ga.createEvent("Systematic Events", "Mod Enable")
@@ -261,8 +262,8 @@ public class Quickplay {
             // Web server will probably instruct to reload if it's available
             try {
                 final Game[] gameListArray = this.assetFactory.loadCachedGamelist();
-                if(gameListArray != null)
-                    this.gameList = java.util.Arrays.asList(gameListArray);
+                if (gameListArray != null)
+                    this.gameList = Arrays.asList(gameListArray);
             } catch (Exception e) {
                 e.printStackTrace();
                 sendExceptionRequest(e);
@@ -270,7 +271,7 @@ public class Quickplay {
 
             this.threadPool.submit(() -> {
                 final Request request = requestFactory.newEnableRequest();
-                if(request != null) {
+                if (request != null) {
                     final WebResponse response = request.execute();
 
                     if (response != null) {
@@ -281,10 +282,10 @@ public class Quickplay {
                         try {
                             if (response.ok && response.content != null) {
                                 // Add the premium about information
-                                if(response.content.getAsJsonObject().get("premiumInfo") != null)
+                                if (response.content.getAsJsonObject().get("premiumInfo") != null)
                                     premiumAbout = IChatComponent.Serializer.jsonToComponent(response.content.getAsJsonObject().get("premiumInfo").toString());
                                 // Add all glyphs
-                                if(response.content.getAsJsonObject().get("glyphs") != null)
+                                if (response.content.getAsJsonObject().get("glyphs") != null)
                                     glyphs.addAll(Arrays.asList(new Gson().fromJson(response.content.getAsJsonObject().get("glyphs"), PlayerGlyph[].class)));
                             }
                         } catch (IllegalStateException e) {
@@ -304,7 +305,7 @@ public class Quickplay {
 
             commands.add(new CommandQuickplay());
 
-            if(settings.redesignedLobbyCommand) {
+            if (settings.redesignedLobbyCommand) {
                 // Register lobby commands
                 commands.add(new CommandHub("l"));
                 commands.add(new CommandHub("lobby"));
@@ -342,15 +343,15 @@ public class Quickplay {
      */
     public void disable(String reason) {
         // TODO This gets stuck when event handlers are unregistered.
-        if(this.enabled) {
+        if (this.enabled) {
             this.enabled = false;
             eventHandlers.forEach(this::unregisterEventHandler);
             this.disabledReason = reason;
 
-            if(chatBuffer != null)
+            if (chatBuffer != null)
                 chatBuffer.stop();
 
-            if(instanceWatcher != null)
+            if (instanceWatcher != null)
                 instanceWatcher.stop();
         }
     }
@@ -358,10 +359,11 @@ public class Quickplay {
     /**
      * Check if the mod is enabled, and
      * send a disabled message if not.
+     *
      * @return Whether the mod is enabled
      */
     public boolean checkEnabledStatus() {
-        if(!enabled) {
+        if (!enabled) {
             IChatComponent message = new ChatComponentTranslation("quickplay.disabled", this.disabledReason);
             message.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
 
@@ -372,6 +374,7 @@ public class Quickplay {
 
     /**
      * Reorganizes a game list to obey priorities in {@link #settings}
+     *
      * @param gameList list of games to organize
      * @return organized list
      */
@@ -383,16 +386,17 @@ public class Quickplay {
 
     /**
      * Send an exception request to Quickplay backend for error reporting
+     *
      * @param e Exception that occurred
      */
     public void sendExceptionRequest(Exception e) {
-        if(usageStats != null && usageStats.sendUsageStats) {
+        if (usageStats != null && usageStats.sendUsageStats) {
             final WebResponse response = requestFactory.newExceptionRequest(e).execute();
-            if(response != null)
-                for(ResponseAction action : response.actions)
+            if (response != null)
+                for (ResponseAction action : response.actions)
                     action.run();
 
-            if(ga != null) {
+            if (ga != null) {
                 try {
                     ga.createException().setExceptionDescription(e.getMessage()).send();
                 } catch (IOException e1) {
@@ -406,21 +410,21 @@ public class Quickplay {
      * Start a party mode session by randomizing selected games & then executing the command
      */
     public void launchPartyMode() {
-        if(settings.partyModes.size() > 0) {
-            if(settings.partyModeGui) {
+        if (settings.partyModes.size() > 0) {
+            if (settings.partyModeGui) {
                 Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiPartySpinner());
             } else {
                 // No GUI, handle randomization in chat
 
                 // Send commencement message if delay is greater than 0 seconds
-                if(settings.partyModeDelay > 0) {
+                if (settings.partyModeDelay > 0) {
                     messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.commencing").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE))));
                 }
 
                 // Calculate mode
                 PartyMode mode;
                 // Don't need to randomize on size 1
-                if(settings.partyModes.size() == 1) {
+                if (settings.partyModes.size() == 1) {
                     mode = settings.partyModes.get(0);
                 } else {
                     final Random random = new Random();
@@ -443,13 +447,14 @@ public class Quickplay {
 
     /**
      * Reload the Quickplay Resource pack that contains glyphs, icons, lang, etc.
+     *
      * @throws NoSuchFieldException Neither field (obf or deobf) exist, according to the client.
      */
     public void reloadResourcePack() throws NoSuchFieldException, IllegalAccessException {
         Field resourceManagerField;
         try {
             resourceManagerField = Minecraft.class.getDeclaredField("field_110451_am");
-        } catch(NoSuchFieldException e) {
+        } catch (NoSuchFieldException e) {
             resourceManagerField = Minecraft.class.getDeclaredField("mcResourceManager");
         }
         resourceManagerField.setAccessible(true);
@@ -460,7 +465,8 @@ public class Quickplay {
 
     /**
      * Reload the provided resourceLocation with the provided file
-     * @param file The file of the newly changed resource
+     *
+     * @param file             The file of the newly changed resource
      * @param resourceLocation The resourceLocation to change/set
      */
     public void reloadResource(File file, ResourceLocation resourceLocation) {

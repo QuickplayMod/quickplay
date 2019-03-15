@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Mode for a Hypixel game
+ *
  * @see Game
  */
 public class Mode implements Serializable {
@@ -18,7 +19,8 @@ public class Mode implements Serializable {
 
     /**
      * Constructor
-     * @param name Display name of this mode
+     *
+     * @param name    Display name of this mode
      * @param command Command for this mode
      */
     public Mode(String name, String command) {

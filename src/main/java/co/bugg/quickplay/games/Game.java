@@ -27,7 +27,8 @@ public class Game implements Serializable {
 
     /**
      * Constructor
-     * @param name Display name of game
+     *
+     * @param name     Display name of game
      * @param imageURL URL to image for game
      */
     public Game(String name, URL imageURL) {

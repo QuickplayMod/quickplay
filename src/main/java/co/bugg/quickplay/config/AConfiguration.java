@@ -32,14 +32,16 @@ public abstract class AConfiguration implements Serializable {
 
     /**
      * Constructor
+     *
      * @param fileName name of the file this configuration should save to
      */
     public AConfiguration(String fileName) {
-       setFile(new File(AssetFactory.configDirectory + fileName));
+        setFile(new File(AssetFactory.configDirectory + fileName));
     }
 
     /**
      * Set the file of this configuration
+     *
      * @param file File to set
      * @return this
      */
@@ -52,6 +54,7 @@ public abstract class AConfiguration implements Serializable {
 
     /**
      * Save this configuration
+     *
      * @return This
      * @throws IOException on a writing error
      */
@@ -63,16 +66,17 @@ public abstract class AConfiguration implements Serializable {
 
     /**
      * Load a configuration
+     *
      * @param name Name of the configuration with the file extension
      * @param type Type of the configuration being loaded
      * @return The configuration loaded
-     * @throws IOException Reading error
+     * @throws IOException         Reading error
      * @throws JsonSyntaxException Invalid JSON
      */
     public static AConfiguration load(String name, Class<? extends AConfiguration> type) throws IOException, JsonSyntaxException {
         final File file = new File(AssetFactory.configDirectory + name);
 
-        if(!file.exists()) {
+        if (!file.exists()) {
             throw new FileNotFoundException("Configuration file \"" + name + "\" not found.");
         }
 

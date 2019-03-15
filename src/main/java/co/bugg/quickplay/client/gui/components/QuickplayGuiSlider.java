@@ -14,7 +14,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     /**
      * Percentage of the way down the slider, from the left, that the handle is currently at
      */
-    private float sliderPercentage = 1.0F;
+    private float sliderPercentage;
     /**
      * Whether the mouse is currently pressed down or not
      */
@@ -32,34 +32,33 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
      */
     private final float max;
     /**
-     * {@link net.minecraft.client.gui.GuiPageButtonList.GuiResponder} the slider uses to send off changes in values
-     * Whenever the slider's value changes, a method in the {@link net.minecraft.client.gui.GuiPageButtonList.GuiResponder} is called.
+     * {@link GuiPageButtonList.GuiResponder} the slider uses to send off changes in values
+     * Whenever the slider's value changes, a method in the {@link GuiPageButtonList.GuiResponder} is called.
      */
     private final GuiPageButtonList.GuiResponder responder;
     /**
      * {@link FormatHelper} for formatting the slider's display string, depending on the value
      */
-    private QuickplayGuiSlider.FormatHelper formatHelper;
+    private FormatHelper formatHelper;
 
     /**
      * Constructor
      *
      * @param guiResponder GUI responder for this slider
-     * @param origin Origin of this slider
-     * @param idIn ID of this slider
-     * @param x X position of this slider if scrolling = 0
-     * @param y Y position of this slider if scrolling = 0
-     * @param widthIn Width of this slider
-     * @param heightIn Height of this slider
-     * @param name Display name of this slider
-     * @param min Minimum value of this slider
-     * @param max Maxiumum value of this slider
+     * @param origin       Origin of this slider
+     * @param idIn         ID of this slider
+     * @param x            X position of this slider if scrolling = 0
+     * @param y            Y position of this slider if scrolling = 0
+     * @param widthIn      Width of this slider
+     * @param heightIn     Height of this slider
+     * @param name         Display name of this slider
+     * @param min          Minimum value of this slider
+     * @param max          Maxiumum value of this slider
      * @param defaultValue Default value of this slider
-     * @param formatter Display name formatter depending on the slider's value
-     * @param scrollable Whether this slider is scrollable
+     * @param formatter    Display name formatter depending on the slider's value
+     * @param scrollable   Whether this slider is scrollable
      */
-    public QuickplayGuiSlider(GuiPageButtonList.GuiResponder guiResponder, Object origin, int idIn, int x, int y, int widthIn, int heightIn, String name, float min, float max, float defaultValue, QuickplayGuiSlider.FormatHelper formatter, boolean scrollable)
-    {
+    public QuickplayGuiSlider(GuiPageButtonList.GuiResponder guiResponder, Object origin, int idIn, int x, int y, int widthIn, int heightIn, String name, float min, float max, float defaultValue, FormatHelper formatter, boolean scrollable) {
         super(origin, idIn, x, y, widthIn, heightIn, "", scrollable);
         this.name = name;
         this.min = min;
@@ -72,16 +71,17 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
 
     /**
      * Get the current value of this slider
+     *
      * @return The current value
      */
-    public float getValue()
-    {
+    public float getValue() {
         return min + (max - min) * sliderPercentage;
     }
 
     /**
      * Get the display string for this slider
      * This method tries to use a formatHelper if one exists, otherwise uses a default format
+     *
      * @return The full display string, after formatting
      */
     private String getDisplayString() {
@@ -90,18 +90,16 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
 
     // Unused by sliders
     @Override
-    public int getDefaultButtonTexture(boolean mouseOver)
-    {
+    public int getDefaultButtonTexture(boolean mouseOver) {
         return 0;
     }
 
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
-        if(opacity > 0) {
+        if (opacity > 0) {
             super.draw(gui, mouseX, mouseY, opacity);
 
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
-            ;
 
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
@@ -131,28 +129,25 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
 
     /**
      * Calculate the percentage from the left of the slider that the handle is at
+     *
      * @param mouseX The X position of the mouse
      */
     private void calculateSliderPos(int mouseX) {
-        sliderPercentage = (float)(mouseX - (x + 4)) / (float)(width - 8);
+        sliderPercentage = (float) (mouseX - (x + 4)) / (float) (width - 8);
         // Keep the slider percentage between 0 and 1
         sliderPercentage = sliderPercentage < 0.0f ? 0.0f : sliderPercentage > 1.0f ? 1.0f : sliderPercentage;
     }
 
     @Override
-    public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY)
-    {
-        if (super.mouseHovering(gui, mouseX, mouseY))
-        {
-            sliderPercentage = (float)(mouseX - (x / scale + 4)) / (float)(width / scale - 8);
+    public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY) {
+        if (super.mouseHovering(gui, mouseX, mouseY)) {
+            sliderPercentage = (float) (mouseX - (x / scale + 4)) / (float) (width / scale - 8);
 
-            if (sliderPercentage < 0.0F)
-            {
+            if (sliderPercentage < 0.0F) {
                 sliderPercentage = 0.0F;
             }
 
-            if (sliderPercentage > 1.0F)
-            {
+            if (sliderPercentage > 1.0F) {
                 sliderPercentage = 1.0F;
             }
 
@@ -160,22 +155,18 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
             responder.onTick(id, getValue());
             isMouseDown = true;
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
     @Override
-    public void mouseReleased(QuickplayGui gui, int mouseX, int mouseY)
-    {
+    public void mouseReleased(QuickplayGui gui, int mouseX, int mouseY) {
         isMouseDown = false;
     }
 
     @SideOnly(Side.CLIENT)
-    public interface FormatHelper
-    {
+    public interface FormatHelper {
         String getText(int id, String name, float value);
     }
 }

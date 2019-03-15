@@ -33,11 +33,11 @@ public class ChatBuffer extends ABuffer {
         final EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
         // Only send a message if the player exists & there is a message to send
-        if(size() > 0 && player != null) {
+        if (size() > 0 && player != null) {
             final String message = (String) pull();
 
             // Handle as a command
-            if(message.startsWith("/") && ClientCommandHandler.instance.executeCommand(player, message) == 0)
+            if (message.startsWith("/") && ClientCommandHandler.instance.executeCommand(player, message) == 0)
                 player.sendChatMessage(message);
         }
     }

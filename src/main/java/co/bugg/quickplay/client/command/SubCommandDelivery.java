@@ -17,13 +17,14 @@ public class SubCommandDelivery extends ASubCommand {
 
     /**
      * Constructor
+     *
      * @param parent Parent command
      */
     public SubCommandDelivery(ACommand parent) {
         super(
                 parent,
                 "delivery",
-                 I18n.format("quickplay.commands.quickplay.delivery.help"),
+                I18n.format("quickplay.commands.quickplay.delivery.help"),
                 "",
                 true,
                 true,
@@ -33,13 +34,13 @@ public class SubCommandDelivery extends ASubCommand {
 
     @Override
     public void run(String[] args) {
-        if(Quickplay.INSTANCE.onHypixel) {
+        if (Quickplay.INSTANCE.onHypixel) {
             String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
-            if(currentServer == null) currentServer = "null";
+            if (currentServer == null) currentServer = "null";
 
             // TODO false positive in Megawalls lobby
-            if(currentServer.contains("mini") || currentServer.contains("mega") || currentServer.contains("limbo")) {
-                if(currentServer.contains("limbo"))
+            if (currentServer.contains("mini") || currentServer.contains("mega") || currentServer.contains("limbo")) {
+                if (currentServer.contains("limbo"))
                     Quickplay.INSTANCE.chatBuffer.push("/lobby");
                 else
                     Quickplay.INSTANCE.chatBuffer.push("/achat §");

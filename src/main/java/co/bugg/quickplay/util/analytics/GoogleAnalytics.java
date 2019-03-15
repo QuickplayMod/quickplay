@@ -42,6 +42,7 @@ public class GoogleAnalytics {
 
     /**
      * Package-private Constructor
+     *
      * @see GoogleAnalyticsFactory for creating instances
      */
     GoogleAnalytics() throws MalformedURLException {
@@ -51,11 +52,12 @@ public class GoogleAnalytics {
     /**
      * Set the tracking ID of this Google Analytics instance
      * Must match {@link #trackingIdPattern}
+     *
      * @param id Tracking ID
      * @return This
      */
     GoogleAnalytics setTrackingId(String id) {
-        if(!id.matches(trackingIdPattern))
+        if (!id.matches(trackingIdPattern))
             throw new IllegalArgumentException("Tracking ID invalid format! Regex: " + trackingIdPattern);
 
         this.trackingId = id;
@@ -64,11 +66,12 @@ public class GoogleAnalytics {
 
     /**
      * Set the ID of this client
+     *
      * @param id Client ID
      * @return This
      */
     public GoogleAnalytics setClientId(String id) {
-        if(id == null)
+        if (id == null)
             throw new IllegalArgumentException("Invalid client ID! Client ID cannot be null.");
         this.clientId = id;
         return this;
@@ -76,6 +79,7 @@ public class GoogleAnalytics {
 
     /**
      * Set the name of this Application
+     *
      * @param name Application name
      * @return This
      */
@@ -86,6 +90,7 @@ public class GoogleAnalytics {
 
     /**
      * Set the version of this application
+     *
      * @param version Version of this application
      * @return This
      */
@@ -96,9 +101,10 @@ public class GoogleAnalytics {
 
     /**
      * Set whether this Google Analytics should be in debug mode
-     * @see #debug
+     *
      * @param debug Whether this instance should be in debug mode
      * @return This
+     * @see #debug
      */
     GoogleAnalytics setDebug(boolean debug) {
         this.debug = debug;
@@ -107,6 +113,7 @@ public class GoogleAnalytics {
 
     /**
      * Get {@link #appName}
+     *
      * @return {@link #appName}
      */
     public String getAppName() {
@@ -115,6 +122,7 @@ public class GoogleAnalytics {
 
     /**
      * Get {@link #appVersion}
+     *
      * @return {@link #appVersion}
      */
     public String getAppVersion() {
@@ -123,6 +131,7 @@ public class GoogleAnalytics {
 
     /**
      * Get {@link #defaultRequest}
+     *
      * @return {@link #defaultRequest}
      */
     public AnalyticsRequest getDefaultRequest() {
@@ -131,8 +140,9 @@ public class GoogleAnalytics {
 
     /**
      * Create Event request
+     *
      * @param eventCategory Category of the event (required)
-     * @param eventAction Action of the event (required)
+     * @param eventAction   Action of the event (required)
      * @return A new event request
      */
     public EventRequest createEvent(String eventCategory, String eventAction) {
@@ -148,6 +158,7 @@ public class GoogleAnalytics {
 
     /**
      * Create a new exception request
+     *
      * @return New exception request
      */
     public ExceptionRequest createException() {
@@ -163,6 +174,7 @@ public class GoogleAnalytics {
 
     /**
      * Create a new pageview request
+     *
      * @return New pageview request
      */
     public PageviewRequest createPageview() {
@@ -178,6 +190,7 @@ public class GoogleAnalytics {
 
     /**
      * Create a new screenview request
+     *
      * @param screenName Name of the screen
      * @return New screenview request
      */
@@ -194,9 +207,10 @@ public class GoogleAnalytics {
 
     /**
      * Create a new timing request
-     * @param timingCategory Category of the timing request
+     *
+     * @param timingCategory     Category of the timing request
      * @param timingVariableName Name of the timing request
-     * @param time Timing value for the request
+     * @param time               Timing value for the request
      * @return New timing request
      */
     public TimingRequest createTiming(String timingCategory, String timingVariableName, int time) {

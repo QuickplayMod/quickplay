@@ -79,7 +79,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
 
 
         // Draw the stats token if it's available
-        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null) {
+        if (Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null) {
             tokenText = I18n.format("quickplay.gui.stats.token", Quickplay.INSTANCE.usageStats.statsToken.toString());
             componentList.add(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2, buttonY - fontRendererObj.FONT_HEIGHT - 3, fontRendererObj.getStringWidth(tokenText), fontRendererObj.FONT_HEIGHT, tokenText, true, true));
         }
@@ -97,7 +97,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
 
         drawDefaultBackground();
 
-        if(opacity > 0) {
+        if (opacity > 0) {
             final int headerY = (int) (height * 0.1);
             drawCenteredString(fontRendererObj, I18n.format("quickplay.gui.stats.title"), width / 2, headerY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
@@ -112,7 +112,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
 
         // If hovering over the token button
         Optional<QuickplayGuiComponent> filteredStream = componentList.stream().filter(component -> component.displayString.equals(tokenText)).findFirst();
-        if(tokenText != null && filteredStream.isPresent() && filteredStream.get().mouseHovering(this, mouseX, mouseY)) {
+        if (tokenText != null && filteredStream.isPresent() && filteredStream.get().mouseHovering(this, mouseX, mouseY)) {
             drawHoveringText(Collections.singletonList(I18n.format("quickplay.gui.stats.copy")), mouseX, mouseY);
         }
 
@@ -123,7 +123,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
-        if(privacyText != null && privacyText.equals(component.displayString)) {
+        if (privacyText != null && privacyText.equals(component.displayString)) {
             try {
                 Desktop.getDesktop().browse(new URI((String) component.origin));
             } catch (IOException | URISyntaxException | ClassCastException e) {
@@ -134,7 +134,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
                 component.displayString = I18n.format("quickplay.gui.stats.privacyerror", url);
             }
             // If the copy to clipboard text is clicked
-        } else if(tokenText != null && tokenText.equals(component.displayString)) {
+        } else if (tokenText != null && tokenText.equals(component.displayString)) {
             final UUID token = (UUID) component.origin;
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(token.toString()), null);
             component.displayString = I18n.format("quickplay.gui.stats.copied");
@@ -147,7 +147,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
             Quickplay.INSTANCE.createGoogleAnalytics();
 
             // Report the user's decision. This is one of the few things that is reported regardless of decision
-            if(Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.ga != null) {
+            if (Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.ga != null) {
                 Quickplay.INSTANCE.threadPool.submit(() -> {
                     try {
                         Quickplay.INSTANCE.ga.createEvent("Privacy", "Privacy Settings Changed")

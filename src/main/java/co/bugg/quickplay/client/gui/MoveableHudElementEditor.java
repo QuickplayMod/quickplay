@@ -26,6 +26,7 @@ public class MoveableHudElementEditor extends QuickplayGui {
 
     /**
      * Constructor
+     *
      * @param element Element to edit
      */
     public MoveableHudElementEditor(MoveableHudElement element) {
@@ -87,16 +88,16 @@ public class MoveableHudElementEditor extends QuickplayGui {
         super.keyTyped(typedChar, keyCode);
 
         // Move right 1 pixel
-        if(keyCode == 205) {
+        if (keyCode == 205) {
             xRatio = ((xRatio * (double) element.screenWidth) + 1) / (double) element.screenWidth;
-        // Move left 1 pixel
-        } else if(keyCode == 203) {
+            // Move left 1 pixel
+        } else if (keyCode == 203) {
             xRatio = ((xRatio * (double) element.screenWidth) - 1) / (double) element.screenWidth;
-        // Move up 1 pixel
-        } else if(keyCode == 200) {
+            // Move up 1 pixel
+        } else if (keyCode == 200) {
             yRatio = ((yRatio * (double) element.screenHeight) - 1) / (double) element.screenHeight;
-        // Move down 1 pixel
-        } else if(keyCode == 208) {
+            // Move down 1 pixel
+        } else if (keyCode == 208) {
             yRatio = ((yRatio * (double) element.screenHeight) + 1) / (double) element.screenHeight;
         }
 
@@ -114,6 +115,7 @@ public class MoveableHudElementEditor extends QuickplayGui {
 
     /**
      * Move {@link #element} to specified mouseX and mouseY by calculating {@link #xRatio} and {@link #yRatio}
+     *
      * @param mouseX X position to move to
      * @param mouseY Y position to move to
      */

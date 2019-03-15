@@ -24,6 +24,7 @@ public abstract class ABuffer implements Runnable {
 
     /**
      * Constructor
+     *
      * @param sleepTime Time in milliseconds between {@link #run()} calls. See {@link #sleepTime}
      */
     public ABuffer(int sleepTime) {
@@ -33,6 +34,7 @@ public abstract class ABuffer implements Runnable {
 
     /**
      * Peek at the next buffer item without taking it out of the buffer
+     *
      * @return The next buffer item
      */
     public Object peek() {
@@ -41,11 +43,12 @@ public abstract class ABuffer implements Runnable {
 
     /**
      * Pull the next buffer item out of the buffer
+     *
      * @return The next buffer item
      */
     public Object pull() {
         Object returnValue = peek();
-        if(returnValue != null)
+        if (returnValue != null)
             buffer.remove(0);
 
         return returnValue;
@@ -53,6 +56,7 @@ public abstract class ABuffer implements Runnable {
 
     /**
      * Push a value to the buffer
+     *
      * @param pushedValue Value to add to the buffer
      * @return this
      */
@@ -63,6 +67,7 @@ public abstract class ABuffer implements Runnable {
 
     /**
      * Empty the buffer of all values
+     *
      * @return this
      */
     public ABuffer clear() {
@@ -72,6 +77,7 @@ public abstract class ABuffer implements Runnable {
 
     /**
      * Get the size of the buffer
+     *
      * @return Number of objects in the buffer
      */
     public int size() {
@@ -80,6 +86,7 @@ public abstract class ABuffer implements Runnable {
 
     /**
      * Getter for {@link #started}
+     *
      * @return {@link #started}
      */
     public boolean isStarted() {
@@ -88,12 +95,13 @@ public abstract class ABuffer implements Runnable {
 
     /**
      * Start looping {@link #run()}
+     *
      * @return this
      */
     public ABuffer start() {
         this.started = true;
         Quickplay.INSTANCE.threadPool.submit(() -> {
-            while(!Thread.currentThread().isInterrupted() && started) {
+            while (!Thread.currentThread().isInterrupted() && started) {
                 try {
                     run();
                     Thread.sleep(sleepTime);
@@ -110,6 +118,7 @@ public abstract class ABuffer implements Runnable {
 
     /**
      * Stop looping {@link #run()}
+     *
      * @return this
      */
     public ABuffer stop() {

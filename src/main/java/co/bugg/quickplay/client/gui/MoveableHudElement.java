@@ -45,8 +45,9 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
 
     /**
      * Render this element
-     * @param x Percentage of the screen's width to render at
-     * @param y Percentage of the screen's height to render at
+     *
+     * @param x       Percentage of the screen's width to render at
+     * @param y       Percentage of the screen's height to render at
      * @param opacity Opacity to render at
      */
     public void render(double x, double y, double opacity) {
@@ -58,27 +59,31 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
 
     /**
      * Set the percentage away from the left of the screen to render this at
+     *
      * @param ratio Ratio, between 0 and 1
      */
     public abstract void setxRatio(double ratio);
 
     /**
      * Set the percentage away from the top of the screen to render this at
+     *
      * @param ratio Ratio, between 0 and 1
      */
     public abstract void setyRatio(double ratio);
 
     /**
      * Get the percentage away from the left of the screen to render this at
+     *
      * @return Ratio
      */
     public abstract double getxRatio();
 
     /**
      * Get the percentage away from the top of the screen to render this at
+     *
      * @return Ratio
      */
-    public abstract  double getyRatio();
+    public abstract double getyRatio();
 
     /**
      * Save this element's position
@@ -87,7 +92,7 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
 
     /**
      * Display size enum for the element
-     *
+     * <p>
      * Because rendering is handled differently for each element, this needs to be
      * handled by individual elements that extend off of this class.
      */
@@ -110,7 +115,7 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
          * Constructor
          *
          * @param translationKey Translation key for displaying this enum value as a string
-         * @param scale Scale associated with this enum value
+         * @param scale          Scale associated with this enum value
          */
         Size(String translationKey, double scale) {
             this.translationKey = translationKey;
@@ -119,6 +124,7 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
 
         /**
          * Get {@link #translationKey}
+         *
          * @return {@link #translationKey}
          */
         public String toString() {
@@ -127,6 +133,7 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
 
         /**
          * Get {@link #scale}
+         *
          * @return {@link #scale}
          */
         public double getScale() {

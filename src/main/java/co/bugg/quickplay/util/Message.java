@@ -30,6 +30,7 @@ public class Message {
 
     /**
      * Constructor
+     *
      * @param message Message to be sent
      */
     public Message(IChatComponent message) {
@@ -38,7 +39,8 @@ public class Message {
 
     /**
      * Constructor
-     * @param message Message to be sent
+     *
+     * @param message    Message to be sent
      * @param separators Whether the message should be wrapped in separators
      */
     public Message(IChatComponent message, boolean separators) {
@@ -47,8 +49,9 @@ public class Message {
 
     /**
      * Constructor
-     * @param message Message to be sent
-     * @param separators Whether the message should be wrapped in separators
+     *
+     * @param message              Message to be sent
+     * @param separators           Whether the message should be wrapped in separators
      * @param bypassEnabledSetting Whether the message should bypass the mod "enabled" setting
      */
     public Message(IChatComponent message, boolean separators, boolean bypassEnabledSetting) {
@@ -59,18 +62,20 @@ public class Message {
 
     /**
      * Get a chat message that can be sent, with bars included if applicable
+     *
      * @return IChatComponent that can be sent in chat
      */
     public IChatComponent getMessage() {
         IChatComponent component = new ChatComponentText("");
-        if(separators) component.appendSibling(getMessageSeparator()).appendText("\n");
+        if (separators) component.appendSibling(getMessageSeparator()).appendText("\n");
         component.appendSibling(message);
-        if(separators) component.appendText("\n").appendSibling(getMessageSeparator());
+        if (separators) component.appendText("\n").appendSibling(getMessageSeparator());
         return component;
     }
 
     /**
      * Getter for whether the message can bypass enabled setting
+     *
      * @return {@link #bypassEnabledSetting}
      */
     public boolean canBypassEnabledSetting() {
@@ -80,6 +85,7 @@ public class Message {
     /**
      * Get the separator that is prepended & appended to messages with "separators" as true
      * The separators are always the width of the clients chat box (without formatting)
+     *
      * @return Separator
      */
     public static IChatComponent getMessageSeparator() {
@@ -100,6 +106,7 @@ public class Message {
 
     /**
      * Deserialize a Message object from JSON
+     *
      * @param value JSON to be parsed
      * @return new Message
      */

@@ -16,15 +16,15 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
     /**
      * Constructor
      *
-     * @param origin Origin of this component
-     * @param id ID of this component
-     * @param x X position of this component when scrolling = 0
-     * @param y Y position of this component when scrolling = 0
-     * @param width Width of this component - Doesn't do much in this case unless you want to detect clicks on this component
-     * @param height Height of this component - Doesn't do much in this case unless you want to detect clicks on this component
+     * @param origin        Origin of this component
+     * @param id            ID of this component
+     * @param x             X position of this component when scrolling = 0
+     * @param y             Y position of this component when scrolling = 0
+     * @param width         Width of this component - Doesn't do much in this case unless you want to detect clicks on this component
+     * @param height        Height of this component - Doesn't do much in this case unless you want to detect clicks on this component
      * @param displayString String to be drawn
-     * @param centered Whether this string should be centered
-     * @param scrollable Whether this string is scrollable
+     * @param centered      Whether this string should be centered
+     * @param scrollable    Whether this string is scrollable
      */
     public QuickplayGuiString(Object origin, int id, int x, int y, int width, int height, String displayString, boolean centered, boolean scrollable) {
         super(origin, id, x, y, width, height, displayString, scrollable);
@@ -33,7 +33,7 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
 
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
-        if(opacity > 0) {
+        if (opacity > 0) {
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
             GL11.glPushMatrix();

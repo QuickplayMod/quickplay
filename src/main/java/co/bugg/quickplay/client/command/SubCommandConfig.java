@@ -16,6 +16,7 @@ public class SubCommandConfig extends ASubCommand {
 
     /**
      * Constructor
+     *
      * @param parent Parent command
      */
     public SubCommandConfig(ACommand parent) {

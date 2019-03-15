@@ -43,9 +43,9 @@ public class QuickplayEventHandler {
 
     @SubscribeEvent
     public void onRenderOverlay(RenderGameOverlayEvent event) {
-        if(Quickplay.INSTANCE.onHypixel && event.type == RenderGameOverlayEvent.ElementType.TEXT) {
+        if (Quickplay.INSTANCE.onHypixel && event.type == RenderGameOverlayEvent.ElementType.TEXT) {
             // Only render overlay if there is no other GUI open at the moment or if the GUI is chat (assuming proper settings)
-            if(Quickplay.INSTANCE.settings.displayInstance && (Minecraft.getMinecraft().currentScreen == null ||
+            if (Quickplay.INSTANCE.settings.displayInstance && (Minecraft.getMinecraft().currentScreen == null ||
                     (Quickplay.INSTANCE.settings.displayInstanceWithChatOpen && (Minecraft.getMinecraft().currentScreen instanceof GuiChat)))) {
                 InstanceDisplay instanceDisplay = Quickplay.INSTANCE.instanceDisplay;
                 instanceDisplay.render(instanceDisplay.getxRatio(), instanceDisplay.getyRatio(), Quickplay.INSTANCE.settings.instanceOpacity);
@@ -56,8 +56,8 @@ public class QuickplayEventHandler {
     @SubscribeEvent
     public void onRender(TickEvent.RenderTickEvent event) {
         // handle any runnables that need to be ran with OpenGL context
-        if(event.phase == TickEvent.Phase.START && !mainThreadScheduledTasks.isEmpty()) {
-            for(Runnable runnable : (ArrayList<Runnable>) mainThreadScheduledTasks.clone()) {
+        if (event.phase == TickEvent.Phase.START && !mainThreadScheduledTasks.isEmpty()) {
+            for (Runnable runnable : (ArrayList<Runnable>) mainThreadScheduledTasks.clone()) {
                 runnable.run();
                 mainThreadScheduledTasks.remove(runnable);
             }
@@ -68,7 +68,7 @@ public class QuickplayEventHandler {
     public void onWorldLoad(WorldEvent.Load event) {
         // Prompt the user for usage stats setting every time they join a world until they select an
         // option (at which point promptUserForUsageStats is set to false & ConfigUsageStats is created)
-        if(Quickplay.INSTANCE.promptUserForUsageStats)
+        if (Quickplay.INSTANCE.promptUserForUsageStats)
             new TickDelay(() -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiUsageStats()), 20);
     }
 }

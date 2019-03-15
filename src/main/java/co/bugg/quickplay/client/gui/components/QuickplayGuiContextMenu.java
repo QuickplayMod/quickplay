@@ -47,11 +47,12 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
     /**
      * Constructor
      * Context menus cannot be scrolled
+     *
      * @param options A list of all options available to the user
-     * @param origin The origin of this context menu
-     * @param id The ID of this context menu
-     * @param x The X position of this context menu
-     * @param y The Y position of this context menu
+     * @param origin  The origin of this context menu
+     * @param id      The ID of this context menu
+     * @param x       The X position of this context menu
+     * @param y       The Y position of this context menu
      */
     public QuickplayGuiContextMenu(List<String> options, QuickplayGuiComponent origin, int id, int x, int y) {
         // Width / height calculated later
@@ -61,8 +62,8 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
         // Calculate width
         int longestStringLength = 0;
-        for(String option : options) {
-            if(fontRendererObj.getStringWidth(option) > longestStringLength)
+        for (String option : options) {
+            if (fontRendererObj.getStringWidth(option) > longestStringLength)
                 longestStringLength = fontRendererObj.getStringWidth(option);
         }
 
@@ -77,17 +78,17 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
     public boolean keyTyped(char keyTyped, int keyCode) {
 
         // Down/tab buttons move highlighting down the list. Up arrow/shift+tab does opposite. Enter key selects the option.
-        if(keyCode == KEY_UP || (keyCode == KEY_TAB && (isKeyDown(Keyboard.KEY_LSHIFT) || isKeyDown(KEY_RSHIFT)))) {
-            if(highlightedOptionIndex <= 0 || highlightedOptionIndex > options.size() - 1)
+        if (keyCode == KEY_UP || (keyCode == KEY_TAB && (isKeyDown(Keyboard.KEY_LSHIFT) || isKeyDown(KEY_RSHIFT)))) {
+            if (highlightedOptionIndex <= 0 || highlightedOptionIndex > options.size() - 1)
                 highlightedOptionIndex = options.size() - 1;
             else
                 highlightedOptionIndex--;
-        } else if(keyCode == KEY_DOWN || keyCode == KEY_TAB) {
-            if(highlightedOptionIndex < 0 || highlightedOptionIndex >= options.size() - 1)
+        } else if (keyCode == KEY_DOWN || keyCode == KEY_TAB) {
+            if (highlightedOptionIndex < 0 || highlightedOptionIndex >= options.size() - 1)
                 highlightedOptionIndex = 0;
             else
                 highlightedOptionIndex++;
-        } else if(keyCode == KEY_RETURN && highlightedOptionIndex >= 0) {
+        } else if (keyCode == KEY_RETURN && highlightedOptionIndex >= 0) {
             optionSelected(highlightedOptionIndex);
             highlightedOptionIndex = -1;
         }
@@ -96,9 +97,9 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
     @Override
     public boolean mouseClicked(QuickplayGui gui, int mouseX, int mouseY, int mouseButton) {
-        if(mouseHovering(gui, mouseX, mouseY)) {
+        if (mouseHovering(gui, mouseX, mouseY)) {
             final int hoveringOver = mouseHoveringOverOption(gui, mouseX, mouseY);
-            if(hoveringOver >= 0) {
+            if (hoveringOver >= 0) {
                 optionSelected(hoveringOver);
                 return true;
             }
@@ -108,18 +109,19 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
     /**
      * Gets the index of the option the mouse is currently hovering over, if any
-     * @param gui GUI this component is being rendered on
+     *
+     * @param gui    GUI this component is being rendered on
      * @param mouseX X position of the mouse
      * @param mouseY Y position of the mouse
      * @return The index of the option the mouse is currently hovering over, or -1 if none
      */
     private int mouseHoveringOverOption(QuickplayGui gui, int mouseX, int mouseY) {
-        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
-        for(ListIterator<String> iter = options.listIterator(); iter.hasNext();) {
+        for (ListIterator<String> iter = options.listIterator(); iter.hasNext(); ) {
             final int index = iter.nextIndex();
             final int stringY = (int) (scrollAdjustedY + boxPadding * scale + index * (fontRendererObj.FONT_HEIGHT + stringBottomMargin) * scale);
-            if(mouseX > x && mouseX < x + width * scale && mouseY > stringY && mouseY < stringY + fontRendererObj.FONT_HEIGHT * scale)
+            if (mouseX > x && mouseX < x + width * scale && mouseY > stringY && mouseY < stringY + fontRendererObj.FONT_HEIGHT * scale)
                 return index;
 
             iter.next();
@@ -129,7 +131,7 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
-        if(opacity > 0) {
+        if (opacity > 0) {
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
             GL11.glPushMatrix();
@@ -159,10 +161,10 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
     }
 
 
-
     @Override
     public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY) {
-        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
+
         return mouseX > x && mouseX < x + width * scale && mouseY > scrollAdjustedY && mouseY < scrollAdjustedY + height * scale;
     }
 

@@ -48,9 +48,9 @@ public class QuickplayColor implements Serializable, GsonPostProcessorFactory.Po
     /**
      * Constructor
      *
-     * @param r Red value
-     * @param g Green value
-     * @param b Blue value
+     * @param r           Red value
+     * @param g           Green value
+     * @param b           Blue value
      * @param chromaSpeed Amount at which chroma value changes at each interval
      */
     public QuickplayColor(float r, float g, float b, float chromaSpeed) {
@@ -64,10 +64,10 @@ public class QuickplayColor implements Serializable, GsonPostProcessorFactory.Po
      * Cancel any old threads if one exists
      */
     protected synchronized void startChromaThread() {
-        if(this.chromaFuture != null) this.chromaFuture.cancel(true);
+        if (this.chromaFuture != null) this.chromaFuture.cancel(true);
 
         this.chromaFuture = Quickplay.INSTANCE.threadPool.submit(() -> {
-            while(getChromaSpeed() != 0) {
+            while (getChromaSpeed() != 0) {
                 float[] hsb = new float[3];
                 Color.RGBtoHSB(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), hsb);
                 this.color = new Color(Color.HSBtoRGB((hsb[0] += getChromaSpeed()), hsb[1], hsb[2]));
@@ -83,6 +83,7 @@ public class QuickplayColor implements Serializable, GsonPostProcessorFactory.Po
 
     /**
      * Set the speed at which chroma goes
+     *
      * @param chromaSpeed Amount the hue changes every chroma frame
      */
     public void setChromaSpeed(float chromaSpeed) {
@@ -92,6 +93,7 @@ public class QuickplayColor implements Serializable, GsonPostProcessorFactory.Po
 
     /**
      * Set the Java color for this Quickplay Color
+     *
      * @param color Color object
      */
     public void setColor(Color color) {
@@ -100,6 +102,7 @@ public class QuickplayColor implements Serializable, GsonPostProcessorFactory.Po
 
     /**
      * Get the speed at which chroma is changing
+     *
      * @return The speed at which chroma is changing
      */
     public float getChromaSpeed() {
@@ -108,6 +111,7 @@ public class QuickplayColor implements Serializable, GsonPostProcessorFactory.Po
 
     /**
      * Get this instance's Java color
+     *
      * @return Java color
      */
     public Color getColor() {

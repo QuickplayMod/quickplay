@@ -29,7 +29,7 @@ public class GsonPostProcessorFactory implements TypeAdapterFactory {
             public T read(JsonReader in) throws IOException {
                 T obj = delegate.read(in);
                 if (obj instanceof PostProcessor) {
-                    ((PostProcessor)obj).postDeserializationProcess();
+                    ((PostProcessor) obj).postDeserializationProcess();
                 }
                 return obj;
             }

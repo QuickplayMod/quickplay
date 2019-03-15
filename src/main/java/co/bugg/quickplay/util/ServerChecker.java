@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,13 +36,14 @@ public class ServerChecker {
 
     /**
      * Constructor
+     *
      * @param callback Callback to run when checks are complete
      */
     public ServerChecker(ServerCheckerCallback callback) {
         this.callback = callback;
 
         final String ip = getCurrentIP();
-        if(!ip.equals("singleplayer")) {
+        if (!ip.equals("singleplayer")) {
             Pattern hypixelPattern = Pattern.compile("^(?:(?:(?:.*\\.)?hypixel\\.net)|(?:209\\.222\\.115\\.\\d{1,3}))(?::\\d{1,5})?$", Pattern.CASE_INSENSITIVE);
             Matcher matcher = hypixelPattern.matcher(ip);
 
@@ -62,6 +64,7 @@ public class ServerChecker {
 
     /**
      * Called when a Minecraft world is loaded
+     *
      * @param event Event data
      * @see WorldEvent.Load
      */
@@ -73,7 +76,7 @@ public class ServerChecker {
         new TickDelay(() -> {
             // Check the server's metadata
             final VerificationMethod metadataVerification = checkServerMetadataForHypixel();
-            if(metadataVerification != null) {
+            if (metadataVerification != null) {
                 runCallback(true, this.ip, metadataVerification);
             } else {
                 callback.run(false, this.ip, null);
@@ -87,6 +90,7 @@ public class ServerChecker {
      * If the tablist fooder contains "hypixel.net" then the server is verified.
      * If the server MOTD contains "hypixel network" then the server is verified.
      * If the server favicon base64 matches Hypixel's logo then the server is verified.
+     *
      * @return Which of the above checks were true, or null otherwise.
      */
     public VerificationMethod checkServerMetadataForHypixel() {
@@ -94,7 +98,7 @@ public class ServerChecker {
         // First check tab list, if it contains any references to Hypixel in the header & footer.
         final GuiPlayerTabOverlay tab = Minecraft.getMinecraft().ingameGUI.getTabList();
         try {
-            if(checkTabField(tab, "header", "field_175256_i"))
+            if (checkTabField(tab, "header", "field_175256_i"))
                 return VerificationMethod.HEADER;
         } catch (NoSuchFieldException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
@@ -102,7 +106,7 @@ public class ServerChecker {
         }
 
         try {
-            if(checkTabField(tab, "footer", "field_175255_h"))
+            if (checkTabField(tab, "footer", "field_175255_h"))
                 return VerificationMethod.FOOTER;
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
@@ -111,7 +115,7 @@ public class ServerChecker {
 
         // Next check server MOTD
         final ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();
-        if(serverData != null) {
+        if (serverData != null) {
             final String motd = serverData.serverMOTD;
             if (motd != null && motd.toLowerCase().contains("hypixel network")) {
                 return VerificationMethod.MOTD;
@@ -122,7 +126,7 @@ public class ServerChecker {
                 // Next check server favicon
                 final String faviconBase64 = serverData.getBase64EncodedIconData();
                 if (faviconBase64 != null) {
-                    final String hypixelBase64 = Base64.encodeBase64String(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("HypixelMCLogo.png")));
+                    final String hypixelBase64 = Base64.encodeBase64String(IOUtils.toByteArray(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("HypixelMCLogo.png"))));
                     if (faviconBase64.equals(hypixelBase64))
                         return VerificationMethod.FAVICON;
                 }
@@ -138,11 +142,12 @@ public class ServerChecker {
 
     /**
      * Checks whether the tab list header & footer contain information that would point to the current server being Hypixel.
+     *
      * @param tabOverlay GUI overlay for the tab list
-     * @param fieldName name of the field to check (either <code>header</code> or <code>footer</code>)
-     * @param srgName field name in an obfuscated environment
+     * @param fieldName  name of the field to check (either <code>header</code> or <code>footer</code>)
+     * @param srgName    field name in an obfuscated environment
      * @return Whether the field <code>fieldName</code> in the object <code>tabOverlay</code> contains "hypixel.net"
-     * @throws NoSuchFieldException The field couldn't be found
+     * @throws NoSuchFieldException   The field couldn't be found
      * @throws IllegalAccessException The field couldn't be accessed
      */
     public boolean checkTabField(GuiPlayerTabOverlay tabOverlay, String fieldName, String srgName) throws NoSuchFieldException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
@@ -150,12 +155,12 @@ public class ServerChecker {
         try {
             // Try deobfuscated
             headerField = tabOverlay.getClass().getDeclaredField(fieldName);
-        } catch(NoSuchFieldException e) {
+        } catch (NoSuchFieldException e) {
             // Assume SRG otherwise
             headerField = tabOverlay.getClass().getDeclaredField(srgName);
         }
 
-        if(headerField != null) {
+        if (headerField != null) {
             headerField.setAccessible(true);
 
             // OrangeMarshall's Vanilla Enhancements conflicts with this mod. He has a field called
@@ -165,7 +170,7 @@ public class ServerChecker {
             final Object headerObj = headerField.get(tabOverlay);
             IChatComponent component;
             // If user is using Vanilla Enhancements
-            if(Loader.instance().getModList().stream().anyMatch(mod -> mod.getName().equals("Vanilla Enhancements"))) {
+            if (Loader.instance().getModList().stream().anyMatch(mod -> mod.getName().equals("Vanilla Enhancements"))) {
                 final String type = "com.orangemarshall.enhancements.util.FieldWrapper";
                 final Class<?> clazz = Class.forName(type);
 
@@ -187,8 +192,9 @@ public class ServerChecker {
 
     /**
      * Run the callback & unregister this as an event listener
+     *
      * @param onHypixel whether online Hypixel
-     * @param ip IP the user is connected to
+     * @param ip        IP the user is connected to
      */
     public void runCallback(boolean onHypixel, String ip, VerificationMethod method) {
         callback.run(onHypixel, ip, method);
@@ -197,11 +203,12 @@ public class ServerChecker {
 
     /**
      * Gets the current IP the client is connected to
+     *
      * @return The IP the client is currently connected to
      */
     public static String getCurrentIP() {
         String ip;
-        if(Minecraft.getMinecraft().isSingleplayer())
+        if (Minecraft.getMinecraft().isSingleplayer())
             ip = "singleplayer";
         else {
             ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();

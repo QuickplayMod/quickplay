@@ -20,6 +20,7 @@ public class SubCommandHelp extends ASubCommand {
 
     /**
      * Constructor
+     *
      * @param parent Parent command
      */
     public SubCommandHelp(ACommand parent) {
@@ -39,22 +40,22 @@ public class SubCommandHelp extends ASubCommand {
         boolean separators;
         IChatComponent helpMessage = new ChatComponentText("");
 
-        if(args.length == 0) {
+        if (args.length == 0) {
             separators = true;
             // Duplicate
             List<ASubCommand> subCommands = new ArrayList<>(getParent().subCommands);
             // Sort by priority & remove items that can't be displayed
             subCommands = subCommands.stream().filter(ASubCommand::canDisplayInHelpMenu).sorted(Comparator.comparing(ASubCommand::getPriority).reversed()).collect(Collectors.toList());
 
-            for(ListIterator<ASubCommand> iterator = subCommands.listIterator(); iterator.hasNext();) {
+            for (ListIterator<ASubCommand> iterator = subCommands.listIterator(); iterator.hasNext(); ) {
                 ASubCommand subCommand = iterator.next();
                 helpMessage.appendSibling(getFormattedHelpMessage(subCommand));
-                if(iterator.hasNext()) helpMessage.appendText("\n");
+                if (iterator.hasNext()) helpMessage.appendText("\n");
             }
         } else {
             separators = false;
             ASubCommand commandToDisplay = getParent().getCommand(args[0]);
-            if(commandToDisplay != null) {
+            if (commandToDisplay != null) {
                 helpMessage.appendSibling(new ChatComponentTranslation("quickplay.commands.usage"));
                 helpMessage.appendText("\n");
                 helpMessage.appendText("/" + commandToDisplay.getParent().getCommandName() + " " + commandToDisplay.getName() + " " + commandToDisplay.getUsage());
@@ -74,8 +75,8 @@ public class SubCommandHelp extends ASubCommand {
                 .filter(scmd -> scmd.getName().startsWith(args[args.length - 1]))
                 .sorted(Comparator.comparing(ASubCommand::getPriority).reversed())
                 .collect(Collectors.toList());
-        if(args.length < 2) {
-            for(ASubCommand subCommand : subCommands) {
+        if (args.length < 2) {
+            for (ASubCommand subCommand : subCommands) {
                 list.add(subCommand.getName());
             }
         }
@@ -85,6 +86,7 @@ public class SubCommandHelp extends ASubCommand {
 
     /**
      * Format the help message for the specified sub command
+     *
      * @param subCommand Sub command to format for
      * @return A chat-ready formatted help message
      */

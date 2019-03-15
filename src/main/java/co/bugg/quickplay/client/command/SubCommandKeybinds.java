@@ -15,6 +15,7 @@ public class SubCommandKeybinds extends ASubCommand {
 
     /**
      * Constructor
+     *
      * @param parent Parent command
      */
     public SubCommandKeybinds(ACommand parent) {

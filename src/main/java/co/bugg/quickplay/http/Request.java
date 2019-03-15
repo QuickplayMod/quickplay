@@ -27,8 +27,9 @@ public class Request {
 
     /**
      * Constructor
+     *
      * @param apacheRequestObj Apache HttpComponents object
-     * @param factory Parent factory
+     * @param factory          Parent factory
      */
     public Request(HttpRequestBase apacheRequestObj, HttpRequestFactory factory) {
         this.apacheRequestObj = apacheRequestObj;
@@ -37,6 +38,7 @@ public class Request {
 
     /**
      * Execute the request
+     *
      * @return response from the requested page
      */
     public WebResponse execute() {
@@ -62,7 +64,7 @@ public class Request {
         } catch (IOException e) {
             e.printStackTrace();
             // Don't send error report if the issue arose from an /exception request. Otherwise it'll probably create an infinite loop.
-            if(!apacheRequestObj.getURI().toString().endsWith("/exception"))
+            if (!apacheRequestObj.getURI().toString().endsWith("/exception"))
                 Quickplay.INSTANCE.sendExceptionRequest(e);
         }
 

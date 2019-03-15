@@ -28,19 +28,19 @@ public class ConfigElement {
     /**
      * Constructor
      *
-     * @param element This configuration element
-     * @param optionInfo This configuration element's {@link GuiOption} annotation
+     * @param element         This configuration element
+     * @param optionInfo      This configuration element's {@link GuiOption} annotation
      * @param configFieldName Name of the field this configuration element is coming from
      */
     public ConfigElement(Object element, GuiOption optionInfo, String configFieldName) {
         // Only doubles, booleans, colors, runnables, and enums are allowed at the moment.
-        if(
+        if (
                 element instanceof Double ||
-                element instanceof Boolean ||
-                element instanceof QuickplayColor ||
-                element instanceof Runnable ||
-                element.getClass().isEnum()
-            ) {
+                        element instanceof Boolean ||
+                        element instanceof QuickplayColor ||
+                        element instanceof Runnable ||
+                        element.getClass().isEnum()
+        ) {
             this.element = element;
         } else {
             throw new IllegalArgumentException("element not of recognized type! Recognized types: Double, Boolean, Color, Runnable, Enum");

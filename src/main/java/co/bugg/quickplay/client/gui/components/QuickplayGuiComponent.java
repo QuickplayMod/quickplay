@@ -57,14 +57,14 @@ public abstract class QuickplayGuiComponent extends Gui {
     /**
      * Constructor
      *
-     * @param origin The origin of this component
-     * @param id The ID of this component
-     * @param x The X location of this component when scrolling = 0
-     * @param y The Y location of this component when scrolling = 0
-     * @param width The width of this component
-     * @param height The height of this component
+     * @param origin        The origin of this component
+     * @param id            The ID of this component
+     * @param x             The X location of this component when scrolling = 0
+     * @param y             The Y location of this component when scrolling = 0
+     * @param width         The width of this component
+     * @param height        The height of this component
      * @param displayString The string displayed along with this component
-     * @param scrollable Whether this component should scroll up and down or not
+     * @param scrollable    Whether this component should scroll up and down or not
      */
     public QuickplayGuiComponent(Object origin, int id, int x, int y, int width, int height, String displayString, boolean scrollable) {
         this.origin = origin;
@@ -79,6 +79,7 @@ public abstract class QuickplayGuiComponent extends Gui {
 
     /**
      * Move this component vertically a certain distance
+     *
      * @param distance the distance to move this component. Distance is added (positive values move the component down).
      */
     public synchronized void move(int distance) {
@@ -87,16 +88,18 @@ public abstract class QuickplayGuiComponent extends Gui {
 
     /**
      * Draw ths component on the screen
-     * @param gui GUI this component is being drawn on
-     * @param mouseX The X position of the mouse at the moment
-     * @param mouseY The Y position of the mouse at the moment
+     *
+     * @param gui     GUI this component is being drawn on
+     * @param mouseX  The X position of the mouse at the moment
+     * @param mouseY  The Y position of the mouse at the moment
      * @param opacity The opacity to draw this component at
      */
     public abstract void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity);
 
     /**
      * Calculates whether the mouse is currently hovering over this component or not
-     * @param gui GUI this component is being drawn on
+     *
+     * @param gui    GUI this component is being drawn on
      * @param mouseX The X position of the mouse
      * @param mouseY The Y position of the mouse
      * @return By default, Whether the X and Y positions of the mouse are within the width & height of this component.
@@ -108,7 +111,8 @@ public abstract class QuickplayGuiComponent extends Gui {
 
     /**
      * Called whenever the mouse is released from a click or click-drag
-     * @param gui GUI this component is being drawn on
+     *
+     * @param gui    GUI this component is being drawn on
      * @param mouseX The X position of the mouse when the mouse was released
      * @param mouseY the Y position of the mouse when the mouse was released
      */
@@ -116,17 +120,19 @@ public abstract class QuickplayGuiComponent extends Gui {
 
     /**
      * Called whenever a key is typed in a QuickplayGui on all elements in componentList
+     *
      * @param keyTyped Character that was typed
-     * @param keyCode LWJGL key code
+     * @param keyCode  LWJGL key code
      * @return Whether the key press should be cancelled (true to cancel)
      */
     public abstract boolean keyTyped(char keyTyped, int keyCode);
 
     /**
      * Called whenever a mouse is pressed in a QuickplayGui on all elements in componentList
-     * @param gui the GUI this component is being rendered on
-     * @param mouseX X position of the mouse
-     * @param mouseY Y position of the mouse
+     *
+     * @param gui         the GUI this component is being rendered on
+     * @param mouseX      X position of the mouse
+     * @param mouseY      Y position of the mouse
      * @param mouseButton mouse button clicked
      * @return Whether the click should be cancelled (true to cancel)
      */

@@ -36,20 +36,20 @@ public class AnalyticsRequest {
      * Constructor
      *
      * @param requestType the type of request this is. No default parameters are added if this is null
-     * @param analytics The parent analytics
+     * @param analytics   The parent analytics
      * @throws MalformedURLException Internal error; the URL set is invalid
      */
     AnalyticsRequest(RequestType requestType, GoogleAnalytics analytics) throws MalformedURLException {
         this.analytics = analytics;
 
-        if(analytics.debug) {
+        if (analytics.debug) {
             requestEndpoint = new URL("https://www.google-analytics.com/debug/collect");
         } else {
             requestEndpoint = new URL("https://www.google-analytics.com/collect");
         }
 
         // Only add basic parameters if requestType is provided, otherwise assume that will be done later
-        if(requestType != null) {
+        if (requestType != null) {
             // Protocol version
             parameters.put("v", "1");
             // Tracking ID
@@ -64,8 +64,9 @@ public class AnalyticsRequest {
     /**
      * Send this request to Google
      * All requests are POST with content-type form-urlencoded
-     * @see "https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide"
+     *
      * @throws IOException Error sending data, or malformed data
+     * @see "https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide"
      */
     public void send() throws IOException {
 
@@ -75,14 +76,14 @@ public class AnalyticsRequest {
 
         // Build the post body
         final StringBuilder urlEncodedBodyBuilder = new StringBuilder();
-        for(Iterator<Map.Entry<String, String>> iter = parameters.entrySet().iterator(); iter.hasNext();) {
+        for (Iterator<Map.Entry<String, String>> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
             final Map.Entry<String, String> map = iter.next();
             urlEncodedBodyBuilder
                     .append(map.getKey())
                     .append("=")
                     .append(URLEncoder.encode(map.getValue(), "UTF-8"));
 
-            if(iter.hasNext())
+            if (iter.hasNext())
                 urlEncodedBodyBuilder.append("&");
         }
         final String urlEncodedBody = urlEncodedBodyBuilder.toString();
@@ -100,35 +101,36 @@ public class AnalyticsRequest {
         out.flush();
         out.close();
 
-        if(analytics.debug) {
+        if (analytics.debug) {
             BufferedReader reader;
-            if(connection.getResponseCode() == 200)
+            if (connection.getResponseCode() == 200)
                 reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             else
                 reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
 
             final StringBuilder builder = new StringBuilder();
             String line;
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 builder.append(line);
             }
 
             System.out.println(builder.toString());
         }
 
-        if(connection.getResponseCode() != 200)
+        if (connection.getResponseCode() != 200)
             throw new IOException("Response code not equal to 200! Illegal request. Response: " + connection.getResponseCode());
 
     }
 
     /**
      * Set whether this request's IP should be anonymous
-     * @see "https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#aip"
+     *
      * @param anonymizeIP Whether this request's IP should be anonymous
      * @return This
+     * @see "https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#aip"
      */
     public AnalyticsRequest setAnonymizeIP(boolean anonymizeIP) {
-        if(anonymizeIP)
+        if (anonymizeIP)
             parameters.put("aip", "1");
         else
             parameters.remove("aip");
@@ -137,11 +139,12 @@ public class AnalyticsRequest {
 
     /**
      * Set the user's screen resolution
+     *
      * @param resolution Resolution of the screen, or null/empty string to remove
      * @return This
      */
     public AnalyticsRequest setScreenResolution(String resolution) {
-        if(resolution == null || resolution.length() == 0)
+        if (resolution == null || resolution.length() == 0)
             parameters.remove("sr");
         else
             parameters.put("sr", resolution);
@@ -151,12 +154,13 @@ public class AnalyticsRequest {
     /**
      * Set the data source of this request
      * By default, the data source is "java-app"
-     * @see "https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ds"
+     *
      * @param dataSource Data source, or null/empty string to remove
      * @return this
+     * @see "https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ds"
      */
     public AnalyticsRequest setDataSource(String dataSource) {
-        if(dataSource == null || dataSource.length() == 0)
+        if (dataSource == null || dataSource.length() == 0)
             parameters.remove("ds");
         else
             parameters.put("ds", dataSource);
@@ -165,11 +169,12 @@ public class AnalyticsRequest {
 
     /**
      * Set the user's language
+     *
      * @param language Language of the user, or null/empty string to remove
      * @return This
      */
     public AnalyticsRequest setLanguage(String language) {
-        if(language == null || language.length() == 0)
+        if (language == null || language.length() == 0)
             parameters.remove("ul");
         else
             parameters.put("ul", language);
@@ -178,11 +183,12 @@ public class AnalyticsRequest {
 
     /**
      * Set the hostname of this page
+     *
      * @param hostname Hostname, or null/empty string to remove
      * @return This
      */
     public AnalyticsRequest setHostname(String hostname) {
-        if(hostname == null || hostname.length() == 0)
+        if (hostname == null || hostname.length() == 0)
             parameters.remove("dh");
         else
             parameters.put("dh", hostname);
@@ -191,11 +197,12 @@ public class AnalyticsRequest {
 
     /**
      * Set the path to the page
+     *
      * @param page Path, or null/empty string to remove
      * @return This
      */
     public AnalyticsRequest setPage(String page) {
-        if(page == null || page.length() == 0)
+        if (page == null || page.length() == 0)
             parameters.remove("dp");
         else
             parameters.put("dp", page);
@@ -204,11 +211,12 @@ public class AnalyticsRequest {
 
     /**
      * Set the title of the page
+     *
      * @param title Title, or null/empty string to remove
      * @return This
      */
     public AnalyticsRequest setTitle(String title) {
-        if(title == null || title.length() == 0)
+        if (title == null || title.length() == 0)
             parameters.remove("dt");
         else
             parameters.put("dt", title);
@@ -219,12 +227,13 @@ public class AnalyticsRequest {
      * Set the session control
      * START = force new session
      * END = force close session
-     * @see SessionControl
+     *
      * @param sessionControl Session control value
      * @return This
+     * @see SessionControl
      */
     public AnalyticsRequest setSessionControl(SessionControl sessionControl) {
-        if(sessionControl == null)
+        if (sessionControl == null)
             parameters.remove("sc");
         else
             parameters.put("sc", sessionControl.toString());
@@ -233,11 +242,12 @@ public class AnalyticsRequest {
 
     /**
      * Set the user agent override
+     *
      * @param ua New user agent, or null/empty string to remove
      * @return This
      */
     public AnalyticsRequest setUserAgent(String ua) {
-        if(ua == null || ua.length() == 0)
+        if (ua == null || ua.length() == 0)
             parameters.remove("ua");
         else
             parameters.put("ua", ua);

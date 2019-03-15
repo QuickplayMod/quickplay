@@ -73,7 +73,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether Quickplay GUI backgrounds should be 100% transparent
      */
     @GuiOption(
-            name="quickplay.settings.transparentBackgrounds.name",
+            name = "quickplay.settings.transparentBackgrounds.name",
             helpText = "quickplay.settings.transparentBackgrounds.help",
             category = "quickplay.settings.category.gui"
     )
@@ -106,8 +106,8 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * This does not affect any other GUI on Quickplay or otherwise
      */
     @GuiOption(
-            name="quickplay.settings.anyKeyClosesGui.name",
-            helpText="quickplay.settings.anyKeyClosesGui.help",
+            name = "quickplay.settings.anyKeyClosesGui.name",
+            helpText = "quickplay.settings.anyKeyClosesGui.help",
             category = "quickplay.settings.category.gui"
     )
     public boolean anyKeyClosesGui = false;
@@ -117,7 +117,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * names when you hover over the game's icon
      */
     @GuiOption(
-            name="quickplay.settings.compactMainMenu.name",
+            name = "quickplay.settings.compactMainMenu.name",
             helpText = "quickplay.settings.compactMainMenu.help",
             category = "quickplay.settings.category.gui"
     )
@@ -177,7 +177,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
 
     /**
      * Hashmap of custom game priorities for the main game selection GUI
-     *
+     * <p>
      * Key is the game's unlocalized name, value is the priority (higher number = higher priority)
      * Cannot be customized outside of a text editor at the moment
      */
@@ -205,7 +205,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether the client should swap to lobby one when it joins a new lobby
      */
     @GuiOption(
-            name="quickplay.settings.lobbyOneSwap.name",
+            name = "quickplay.settings.lobbyOneSwap.name",
             helpText = "quickplay.settings.lobbyOneSwap.help"
     )
     public boolean lobbyOneSwap = false;
@@ -276,10 +276,10 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     /**
      * Allows users to change how much padding is on the
      * top & bottom of {@link co.bugg.quickplay.client.gui.game.QuickplayGuiMainMenu}
-     *
+     * <p>
      * Cannot be changed in the GUI as that might be confusing but
      * is there for the users who need it.
-     *
+     * <p>
      * Divided by two, half for top and half for bottom
      *
      * @see <a href="https://github.com/bugfroggy/Quickplay2.0/issues/3">Github issue</a>
@@ -288,7 +288,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
 
     /**
      * A list of all modes currently set to "TRUE" in party mode.
-     *
+     * <p>
      * When the client receives a response from the gamelist endpoint,
      * it will verify all modes in this list and make sure they're all valid
      */

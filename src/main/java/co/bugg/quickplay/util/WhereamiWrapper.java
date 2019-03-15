@@ -55,10 +55,11 @@ public class WhereamiWrapper {
     /**
      * Stop listening for a chat message
      * and call the callback
+     *
      * @param instance Current instance to pass to callback
      */
     public void stopListening(String instance) {
-        if(listening) {
+        if (listening) {
             this.listening = false;
             Quickplay.INSTANCE.unregisterEventHandler(this);
 
@@ -74,15 +75,15 @@ public class WhereamiWrapper {
         final Pattern pattern = Pattern.compile("^You are currently (?:(?:in |connected to server )(limbo|(?:(?:[A-Za-z]+)?lobby(?:\\d{1,3})|(?:mega|mini)\\d{1,3}[A-Z])))$");
         final Matcher matcher = pattern.matcher(message);
 
-        if(
+        if (
                 Quickplay.INSTANCE.enabled &&
-                Quickplay.INSTANCE.onHypixel &&
-                !event.isCanceled() &&
-                matcher.find() &&
-                listening
+                        Quickplay.INSTANCE.onHypixel &&
+                        !event.isCanceled() &&
+                        matcher.find() &&
+                        listening
         ) {
 
-            if(this.cancel)
+            if (this.cancel)
                 event.setCanceled(true);
 
             // Get the regex group containing the current instance

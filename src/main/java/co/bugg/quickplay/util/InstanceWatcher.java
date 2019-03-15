@@ -39,7 +39,7 @@ public class InstanceWatcher {
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
-        if(event.phase == TickEvent.Phase.START && tick++ > whereamiFrequency * 20) {
+        if (event.phase == TickEvent.Phase.START && tick++ > whereamiFrequency * 20) {
             tick = 0;
             runWhereami();
         }
@@ -54,6 +54,7 @@ public class InstanceWatcher {
 
     /**
      * Start the event handler tick loop & listen for chat messages
+     *
      * @return this
      */
     public InstanceWatcher start() {
@@ -65,6 +66,7 @@ public class InstanceWatcher {
 
     /**
      * Stop the event handler
+     *
      * @return this
      */
     public InstanceWatcher stop() {
@@ -75,21 +77,22 @@ public class InstanceWatcher {
 
     /**
      * Send the /whereami message if possible
+     *
      * @return this
      */
     public InstanceWatcher runWhereami() {
-        if(Quickplay.INSTANCE.onHypixel && Quickplay.INSTANCE.enabled)
+        if (Quickplay.INSTANCE.onHypixel && Quickplay.INSTANCE.enabled)
             new WhereamiWrapper((server) -> {
 
                 // Automatic lobby 1 swapper
-                if(Quickplay.INSTANCE.settings.lobbyOneSwap) {
+                if (Quickplay.INSTANCE.settings.lobbyOneSwap) {
                     // Swap if this is true by the end of this if statement
                     boolean swapToLobbyOne = true;
                     // Don't swap if we aren't in a lobby or we don't know where we are
-                    if(server == null || !server.contains("lobby"))
+                    if (server == null || !server.contains("lobby"))
                         swapToLobbyOne = false;
-                    // If we have been in another server before this one
-                    else if(instanceHistory.size() > 0) {
+                        // If we have been in another server before this one
+                    else if (instanceHistory.size() > 0) {
                         // Get what server/lobby type this is
                         final String serverType = server.replaceAll("\\d", "");
                         // Get what server/lobby type the previous server is
@@ -98,16 +101,16 @@ public class InstanceWatcher {
                         swapToLobbyOne = !serverType.equals(previousServerType);
                     }
                     // Swap if: you're in a lobby & you just joined the server to a lobby or you just left an instance that was not the same type of lobby as this
-                    if(swapToLobbyOne)
+                    if (swapToLobbyOne)
                         Quickplay.INSTANCE.chatBuffer.push("/swaplobby 1");
 
                 }
 
-                if(server != null && (instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(server))) {
+                if (server != null && (instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(server))) {
                     instanceHistory.add(0, server);
 
                     // Send analytical data to Google
-                    if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                    if (Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
                         Quickplay.INSTANCE.threadPool.submit(() -> {
                             try {
                                 Quickplay.INSTANCE.ga.createEvent("Instance", "Instance Changed")
@@ -125,6 +128,7 @@ public class InstanceWatcher {
 
     /**
      * Get the latest instance if possible
+     *
      * @return The instance
      */
     public String getCurrentServer() {

@@ -32,11 +32,12 @@ public class GoogleAnalyticsFactory {
 
     /**
      * Create an instance of {@link GoogleAnalytics}
+     *
      * @param trackingId Tracking ID of the Google Analytics property
-     * @param appName Name of this Google Analytics application
+     * @param appName    Name of this Google Analytics application
      * @param appVersion Version of this Google Analytics application
-     * @param clientId Unique ID of this client
-     * @param debug Whether this Google Analytics instance should be in debug mode. See {@link GoogleAnalytics#debug}
+     * @param clientId   Unique ID of this client
+     * @param debug      Whether this Google Analytics instance should be in debug mode. See {@link GoogleAnalytics#debug}
      * @return A new instance of {@link GoogleAnalytics}
      */
     public static GoogleAnalytics create(String trackingId, String clientId, String appName, String appVersion, boolean debug) {

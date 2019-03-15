@@ -33,7 +33,7 @@ public class CommandQuickplay extends ACommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        if(Quickplay.INSTANCE.checkEnabledStatus()) {
+        if (Quickplay.INSTANCE.checkEnabledStatus()) {
             super.processCommand(sender, args);
         }
     }

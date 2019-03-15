@@ -58,7 +58,8 @@ public class PlayerGlyph {
 
     /**
      * Constructor
-     * @param uuid UUID of the owner
+     *
+     * @param uuid     UUID of the owner
      * @param resource URL to the glyph image
      */
     public PlayerGlyph(UUID uuid, URL resource) {
@@ -70,7 +71,7 @@ public class PlayerGlyph {
      * Try to download this glyph to the Glyphs resource folder
      */
     public synchronized void download() {
-        if(!downloading && downloadCount < maxDownloadAttempts) {
+        if (!downloading && downloadCount < maxDownloadAttempts) {
             downloading = true;
             downloadCount++;
 
@@ -86,7 +87,7 @@ public class PlayerGlyph {
 
                     final File file = new File(AssetFactory.glyphsDirectory + Hashing.md5().hashString(path.toString(), Charset.forName("UTF-8")).toString() + ".png");
                     // Try to create file if necessary
-                    if(!file.exists() && !file.createNewFile())
+                    if (!file.exists() && !file.createNewFile())
                         throw new IllegalStateException("Glyph file could not be created.");
 
                     // Write contents

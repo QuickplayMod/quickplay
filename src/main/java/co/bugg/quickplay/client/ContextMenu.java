@@ -15,6 +15,7 @@ public interface ContextMenu {
 
     /**
      * Called whenever an option is selected
+     *
      * @param index Index of the option selected
      */
     void optionSelected(int index);

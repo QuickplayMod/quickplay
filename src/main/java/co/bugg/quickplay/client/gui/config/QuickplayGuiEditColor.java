@@ -73,9 +73,9 @@ public class QuickplayGuiEditColor extends QuickplayGui {
     /**
      * Constructor
      *
-     * @param color Color the client is editing
+     * @param color     Color the client is editing
      * @param colorName Display name of this color
-     * @param config Configuration this color is coming from
+     * @param config    Configuration this color is coming from
      */
     public QuickplayGuiEditColor(QuickplayColor color, String colorName, AConfiguration config) {
         this(color, colorName, config, null);
@@ -84,9 +84,9 @@ public class QuickplayGuiEditColor extends QuickplayGui {
     /**
      * Constructor
      *
-     * @param color Color the client is editing
-     * @param colorName Display name of this color
-     * @param config The config this color is coming from
+     * @param color       Color the client is editing
+     * @param colorName   Display name of this color
+     * @param config      The config this color is coming from
      * @param previousGui Previous GUI the client was on
      */
     public QuickplayGuiEditColor(QuickplayColor color, String colorName, AConfiguration config, QuickplayGui previousGui) {
@@ -95,7 +95,6 @@ public class QuickplayGuiEditColor extends QuickplayGui {
         this.config = config;
         this.previousGui = previousGui;
     }
-
 
 
     @Override
@@ -111,7 +110,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
         drawDefaultBackground();
 
         // Draw text
-        if(opacity > 0) {
+        if (opacity > 0) {
             GL11.glScaled(nameTextScale, nameTextScale, nameTextScale);
             drawCenteredString(mc.fontRendererObj, colorName, (int) (width / 2 / nameTextScale), (int) (nameTextY / nameTextScale), 0xFFFFFF);
             GL11.glScaled(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
@@ -162,7 +161,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
 
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
-        if(component.origin.equals("EXIT"))
+        if (component.origin.equals("EXIT"))
             mc.displayGuiScreen(previousGui);
     }
 
@@ -185,23 +184,23 @@ public class QuickplayGuiEditColor extends QuickplayGui {
     public class ColorFormatHelper implements QuickplayGuiSlider.FormatHelper {
         @Override
         public String getText(int id, String name, float value) {
-            switch(id) {
-                default: // 0-2 = R, G, and B
-                    return name + ": " + ((Number) value).intValue();
-                case 3: // 3 = Chroma
-                    String speedLang;
-                    if(value <= 0)
-                        speedLang = "off";
-                    else if(value < 0.008)
-                        speedLang = "slow";
-                    else if(value < 0.02)
-                        speedLang = "medium";
-                    else if(value < 0.035)
-                        speedLang = "fast";
-                    else
-                        speedLang = "insane";
-                    return name + ": " + I18n.format("quickplay.config.color.gui.chromaspeed." + speedLang);
+            // 0-2 = R, G, and B
+            if (id == 3) { // 3 = Chroma
+                String speedLang;
+                if (value <= 0)
+                    speedLang = "off";
+                else if (value < 0.008)
+                    speedLang = "slow";
+                else if (value < 0.02)
+                    speedLang = "medium";
+                else if (value < 0.035)
+                    speedLang = "fast";
+                else
+                    speedLang = "insane";
+                return name + ": " + I18n.format("quickplay.config.color.gui.chromaspeed." + speedLang);
             }
+
+            return name + ": " + ((Number) value).intValue();
         }
     }
 
@@ -211,6 +210,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
     public class ColorGuiResponder implements GuiPageButtonList.GuiResponder {
         /**
          * Fired every tick for a boolean-based GUI element change
+         *
          * @param p_175321_1_ ID of the element
          * @param p_175321_2_ Value
          */
@@ -221,23 +221,22 @@ public class QuickplayGuiEditColor extends QuickplayGui {
 
         /**
          * Fired every tick for a float-based GUI element change
-         * @param id ID of the element
+         *
+         * @param id    ID of the element
          * @param value Value
          */
         @Override
         public void onTick(int id, float value) {
-            switch((String) componentList.get(id).origin) {
-                default:
-                    color.setColor(new Color(((int) ((QuickplayGuiSlider) componentList.get(0)).getValue()), (int) ((QuickplayGuiSlider) componentList.get(1)).getValue(), (int) ((QuickplayGuiSlider) componentList.get(2)).getValue()));
-                    break;
-                case "CHROMA":
-                    color.setChromaSpeed(value);
-                    break;
+            if ("CHROMA".equals(componentList.get(id).origin)) {
+                color.setChromaSpeed(value);
+            } else {
+                color.setColor(new Color(((int) ((QuickplayGuiSlider) componentList.get(0)).getValue()), (int) ((QuickplayGuiSlider) componentList.get(1)).getValue(), (int) ((QuickplayGuiSlider) componentList.get(2)).getValue()));
             }
         }
 
         /**
          * Fired every tick for a text-based GUI element change
+         *
          * @param p_175319_1_ ID of the element
          * @param p_175319_2_ Value
          */

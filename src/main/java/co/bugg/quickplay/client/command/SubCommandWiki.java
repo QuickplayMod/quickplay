@@ -17,13 +17,14 @@ public class SubCommandWiki extends ASubCommand {
 
     /**
      * Constructor
+     *
      * @param parent Parent command
      */
     public SubCommandWiki(ACommand parent) {
         super(
                 parent,
                 "wiki",
-                 I18n.format("quickplay.commands.quickplay.wiki.help"),
+                I18n.format("quickplay.commands.quickplay.wiki.help"),
                 "",
                 true,
                 true,

@@ -27,7 +27,8 @@ public class Animation {
     /**
      * Constructor
      */
-    public Animation() { }
+    public Animation() {
+    }
 
     /**
      * Constructor
@@ -41,6 +42,7 @@ public class Animation {
     /**
      * Start this animation, starting from 0
      * Thread-blocking until {@link #updateFrame()} is called and {@link #progress} >= 1 post-update
+     *
      * @return This
      */
     public Animation start() {
@@ -64,6 +66,7 @@ public class Animation {
     /**
      * Stop this animation from progressing any further
      * <code>notify()</code> is called
+     *
      * @return This
      */
     public Animation stop() {
@@ -77,22 +80,23 @@ public class Animation {
 
     /**
      * Refresh {@link #progress}
+     *
      * @return This
      */
     public synchronized Animation updateFrame() {
         // If started
-        if(started) {
+        if (started) {
             final long now = System.currentTimeMillis();
 
-            if(now - startedMillis < 0) {
+            if (now - startedMillis < 0) {
                 progress = 0;
-            } else if(startedMillis + length > now) {
+            } else if (startedMillis + length > now) {
                 progress = ((float) (now - startedMillis)) / (float) length;
             } else progress = 1;
 
         } else throw new IllegalStateException("This animation has not been started yet. You must call start() first.");
 
-        if(progress >= 1)
+        if (progress >= 1)
             notify();
 
         return this;

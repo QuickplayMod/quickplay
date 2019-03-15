@@ -13,7 +13,7 @@ public class StaticAnimation extends Animation {
     /**
      * Frequency in milliseconds that the progress is updated
      * Also known as framerate
-     *
+     * <p>
      * Default 25ms, or 40 frames per second
      */
     public int updateFrequency;
@@ -25,7 +25,8 @@ public class StaticAnimation extends Animation {
 
     /**
      * Construction
-     * @param length The length of this animation in milliseconds
+     *
+     * @param length    The length of this animation in milliseconds
      * @param framerate The rate at which updateFrame() is called per second
      */
     public StaticAnimation(long length, int framerate) {
@@ -36,12 +37,12 @@ public class StaticAnimation extends Animation {
     @Override
     public Animation start() {
         super.start();
-        if(threadFuture != null)
+        if (threadFuture != null)
             threadFuture.cancel(true);
         threadFuture = Quickplay.INSTANCE.threadPool.submit(() -> {
             try {
                 Thread.sleep(updateFrequency);
-                while(progress < 1) {
+                while (progress < 1) {
                     updateFrame();
                 }
             } catch (InterruptedException e) {

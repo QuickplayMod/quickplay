@@ -74,6 +74,7 @@ public class AssetFactory {
 
     /**
      * Download all icons from the specified URLs
+     *
      * @param urls List of URLs to download from
      * @return List of ResourceLocations for all icons
      */
@@ -82,18 +83,18 @@ public class AssetFactory {
 
         List<ResourceLocation> resourceLocations = new ArrayList<>();
 
-        for(URL url : urls) {
+        for (URL url : urls) {
             File file = getIconFile(url);
             // If the file already exists, no need to download again.
             // If the icon needs to be reset, use REFRESH_CACHE action type.
-            if(!file.exists()) {
+            if (!file.exists()) {
                 System.out.println("Saving file " + file.getPath());
                 try {
 
                     HttpGet get = new HttpGet(url.toURI());
 
                     CloseableHttpResponse response = (CloseableHttpResponse) Quickplay.INSTANCE.requestFactory.httpClient.execute(get);
-                    if(response.getStatusLine().getStatusCode() < 300) {
+                    if (response.getStatusLine().getStatusCode() < 300) {
 
                         byte[] buffer = new byte[1024];
 
@@ -133,7 +134,7 @@ public class AssetFactory {
     /**
      * Dump cached images (glyphs & game icons) that
      * are passed their expiration
-     *
+     * <p>
      * Game list does not have an expiration
      */
     public void dumpOldCache() {
@@ -141,18 +142,18 @@ public class AssetFactory {
 
         // Dump glyph cache first
         final File[] glyphFiles = new File(glyphsDirectory).listFiles();
-        if(glyphFiles != null) {
+        if (glyphFiles != null) {
             for (final File file : glyphFiles) {
-                if(file.exists() && file.isFile() && file.lastModified() + glyphCacheLife < now)
+                if (file.exists() && file.isFile() && file.lastModified() + glyphCacheLife < now)
                     file.delete();
             }
         }
 
         // Dump old icons
         final File[] iconFiles = new File(assetsDirectory).listFiles();
-        if(iconFiles != null) {
-            for(final File file : iconFiles) {
-                if(file.exists() && file.isFile() && file.lastModified() + iconCacheLife < now)
+        if (iconFiles != null) {
+            for (final File file : iconFiles) {
+                if (file.exists() && file.isFile() && file.lastModified() + iconCacheLife < now)
                     file.delete();
             }
         }
@@ -165,25 +166,25 @@ public class AssetFactory {
     public void dumpAllCache() {
         // Dump glyph cache first
         final File[] glyphFiles = new File(glyphsDirectory).listFiles();
-        if(glyphFiles != null) {
+        if (glyphFiles != null) {
             for (final File file : glyphFiles) {
-                if(file.exists() && file.isFile())
+                if (file.exists() && file.isFile())
                     file.delete();
             }
         }
 
         // Dump old icons
         final File[] iconFiles = new File(resourcesDirectory).listFiles();
-        if(iconFiles != null) {
-            for(final File file : iconFiles) {
-                if(file.exists() && file.isFile())
+        if (iconFiles != null) {
+            for (final File file : iconFiles) {
+                if (file.exists() && file.isFile())
                     file.delete();
             }
         }
 
         // Delete cached gamelist
         final File gameList = new File(gamelistCacheFile);
-        if(gameList.exists() && gameList.isFile())
+        if (gameList.exists() && gameList.isFile())
             gameList.delete();
     }
 
@@ -197,16 +198,16 @@ public class AssetFactory {
         final File assetsDirFile = new File(assetsDirectory);
         final File glyphsDirFile = new File(glyphsDirectory);
 
-        if(!configDirFile.isDirectory())
+        if (!configDirFile.isDirectory())
             configDirFile.mkdirs();
 
-        if(!resourcesDirFile.isDirectory())
+        if (!resourcesDirFile.isDirectory())
             resourcesDirFile.mkdirs();
 
-        if(!assetsDirFile.isDirectory())
+        if (!assetsDirFile.isDirectory())
             assetsDirFile.mkdirs();
 
-        if(!glyphsDirFile.isDirectory())
+        if (!glyphsDirFile.isDirectory())
             glyphsDirFile.mkdirs();
 
         // Create the mcmeta file for the "resource pack"
@@ -217,7 +218,7 @@ public class AssetFactory {
             if (!mcmetaFile.exists())
                 mcmetaFile.createNewFile();
             Files.write(mcmetaFile.toPath(), mcmetaFileContents.getBytes());
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.out.println("Failed to generate mcmeta file! Mod may or may not work properly.");
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
@@ -227,6 +228,7 @@ public class AssetFactory {
     /**
      * Register the custom resource pack with Minecraft.
      * The resource pack is used for loading in icons.
+     *
      * @return resource pack that is added
      */
     public IResourcePack registerResourcePack() {
@@ -238,7 +240,7 @@ public class AssetFactory {
             try {
                 // Try to get the field for the obfuscated "defaultResourcePacks" field
                 defaultResourcePacksField = Minecraft.class.getDeclaredField("field_110449_ao");
-            } catch(NoSuchFieldException e) {
+            } catch (NoSuchFieldException e) {
                 // Obfuscated name wasn't found. Let's try the deobfuscated name.
                 defaultResourcePacksField = Minecraft.class.getDeclaredField("defaultResourcePacks");
             }
@@ -265,24 +267,26 @@ public class AssetFactory {
     /**
      * Load the previously cached game list if available,
      * otherwise null is returned.
+     *
      * @return List of games or null if unavailable
      */
     public Game[] loadCachedGamelist() throws IOException {
         final File gameListFile = new File(gamelistCacheFile);
 
-        if(!gameListFile.exists() || (!gameListFile.canRead() && !gameListFile.setReadable(true)))
+        if (!gameListFile.exists() || (!gameListFile.canRead() && !gameListFile.setReadable(true)))
             return null;
 
         final String contents = new String(Files.readAllBytes(gameListFile.toPath()));
         try {
             return Quickplay.organizeGameList(new Gson().fromJson(contents, Game[].class));
-        } catch(Exception e) {
+        } catch (Exception e) {
             return new Game[0];
         }
     }
 
     /**
      * Save an array of games to cached "gamelist.json" file.
+     *
      * @param gameList List of games
      * @throws IOException Error writing to file
      */
@@ -292,11 +296,11 @@ public class AssetFactory {
         gameList = Quickplay.organizeGameList(gameList);
 
         // If file doesn't exist and couldn't be created
-        if(!gameListFile.exists() && !gameListFile.createNewFile())
+        if (!gameListFile.exists() && !gameListFile.createNewFile())
             throw new IOException("Failed to create file for cached game list");
 
         // If file can't be written to and attempts to make it writable failed
-        if(!gameListFile.canWrite() && !gameListFile.setWritable(true))
+        if (!gameListFile.canWrite() && !gameListFile.setWritable(true))
             throw new IOException("Cannot write to file for cached game list");
 
         final String serializedGameList = new Gson().toJson(gameList);
@@ -307,6 +311,7 @@ public class AssetFactory {
     /**
      * Get the {@link File} for the provided icon URL
      * URL is md5 hashed and then ".png" is appended
+     *
      * @param url URL the icon can be found at
      * @return A new {@link File}
      */
