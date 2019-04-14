@@ -77,6 +77,7 @@ public abstract class ACommand implements ICommand {
         // Only run if there are actually sub commands available; Otherwise it's pointless
         if(subCommands.size() > 0) {
             Quickplay.INSTANCE.threadPool.submit(() -> {
+                // In the case of no args, first subcommand is run. Usually a help command.
                 if(args.length == 0) {
                     subCommands.get(0).run(new String[]{});
                 } else {
