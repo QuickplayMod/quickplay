@@ -1,4 +1,9 @@
+quickplay.offline=U aren't on HYPICKLE!
+quickplay.disabled=Quickplay haz ben turned off! Reeson is: %s
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=Click me 2 open
 
+quickplay.commands.quickplay.help.help=Show tha commandz.
 
 
 
