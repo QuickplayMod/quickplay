@@ -48,7 +48,7 @@ public class InstanceDisplay extends MoveableHudElement {
                 (scaledX + stringWidth + this.backgroundHorizontalPadding - stringWidth / 2 - 1), // -1 due to a padding issue I don't
                                                                                                                 // understand it but it's uneven without.
                 (scaledY + stringHeight + this.backgroungVerticalPadding),
-                0x000000 | (int) (opacity * 100 * 0.5) << 24);
+                (int) (opacity * 100 * 0.5) << 24);
         GL11.glEnable(GL11.GL_BLEND);
 
         drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
