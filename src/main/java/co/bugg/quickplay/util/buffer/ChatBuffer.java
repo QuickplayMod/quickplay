@@ -3,7 +3,7 @@ package co.bugg.quickplay.util.buffer;
 
 import cc.hyperium.Hyperium;
 import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.ServerLeaveEvent;
+import cc.hyperium.event.network.server.ServerLeaveEvent;
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -33,11 +33,11 @@ public class ChatBuffer extends ABuffer {
         final EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
         // Only send a message if the player exists & there is a message to send
-        if(size() > 0 && player != null) {
+        if (size() > 0 && player != null) {
             final String message = (String) pull();
 
             // Handle as a command
-            if(message.startsWith("/") && !Hyperium.INSTANCE.getHandlers().getHyperiumCommandHandler().executeCommand(message))
+            if (message.startsWith("/") && !Hyperium.INSTANCE.getHandlers().getHyperiumCommandHandler().executeCommand(message))
                 player.sendChatMessage(message);
         }
     }

@@ -1,7 +1,7 @@
 package co.bugg.quickplay.client.render;
 
 import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.RenderPlayerEvent;
+import cc.hyperium.event.render.RenderPlayerEvent;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import com.google.common.hash.Hashing;
@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 /**
  * Renders all Quickplay Glyphs when registered to the event bus
+ *
  * @see Quickplay#glyphs
  */
 public class GlyphRenderer {
@@ -43,14 +44,14 @@ public class GlyphRenderer {
     public void onPlayerRender(RenderPlayerEvent e) {
         final String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
         // Don't render at all if F1 is hit or if the client is in a game (or unknown location)
-        if(!Minecraft.getMinecraft().gameSettings.hideGUI) {
+        if (!Minecraft.getMinecraft().gameSettings.hideGUI) {
             final EntityPlayer player = e.getEntity();
             final EntityPlayer self = Minecraft.getMinecraft().thePlayer;
 
             // If both players aren't null, player is visible, and player isn't dead
             if (player != null && self != null && !player.isInvisible() && !player.isDead && self.canEntityBeSeen(player) && self.getDistanceSqToEntity(player) < drawDistance * drawDistance) {
                 // If not rendering self or inventory isn't open (don't render self while inventory is open)
-                if(player != self || !(Minecraft.getMinecraft().currentScreen instanceof GuiInventory)) {
+                if (player != self || !(Minecraft.getMinecraft().currentScreen instanceof GuiInventory)) {
                     // If the player being rendered isn't this player OR the client's settings allow rendering of own glyph
                     if (!player.getUniqueID().toString().equals(self.getUniqueID().toString()) || Quickplay.INSTANCE.settings.displayOwnGlyph) {
                         // If the player has any glyphs
@@ -69,17 +70,18 @@ public class GlyphRenderer {
 
     /**
      * Render a glyph
+     *
      * @param renderer Renderer to use
-     * @param glyph Glyph to render
-     * @param player Player to render it over
-     * @param x x position
-     * @param y y position
-     * @param z z position
+     * @param glyph    Glyph to render
+     * @param player   Player to render it over
+     * @param x        x position
+     * @param y        y position
+     * @param z        z position
      */
     public synchronized void renderGlyph(RenderManager renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
 
         final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.path.toString(), Charset.forName("UTF-8")).toString() + ".png");
-        if(Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {
+        if (Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {
             float scale = (float) (glyph.height * 0.0015);
 
             // Apply GL properties

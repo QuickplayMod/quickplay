@@ -2,8 +2,8 @@ package co.bugg.quickplay.util;
 
 import cc.hyperium.Hyperium;
 import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.TickEvent;
-import cc.hyperium.event.WorldChangeEvent;
+import cc.hyperium.event.client.TickEvent;
+import cc.hyperium.event.world.WorldChangeEvent;
 import co.bugg.quickplay.Quickplay;
 
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class InstanceWatcher {
 
     @InvokeEvent
     public void onTick(TickEvent event) {
-        if(started && tick++ > whereamiFrequency * 20) {
+        if (started && tick++ > whereamiFrequency * 20) {
             tick = 0;
             updateInstance();
         }
@@ -55,6 +55,7 @@ public class InstanceWatcher {
 
     /**
      * Start the event handler tick loop & listen for chat messages
+     *
      * @return this
      */
     public InstanceWatcher start() {
@@ -66,6 +67,7 @@ public class InstanceWatcher {
 
     /**
      * Stop the event handler
+     *
      * @return this
      */
     public InstanceWatcher stop() {
@@ -76,10 +78,11 @@ public class InstanceWatcher {
 
     /**
      * Determine where the client is currently at and update
+     *
      * @return this
      */
     public InstanceWatcher updateInstance() {
-        if(Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel() && Quickplay.INSTANCE.enabled) {
+        if (Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel() && Quickplay.INSTANCE.enabled) {
             final String server = Hyperium.INSTANCE.getHandlers().getLocationHandler().getLocation();
 
             // Automatic lobby 1 swapper
@@ -126,6 +129,7 @@ public class InstanceWatcher {
 
     /**
      * Get the latest instance if possible
+     *
      * @return The instance
      */
     public String getCurrentServer() {

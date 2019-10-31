@@ -2,9 +2,9 @@ package co.bugg.quickplay;
 
 import cc.hyperium.Hyperium;
 import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.RenderEvent;
-import cc.hyperium.event.RenderHUDEvent;
-import cc.hyperium.event.WorldChangeEvent;
+import cc.hyperium.event.render.RenderEvent;
+import cc.hyperium.event.render.RenderHUDEvent;
+import cc.hyperium.event.world.WorldChangeEvent;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
 import co.bugg.quickplay.util.TickDelay;
@@ -28,9 +28,9 @@ public class QuickplayEventHandler {
 
     @InvokeEvent
     public void onRenderOverlay(RenderHUDEvent event) {
-        if(Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel()) {
+        if (Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel()) {
             // Only render overlay if there is no other GUI open at the moment or if the GUI is chat (assuming proper settings)
-            if(Quickplay.INSTANCE.settings.displayInstance && (Minecraft.getMinecraft().currentScreen == null ||
+            if (Quickplay.INSTANCE.settings.displayInstance && (Minecraft.getMinecraft().currentScreen == null ||
                     (Quickplay.INSTANCE.settings.displayInstanceWithChatOpen && (Minecraft.getMinecraft().currentScreen instanceof GuiChat)))) {
                 InstanceDisplay instanceDisplay = Quickplay.INSTANCE.instanceDisplay;
                 instanceDisplay.render(instanceDisplay.getxRatio(), instanceDisplay.getyRatio(), Quickplay.INSTANCE.settings.instanceOpacity);
@@ -41,8 +41,8 @@ public class QuickplayEventHandler {
     @InvokeEvent
     public void onRender(RenderEvent event) {
         // handle any runnables that need to be ran with OpenGL context
-        if(!mainThreadScheduledTasks.isEmpty()) {
-            for(Runnable runnable : (ArrayList<Runnable>) mainThreadScheduledTasks.clone()) {
+        if (!mainThreadScheduledTasks.isEmpty()) {
+            for (Runnable runnable : (ArrayList<Runnable>) mainThreadScheduledTasks.clone()) {
                 runnable.run();
                 mainThreadScheduledTasks.remove(runnable);
             }
@@ -53,7 +53,7 @@ public class QuickplayEventHandler {
     public void onWorldLoad(WorldChangeEvent event) {
         // Prompt the user for usage stats setting every time they join a world until they select an
         // option (at which point promptUserForUsageStats is set to false & ConfigUsageStats is created)
-        if(Quickplay.INSTANCE.promptUserForUsageStats)
+        if (Quickplay.INSTANCE.promptUserForUsageStats)
             new TickDelay(() -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiUsageStats()), 20);
     }
 }
