@@ -5,7 +5,7 @@ import cc.hyperium.event.client.TickEvent;
 import co.bugg.quickplay.Quickplay;
 
 /**
- * Class to delay code by a certain number ofgame ticks
+ * Class to delay code by a certain number of game ticks
  *
  * @author bugfroggy
  */
