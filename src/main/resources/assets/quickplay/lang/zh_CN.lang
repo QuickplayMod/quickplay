@@ -1,11 +1,11 @@
-quickplay.offline=You are not currently online the Hypixel Network!
-quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
+quickplay.offline=你目前不在Hypixel服务器中！
+quickplay.disabled=QuickPlay 已被强制禁用！原因：%s
 quickplay.chat.separator=-
-quickplay.chat.clickToOpen=Click to open
+quickplay.chat.clickToOpen=点击打开
 
-quickplay.commands.quickplay.help.help=Display the available commands.
-quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
-quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
+quickplay.commands.quickplay.help.help=显示可用指令
+quickplay.commands.quickplay.config.help=配置Quickplay mod。
+quickplay.commands.quickplay.limbo.help=传送到闲置大厅
 quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
 quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
 quickplay.commands.quickplay.keybinds.help=Open the Quickplay Keybind editor.
