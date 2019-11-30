@@ -4,7 +4,7 @@ quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Klikni pro otevření
 
 quickplay.commands.quickplay.help.help=Zobrazit dostupné příkazy.
-quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
+quickplay.commands.quickplay.config.help=Nastav si Quickplay mód.
 quickplay.commands.quickplay.limbo.help=Poslat sám sebe do Limba.
 quickplay.commands.quickplay.limbo.alreadythere=Ale ne! Už jsi v Limbu!
 quickplay.commands.quickplay.delivery.help=Otevřít nabídku Poslíčka.
@@ -108,13 +108,13 @@ quickplay.config.color.gui.chromaspeed.fast=RYCHLÝ
 quickplay.config.color.gui.chromaspeed.insane=ŠÍLENÝ
 
 quickplay.gui.main.nogames.header=Jejda!
-quickplay.gui.main.nogames.issue=Looks like I couldn't figure out what games are available.
-quickplay.gui.main.nogames.why=This most likely is occurring if you just installed the mod.
-quickplay.gui.main.nogames.contact=Try restarting your game, or contact bugfroggy if this doesn't resolve the problem!
+quickplay.gui.main.nogames.issue=Vypadá to, že nemůžu vypočítat, jaké hry jsou k dispozici.
+quickplay.gui.main.nogames.why=Je pravděpodobné, že se tohle stane, když jsi právě nainstaloval mód.
+quickplay.gui.main.nogames.contact=Zkus restartovat hru, pokud to nepomůže, tak kontaktuj bugfroggy!
 
-quickplay.gui.stats.yes=Yes, send statistics
-quickplay.gui.stats.no=No, don't send statistics
-quickplay.gui.stats.title=Send anonymous Quickplay usage statistics?
+quickplay.gui.stats.yes=Ano, odeslat statistiky
+quickplay.gui.stats.no=Ne, neposílat statistiky
+quickplay.gui.stats.title=Posílat anonymní statistiky využití Quickplay?
 quickplay.gui.stats.description=Selecting "yes" sends me anonymous data about your game and how you use my Minecraft mod in order to help fix bugs & create better updates! This data includes but is not limited to your Minecraft version, Forge version, Java version, Operating System version, Minecraft mods installed, and your Quickplay settings. Refer to the downloads thread for a full list of data collected. This setting can be changed later in the config.
 quickplay.gui.stats.token=Your stats token is %s.
 quickplay.gui.stats.copied=Copied to clipboard!
@@ -137,7 +137,7 @@ quickplay.keybinds.reset=Reset Keybinds
 quickplay.gui.keybinds.delete=Delete
 quickplay.gui.keybinds.taken=That key is already assigned to a Quickplay function!
 
-quickplay.moveableHudElement.small=SMALL
-quickplay.moveableHudElement.medium=MEDIUM
-quickplay.moveableHudElement.large=LARGE
-quickplay.moveableHudElement.xlarge=EXTRA LARGE
+quickplay.moveableHudElement.small=MALÁ
+quickplay.moveableHudElement.medium=STŘEDNÍ
+quickplay.moveableHudElement.large=VELKÁ
+quickplay.moveableHudElement.xlarge=EXTRÉMNĚ VELKÁ
