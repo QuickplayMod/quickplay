@@ -1,4 +1,4 @@
-quickplay.offline=You are not currently online the Hypixel Network!
+quickplay.offline=Nejsi momentálně online v Hypixel Network!
 quickplay.disabled=Quickplay byl vynuceně vypnutý! Důvod: %s
 quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Klikni pro otevření
@@ -42,7 +42,7 @@ quickplay.settings.secondaryColor.help=Změní tvoji sekundární barvu Quickpla
 quickplay.settings.category.gui=GUI
 quickplay.settings.blurGuiBackgrounds.name=Rozostření GUI pozadí
 quickplay.settings.blurGuiBackgrounds.help=Urči, zda by mělo být pozadí Quickplay GUI mírně rozmazané.
-quickplay.settings.fadeInGuis.name=Fade GUIs In
+quickplay.settings.fadeInGuis.name=Zeslábnutí GUI
 quickplay.settings.fadeInGuis.help=Urči, zda by mělo GUI při otevírání zeslábnout.
 quickplay.settings.transparentBackgrounds.name=Průhledné pozadí
 quickplay.settings.transparentBackgrounds.help=Urči, zda by mělo být Quickplay GUI pozadí 100%% průhledné nebo jenom černě průsvitné.
@@ -79,7 +79,7 @@ quickplay.settings.redesignedLobbyCommand.name=Vlastní Lobby příkaz
 quickplay.settings.redesignedLobbyCommand.help=Urči, zda se vlastní lobby příkaz má použít, když to je možný. Vyžaduje restart hry.
 
 quickplay.settings.category.partyMode=Párty režim
-quickplay.settings.partyModeDelay.name=Launch Delay
+quickplay.settings.partyModeDelay.name=Prodleva spuštění
 quickplay.settings.partyModeDelay.help=Number of seconds Launch randomization should take.
 quickplay.settings.partyModeGui.name=Launch Randomization GUI
 quickplay.settings.partyModeGui.help=Urči, zda by se mělo roztočit speciální GUI, čímž se vybere náhodný režim, když někdo zapne režim párty.
