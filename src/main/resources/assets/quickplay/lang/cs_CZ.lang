@@ -35,12 +35,12 @@ quickplay.settings.category.general=Obecné
 
 quickplay.settings.category.colors=Barvy
 quickplay.settings.primaryColor.name=Hlavní barva
-quickplay.settings.primaryColor.help=Změň si hlavní barvu Quickplay módu
+quickplay.settings.primaryColor.help=Change your Quickplay primary color
 quickplay.settings.secondaryColor.name=Secondary Color
 quickplay.settings.secondaryColor.help=Change your Quickplay secondary color
 
 quickplay.settings.category.gui=GUI
-quickplay.settings.blurGuiBackgrounds.name=Blur GUI Backgrounds
+quickplay.settings.blurGuiBackgrounds.name=Rozostření GUI pozadí
 quickplay.settings.blurGuiBackgrounds.help=Whether the background of Quickplay GUIs should be slightly blurred.
 quickplay.settings.fadeInGuis.name=Fade GUIs In
 quickplay.settings.fadeInGuis.help=Whether GUIs should fade in when opening.
