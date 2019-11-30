@@ -24,7 +24,7 @@ quickplay.commands.quickplay.wiki.help=Otevřít pomocnou stránku Quickplay mó
 quickplay.commands.hub.numberexception=Neplatné číslo lobby! Syntax: %s
 quickplay.commands.usage=Syntax příkaz:
 
-quickplay.premium.permissions=You need Quickplay Premium for this feature!
+quickplay.premium.permissions=Potřebuješ Quickplay Prémium pro tuto funkci!
 
 quickplay.gui.copyright=Autorská práva © %s bugfroggy
 quickplay.gui.favorite=Nastavit na tlačítko...
@@ -35,7 +35,7 @@ quickplay.settings.category.general=Obecné
 
 quickplay.settings.category.colors=Barvy
 quickplay.settings.primaryColor.name=Hlavní barva
-quickplay.settings.primaryColor.help=Change your Quickplay primary color
+quickplay.settings.primaryColor.help=Změň si hlavní barvu Quickplay módu
 quickplay.settings.secondaryColor.name=Secondary Color
 quickplay.settings.secondaryColor.help=Change your Quickplay secondary color
 
