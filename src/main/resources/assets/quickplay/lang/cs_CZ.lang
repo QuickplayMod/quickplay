@@ -80,8 +80,8 @@ quickplay.settings.redesignedLobbyCommand.help=Urči, zda se vlastní lobby př�
 
 quickplay.settings.category.partyMode=Párty režim
 quickplay.settings.partyModeDelay.name=Prodleva spuštění
-quickplay.settings.partyModeDelay.help=Number of seconds Launch randomization should take.
-quickplay.settings.partyModeGui.name=Launch Randomization GUI
+quickplay.settings.partyModeDelay.help=Číslo sekund, které by mělo zabrat Náhodné spuštění.
+quickplay.settings.partyModeGui.name=Náhodné spuštění GUI
 quickplay.settings.partyModeGui.help=Urči, zda by se mělo roztočit speciální GUI, čímž se vybere náhodný režim, když někdo zapne režim párty.
 
 quickplay.settings.category.premium=Prémiové funkce
