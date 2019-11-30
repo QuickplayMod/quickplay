@@ -68,7 +68,7 @@ quickplay.settings.instanceDisplayScale.name=Velikost
 quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display
 
 quickplay.settings.sendUsageStatsButton.name=Statistiky používání...
-quickplay.settings.sendUsageStatsButton.help=Send anonymous usage statistics to help me create better mods for you!
+quickplay.settings.sendUsageStatsButton.help=Pošli anonymní statistiky používání, abys mi pomohl vytvořit lepší módy!
 quickplay.settings.editKeybinds.name=Upravit zkratky...
 quickplay.settings.editKeybinds.help=Kliknutím pravým tlačítkem na hry nebo módy přiřadíš nebo vymažeš klávesové zkratky, které jsi již vytvořil.
 quickplay.settings.lobbyOneSwap.name=Přepnout na Lobby jedna
