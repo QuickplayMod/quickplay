@@ -52,8 +52,8 @@ quickplay.settings.reverseScrollingDirection.name=Obrátit směr rolování
 quickplay.settings.reverseScrollingDirection.help=Obrátit směr rolování a směr tažení myši po obrazovce.
 quickplay.settings.anyKeyClosesGui.name=Všechny tlačítka zavírají GUI
 quickplay.settings.anyKeyClosesGui.help=Hlavní nabídka Quickplay módu a GUI se zavřou, když stiskneš jakékoliv tlačítko
-quickplay.settings.compactMainMenu.name=Compact Main Menu
-quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should be compacted to hide games' strings unless you hover over them
+quickplay.settings.compactMainMenu.name=Kompaktní hlavní menu
+quickplay.settings.compactMainMenu.help=Urči, zda má hlavní nabídka Quickplay módu schovávat hry, pokud je nemůžeš přeskočit
 
 quickplay.settings.category.instanceDisplay=Instance Display
 quickplay.settings.instanceDisplay.name=Instance Display
