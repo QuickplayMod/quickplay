@@ -1,21 +1,21 @@
 quickplay.offline=You are not currently online the Hypixel Network!
 quickplay.disabled=Quickplay byl vynuceně vypnutý! Důvod: %s
 quickplay.chat.separator=-
-quickplay.chat.clickToOpen=Kliknutím otevřeš
+quickplay.chat.clickToOpen=Click to open
 
 quickplay.commands.quickplay.help.help=Zobrazit dostupné příkazy.
 quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
 quickplay.commands.quickplay.limbo.help=Poslat sám sebe do Limba.
 quickplay.commands.quickplay.limbo.alreadythere=Ale ne! Už jsi v Limbu!
 quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
-quickplay.commands.quickplay.keybinds.help=Open the Quickplay Keybind editor.
-quickplay.commands.quickplay.moveinstance.deprecated=This command is deprecated. You should use "/qp config" instead!
+quickplay.commands.quickplay.keybinds.help=Otevřít editor klávesových zkratek Quickplay módu.
+quickplay.commands.quickplay.moveinstance.deprecated=Tento příkaz je zastaralý. Místo toho použij "/qp config"!
 quickplay.commands.quickplay.discord.help=Připoj se na Quickplay Discord server.
-quickplay.commands.quickplay.discord.message=Discord is the #1 way to get in touch with @bugfroggy. Join the Quickplay Discord if you have any questions, feedback, or bug reports.
+quickplay.commands.quickplay.discord.message=Discord je #1 cesta, jak se spojit s @bugfroggy. Připoj se na Quickplay Discord, pokud máš nějaké otázky, zpětné vazby nebo chceš nahlásit chyby.
 quickplay.commands.quickplay.party.help=Customize your Quickplay Party Mode.
 quickplay.commands.quickplay.premium.help=Command for Quickplay Premium features.
-quickplay.commands.quickplay.premium.noCommands=No known commands!
-quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay couldn't gather the latest information about Quickplay Premium! Visit %s
+quickplay.commands.quickplay.premium.noCommands=Žádné známé příkazy!
+quickplay.commands.quickplay.premium.about.menuMissing=Je mi líto, ale Quickplay nemůže shromáždit nejnovější informace o Quickplay Prémium! Navštiv %s
 quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click to open %s
 quickplay.commands.quickplay.history.help=View what instances you've last been on.
 quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
