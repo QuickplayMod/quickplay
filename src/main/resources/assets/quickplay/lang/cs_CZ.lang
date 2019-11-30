@@ -120,7 +120,7 @@ quickplay.gui.stats.token=Your stats token is %s.
 quickplay.gui.stats.copied=Copied to clipboard!
 quickplay.gui.stats.copy=Click to copy
 quickplay.gui.stats.privacy=Privacy Policy
-quickplay.gui.stats.privacyerror=Something went wrong. %s
+quickplay.gui.stats.privacyerror=Něco se pokazilo. %s
 
 quickplay.party.syntax=Invalid syntax! Type "%s" to take off!
 quickplay.party.sendingYou=Sending you to %s!
