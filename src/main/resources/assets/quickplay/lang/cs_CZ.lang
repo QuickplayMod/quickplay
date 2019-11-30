@@ -19,22 +19,22 @@ quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay 
 quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click to open %s
 quickplay.commands.quickplay.history.help=View what instances you've last been on.
 quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
-quickplay.commands.quickplay.history.error=Something went wrong!
-quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
-quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
-quickplay.commands.usage=Command syntax:
+quickplay.commands.quickplay.history.error=Něco se pokazilo!
+quickplay.commands.quickplay.wiki.help=Otevřít pomocnou stránku Quickplay módu.
+quickplay.commands.hub.numberexception=Neplatné číslo lobby! Syntax: %s
+quickplay.commands.usage=Syntax příkaz:
 
 quickplay.premium.permissions=You need Quickplay Premium for this feature!
 
-quickplay.gui.copyright=Copyright © %s bugfroggy
-quickplay.gui.favorite=Bind to key...
-quickplay.gui.close=Close
-quickplay.gui.back=Back
+quickplay.gui.copyright=Autorská práva © %s bugfroggy
+quickplay.gui.favorite=Nastavit na tlačítko...
+quickplay.gui.close=Zavřít
+quickplay.gui.back=Zpět
 
-quickplay.settings.category.general=General
+quickplay.settings.category.general=Obecné
 
-quickplay.settings.category.colors=Colors
-quickplay.settings.primaryColor.name=Primary Color
+quickplay.settings.category.colors=Barvy
+quickplay.settings.primaryColor.name=Hlavní barva
 quickplay.settings.primaryColor.help=Change your Quickplay primary color
 quickplay.settings.secondaryColor.name=Secondary Color
 quickplay.settings.secondaryColor.help=Change your Quickplay secondary color
@@ -64,7 +64,7 @@ quickplay.settings.instanceOpacity.name=Instance Display Opacity
 quickplay.settings.instanceOpacity.help=Opacity of the instance display.
 quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
 quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display should be rendered even when chat is open.
-quickplay.settings.instanceDisplayScale.name=Scale
+quickplay.settings.instanceDisplayScale.name=Velikost
 quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display
 
 quickplay.settings.sendUsageStatsButton.name=Usage Statistics...
@@ -73,8 +73,8 @@ quickplay.settings.editKeybinds.name=Edit Keybinds...
 quickplay.settings.editKeybinds.help=Assign & remove keybinds previously created by right-clicking games or modes.
 quickplay.settings.lobbyOneSwap.name=Swap to Lobby One
 quickplay.settings.lobbyOneSwap.help=Swap to lobby one automatically whenever you join a new lobby.
-quickplay.settings.updateNotifications.name=Update Notifications
-quickplay.settings.updateNotifications.help=Whether you'd like to be notified when a new version of Quickplay is released (your list of games will update automatically, regardless of this setting).
+quickplay.settings.updateNotifications.name=Oznámení o aktualizaci
+quickplay.settings.updateNotifications.help=Zaškrtni, zda chceš být upozorněn, když vyjde nová verze Quickplay (tvůj seznam her se aktualizuje automaticky, bez ohledu na toto nastavení).
 quickplay.settings.redesignedLobbyCommand.name=Custom Lobby Command
 quickplay.settings.redesignedLobbyCommand.help=Whether the custom Quickplay lobby commands should be used when possible. Requires game restart.
 
