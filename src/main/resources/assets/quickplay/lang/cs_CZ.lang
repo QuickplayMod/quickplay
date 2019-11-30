@@ -35,13 +35,13 @@ quickplay.settings.category.general=Obecné
 
 quickplay.settings.category.colors=Barvy
 quickplay.settings.primaryColor.name=Hlavní barva
-quickplay.settings.primaryColor.help=Change your Quickplay primary color
-quickplay.settings.secondaryColor.name=Secondary Color
-quickplay.settings.secondaryColor.help=Change your Quickplay secondary color
+quickplay.settings.primaryColor.help=Změní tvoji hlavní barvu Quickplay módu
+quickplay.settings.secondaryColor.name=Sekundární barva
+quickplay.settings.secondaryColor.help=Změní tvoji sekundární barvu Quickplay módu
 
 quickplay.settings.category.gui=GUI
 quickplay.settings.blurGuiBackgrounds.name=Rozostření GUI pozadí
-quickplay.settings.blurGuiBackgrounds.help=Whether the background of Quickplay GUIs should be slightly blurred.
+quickplay.settings.blurGuiBackgrounds.help=Urči, zda by mělo být pozadí Quickplay GUI mírně rozmazané.
 quickplay.settings.fadeInGuis.name=Fade GUIs In
 quickplay.settings.fadeInGuis.help=Urči, zda by mělo GUI při otevírání zeslábnout.
 quickplay.settings.transparentBackgrounds.name=Průhledné pozadí
@@ -76,7 +76,7 @@ quickplay.settings.lobbyOneSwap.help=Swap to lobby one automatically whenever yo
 quickplay.settings.updateNotifications.name=Oznámení o aktualizaci
 quickplay.settings.updateNotifications.help=Zaškrtni, zda chceš být upozorněn, když vyjde nová verze Quickplay (tvůj seznam her se aktualizuje automaticky, bez ohledu na toto nastavení).
 quickplay.settings.redesignedLobbyCommand.name=Vlastní Lobby příkaz
-quickplay.settings.redesignedLobbyCommand.help=Whether the custom Quickplay lobby commands should be used when possible. Requires game restart.
+quickplay.settings.redesignedLobbyCommand.help=Urči, zda se vlastní lobby příkaz má použít, když to je možný. Vyžaduje restart hry.
 
 quickplay.settings.category.partyMode=Párty režim
 quickplay.settings.partyModeDelay.name=Launch Delay
@@ -124,7 +124,7 @@ quickplay.gui.stats.privacyerror=Something went wrong. %s
 
 quickplay.party.syntax=Invalid syntax! Type "%s" to take off!
 quickplay.party.sendingYou=Sending you to %s!
-quickplay.party.commencing=Commencing Quickplay Party Mode Launch Sequence...
+quickplay.party.commencing=Zahájení spuštění Párty režimu v Quickplay módu...
 quickplay.party.nogames=Ale ne! Párty režim nemá vybrané žádné hry.
 quickplay.gui.party.randomizing=Výběr náhodného herního režimu...
 quickplay.gui.party.allon=Enable All
