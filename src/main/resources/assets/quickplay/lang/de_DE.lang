@@ -24,7 +24,7 @@ quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
 quickplay.commands.hub.numberexception=Ungültige Lobby-Nummer! Syntax: %s
 quickplay.commands.usage=Befehlssyntax:
 
-quickplay.premium.permissions=You need Quickplay Premium for this feature!
+quickplay.premium.permissions=Du benötigst Quickplay Premium für diese Funktion!
 
 quickplay.gui.copyright=Copyright © %s Bugfroggy
 quickplay.gui.favorite=An Taste binden...
