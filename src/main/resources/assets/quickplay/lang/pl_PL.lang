@@ -19,7 +19,7 @@ quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay 
 quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click to open %s
 quickplay.commands.quickplay.history.help=View what instances you've last been on.
 quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
-quickplay.commands.quickplay.history.error=Something went wrong!
+quickplay.commands.quickplay.history.error=Coś poszło nie tak!
 quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
 quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
 quickplay.commands.usage=Command syntax:
@@ -28,7 +28,7 @@ quickplay.premium.permissions=You need Quickplay Premium for this feature!
 
 quickplay.gui.copyright=Copyright © %s bugfroggy
 quickplay.gui.favorite=Bind to key...
-quickplay.gui.close=Close
+quickplay.gui.close=Zamknij
 quickplay.gui.back=Back
 
 quickplay.settings.category.general=General
