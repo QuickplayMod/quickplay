@@ -1,7 +1,7 @@
 quickplay.offline=Du bist derzeit nicht auf dem Hypixel Server!
-quickplay.disabled=Quickplay wurde erzwungend deaktiviert! Grund: %s
+quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
 quickplay.chat.separator=-
-quickplay.chat.clickToOpen=Klicke um zu öffnen
+quickplay.chat.clickToOpen=Click to open.
 
 quickplay.commands.quickplay.help.help=Display the available commands.
 quickplay.commands.quickplay.config.help=Konfiguiere deinen Quickplay Mod.
@@ -51,9 +51,9 @@ quickplay.settings.gameLogoScale.help=Eine Skala von jedem Artikel im Quickplay 
 quickplay.settings.reverseScrollingDirection.name=Scrollrichtung umkehren
 quickplay.settings.reverseScrollingDirection.help=Die Richtung des Scrollens & Ziehens wird umgekehrt.
 quickplay.settings.anyKeyClosesGui.name=Alle Tasten schließen GUIs
-quickplay.settings.anyKeyClosesGui.help=Das Quickplay Hauptmenü und Spiel GUIs werden geschlossen solbald eine Taste gedrückt wird
+quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
 quickplay.settings.compactMainMenu.name=Kompaktes Hauptmenü
-quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should be compacted to hide games' strings unless you hover over them
+quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should be compacted to hide games' strings unless you hover over them.
 
 quickplay.settings.category.instanceDisplay=Instanzanzeige
 quickplay.settings.instanceDisplay.name=Instanzanzeige
@@ -65,7 +65,7 @@ quickplay.settings.instanceOpacity.help=Deckkraft der Instanzanzeige.
 quickplay.settings.displayInstanceWithChatOpen.name=Über den Chat anzeigen
 quickplay.settings.displayInstanceWithChatOpen.help=Ob die Instanzanzeige auch bei geöffnetem Chat dargestellt werden soll.
 quickplay.settings.instanceDisplayScale.name=Skala
-quickplay.settings.instanceDisplayScale.help=Skalierung der Instanzanzeige
+quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
 
 quickplay.settings.sendUsageStatsButton.name=Usage Statistics...
 quickplay.settings.sendUsageStatsButton.help=Sende anonyme Nutzungsstatistiken, damit wir bessere Mods für dich erstellen können!
@@ -112,8 +112,8 @@ quickplay.gui.main.nogames.issue=Sieht so aus, als ob ich nicht herausfinden kon
 quickplay.gui.main.nogames.why=This most likely is occurring if you just installed the mod.
 quickplay.gui.main.nogames.contact=Versuche dein Spiel neu zu starten oder kontaktiere bugfroggy, falls dies das Problem nicht löst!
 
-quickplay.gui.stats.yes=Ja, Statistiken senden
-quickplay.gui.stats.no=Nein, keine Statistiken senden
+quickplay.gui.stats.yes=Yes, send statistics.
+quickplay.gui.stats.no=No, don't send statistics.
 quickplay.gui.stats.title=Send anonymous Quickplay usage statistics?
 quickplay.gui.stats.description=Selecting "yes" sends me anonymous data about your game and how you use my Minecraft mod in order to help fix bugs & create better updates! This data includes but is not limited to your Minecraft version, Forge version, Java version, Operating System version, Minecraft mods installed, and your Quickplay settings. Refer to the downloads thread for a full list of data collected. This setting can be changed later in the config.
 quickplay.gui.stats.token=Your stats token is %s.
