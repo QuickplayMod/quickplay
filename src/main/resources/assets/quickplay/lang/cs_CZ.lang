@@ -1,7 +1,7 @@
 quickplay.offline=Nejsi momentálně online v Hypixel Network!
-quickplay.disabled=Quickplay byl vynuceně vypnutý! Důvod: %s
+quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
 quickplay.chat.separator=-
-quickplay.chat.clickToOpen=Klikni pro otevření
+quickplay.chat.clickToOpen=Click to open.
 
 quickplay.commands.quickplay.help.help=Zobrazit dostupné příkazy.
 quickplay.commands.quickplay.config.help=Nastav si Quickplay mód.
@@ -51,9 +51,9 @@ quickplay.settings.gameLogoScale.help=Velikost každého předmětu v hlavní na
 quickplay.settings.reverseScrollingDirection.name=Obrátit směr rolování
 quickplay.settings.reverseScrollingDirection.help=Obrátit směr rolování a směr tažení myši po obrazovce.
 quickplay.settings.anyKeyClosesGui.name=Všechny tlačítka zavírají GUI
-quickplay.settings.anyKeyClosesGui.help=Hlavní nabídka Quickplay módu a GUI se zavřou, když stiskneš jakékoliv tlačítko
+quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
 quickplay.settings.compactMainMenu.name=Kompaktní hlavní menu
-quickplay.settings.compactMainMenu.help=Urči, zda má hlavní nabídka Quickplay módu schovávat hry, pokud je nemůžeš přeskočit
+quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should be compacted to hide games' strings unless you hover over them.
 
 quickplay.settings.category.instanceDisplay=Zobrazení serveru
 quickplay.settings.instanceDisplay.name=Zobrazení serveru
@@ -65,7 +65,7 @@ quickplay.settings.instanceOpacity.help=Průhlednost zobrazení serveru.
 quickplay.settings.displayInstanceWithChatOpen.name=Zobrazit přes chat
 quickplay.settings.displayInstanceWithChatOpen.help=Urči, zda má být server zobrazený i při otevření chatu.
 quickplay.settings.instanceDisplayScale.name=Velikost
-quickplay.settings.instanceDisplayScale.help=Velikost zobrazení serveru
+quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
 
 quickplay.settings.sendUsageStatsButton.name=Statistiky používání...
 quickplay.settings.sendUsageStatsButton.help=Pošli anonymní statistiky používání, abys mi pomohl vytvořit lepší módy!
@@ -112,8 +112,8 @@ quickplay.gui.main.nogames.issue=Vypadá to, že nemůžu vypočítat, jaké hry
 quickplay.gui.main.nogames.why=Je pravděpodobné, že se tohle stane, když jsi právě nainstaloval mód.
 quickplay.gui.main.nogames.contact=Zkus restartovat hru, pokud to nepomůže, tak kontaktuj bugfroggy!
 
-quickplay.gui.stats.yes=Ano, odeslat statistiky
-quickplay.gui.stats.no=Ne, neposílat statistiky
+quickplay.gui.stats.yes=Yes, send statistics.
+quickplay.gui.stats.no=No, don't send statistics.
 quickplay.gui.stats.title=Posílat anonymní statistiky využití Quickplay?
 quickplay.gui.stats.description=Vybráním "ano" pošleš anonymní data o tvoji hře a jak požíváš můj Minecraftový mód, což mi pomůže opravit chyby a vytvořit lepší aktualizace! Tyto data zahrnují Minecraft verzi, Forge verzi, Java verzi, verzi operačního systému, nainstalované Minecraft módy a tvoje nastavení Quickplay módu. Celý seznam shromážděných dat můžeš najít ve vláknech stažení. Toto nastavení můžeš změnit v configu.
 quickplay.gui.stats.token=Tvůj token statistik je %s.
