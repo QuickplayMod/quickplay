@@ -20,7 +20,7 @@ quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Klicke um zu 
 quickplay.commands.quickplay.history.help=Zeige dir an, auf welchen Instanzen du zuletzt warst.
 quickplay.commands.quickplay.history.header=Hier sind die letzten %s Instanzen, in denen du warst, die letzten erscheinen oben:
 quickplay.commands.quickplay.history.error=Etwas ist schief gelaufen!
-quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
+quickplay.commands.quickplay.wiki.help=Öffne die Quickplay-Hilfswebsite.
 quickplay.commands.hub.numberexception=Ungültige Lobby-Nummer! Syntax: %s
 quickplay.commands.usage=Befehlssyntax:
 
