@@ -1,9 +1,9 @@
 quickplay.offline=You are not currently online the Hypixel Network!
 quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
 quickplay.chat.separator=-
-quickplay.chat.clickToOpen=Click to open
+quickplay.chat.clickToOpen=Klik om te openen
 
-quickplay.commands.quickplay.help.help=Display the available commands.
+quickplay.commands.quickplay.help.help=Toon de beschikbare commando’s.
 quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
 quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
 quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
@@ -16,7 +16,7 @@ quickplay.commands.quickplay.party.help=Customize your Quickplay Party Mode.
 quickplay.commands.quickplay.premium.help=Command for Quickplay Premium features.
 quickplay.commands.quickplay.premium.noCommands=No known commands!
 quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay couldn't gather the latest information about Quickplay Premium! Visit %s
-quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click to open %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Klik om %s te openen
 quickplay.commands.quickplay.history.help=View what instances you've last been on.
 quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
 quickplay.commands.quickplay.history.error=Something went wrong!
@@ -29,11 +29,11 @@ quickplay.premium.permissions=You need Quickplay Premium for this feature!
 quickplay.gui.copyright=Copyright © %s bugfroggy
 quickplay.gui.favorite=Bind to key...
 quickplay.gui.close=Close
-quickplay.gui.back=Back
+quickplay.gui.back=Terug
 
 quickplay.settings.category.general=General
 
-quickplay.settings.category.colors=Colors
+quickplay.settings.category.colors=Kleuren
 quickplay.settings.primaryColor.name=Primary Color
 quickplay.settings.primaryColor.help=Change your Quickplay primary color
 quickplay.settings.secondaryColor.name=Secondary Color
