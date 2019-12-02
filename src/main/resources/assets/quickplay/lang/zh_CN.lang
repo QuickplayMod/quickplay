@@ -1,7 +1,7 @@
 quickplay.offline=你目前不在Hypixel服务器中！
-quickplay.disabled=QuickPlay 已被强制禁用！原因：%s
+quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
 quickplay.chat.separator=-
-quickplay.chat.clickToOpen=点击打开
+quickplay.chat.clickToOpen=Click to open.
 
 quickplay.commands.quickplay.help.help=显示可用指令
 quickplay.commands.quickplay.config.help=配置Quickplay mod。
@@ -17,8 +17,8 @@ quickplay.commands.quickplay.premium.help=Quickplay Premium功能的指令
 quickplay.commands.quickplay.premium.noCommands=没有已知指令！
 quickplay.commands.quickplay.premium.about.menuMissing=抱歉！Quickplay无法获取Quickplay Premium的最新信息！请浏览%s查看
 quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=点击打开%s
-quickplay.commands.quickplay.history.help=查看您最近前往的服务器。
-quickplay.commands.quickplay.history.header=此处为您最近前往的%s个服务器列表，顶部为最新记录：
+quickplay.commands.quickplay.history.help=查看你最近前往的服务器。
+quickplay.commands.quickplay.history.header=此处为你最近前往的%s个服务器列表，顶部为最新记录：
 quickplay.commands.quickplay.history.error=出现某些错误！
 quickplay.commands.quickplay.wiki.help=打开Quickplay帮助网站。
 quickplay.commands.hub.numberexception=无效大厅序号！语法：%s
@@ -51,9 +51,9 @@ quickplay.settings.gameLogoScale.help=Quickplay主菜单各项目缩放比例
 quickplay.settings.reverseScrollingDirection.name=反转滚动方向
 quickplay.settings.reverseScrollingDirection.help=反转滚动和拖动屏幕的方向
 quickplay.settings.anyKeyClosesGui.name=任意键关闭界面
-quickplay.settings.anyKeyClosesGui.help=Quickplay的主菜单及游戏GUI将在按下任意键时关闭
+quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
 quickplay.settings.compactMainMenu.name=简洁主菜单
-quickplay.settings.compactMainMenu.help=切换Quickplay主菜单是否为简洁样式以在鼠标未悬停在游戏名上时自动将其隐藏
+quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should be compacted to hide games' strings unless you hover over them.
 
 quickplay.settings.category.instanceDisplay=窗口显示
 quickplay.settings.instanceDisplay.name=窗口显示
@@ -65,7 +65,7 @@ quickplay.settings.instanceOpacity.help=设置窗口的不透明度
 quickplay.settings.displayInstanceWithChatOpen.name=在聊天信息上层显示
 quickplay.settings.displayInstanceWithChatOpen.help=切换是否在聊天栏开启时渲染窗口。
 quickplay.settings.instanceDisplayScale.name=缩放比例
-quickplay.settings.instanceDisplayScale.help=窗口大小
+quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
 
 quickplay.settings.sendUsageStatsButton.name=使用率统计...
 quickplay.settings.sendUsageStatsButton.help=发送匿名使用数据以帮助我更好地开发 mod！
@@ -112,11 +112,11 @@ quickplay.gui.main.nogames.issue=找不到可用的游戏。
 quickplay.gui.main.nogames.why=这种情况通常发生在你刚安装此mod时。
 quickplay.gui.main.nogames.contact=请尝试重启游戏，若问题仍未解决，请联系 bugfroggy。
 
-quickplay.gui.stats.yes=是，允许发送这些数据
-quickplay.gui.stats.no=否，拒绝发送使用数据
+quickplay.gui.stats.yes=Yes, send statistics.
+quickplay.gui.stats.no=No, don't send statistics.
 quickplay.gui.stats.title=是否允许Quickplay发送已经匿名的用户使用数据？
-quickplay.gui.stats.description=选择“是”将会发送有关你的游戏以及您使用mod的情况以帮助我们修复漏洞及改善体验。数据包含但不仅限于您使用的 Minecraft 版本信息、Forge 版本信息、Java 版本信息、操作系统版本、安装的 mod 以及你的 Quickplay 设置。转到下载线程以获取收集的所有数据。此设置可稍后在配置中修改。
-quickplay.gui.stats.token=您的数据token为%s。
+quickplay.gui.stats.description=选择“是”将会发送有关你的游戏以及你使用mod的情况以帮助我们修复漏洞及改善体验。数据包含但不仅限于你使用的 Minecraft 版本信息、Forge 版本信息、Java 版本信息、操作系统版本、安装的 mod 以及你的 Quickplay 设置。转到下载线程以获取收集的所有数据。此设置可稍后在配置中修改。
+quickplay.gui.stats.token=你的数据token为%s。
 quickplay.gui.stats.copied=复制到剪贴板！
 quickplay.gui.stats.copy=点击复制
 quickplay.gui.stats.privacy=隐私条款
