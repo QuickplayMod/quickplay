@@ -1,7 +1,7 @@
 quickplay.offline=Вы сейчас не в сети на Hypixel Network!
-quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
+quickplay.disabled=Quickplay был принудительно отключен! Причина: %s.
 quickplay.chat.separator=-
-quickplay.chat.clickToOpen=Click to open.
+quickplay.chat.clickToOpen=Нажмите, чтобы открыть.
 
 quickplay.commands.quickplay.help.help=Список всех доступных команд.
 quickplay.commands.quickplay.config.help=Настройте ваш Quickplay мод.
@@ -51,9 +51,9 @@ quickplay.settings.gameLogoScale.help=Масштаб каждого элемен
 quickplay.settings.reverseScrollingDirection.name=Реверсировать направление прокрутки
 quickplay.settings.reverseScrollingDirection.help=Направление прокрутки и перемещение экрана.
 quickplay.settings.anyKeyClosesGui.name=Любая клавиша закрывает интерфейс
-quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
+quickplay.settings.anyKeyClosesGui.help=Главное меню Quickplay и интерфейс будут закрываться всякий раз, когда нажата любая клавиша.
 quickplay.settings.compactMainMenu.name=Уменьшить в масштабе главное меню
-quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should be compacted to hide games' strings unless you hover over them.
+quickplay.settings.compactMainMenu.help=Должно ли Главное Меню Quickplay быть компактным, чтобы скрыть игровые строки, если вы не нажимаете на них.
 
 quickplay.settings.category.instanceDisplay=Отображение экрана 
 quickplay.settings.instanceDisplay.name=Отображение экрана
@@ -65,7 +65,7 @@ quickplay.settings.instanceOpacity.help=Полупрозрачность ото�
 quickplay.settings.displayInstanceWithChatOpen.name=Показать поверх чата
 quickplay.settings.displayInstanceWithChatOpen.help=Должен ли экран отображаться даже при открытии чата.
 quickplay.settings.instanceDisplayScale.name=Масштаб
-quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
+quickplay.settings.instanceDisplayScale.help=Масштаб отображения экрана.
 
 quickplay.settings.sendUsageStatsButton.name=Статистика использования...
 quickplay.settings.sendUsageStatsButton.help=Отправьте анонимную статистику использования, чтобы помочь нам сделать моды лучше!
@@ -112,8 +112,8 @@ quickplay.gui.main.nogames.issue=Похоже, что я не смог выяс�
 quickplay.gui.main.nogames.why=Скорее всего, это может случиться, если вы только что установили мод.
 quickplay.gui.main.nogames.contact=Попробуйте перезапустить игру, или свяжитесь с bugfroggy, если это не решит проблему!
 
-quickplay.gui.stats.yes=Yes, send statistics.
-quickplay.gui.stats.no=No, don't send statistics.
+quickplay.gui.stats.yes=Да, отправлять статистику.
+quickplay.gui.stats.no=Нет, не отправлять статистику.
 quickplay.gui.stats.title=Отправить анонимную статистику использования мода Quickplay?
 quickplay.gui.stats.description=Выбор "да" посылает анонимные данные о вашей игре и о том, как вы используете данный мод для того, чтобы помочь исправить ошибки и делать хорошие обновления! Полный список собранных данных см. в разделе "Загрузка". Этот параметр можно изменить в конфигурации.
 quickplay.gui.stats.token=Ваш токен статистики - %s.
