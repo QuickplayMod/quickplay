@@ -1,7 +1,7 @@
 quickplay.offline=Nejsi momentálně online v Hypixel Network!
-quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
+quickplay.disabled=Quickplay byl vynuceně vypnutý! Důvod: %s.
 quickplay.chat.separator=-
-quickplay.chat.clickToOpen=Click to open.
+quickplay.chat.clickToOpen=Klikni pro otevření.
 
 quickplay.commands.quickplay.help.help=Zobrazit dostupné příkazy.
 quickplay.commands.quickplay.config.help=Nastav si Quickplay mód.
@@ -51,9 +51,9 @@ quickplay.settings.gameLogoScale.help=Velikost každého předmětu v hlavní na
 quickplay.settings.reverseScrollingDirection.name=Obrátit směr rolování
 quickplay.settings.reverseScrollingDirection.help=Obrátit směr rolování a směr tažení myši po obrazovce.
 quickplay.settings.anyKeyClosesGui.name=Všechny tlačítka zavírají GUI
-quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
+quickplay.settings.anyKeyClosesGui.help=Hlavní nabídka Quickplay módu a GUI se zavřou při každém stisknutí libovolné klávesy.
 quickplay.settings.compactMainMenu.name=Kompaktní hlavní menu
-quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should be compacted to hide games' strings unless you hover over them.
+quickplay.settings.compactMainMenu.help=Urči, zda má být hlavní nabídka Quickplay módu zjednodušena skrytím názvu her. Názvy budou viditelné, když namíříš kurzor myši na ikony.
 
 quickplay.settings.category.instanceDisplay=Zobrazení serveru
 quickplay.settings.instanceDisplay.name=Zobrazení serveru
@@ -65,7 +65,7 @@ quickplay.settings.instanceOpacity.help=Průhlednost zobrazení serveru.
 quickplay.settings.displayInstanceWithChatOpen.name=Zobrazit přes chat
 quickplay.settings.displayInstanceWithChatOpen.help=Urči, zda má být server zobrazený i při otevření chatu.
 quickplay.settings.instanceDisplayScale.name=Velikost
-quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
+quickplay.settings.instanceDisplayScale.help=Velikost zobrazení serveru.
 
 quickplay.settings.sendUsageStatsButton.name=Statistiky používání...
 quickplay.settings.sendUsageStatsButton.help=Pošli anonymní statistiky používání, abys mi pomohl vytvořit lepší módy!
