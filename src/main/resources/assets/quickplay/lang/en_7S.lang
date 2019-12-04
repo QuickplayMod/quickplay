@@ -6,8 +6,8 @@ quickplay.chat.clickToOpen=Click t` open.
 quickplay.commands.quickplay.help.help=Display the available commands.
 quickplay.commands.quickplay.config.help=Configure yer Quickplay mod.
 quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
-quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
-quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
+quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Port Limbo!
+quickplay.commands.quickplay.delivery.help=Open th` Delivery Man menu.
 quickplay.commands.quickplay.keybinds.help=Open the Quickplay Keybind editor.
 quickplay.commands.quickplay.moveinstance.deprecated=This command is deprecated. You should use "/qp config" instead!
 quickplay.commands.quickplay.discord.help=Join the Quickplay Discord server.
@@ -57,13 +57,13 @@ quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should b
 
 quickplay.settings.category.instanceDisplay=Instance Display
 quickplay.settings.instanceDisplay.name=Instance Display
-quickplay.settings.instanceDisplay.help=Whether or not the current server instance should be displayed on-screen.
+quickplay.settings.instanceDisplay.help=Whether or not th` current main port instance should be displayed on-screen.
 quickplay.settings.moveInstanceDisplayButton.name=Move Instance Display...
 quickplay.settings.moveInstanceDisplayButton.help=Change th` position o` th` Instance display on-screen.
 quickplay.settings.instanceOpacity.name=Instance Display Opacity
 quickplay.settings.instanceOpacity.help=Opacity o` th` instance display.
 quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
-quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display should be rendered even when chat is open.
+quickplay.settings.displayInstanceWithChatOpen.help=Whether th` instance display should be rendered even when chat is open.
 quickplay.settings.instanceDisplayScale.name=Scale
 quickplay.settings.instanceDisplayScale.help=Scale o` th` Instance Display.
 
