@@ -10,7 +10,7 @@ quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Port Limb
 quickplay.commands.quickplay.delivery.help=Open th` Delivery Man menu.
 quickplay.commands.quickplay.keybinds.help=Open th` Quickplay Keybind editor.
 quickplay.commands.quickplay.moveinstance.deprecated=Captain, this command is deprecated. Ye should use "/qp config" instead!
-quickplay.commands.quickplay.discord.help=Join th` Quickplay Discord server.
+quickplay.commands.quickplay.discord.help=Join th` Quickplay bar.
 quickplay.commands.quickplay.discord.message=Discord is th` #1 way t` get in touch with @bugfroggy. Join th` Quickplay Discord if ye have any questions, feedback, o` bug reports.
 quickplay.commands.quickplay.party.help=Customize yer Quickplay Party Mode.
 quickplay.commands.quickplay.premium.help=Command for Quickplay Premium features.
@@ -20,7 +20,7 @@ quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click t` open
 quickplay.commands.quickplay.history.help=View what instances ye've last been on.
 quickplay.commands.quickplay.history.header=Here's th` last %s instances ye were on, most recent appearin` at th` top:
 quickplay.commands.quickplay.history.error=Captain, we're in trouble!
-quickplay.commands.quickplay.wiki.help=Open th` Quickplay Help website.
+quickplay.commands.quickplay.wiki.help=Check the Quickplay Help map.
 quickplay.commands.hub.numberexception=Invalid port number! Syntax: %s
 quickplay.commands.usage=Command syntax:
 
@@ -110,7 +110,7 @@ quickplay.config.color.gui.chromaspeed.insane=INSANE
 quickplay.gui.main.nogames.header=Oops!
 quickplay.gui.main.nogames.issue=Looks like I couldn't figure out what games are available.
 quickplay.gui.main.nogames.why=This most likely is occurring if ye just installed th` mod.
-quickplay.gui.main.nogames.contact=Try restarting your game, or contact bugfroggy if this doesn't resolve the problem!
+quickplay.gui.main.nogames.contact=Try rebuld yer team, or contact captain bugfroggy if this doesn't resolve th` problem!
 
 quickplay.gui.stats.yes=Yea, captain, send statistics.
 quickplay.gui.stats.no=No, captain! Don't send statistics.
