@@ -4,7 +4,7 @@ quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Click t` open.
 
 quickplay.commands.quickplay.help.help=Display the available commands.
-quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
+quickplay.commands.quickplay.config.help=Configure yer Quickplay mod.
 quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
 quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
 quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
@@ -21,10 +21,10 @@ quickplay.commands.quickplay.history.help=View what instances you've last been o
 quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
 quickplay.commands.quickplay.history.error=Captain, we're in trouble!
 quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
-quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
+quickplay.commands.hub.numberexception=Invalid port number! Syntax: %s
 quickplay.commands.usage=Command syntax:
 
-quickplay.premium.permissions=You need Quickplay Premium for this feature!
+quickplay.premium.permissions=Ye need Quickplay Premium for this feature!
 
 quickplay.gui.copyright=Copyright © %s bugfroggy
 quickplay.gui.favorite=Bind t` key...
@@ -124,14 +124,14 @@ quickplay.gui.stats.privacyerror=Captain, we have a hole in the ship. %s
 
 quickplay.party.syntax=Invalid syntax! Type "%s" t` take off!
 quickplay.party.sendingYou=Sendin` ye t` %s!
-quickplay.party.commencing=Commencin` Quickplay Party Mode Launch Sequence...
+quickplay.party.commencing=Commencing Quickplay Party Mode Launch Sequence...
 quickplay.party.nogames=D'oh! Party mode does not have any games selected.
 quickplay.gui.party.randomizing=Pickin` a random gamemode...
 quickplay.gui.party.allon=Enable All
 quickplay.gui.party.alloff=Disable All
 quickplay.gui.party.launch=Fire!
 
-quickplay.keybinds.illegal=Th` keybind "%s" is invalid for some reason! Try recreatin` it.
+quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recreating it.
 quickplay.keybinds.title=Keybinds
 quickplay.keybinds.reset=Reset Keybinds
 quickplay.gui.keybinds.delete=Delete
