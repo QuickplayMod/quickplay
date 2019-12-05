@@ -115,7 +115,7 @@ quickplay.gui.main.nogames.contact=Versuche dein Spiel neu zu starten oder konta
 quickplay.gui.stats.yes=Ja, sende Statistiken.
 quickplay.gui.stats.no=Nein, sende keine Statistiken.
 quickplay.gui.stats.title=Anonyme Quickplay-Nutzungsstatistiken senden?
-quickplay.gui.stats.description=Selecting "yes" sends me anonymous data about your game and how you use my Minecraft mod in order to help fix bugs & create better updates! This data includes but is not limited to your Minecraft version, Forge version, Java version, Operating System version, Minecraft mods installed, and your Quickplay settings. Refer to the downloads thread for a full list of data collected. This setting can be changed later in the config.
+quickplay.gui.stats.description=Die Auswahl von "Ja" sendet mir anonyme Daten über dein Spiel und wie du meinen Minecraft-Mod verwendest, um Fehler zu beheben und bessere Updates zu erstellen! Diese Daten enthalten aber nicht nur deine Minecraft-Version, Forge-Version, Java-Version, Betriebssystemversion, installierte Minecraft-Mods und deine Quickplay-Einstellungen. Im Download-Bericht findest du eine vollständige Liste der gesammelten Daten. Diese Einstellung kann später in der Konfiguration geändert werden.
 quickplay.gui.stats.token=Dein Statistik-Token ist %s.
 quickplay.gui.stats.copied=In die Zwischenablage kopiert!
 quickplay.gui.stats.copy=Zum Kopieren klicken
@@ -124,7 +124,7 @@ quickplay.gui.stats.privacyerror=Etwas ist schief gelaufen. %s
 
 quickplay.party.syntax=Ungültige Syntax! Tippe "%s" zum Starten ein!
 quickplay.party.sendingYou=Sende dich zu %s!
-quickplay.party.commencing=Commencing Quickplay Party Mode Launch Sequence...
+quickplay.party.commencing=Starte Quickplay Party Mode Start Sequenz...
 quickplay.party.nogames=Ups! Party-Modus hat keine Spiele ausgewählt.
 quickplay.gui.party.randomizing=Wähle einen zufälligen Spielmodus...
 quickplay.gui.party.allon=Aktiviere alles
