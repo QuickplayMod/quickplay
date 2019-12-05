@@ -51,7 +51,7 @@ quickplay.settings.gameLogoScale.help=Eine Skala von jedem Artikel im Quickplay 
 quickplay.settings.reverseScrollingDirection.name=Scrollrichtung umkehren
 quickplay.settings.reverseScrollingDirection.help=Die Richtung des Scrollens & Ziehens wird umgekehrt.
 quickplay.settings.anyKeyClosesGui.name=Alle Tasten schließen GUIs
-quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
+quickplay.settings.anyKeyClosesGui.help=Quickplays Hauptmenü und Spiel GUIs werden geschlossen, sobald eine Taste gedrückt wird.
 quickplay.settings.compactMainMenu.name=Kompaktes Hauptmenü
 quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should be compacted to hide games' strings unless you hover over them.
 
