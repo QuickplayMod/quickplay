@@ -53,7 +53,7 @@ quickplay.settings.reverseScrollingDirection.help=Die Richtung des Scrollens & Z
 quickplay.settings.anyKeyClosesGui.name=Alle Tasten schließen GUIs
 quickplay.settings.anyKeyClosesGui.help=Quickplays Hauptmenü und Spiel GUIs werden geschlossen, sobald eine Taste gedrückt wird.
 quickplay.settings.compactMainMenu.name=Kompaktes Hauptmenü
-quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should be compacted to hide games' strings unless you hover over them.
+quickplay.settings.compactMainMenu.help=Ob das Quickplay Hauptmenü kompakt sein soll um die Spiel Strings zu verstecken, wenn du nicht den Mauszeiger über sie bewegst.
 
 quickplay.settings.category.instanceDisplay=Instanzanzeige
 quickplay.settings.instanceDisplay.name=Instanzanzeige
@@ -65,7 +65,7 @@ quickplay.settings.instanceOpacity.help=Deckkraft der Instanzanzeige.
 quickplay.settings.displayInstanceWithChatOpen.name=Über den Chat anzeigen
 quickplay.settings.displayInstanceWithChatOpen.help=Ob die Instanzanzeige auch bei geöffnetem Chat dargestellt werden soll.
 quickplay.settings.instanceDisplayScale.name=Skala
-quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
+quickplay.settings.instanceDisplayScale.help=Skalierung der Instanzanzeige.
 
 quickplay.settings.sendUsageStatsButton.name=Nutzungsstatistiken...
 quickplay.settings.sendUsageStatsButton.help=Sende anonyme Nutzungsstatistiken, damit wir bessere Mods für dich erstellen können!
