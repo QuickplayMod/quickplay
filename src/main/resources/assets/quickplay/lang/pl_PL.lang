@@ -4,7 +4,7 @@ quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Naciśnij, aby otworzyć.
 
 quickplay.commands.quickplay.help.help=Pokaż dostępne komendy.
-quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
+quickplay.commands.quickplay.config.help=Skonfiguruj swoją modyfikację Quickplay.
 quickplay.commands.quickplay.limbo.help=Przenieś się do Limbo.
 quickplay.commands.quickplay.limbo.alreadythere=Och! Już jesteś w Limbo!
 quickplay.commands.quickplay.delivery.help=Otwórz menu dostawcy.
