@@ -132,12 +132,12 @@ quickplay.gui.party.alloff=Desactivar Todo
 quickplay.gui.party.launch=¡Iniciar!
 
 quickplay.keybinds.illegal=¡El atajo de teclas "%s" no es válido por algún motivo! Prueba recrearla.
-quickplay.keybinds.title=Keybinds
-quickplay.keybinds.reset=Reset Keybinds
-quickplay.gui.keybinds.delete=Delete
-quickplay.gui.keybinds.taken=That key is already assigned to a Quickplay function!
+quickplay.keybinds.title=Atajos de Tecla
+quickplay.keybinds.reset=Resetear Atajos de Tecla
+quickplay.gui.keybinds.delete=Eliminar
+quickplay.gui.keybinds.taken=¡Esa tecla ya está asignada a una función Quickplay!
 
-quickplay.moveableHudElement.small=SMALL
-quickplay.moveableHudElement.medium=MEDIUM
-quickplay.moveableHudElement.large=LARGE
-quickplay.moveableHudElement.xlarge=EXTRA LARGE
+quickplay.moveableHudElement.small=PEQUEÑO
+quickplay.moveableHudElement.medium=MEDIO
+quickplay.moveableHudElement.large=GRANDE
+quickplay.moveableHudElement.xlarge=EXTRA GRANDE
