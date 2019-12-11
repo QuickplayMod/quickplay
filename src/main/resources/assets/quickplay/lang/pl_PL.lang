@@ -18,11 +18,11 @@ quickplay.commands.quickplay.premium.noCommands=Brak znanych komend!
 quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay couldn't gather the latest information about Quickplay Premium! Visit %s
 quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click to open %s
 quickplay.commands.quickplay.history.help=View what instances you've last been on.
-quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
+quickplay.commands.quickplay.history.header=Oto ostatnie %s podserwery z którymi się łączyłeś, najnowsze znajdują się na samej górze:
 quickplay.commands.quickplay.history.error=Coś poszło nie tak!
 quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
-quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
-quickplay.commands.usage=Command syntax:
+quickplay.commands.hub.numberexception=Nieprawidłowy numer poczekalni! Składnia: %s
+quickplay.commands.usage=Składnia komend:
 
 quickplay.premium.permissions=You need Quickplay Premium for this feature!
 
@@ -50,22 +50,22 @@ quickplay.settings.gameLogoScale.name=Wielkość głównego menu
 quickplay.settings.gameLogoScale.help=Scale of each item in the Quickplay main menu.
 quickplay.settings.reverseScrollingDirection.name=Reverse Scrolling Direction
 quickplay.settings.reverseScrollingDirection.help=Reverse the direction scrolling & dragging moves the screen.
-quickplay.settings.anyKeyClosesGui.name=Any Key Closes GUIs
+quickplay.settings.anyKeyClosesGui.name=Każdy przycisk zamyka GUI
 quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
 quickplay.settings.compactMainMenu.name=Kompaktowe menu główne
-quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should be compacted to hide games' strings unless you hover over them.
+quickplay.settings.compactMainMenu.help=Ustal, czy menu główne Quickplaya ma być uproszczone poprzez ukrycie nazw gier, będą one widoczne po najechaniu na ikony.
 
 quickplay.settings.category.instanceDisplay=Wyświetlanie podserwera
 quickplay.settings.instanceDisplay.name=Wyświetlanie podserwera
-quickplay.settings.instanceDisplay.help=Whether or not the current server instance should be displayed on-screen.
-quickplay.settings.moveInstanceDisplayButton.name=Move Instance Display...
+quickplay.settings.instanceDisplay.help=Ustal, czy obecny podserwer ma być wyświetlany na ekranie.
+quickplay.settings.moveInstanceDisplayButton.name=Przenieś wyświetlanie podserwera...
 quickplay.settings.moveInstanceDisplayButton.help=Change the position of the Instance display on-screen.
-quickplay.settings.instanceOpacity.name=Instance Display Opacity
-quickplay.settings.instanceOpacity.help=Opacity of the instance display.
+quickplay.settings.instanceOpacity.name=Przezroczystość wyświetlania podserwera
+quickplay.settings.instanceOpacity.help=Przezroczystość wyświetlania podserwera.
 quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
 quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display should be rendered even when chat is open.
-quickplay.settings.instanceDisplayScale.name=Scale
-quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
+quickplay.settings.instanceDisplayScale.name=Wielkość
+quickplay.settings.instanceDisplayScale.help=Wielkość wyświetlania podserwera.
 
 quickplay.settings.sendUsageStatsButton.name=Usage Statistics...
 quickplay.settings.sendUsageStatsButton.help=Send anonymous usage statistics to help me create better mods for you!
