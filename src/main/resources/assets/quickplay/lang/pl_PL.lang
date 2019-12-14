@@ -118,13 +118,13 @@ quickplay.gui.stats.title=Czy chcesz wysyłać anonimowe statystyki użytkowania
 quickplay.gui.stats.description=Wybierając "tak", zgadzasz się na wysyłanie mi anonimowych danych o Twojej grze i o tym, w jaki sposób korzystasz z mojej modyfikacji, aby pomóc naprawiać błędy i tworzyć lepsze aktualizacje! Dane te obejmują, ale nie ograniczają się do Twojej wersji Minecrafta, wersji Forge, wersji Javy, wersji systemu operacyjnego, zainstalowanych modyfikacji Minecrafta oraz ustawień Quickplaya. Odnieś się do wątku pobrań, aby uzyskać pełną listę zebranych danych. To ustawienie może być później zmienione w konfiguracji.
 quickplay.gui.stats.token=Twój żeton statystyk to %s.
 quickplay.gui.stats.copied=Skopiowano do schowka!
-quickplay.gui.stats.copy=Click to copy
+quickplay.gui.stats.copy=Naciśnij, aby skopiować
 quickplay.gui.stats.privacy=Polityka prywatności
 quickplay.gui.stats.privacyerror=Coś poszło nie tak. %s
 
 quickplay.party.syntax=Invalid syntax! Type "%s" to take off!
 quickplay.party.sendingYou=Wysyłanie do %s!
-quickplay.party.commencing=Rozpoczynanie sekwencji uruchamiania trybu imprezy Quickplaya...
+quickplay.party.commencing=Rozpoczęcie sekwencji uruchamiania trybu imprezy Quickplaya...
 quickplay.party.nogames=Ojej! Tryb imprezy nie ma wybranych żadnych gier.
 quickplay.gui.party.randomizing=Wybieranie losowego trybu...
 quickplay.gui.party.allon=Włącz wszystko
