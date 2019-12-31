@@ -16,15 +16,15 @@ quickplay.commands.quickplay.party.help=Customize your Quickplay Party Mode.
 quickplay.commands.quickplay.premium.help=Command for Quickplay Premium features.
 quickplay.commands.quickplay.premium.noCommands=Brak znanych komend!
 quickplay.commands.quickplay.premium.about.menuMissing=Przepraszamy, ale Quickplay nie mógł zebrać najnowszych informacji o Quickplay Premium! Odwiedź %s
-quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click to open %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Naciśnij aby otworzyć %s
 quickplay.commands.quickplay.history.help=Zobacz z jakimi podserwerami ostatnio się łączyłeś.
 quickplay.commands.quickplay.history.header=Oto ostatnie %s podserwery z którymi się łączyłeś, najnowsze znajdują się na samej górze:
 quickplay.commands.quickplay.history.error=Coś poszło nie tak!
-quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
+quickplay.commands.quickplay.wiki.help=Otwórz stronę pomocy dotyczącej Quickplaya.
 quickplay.commands.hub.numberexception=Nieprawidłowy numer poczekalni! Składnia: %s
 quickplay.commands.usage=Składnia komend:
 
-quickplay.premium.permissions=You need Quickplay Premium for this feature!
+quickplay.premium.permissions=Potrzebujesz Quickplay Premium, aby skorzystać z tej funkcji!
 
 quickplay.gui.copyright=Prawa autorskie © %s bugfroggy
 quickplay.gui.favorite=Przypisz do klawisza...
@@ -68,7 +68,7 @@ quickplay.settings.instanceDisplayScale.name=Wielkość
 quickplay.settings.instanceDisplayScale.help=Wielkość wyświetlania podserwera.
 
 quickplay.settings.sendUsageStatsButton.name=Statystyki użytkowania...
-quickplay.settings.sendUsageStatsButton.help=Send anonymous usage statistics to help me create better mods for you!
+quickplay.settings.sendUsageStatsButton.help=Wysyłaj anonimowe statystyki użytkowania, aby pomóc mi w tworzeniu lepszych modyfikacji dla Ciebie!
 quickplay.settings.editKeybinds.name=Edytuj skróty klawiszowe...
 quickplay.settings.editKeybinds.help=Assign & remove keybinds previously created by right-clicking games or modes.
 quickplay.settings.lobbyOneSwap.name=Przenieś do poczekalni numer 1
