@@ -49,9 +49,9 @@ quickplay.settings.transparentBackgrounds.help=Whether Quickplay GUI backgrounds
 quickplay.settings.gameLogoScale.name=Wielkość głównego menu
 quickplay.settings.gameLogoScale.help=Scale of each item in the Quickplay main menu.
 quickplay.settings.reverseScrollingDirection.name=Odwróć kierunek przewijania
-quickplay.settings.reverseScrollingDirection.help=Reverse the direction scrolling & dragging moves the screen.
+quickplay.settings.reverseScrollingDirection.help=Odwróć kierunek w którym przewijanie i przeciąganie przesuwa ekran.
 quickplay.settings.anyKeyClosesGui.name=Każdy przycisk zamyka GUI
-quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
+quickplay.settings.anyKeyClosesGui.help=Menu główne Quickplaya i GUI gier będą zamykane po wciśnięciu jakiegokolwiek przycisku.
 quickplay.settings.compactMainMenu.name=Kompaktowe menu główne
 quickplay.settings.compactMainMenu.help=Ustal, czy menu główne Quickplaya ma być uproszczone poprzez ukrycie nazw gier, będą one widoczne po najechaniu na ikony.
 
@@ -63,7 +63,7 @@ quickplay.settings.moveInstanceDisplayButton.help=Change the position of the Ins
 quickplay.settings.instanceOpacity.name=Przezroczystość wyświetlania podserwera
 quickplay.settings.instanceOpacity.help=Przezroczystość wyświetlania podserwera.
 quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
-quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display should be rendered even when chat is open.
+quickplay.settings.displayInstanceWithChatOpen.help=Ustal, czy wyświetlanie podserwera ma mieć miejsce, nawet jeśli czat jest otwarty.
 quickplay.settings.instanceDisplayScale.name=Wielkość
 quickplay.settings.instanceDisplayScale.help=Wielkość wyświetlania podserwera.
 
@@ -122,7 +122,7 @@ quickplay.gui.stats.copy=Naciśnij, aby skopiować
 quickplay.gui.stats.privacy=Polityka prywatności
 quickplay.gui.stats.privacyerror=Coś poszło nie tak. %s
 
-quickplay.party.syntax=Invalid syntax! Type "%s" to take off!
+quickplay.party.syntax=Nieprawidłowa składnia! Wpisz "%s" aby rozpocząć!
 quickplay.party.sendingYou=Wysyłanie do %s!
 quickplay.party.commencing=Rozpoczęcie sekwencji uruchamiania trybu imprezy Quickplaya...
 quickplay.party.nogames=Ojej! Tryb imprezy nie ma wybranych żadnych gier.
