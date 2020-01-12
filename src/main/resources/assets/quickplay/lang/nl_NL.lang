@@ -1,12 +1,12 @@
-quickplay.offline=You are not currently online the Hypixel Network!
-quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
+quickplay.offline=Je bent momenteel niet online op het Hypixel netwerk!
+quickplay.disabled=Quickplay is gedwongen uitgezet! Reden: %s.
 quickplay.chat.separator=-
-quickplay.chat.clickToOpen=Click to open.
+quickplay.chat.clickToOpen=Klik om te openen.
 
 quickplay.commands.quickplay.help.help=Toon de beschikbare commando’s.
-quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
-quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
-quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
+quickplay.commands.quickplay.config.help=Configureer je Quickplay mod.
+quickplay.commands.quickplay.limbo.help=Stuur jezelf naar Limbo.
+quickplay.commands.quickplay.limbo.alreadythere=D’oh! Je bent al in Limbo!
 quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
 quickplay.commands.quickplay.keybinds.help=Open the Quickplay Keybind editor.
 quickplay.commands.quickplay.moveinstance.deprecated=This command is deprecated. You should use "/qp config" instead!
