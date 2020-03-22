@@ -3,9 +3,9 @@ package co.bugg.quickplay;
 import cc.hyperium.Hyperium;
 import cc.hyperium.commands.BaseCommand;
 import cc.hyperium.event.EventBus;
-import cc.hyperium.event.InitializationEvent;
 import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.PreInitializationEvent;
+import cc.hyperium.event.client.InitializationEvent;
+import cc.hyperium.event.client.PreInitializationEvent;
 import cc.hyperium.internal.addons.IAddon;
 import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandQuickplay;
@@ -13,7 +13,11 @@ import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.client.gui.QuickplayGuiPartySpinner;
 import co.bugg.quickplay.client.render.GlyphRenderer;
 import co.bugg.quickplay.client.render.PlayerGlyph;
-import co.bugg.quickplay.config.*;
+import co.bugg.quickplay.config.AConfiguration;
+import co.bugg.quickplay.config.AssetFactory;
+import co.bugg.quickplay.config.ConfigKeybinds;
+import co.bugg.quickplay.config.ConfigSettings;
+import co.bugg.quickplay.config.ConfigUsageStats;
 import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.http.HttpRequestFactory;
@@ -29,23 +33,31 @@ import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
-import net.minecraft.util.*;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.*;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 
 public class Quickplay implements IAddon {
 
@@ -197,8 +209,7 @@ public class Quickplay implements IAddon {
      * @param handler Object to unregister
      */
     public void unregisterEventHandler(Object handler) {
-        if(eventHandlers.contains(handler))
-            eventHandlers.remove(handler);
+        eventHandlers.remove(handler);
         EventBus.INSTANCE.unregister(handler);
     }
 
@@ -380,9 +391,10 @@ public class Quickplay implements IAddon {
      * @return organized list
      */
     public static Game[] organizeGameList(Game[] gameList) {
-        return Arrays.stream(gameList)
-                .sorted(Comparator.comparing(game -> Quickplay.INSTANCE.settings.gamePriorities.getOrDefault(((Game) game).unlocalizedName, 0)).reversed())
-                .toArray(Game[]::new);
+        List<Game> list = new ArrayList<>();
+        Collections.addAll(list, gameList);
+        list.sort(Comparator.comparing(game -> Quickplay.INSTANCE.settings.gamePriorities.getOrDefault(((Game) game).unlocalizedName, 0)).reversed());
+        return list.toArray(new Game[0]);
     }
 
     /**

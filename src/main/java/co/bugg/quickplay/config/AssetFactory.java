@@ -8,6 +8,7 @@ import co.bugg.quickplay.games.Game;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
+import java.nio.charset.StandardCharsets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.FolderResourcePack;
 import net.minecraft.client.resources.IResourcePack;
@@ -312,7 +313,7 @@ public class AssetFactory {
      * @return A new {@link File}
      */
     public File getIconFile(URL url) {
-        HashCode hash = Hashing.md5().hashString(url.toString(), Charset.forName("UTF-8"));
+        HashCode hash = Hashing.md5().hashString(url.toString(), StandardCharsets.UTF_8);
         return new File(assetsDirectory + hash.toString() + "." + FilenameUtils.getExtension(url.getPath()));
     }
 }

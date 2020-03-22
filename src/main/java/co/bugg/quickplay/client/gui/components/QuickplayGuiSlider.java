@@ -21,7 +21,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     /**
      * Display name of this slider
      */
-    private String name;
+    private final String name;
     /**
      * Minimum value of this slider
      */
@@ -38,7 +38,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     /**
      * {@link FormatHelper} for formatting the slider's display string, depending on the value
      */
-    private QuickplayGuiSlider.FormatHelper formatHelper;
+    private final QuickplayGuiSlider.FormatHelper formatHelper;
 
     /**
      * Constructor
@@ -100,10 +100,9 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
             super.draw(gui, mouseX, mouseY, opacity);
 
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
-            ;
 
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
 
             if (isMouseDown) {
                 // Calculate the new slider position
@@ -116,15 +115,15 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
             Minecraft.getMinecraft().getTextureManager().bindTexture(buttonTextures);
-            GL11.glScaled(scale, scale, scale);
+            GlStateManager.scale(scale, scale, scale);
             drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)), scrollAdjustedY, 0, 66, 4, 20);
             drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)) + 4, scrollAdjustedY, 196, 66, 4, 20);
             if (opacity > 0)
                 drawDisplayString(gui, opacity, scrollAdjustedY);
-            GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
+            GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 
@@ -135,7 +134,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     private void calculateSliderPos(int mouseX) {
         sliderPercentage = (float)(mouseX - (x + 4)) / (float)(width - 8);
         // Keep the slider percentage between 0 and 1
-        sliderPercentage = sliderPercentage < 0.0f ? 0.0f : sliderPercentage > 1.0f ? 1.0f : sliderPercentage;
+        sliderPercentage = sliderPercentage < 0.0f ? 0.0f : Math.min(sliderPercentage, 1.0f);
     }
 
     @Override

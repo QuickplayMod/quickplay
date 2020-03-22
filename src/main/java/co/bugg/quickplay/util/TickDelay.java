@@ -1,7 +1,7 @@
 package co.bugg.quickplay.util;
 
 import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.TickEvent;
+import cc.hyperium.event.client.TickEvent;
 import co.bugg.quickplay.Quickplay;
 
 /**

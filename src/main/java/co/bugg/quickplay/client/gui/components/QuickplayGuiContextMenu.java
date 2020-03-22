@@ -1,17 +1,21 @@
 package co.bugg.quickplay.client.gui.components;
 
+import static org.lwjgl.input.Keyboard.KEY_DOWN;
+import static org.lwjgl.input.Keyboard.KEY_RETURN;
+import static org.lwjgl.input.Keyboard.KEY_RSHIFT;
+import static org.lwjgl.input.Keyboard.KEY_TAB;
+import static org.lwjgl.input.Keyboard.KEY_UP;
+import static org.lwjgl.input.Keyboard.isKeyDown;
+
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.ContextMenu;
 import co.bugg.quickplay.client.gui.QuickplayGui;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
 import java.util.List;
 import java.util.ListIterator;
-
-import static org.lwjgl.input.Keyboard.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.input.Keyboard;
 
 /**
  * Context menu for Quickplay GUIs whenever the user right-clicks on something that has context menu options
@@ -132,14 +136,12 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
         if(opacity > 0) {
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
-
-            GL11.glScaled(scale, scale, scale);
+            GlStateManager.pushMatrix();
+            GlStateManager.scale(scale, scale, scale);
+            GlStateManager.enableBlend();
 
             // Draw right click box
             drawRect((int) (x / scale), (int) (scrollAdjustedY / scale), (int) (x / scale + width), (int) (scrollAdjustedY / scale + height), (int) (opacity * boxOpacity * 255) << 24);
-            GL11.glEnable(GL11.GL_BLEND);
 
             for (ListIterator<String> iter = options.listIterator(); iter.hasNext(); ) {
                 final int index = iter.nextIndex();
@@ -151,10 +153,10 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
                     drawRect((int) (x / scale + boxPadding), stringY + fontRendererObj.FONT_HEIGHT, (int) (x / scale + boxPadding + fontRendererObj.getStringWidth(string)), stringY + fontRendererObj.FONT_HEIGHT + 1, color & 0xFFFFFF | (int) (opacity * 255) << 24);
             }
 
-            GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
+            GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 

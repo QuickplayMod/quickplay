@@ -1,10 +1,14 @@
 package co.bugg.quickplay.client.render;
 
 import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.RenderPlayerEvent;
+import cc.hyperium.event.render.RenderPlayerEvent;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import com.google.common.hash.Hashing;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,10 +19,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-
-import java.nio.charset.Charset;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Renders all Quickplay Glyphs when registered to the event bus
@@ -48,7 +48,7 @@ public class GlyphRenderer {
             final EntityPlayer self = Minecraft.getMinecraft().thePlayer;
 
             // If both players aren't null, player is visible, and player isn't dead
-            if (player != null && self != null && !player.isInvisible() && !player.isDead && self.canEntityBeSeen(player) && self.getDistanceSqToEntity(player) < drawDistance * drawDistance) {
+            if (player != null && self != null && !player.isInvisible() && !player.isDead && !player.isSneaking() && self.canEntityBeSeen(player) && self.getDistanceSqToEntity(player) < drawDistance * drawDistance) {
                 // If not rendering self or inventory isn't open (don't render self while inventory is open)
                 if(player != self || !(Minecraft.getMinecraft().currentScreen instanceof GuiInventory)) {
                     // If the player being rendered isn't this player OR the client's settings allow rendering of own glyph
@@ -78,7 +78,8 @@ public class GlyphRenderer {
      */
     public synchronized void renderGlyph(RenderManager renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
 
-        final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.path.toString(), Charset.forName("UTF-8")).toString() + ".png");
+        final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.path.toString(),
+            StandardCharsets.UTF_8).toString() + ".png");
         if(Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {
             float scale = (float) (glyph.height * 0.0015);
 
@@ -108,10 +109,10 @@ public class GlyphRenderer {
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             Minecraft.getMinecraft().getTextureManager().bindTexture(resource);
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-            worldrenderer.pos((double) (-16), (double) (-16), 0.0D).tex(0, 0).endVertex();
-            worldrenderer.pos((double) (-16), (double) (16), 0.0D).tex(0, 1).endVertex();
-            worldrenderer.pos((double) (16), (double) (16), 0.0D).tex(1, 1).endVertex();
-            worldrenderer.pos((double) (16), (double) (-16), 0.0D).tex(1, 0).endVertex();
+            worldrenderer.pos(-16, -16, 0.0D).tex(0, 0).endVertex();
+            worldrenderer.pos(-16, 16, 0.0D).tex(0, 1).endVertex();
+            worldrenderer.pos(16, 16, 0.0D).tex(1, 1).endVertex();
+            worldrenderer.pos(16, -16, 0.0D).tex(1, 0).endVertex();
             tessellator.draw();
 
             // Remove GL properties

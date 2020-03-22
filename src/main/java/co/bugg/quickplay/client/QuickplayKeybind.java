@@ -2,21 +2,19 @@ package co.bugg.quickplay.client;
 
 import cc.hyperium.Hyperium;
 import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.KeypressEvent;
+import cc.hyperium.event.interact.KeyPressEvent;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.GsonPostProcessorFactory;
 import co.bugg.quickplay.util.Message;
+import java.io.IOException;
+import java.io.Serializable;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
-
-import java.io.IOException;
-import java.io.Serializable;
 
 /**
  * Quickplay's Keybind system
@@ -169,7 +167,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
     }
 
     @InvokeEvent
-    public void onKeyPress(KeypressEvent event) {
+    public void onKeyPress(KeyPressEvent event) {
         if(key != Keyboard.KEY_NONE && event.getKey() == key && Minecraft.getMinecraft().currentScreen == null)
             keyPressed();
     }

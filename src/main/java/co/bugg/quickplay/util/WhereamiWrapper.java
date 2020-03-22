@@ -1,10 +1,9 @@
 package co.bugg.quickplay.util;
 
 import cc.hyperium.Hyperium;
-import cc.hyperium.event.ChatEvent;
 import cc.hyperium.event.InvokeEvent;
+import cc.hyperium.event.network.chat.ChatEvent;
 import co.bugg.quickplay.Quickplay;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

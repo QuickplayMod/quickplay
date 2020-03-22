@@ -18,15 +18,15 @@ public class Message {
     /**
      * Base of the message being sent
      */
-    private IChatComponent message;
+    private final IChatComponent message;
     /**
      * Whether the message should be wrapped in "separator bars"
      */
-    private boolean separators;
+    private final boolean separators;
     /**
      * Whether this message can be sent even if the mod is disabled
      */
-    private boolean bypassEnabledSetting;
+    private final boolean bypassEnabledSetting;
 
     /**
      * Constructor

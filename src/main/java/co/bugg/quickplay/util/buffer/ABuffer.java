@@ -1,8 +1,8 @@
 package co.bugg.quickplay.util.buffer;
 
 import co.bugg.quickplay.Quickplay;
-
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract buffer element used for... anything buffer-related.
@@ -12,11 +12,11 @@ public abstract class ABuffer implements Runnable {
     /**
      * Buffer of all the objects
      */
-    private ArrayList<Object> buffer;
+    private final List<Object> buffer;
     /**
      * The time in milliseconds between {@link #run()} calls
      */
-    private int sleepTime;
+    private final int sleepTime;
     /**
      * Whether the buffer is currently running
      */

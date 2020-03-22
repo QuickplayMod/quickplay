@@ -25,7 +25,7 @@ public class AnalyticsRequest {
     /**
      * All parameters to be sent in the POST body
      */
-    final HashMap<String, String> parameters = new HashMap<>();
+    final Map<String, String> parameters = new HashMap<>();
 
     /**
      * Parent Google Analytics this request was created from/for
@@ -254,7 +254,7 @@ public class AnalyticsRequest {
         SCREENVIEW("screenview"),
         TIMING("timing");
 
-        private String name;
+        private final String name;
 
         RequestType(String name) {
             this.name = name;
@@ -274,7 +274,7 @@ public class AnalyticsRequest {
         // Force end the current session
         END("end");
 
-        private String text;
+        private final String text;
 
         SessionControl(String text) {
             this.text = text;

@@ -3,9 +3,12 @@ package co.bugg.quickplay.http;
 import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
-import co.bugg.quickplay.util.ReflectionUtil;
 import co.bugg.quickplay.util.ServerChecker;
 import com.google.gson.Gson;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashMap;
+import net.minecraft.client.Minecraft;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
@@ -13,11 +16,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-
-import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.HashMap;
 
 /**
  * Factory for Quickplay HTTP requests
@@ -129,13 +127,7 @@ public class HttpRequestFactory {
             if(Quickplay.INSTANCE.keybinds != null)
                 params.put("keybinds", gson.toJson(Quickplay.INSTANCE.keybinds));
 
-            try {
-                params.put("mcVersion", ReflectionUtil.getMCVersion());
-            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                Hyperium.LOGGER.error(e.getMessage(), e);
-                params.put("mcVersion", "unknown");
-                Quickplay.INSTANCE.sendExceptionRequest(e);
-            }
+            params.put("mcVersion", Minecraft.getMinecraft().getVersion());
         }
     }
 }

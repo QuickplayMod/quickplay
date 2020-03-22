@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -38,8 +39,8 @@ public class MoveableHudElementEditor extends QuickplayGui {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         // Blend is enabled for the GUI fadein
         // Fade in opacity has to be applied individually to each component that you want to fade in
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         /*
          * Draw background
@@ -51,8 +52,8 @@ public class MoveableHudElementEditor extends QuickplayGui {
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     @Override

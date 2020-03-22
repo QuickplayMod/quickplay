@@ -1,17 +1,16 @@
 package co.bugg.quickplay.client.command;
 
+import cc.hyperium.Hyperium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.QuickplayGuiPartyEditor;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.TickDelay;
-import net.minecraft.client.Minecraft;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Sub command for the Quickplay Party system
@@ -33,7 +32,7 @@ public class SubCommandParty extends ASubCommand {
     @Override
     public void run(String[] args) {
         if(args.length == 0) {
-            new TickDelay(() -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiPartyEditor()), 1);
+            Hyperium.INSTANCE.getHandlers().getGuiDisplayHandler().setDisplayNextTick(new QuickplayGuiPartyEditor());
         } else {
             if(args[0].equals("launch")) {
                 new TickDelay(() -> Quickplay.INSTANCE.threadPool.submit(Quickplay.INSTANCE::launchPartyMode), 1);

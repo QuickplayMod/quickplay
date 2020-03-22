@@ -9,15 +9,14 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiSlider;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.util.Message;
+import java.awt.Color;
+import java.io.IOException;
 import net.minecraft.client.gui.GuiPageButtonList;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.io.IOException;
 
 /**
  * Gui for editing Quickplay colors
@@ -102,8 +101,8 @@ public class QuickplayGuiEditColor extends QuickplayGui {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         /*
          * Draw background
@@ -113,18 +112,18 @@ public class QuickplayGuiEditColor extends QuickplayGui {
 
         // Draw text
         if(opacity > 0) {
-            GL11.glScaled(nameTextScale, nameTextScale, nameTextScale);
+            GlStateManager.scale(nameTextScale, nameTextScale, nameTextScale);
             drawCenteredString(mc.fontRendererObj, colorName, (int) (width / 2 / nameTextScale), (int) (nameTextY / nameTextScale), 0xFFFFFF);
-            GL11.glScaled(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
-            GL11.glScaled(sampleTextScale, sampleTextScale, sampleTextScale);
+            GlStateManager.scale(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
+            GlStateManager.scale(sampleTextScale, sampleTextScale, sampleTextScale);
             drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.config.color.gui.sampletext"), (int) (width / 2 / sampleTextScale), (int) (sampleTextY / sampleTextScale), color.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-            GL11.glScaled(1 / sampleTextScale, 1 / sampleTextScale, 1 / sampleTextScale);
+            GlStateManager.scale(1 / sampleTextScale, 1 / sampleTextScale, 1 / sampleTextScale);
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
 
     }
 

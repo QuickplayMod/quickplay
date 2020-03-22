@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -231,13 +232,13 @@ public class QuickplayGui extends GuiScreen {
     @Override
     public void drawDefaultBackground() {
         if(!Quickplay.INSTANCE.settings.transparentBackgrounds) {
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
             // Prepend opacity to 24-bit color
-            drawRect(0, 0, width, height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
+            drawRect(0, 0, width, height, ((int) (opacity * 0.5 * 255) << 24));
             // drawRect disables blend (Grr!)
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 
@@ -245,8 +246,8 @@ public class QuickplayGui extends GuiScreen {
     @Override
     protected void drawHoveringText(List<String> textLines, int x, int y) {
         if(textLines.size() > 0 && opacity > 0) {
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
 
             int textXMargins = 6;
             int boxMargins = 10;
@@ -307,7 +308,6 @@ public class QuickplayGui extends GuiScreen {
 
             // Draw background
             drawRect(x, y, x + textWidth + textXMargins, y + tooltipHeight, (int) (opacity * 0.5 * 255) << 24);
-            GL11.glEnable(GL11.GL_BLEND);
 
             // Draw text
             int currentLineY = y + textYMargins;
@@ -316,8 +316,8 @@ public class QuickplayGui extends GuiScreen {
                 currentLineY += fontRendererObj.FONT_HEIGHT + textYMargins;
             }
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 
@@ -326,8 +326,7 @@ public class QuickplayGui extends GuiScreen {
      */
     public void closeContextMenu() {
         if(contextMenu != null) {
-            if(componentList.contains(contextMenu))
-                componentList.remove(contextMenu);
+            componentList.remove(contextMenu);
             contextMenu = null;
         }
     }

@@ -3,7 +3,7 @@ package co.bugg.quickplay.util.buffer;
 
 import cc.hyperium.Hyperium;
 import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.ServerLeaveEvent;
+import cc.hyperium.event.network.server.ServerLeaveEvent;
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;

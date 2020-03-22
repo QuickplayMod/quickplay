@@ -2,16 +2,15 @@ package co.bugg.quickplay;
 
 import cc.hyperium.Hyperium;
 import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.RenderEvent;
-import cc.hyperium.event.RenderHUDEvent;
-import cc.hyperium.event.WorldChangeEvent;
+import cc.hyperium.event.render.RenderEvent;
+import cc.hyperium.event.render.RenderHUDEvent;
+import cc.hyperium.event.world.WorldChangeEvent;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
 import co.bugg.quickplay.util.TickDelay;
+import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
-
-import java.util.ArrayList;
 
 /**
  * Main event handler for Quickplay

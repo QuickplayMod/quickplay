@@ -2,10 +2,9 @@ package co.bugg.quickplay.util;
 
 import cc.hyperium.Hyperium;
 import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.TickEvent;
-import cc.hyperium.event.WorldChangeEvent;
+import cc.hyperium.event.client.TickEvent;
+import cc.hyperium.event.world.WorldChangeEvent;
 import co.bugg.quickplay.Quickplay;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
