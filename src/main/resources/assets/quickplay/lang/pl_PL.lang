@@ -3,17 +3,17 @@ quickplay.disabled=Quickplay został przymusowo wyłączony! Powód: %s.
 quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Naciśnij, aby otworzyć.
 
-quickplay.commands.quickplay.help.help=Pokaż dostępne komendy.
+quickplay.commands.quickplay.help.help=Pokaż dostępne polecenia.
 quickplay.commands.quickplay.config.help=Skonfiguruj swoją modyfikację Quickplay.
 quickplay.commands.quickplay.limbo.help=Przenieś się do Limbo.
 quickplay.commands.quickplay.limbo.alreadythere=Och! Już jesteś w Limbo!
 quickplay.commands.quickplay.delivery.help=Otwórz menu dostawcy.
 quickplay.commands.quickplay.keybinds.help=Otwórz edytor skrótów klawiszowych Quickplaya.
-quickplay.commands.quickplay.moveinstance.deprecated=Ta komenda jest przestarzała. Zamiast niej używaj "/qp config"!
+quickplay.commands.quickplay.moveinstance.deprecated=To polecenie jest przestarzałe. Zamiast niego używaj "/qp config"!
 quickplay.commands.quickplay.discord.help=Dołącz do serwera Discord Quickplaya.
 quickplay.commands.quickplay.discord.message=Discord jest najlepszym sposobem, aby skontaktować się z @bugfroggy. Jeśli masz jakiekolwiek pytania, opinie lub chcesz zgłosić błąd, dołącz do serwera Discord Quickplaya.
 quickplay.commands.quickplay.party.help=Dostosuj swój tryb imprezy Quickplaya.
-quickplay.commands.quickplay.premium.help=Komenda pokazująca funkcje Quickplay Premium.
+quickplay.commands.quickplay.premium.help=Polecenie pokazujące funkcje Quickplay Premium.
 quickplay.commands.quickplay.premium.noCommands=Brak znanych komend!
 quickplay.commands.quickplay.premium.about.menuMissing=Przepraszamy, ale Quickplay nie mógł zebrać najnowszych informacji o Quickplay Premium! Odwiedź %s
 quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Naciśnij aby otworzyć %s
@@ -22,7 +22,7 @@ quickplay.commands.quickplay.history.header=Oto ostatnie %s podserwery z którym
 quickplay.commands.quickplay.history.error=Coś poszło nie tak!
 quickplay.commands.quickplay.wiki.help=Otwórz stronę pomocy dotyczącej Quickplaya.
 quickplay.commands.hub.numberexception=Nieprawidłowy numer poczekalni! Składnia: %s
-quickplay.commands.usage=Składnia komend:
+quickplay.commands.usage=Składnia poleceń:
 
 quickplay.premium.permissions=Potrzebujesz Quickplay Premium, aby skorzystać z tej funkcji!
 
@@ -75,8 +75,8 @@ quickplay.settings.lobbyOneSwap.name=Przenieś do poczekalni numer 1
 quickplay.settings.lobbyOneSwap.help=Automatycznie zamień na poczekalnię numer jeden za każdym razem, gdy dołączysz do nowej poczekalni.
 quickplay.settings.updateNotifications.name=Powiadomienia o aktualizacjach
 quickplay.settings.updateNotifications.help=Ustal, czy chciałbyś być powiadamiany o wydaniu nowej wersji Quickplaya (Twoja lista gier będzie automatycznie aktualizowana, niezależnie od tego ustawienia).
-quickplay.settings.redesignedLobbyCommand.name=Własna komenda poczekalni
-quickplay.settings.redesignedLobbyCommand.help=Ustal, czy Twoje własne komendy poczekalni mają być używane, gdy jest to możliwe. Wymaga ponownego uruchomienia gry.
+quickplay.settings.redesignedLobbyCommand.name=Własne polecenie poczekalni
+quickplay.settings.redesignedLobbyCommand.help=Ustal, czy Twoje własne polecenia poczekalni mają być używane, gdy jest to możliwe. Wymaga ponownego uruchomienia gry.
 
 quickplay.settings.category.partyMode=Tryb imprezy
 quickplay.settings.partyModeDelay.name=Opóźnienie uruchomienia
