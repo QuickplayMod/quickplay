@@ -1,25 +1,25 @@
 quickplay.offline=You are not currently online the Hypixel Network!
-quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
+quickplay.disabled=Quickplay 已被強制禁用！原因：%s。
 quickplay.chat.separator=-
-quickplay.chat.clickToOpen=Click to open.
+quickplay.chat.clickToOpen=點擊開啟。
 
-quickplay.commands.quickplay.help.help=Display the available commands.
-quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
-quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
-quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
-quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
-quickplay.commands.quickplay.keybinds.help=Open the Quickplay Keybind editor.
+quickplay.commands.quickplay.help.help=顯示可用指令。
+quickplay.commands.quickplay.config.help=設定 Quickplay 模組。
+quickplay.commands.quickplay.limbo.help=傳送到閒置大廳。
+quickplay.commands.quickplay.limbo.alreadythere=你已經在閒置大廳了！
+quickplay.commands.quickplay.delivery.help=打開禮包使者選單。
+quickplay.commands.quickplay.keybinds.help=打開 Quickplay 快速鍵設定。
 quickplay.commands.quickplay.moveinstance.deprecated=This command is deprecated. You should use "/qp config" instead!
-quickplay.commands.quickplay.discord.help=Join the Quickplay Discord server.
-quickplay.commands.quickplay.discord.message=Discord is the #1 way to get in touch with @bugfroggy. Join the Quickplay Discord if you have any questions, feedback, or bug reports.
+quickplay.commands.quickplay.discord.help=加入 Quickplay Discord 伺服器。
+quickplay.commands.quickplay.discord.message=Discord 是連繫 @bugfroggy 最好的方法。如果你有任何問題、反映、漏洞回報，請加入 Quickplay Discord 伺服器。
 quickplay.commands.quickplay.party.help=Customize your Quickplay Party Mode.
 quickplay.commands.quickplay.premium.help=Command for Quickplay Premium features.
 quickplay.commands.quickplay.premium.noCommands=No known commands!
-quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay couldn't gather the latest information about Quickplay Premium! Visit %s
+quickplay.commands.quickplay.premium.about.menuMissing=抱歉！Quickplay 無法獲取 Quickplay Premium 的最新訊息！請瀏覽 %s
 quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click to open %s
-quickplay.commands.quickplay.history.help=View what instances you've last been on.
-quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
-quickplay.commands.quickplay.history.error=Something went wrong!
+quickplay.commands.quickplay.history.help=查看你最近曾經到過的伺服器。
+quickplay.commands.quickplay.history.header=這裡列出了你最近 %s 個曾經到過的伺服器，頂部為最新記錄：
+quickplay.commands.quickplay.history.error=發生了某些錯誤！
 quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
 quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
 quickplay.commands.usage=Command syntax:
@@ -28,21 +28,21 @@ quickplay.premium.permissions=You need Quickplay Premium for this feature!
 
 quickplay.gui.copyright=Copyright © %s bugfroggy
 quickplay.gui.favorite=Bind to key...
-quickplay.gui.close=Close
-quickplay.gui.back=Back
+quickplay.gui.close=關閉
+quickplay.gui.back=返回
 
 quickplay.settings.category.general=General
 
-quickplay.settings.category.colors=Colors
+quickplay.settings.category.colors=顏色
 quickplay.settings.primaryColor.name=Primary Color
 quickplay.settings.primaryColor.help=Change your Quickplay primary color
 quickplay.settings.secondaryColor.name=Secondary Color
 quickplay.settings.secondaryColor.help=Change your Quickplay secondary color
 
 quickplay.settings.category.gui=GUI
-quickplay.settings.blurGuiBackgrounds.name=Blur GUI Backgrounds
+quickplay.settings.blurGuiBackgrounds.name=GUI 模糊背景
 quickplay.settings.blurGuiBackgrounds.help=Whether the background of Quickplay GUIs should be slightly blurred.
-quickplay.settings.fadeInGuis.name=Fade GUIs In
+quickplay.settings.fadeInGuis.name=淡入 GUI
 quickplay.settings.fadeInGuis.help=Whether GUIs should fade in when opening.
 quickplay.settings.transparentBackgrounds.name=Transparent Backgrounds
 quickplay.settings.transparentBackgrounds.help=Whether Quickplay GUI backgrounds should be 100%% transparent or just a translucent black.
