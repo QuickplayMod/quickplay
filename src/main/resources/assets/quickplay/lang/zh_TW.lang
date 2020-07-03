@@ -22,12 +22,12 @@ quickplay.commands.quickplay.history.header=這裡列出了你最近 %s 個曾�
 quickplay.commands.quickplay.history.error=發生了某些錯誤！
 quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
 quickplay.commands.hub.numberexception=無效大廳編號！用法：%s
-quickplay.commands.usage=Command syntax:
+quickplay.commands.usage=指令用法：
 
 quickplay.premium.permissions=你需要 Quickplay Premium 才能使用這個功能！
 
-quickplay.gui.copyright=Copyright © %s bugfroggy
-quickplay.gui.favorite=Bind to key...
+quickplay.gui.copyright=© %s bugfroggy 版權所有
+quickplay.gui.favorite=綁定到按鍵...
 quickplay.gui.close=關閉
 quickplay.gui.back=返回
 
@@ -46,7 +46,7 @@ quickplay.settings.fadeInGuis.name=淡入 GUI
 quickplay.settings.fadeInGuis.help=是否讓 Quickplay GUI 有淡化效果。
 quickplay.settings.transparentBackgrounds.name=透明背景
 quickplay.settings.transparentBackgrounds.help=設定 Quickplay GUI 背景要 100%% 透明或黑色半透明。
-quickplay.settings.gameLogoScale.name=Main Menu Scale
+quickplay.settings.gameLogoScale.name=主選單比例
 quickplay.settings.gameLogoScale.help=Scale of each item in the Quickplay main menu.
 quickplay.settings.reverseScrollingDirection.name=反轉滾動方向
 quickplay.settings.reverseScrollingDirection.help=Reverse the direction scrolling & dragging moves the screen.
@@ -64,7 +64,7 @@ quickplay.settings.instanceOpacity.name=Instance Display Opacity
 quickplay.settings.instanceOpacity.help=Opacity of the instance display.
 quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
 quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display should be rendered even when chat is open.
-quickplay.settings.instanceDisplayScale.name=Scale
+quickplay.settings.instanceDisplayScale.name=縮放比例
 quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
 
 quickplay.settings.sendUsageStatsButton.name=Usage Statistics...
