@@ -127,8 +127,8 @@ quickplay.party.sendingYou=正在將你傳送到 %s！
 quickplay.party.commencing=Commencing Quickplay Party Mode Launch Sequence...
 quickplay.party.nogames=D'oh! Party mode does not have any games selected.
 quickplay.gui.party.randomizing=Picking a random gamemode...
-quickplay.gui.party.allon=Enable All
-quickplay.gui.party.alloff=Disable All
+quickplay.gui.party.allon=啟用全部
+quickplay.gui.party.alloff=禁用全部
 quickplay.gui.party.launch=Launch!
 
 quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recreating it.
