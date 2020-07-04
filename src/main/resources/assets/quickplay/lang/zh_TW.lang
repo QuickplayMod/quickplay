@@ -51,7 +51,7 @@ quickplay.settings.gameLogoScale.help=Quickplay 主選單中每個項目的縮�
 quickplay.settings.reverseScrollingDirection.name=反轉滾動方向
 quickplay.settings.reverseScrollingDirection.help=Reverse the direction scrolling & dragging moves the screen.
 quickplay.settings.anyKeyClosesGui.name=Any Key Closes GUIs
-quickplay.settings.anyKeyClosesGui.help=Quickplay 的主選單及遊戲 GUI 將在按下任何按鍵時關閉。
+quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
 quickplay.settings.compactMainMenu.name=簡化主選單
 quickplay.settings.compactMainMenu.help=將 Quickplay 主選單設定為簡化模式並隱藏遊戲名稱，直到鼠標停在遊戲圖示內。
 
@@ -85,7 +85,7 @@ quickplay.settings.partyModeGui.name=啟用隨機選擇遊戲 GUI
 quickplay.settings.partyModeGui.help=設定是否在啟動組隊模式時顯示轉盤 GUI。
 
 quickplay.settings.category.premium=Premium 功能
-quickplay.settings.ingameDailyReward.name=Ingame Daily Reward
+quickplay.settings.ingameDailyReward.name=遊戲內領取每日獎勵
 quickplay.settings.ingameDailyReward.help=設定是否直接在遊戲内中打開每日獎勵頁面，這樣你就不需要再開啟瀏覽器了。
 quickplay.settings.displayOwnGlyph.name=Display Own Glyph
 quickplay.settings.displayOwnGlyph.help=Whether your own Glyph should be displayed over your head in F5 mode.
@@ -116,7 +116,7 @@ quickplay.gui.stats.yes=是，允許發送數據。
 quickplay.gui.stats.no=否，拒絕發送數據。
 quickplay.gui.stats.title=是否允許 Quickplay 發送匿名的使用數據？
 quickplay.gui.stats.description=選擇「是」將會發送你的遊戲及你使用模組的情况相關的匿名數據給我們，以幫助我們修復漏洞及改善你的使用體驗。這些數據包括但不限於你使用的 Minecraft 版本、Forge 版本、Java 版本、操作系统版本、已安裝的模組及你的 Quickplay 設定。請到下載頁面以了解我們會收集的數據。這個選項可在稍後於設定中修改。
-quickplay.gui.stats.token=Your stats token is %s.
+quickplay.gui.stats.token=你的數據權杖是 %s。
 quickplay.gui.stats.copied=已複製到剪貼簿！
 quickplay.gui.stats.copy=點擊複製
 quickplay.gui.stats.privacy=隱私權政策
