@@ -31,7 +31,7 @@ quickplay.gui.favorite=綁定到按鍵...
 quickplay.gui.close=關閉
 quickplay.gui.back=返回
 
-quickplay.settings.category.general=General
+quickplay.settings.category.general=一般設定
 
 quickplay.settings.category.colors=顏色
 quickplay.settings.primaryColor.name=主要色彩
@@ -62,12 +62,12 @@ quickplay.settings.moveInstanceDisplayButton.name=Move Instance Display...
 quickplay.settings.moveInstanceDisplayButton.help=Change the position of the Instance display on-screen.
 quickplay.settings.instanceOpacity.name=Instance Display Opacity
 quickplay.settings.instanceOpacity.help=Opacity of the instance display.
-quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
+quickplay.settings.displayInstanceWithChatOpen.name=覆蓋聊天欄
 quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display should be rendered even when chat is open.
 quickplay.settings.instanceDisplayScale.name=縮放比例
 quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
 
-quickplay.settings.sendUsageStatsButton.name=Usage Statistics...
+quickplay.settings.sendUsageStatsButton.name=發送使用數據...
 quickplay.settings.sendUsageStatsButton.help=發送匿名的使用數據以幫助我們開發更好的模組！
 quickplay.settings.editKeybinds.name=編輯快速鍵...
 quickplay.settings.editKeybinds.help=右鍵點擊遊戲或模式以分配或刪除快速鍵。
@@ -81,10 +81,10 @@ quickplay.settings.redesignedLobbyCommand.help=設定是否在可用時使用 Qu
 quickplay.settings.category.partyMode=組隊模式
 quickplay.settings.partyModeDelay.name=啟動延遲
 quickplay.settings.partyModeDelay.help=設定隨機選擇持續時間。
-quickplay.settings.partyModeGui.name=Launch Randomization GUI
-quickplay.settings.partyModeGui.help=Whether a special spinner GUI should be opened when the user launches party mode.
+quickplay.settings.partyModeGui.name=啟用隨機選擇遊戲 GUI
+quickplay.settings.partyModeGui.help=設定是否在啟動組隊模式時顯示轉盤 GUI。
 
-quickplay.settings.category.premium=Premium Features
+quickplay.settings.category.premium=Premium 功能
 quickplay.settings.ingameDailyReward.name=Ingame Daily Reward
 quickplay.settings.ingameDailyReward.help=設定是否直接在遊戲内中打開每日獎勵頁面，這樣你就不需要再開啟瀏覽器了。
 quickplay.settings.displayOwnGlyph.name=Display Own Glyph
