@@ -50,8 +50,8 @@ quickplay.settings.gameLogoScale.name=主選單比例
 quickplay.settings.gameLogoScale.help=Quickplay 主選單中每個項目的縮放比例。
 quickplay.settings.reverseScrollingDirection.name=反轉滾動方向
 quickplay.settings.reverseScrollingDirection.help=Reverse the direction scrolling & dragging moves the screen.
-quickplay.settings.anyKeyClosesGui.name=Any Key Closes GUIs
-quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
+quickplay.settings.anyKeyClosesGui.name=按下任意按鍵關閉 GUI
+quickplay.settings.anyKeyClosesGui.help=Quickplay 的主選單及選擇遊戲 GUI 將在按下任何按鍵時關閉。
 quickplay.settings.compactMainMenu.name=簡化主選單
 quickplay.settings.compactMainMenu.help=將 Quickplay 主選單設定為簡化模式並隱藏遊戲名稱，直到鼠標停在遊戲圖示內。
 
