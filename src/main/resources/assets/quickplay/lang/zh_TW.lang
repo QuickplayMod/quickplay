@@ -55,14 +55,14 @@ quickplay.settings.anyKeyClosesGui.help=Quickplay 的主選單及選擇遊戲 GU
 quickplay.settings.compactMainMenu.name=簡化主選單
 quickplay.settings.compactMainMenu.help=將 Quickplay 主選單設定為簡化模式並隱藏遊戲名稱，直到鼠標停在遊戲圖示內。
 
-quickplay.settings.category.instanceDisplay=Instance Display
-quickplay.settings.instanceDisplay.name=Instance Display
+quickplay.settings.category.instanceDisplay=伺服器視窗顯示
+quickplay.settings.instanceDisplay.name=顯示視窗
 quickplay.settings.instanceDisplay.help=設定是否在屏幕上顯示目前連接中的伺服器。
 quickplay.settings.moveInstanceDisplayButton.name=移動視窗...
 quickplay.settings.moveInstanceDisplayButton.help=改變視窗在螢幕上的位置。
 quickplay.settings.instanceOpacity.name=視窗不透明度
 quickplay.settings.instanceOpacity.help=設定視窗的不透明度。
-quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
+quickplay.settings.displayInstanceWithChatOpen.name=在聊天欄中顯示
 quickplay.settings.displayInstanceWithChatOpen.help=設定是否在聊天欄開啟時保持視窗開啟。
 quickplay.settings.instanceDisplayScale.name=縮放比例
 quickplay.settings.instanceDisplayScale.help=設定視窗的縮放大小。
