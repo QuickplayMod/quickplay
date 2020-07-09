@@ -63,7 +63,7 @@ quickplay.settings.moveInstanceDisplayButton.help=改變視窗在螢幕上的位
 quickplay.settings.instanceOpacity.name=視窗不透明度
 quickplay.settings.instanceOpacity.help=設定視窗的不透明度。
 quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
-quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display should be rendered even when chat is open.
+quickplay.settings.displayInstanceWithChatOpen.help=設定是否在聊天欄開啟時保持視窗開啟。
 quickplay.settings.instanceDisplayScale.name=縮放比例
 quickplay.settings.instanceDisplayScale.help=設定視窗的縮放大小。
 
