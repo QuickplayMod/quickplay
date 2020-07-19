@@ -191,8 +191,7 @@ public class Quickplay {
      * @param handler Object to unregister
      */
     public void unregisterEventHandler(Object handler) {
-        if(eventHandlers.contains(handler))
-            eventHandlers.remove(handler);
+        eventHandlers.remove(handler);
         MinecraftForge.EVENT_BUS.unregister(handler);
     }
 
@@ -314,7 +313,7 @@ public class Quickplay {
             }
             // Copy of the lobby command that doesn't override server commands
             // Used for "Go to Lobby" buttons
-            commands.add(new CommandHub("quickplaylobby", "hub"));
+            commands.add(new CommandHub("quickplaylobby", "lobby"));
             commands.forEach(ClientCommandHandler.instance::registerCommand);
         }
     }
