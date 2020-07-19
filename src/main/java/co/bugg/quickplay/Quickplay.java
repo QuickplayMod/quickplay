@@ -316,7 +316,7 @@ public class Quickplay implements IAddon {
             }
             // Copy of the lobby command that doesn't override server commands
             // Used for "Go to Lobby" buttons
-            commands.add(new CommandHub("quickplaylobby", "hub"));
+            commands.add(new CommandHub("quickplaylobby", "lobby"));
             commands.forEach(Hyperium.INSTANCE.getHandlers().getHyperiumCommandHandler()::registerCommand);
 
             EventBus.INSTANCE.post(new QuickplayEnabledEvent(this));
