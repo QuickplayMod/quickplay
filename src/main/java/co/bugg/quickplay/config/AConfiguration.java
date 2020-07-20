@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Abstract configuration for Quickplay
@@ -77,7 +77,7 @@ public abstract class AConfiguration implements Serializable {
         }
 
         final Gson gson = new GsonBuilder().registerTypeAdapterFactory(new GsonPostProcessorFactory()).create();
-        final String contents = Files.toString(file, Charset.forName("UTF-8"));
+        final String contents = Files.toString(file, StandardCharsets.UTF_8);
 
         final AConfiguration newConfig = gson.fromJson(contents, type);
         newConfig.setFile(file);

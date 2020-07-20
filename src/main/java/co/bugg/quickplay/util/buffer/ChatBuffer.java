@@ -19,7 +19,7 @@ public class ChatBuffer extends ABuffer {
     /**
      * Constructor
      *
-     * @param sleepTime Time in milliseconds between {@link #run()} calls. See {@link #sleepTime}
+     * @param sleepTime Time in milliseconds between {@link #run()} calls. See {@link ABuffer#sleepTime}
      */
     public ChatBuffer(int sleepTime) {
         super(sleepTime);
@@ -37,8 +37,9 @@ public class ChatBuffer extends ABuffer {
             final String message = (String) pull();
 
             // Handle as a command
-            if(message.startsWith("/") && ClientCommandHandler.instance.executeCommand(player, message) == 0)
+            if(message.startsWith("/") && ClientCommandHandler.instance.executeCommand(player, message) == 0) {
                 player.sendChatMessage(message);
+            }
         }
     }
 

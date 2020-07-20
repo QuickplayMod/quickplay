@@ -11,13 +11,13 @@ import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.games.Game;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -118,8 +118,9 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         copyright = I18n.format("quickplay.gui.copyright", Calendar.getInstance().get(Calendar.YEAR));
 
         // Change the window Y padding if it's set
-        if(Quickplay.INSTANCE.settings != null && Quickplay.INSTANCE.settings.mainMenuYPadding > 0)
+        if(Quickplay.INSTANCE.settings != null && Quickplay.INSTANCE.settings.mainMenuYPadding > 0) {
             scrollContentMargins = Quickplay.INSTANCE.settings.mainMenuYPadding;
+        }
 
         // Strings aren't rendered in compact mode so forget about this
         if(!compact) {
@@ -141,8 +142,9 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             } else {
                 stringScale = 1.0;
             }
-        } else
+        } else {
             stringScale = 0;
+        }
 
         final int itemWidth = (int) (gameImgSize * scaleMultiplier + longestStringWidth * stringScale + stringLeftMargins + boxXMargins);
         // Calculate column count
@@ -160,7 +162,11 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         int nextButtonId = 0;
         for(Game game : Quickplay.INSTANCE.gameList) {
             // Create invisible button                                                                                                                                                                                              // Width can't be affected by scaling                       // Texture is of the game icon, although it's not rendered (opacity is 0 in drawScreen)
-            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth, (int) ((gameImgSize * scaleMultiplier + BoxYPadding) * currentRow + scrollContentMargins / 2), (int) (itemWidth / scaleMultiplier), gameImgSize, "", new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"), 0, 0, scaleMultiplier, true));
+            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth,
+                    (int) ((gameImgSize * scaleMultiplier + BoxYPadding) * currentRow + scrollContentMargins / 2),
+                    (int) (itemWidth / scaleMultiplier), gameImgSize, "", new ResourceLocation(Reference.MOD_ID,
+                    Hashing.md5().hashString(game.imageURL.toString(), StandardCharsets.UTF_8).toString() + ".png"),
+                    0, 0, scaleMultiplier, true));
             currentColumn++;
             if(currentColumn + 1 > columnCount) {
                 currentColumn = 0;
@@ -183,8 +189,8 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         drawDefaultBackground();
 
@@ -196,26 +202,34 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             // Draw images & strings for all the games buttons
             for(QuickplayGuiComponent component : componentList) {
                 final int scrollAdjustedY = component.scrollable ? component.y - scrollPixel : component.y;
-                GL11.glColor3f(1, 1, 1);
+                GlStateManager.color(1, 1, 1);
                 if(component.origin instanceof Game) {
                     // Draw icon
-                    GL11.glColor4f(1, 1, 1, opacity);
-                    GL11.glScaled(scaleMultiplier, scaleMultiplier, scaleMultiplier);
-                    Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(((Game) component.origin).imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"));
-                    drawTexturedModalRect((int) (component.x / scaleMultiplier), (int) (scrollAdjustedY / scaleMultiplier), 0, 0, gameImgSize, gameImgSize);
-                    GL11.glScaled(1 / scaleMultiplier, 1 / scaleMultiplier, 1 / scaleMultiplier);
+                    GlStateManager.color(1, 1, 1, opacity);
+                    GlStateManager.scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
+                    Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID,
+                            Hashing.md5().hashString(((Game) component.origin).imageURL.toString(),
+                                    StandardCharsets.UTF_8).toString() + ".png"));
+                    drawTexturedModalRect((int) (component.x / scaleMultiplier), (int) (scrollAdjustedY / scaleMultiplier),
+                            0, 0, gameImgSize, gameImgSize);
+                    GlStateManager.scale(1 / scaleMultiplier, 1 / scaleMultiplier, 1 / scaleMultiplier);
 
                     if(!compact && opacity > 0) {
                         // Draw text
-                        GL11.glScaled(stringScale, stringScale, stringScale);
-                        final int color = component.mouseHovering(this, mouseX, mouseY) && contextMenu == null ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
-                        drawString(mc.fontRendererObj, ((Game) component.origin).name, (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale), (int) ((((scrollAdjustedY + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale), color & 0xFFFFFF | (int) (opacity * 255) << 24);
-                        GL11.glScaled(1 / stringScale, 1 / stringScale, 1 / stringScale);
+                        GlStateManager.scale(stringScale, stringScale, stringScale);
+                        final int color = component.mouseHovering(this, mouseX, mouseY) && contextMenu == null ?
+                                Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() :
+                                Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
+                        drawString(mc.fontRendererObj, ((Game) component.origin).name,
+                                (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale),
+                                (int) ((((scrollAdjustedY + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale),
+                                color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                        GlStateManager.scale(1 / stringScale, 1 / stringScale, 1 / stringScale);
                     }
                 }
             }
 
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.enableBlend();
 
             drawScrollbar(width - scrollbarWidth - 5);
 
@@ -235,11 +249,14 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             }
         }
 
-        if(opacity > 0)
-            drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        if(opacity > 0) {
+            drawCenteredString(fontRendererObj, copyright, width / 2,
+                    height - fontRendererObj.FONT_HEIGHT - copyrightMargins,
+                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        }
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     /**
@@ -250,8 +267,8 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
      */
     protected void drawNoGamesMenu() {
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         final int stringMargins = 7;
         final int boxMargins = 15;
@@ -264,8 +281,12 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
         // Calculate longest string for scaling
         int longestStringLength = mc.fontRendererObj.getStringWidth(lineOne) + boxMargins * 2;
-        if(longestStringLength < mc.fontRendererObj.getStringWidth(lineTwo) + boxMargins * 2) longestStringLength = mc.fontRendererObj.getStringWidth(lineTwo) + boxMargins * 2;
-        if(longestStringLength < mc.fontRendererObj.getStringWidth(lineThree) + boxMargins * 2) longestStringLength = mc.fontRendererObj.getStringWidth(lineThree) + boxMargins * 2;
+        if(longestStringLength < mc.fontRendererObj.getStringWidth(lineTwo) + boxMargins * 2) {
+            longestStringLength = mc.fontRendererObj.getStringWidth(lineTwo) + boxMargins * 2;
+        }
+        if(longestStringLength < mc.fontRendererObj.getStringWidth(lineThree) + boxMargins * 2) {
+            longestStringLength = mc.fontRendererObj.getStringWidth(lineThree) + boxMargins * 2;
+        }
 
         // Calculate scale and Y locations
         final int oopsHeaderY = (int) (height * 0.4);
@@ -276,27 +297,33 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         final int lineThreeY = (int) (lineTwoY + mc.fontRendererObj.FONT_HEIGHT * errorScale) + stringMargins;
 
         // Draw background box
-        drawRect(width / 2 - longestStringLength / 2 - boxMargins, oopsHeaderY - boxMargins, width / 2 + longestStringLength / 2 + boxMargins, (int) (lineThreeY + mc.fontRendererObj.FONT_HEIGHT * errorScale + boxMargins), (int) (opacity * 255 * 0.5) << 24);
-        GL11.glEnable(GL11.GL_BLEND);
+        drawRect(width / 2 - longestStringLength / 2 - boxMargins, oopsHeaderY - boxMargins,
+                width / 2 + longestStringLength / 2 + boxMargins, (int) (lineThreeY + mc.fontRendererObj.FONT_HEIGHT
+                        * errorScale + boxMargins), (int) (opacity * 255 * 0.5) << 24);
+        GlStateManager.enableBlend();
 
         // Draw header
-        GL11.glScaled(oopsHeaderScale, oopsHeaderScale, oopsHeaderScale);
+        GlStateManager.scale(oopsHeaderScale, oopsHeaderScale, oopsHeaderScale);
         drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.header"),
-                (int) (width / 2 / oopsHeaderScale), (int) (oopsHeaderY / oopsHeaderScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        GL11.glScaled(1 / oopsHeaderScale, 1 / oopsHeaderScale, 1 / oopsHeaderScale);
+                (int) (width / 2 / oopsHeaderScale), (int) (oopsHeaderY / oopsHeaderScale),
+                Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        GlStateManager.scale(1 / oopsHeaderScale, 1 / oopsHeaderScale, 1 / oopsHeaderScale);
 
         // Draw error text
-        GL11.glScaled(errorScale, errorScale, errorScale);
+        GlStateManager.scale(errorScale, errorScale, errorScale);
         drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.issue"),
-                (int) (width / 2 / errorScale), (int) (lineOneY / errorScale), Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                (int) (width / 2 / errorScale), (int) (lineOneY / errorScale),
+                Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.why"),
-                (int) (width / 2 / errorScale), (int) (lineTwoY / errorScale), Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                (int) (width / 2 / errorScale), (int) (lineTwoY / errorScale),
+                Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.contact"),
-                (int) (width / 2 / errorScale), (int) (lineThreeY / errorScale), Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        GL11.glScaled(1 / errorScale, 1 / errorScale, 1 / errorScale);
+                (int) (width / 2 / errorScale), (int) (lineThreeY / errorScale),
+                Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        GlStateManager.scale(1 / errorScale, 1 / errorScale, 1 / errorScale);
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     @Override
@@ -309,20 +336,18 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                     @Override
                     public void optionSelected(int index) {
                         closeContextMenu();
-                        switch(index) {
-                            case 0:
-                                if(component.origin instanceof Game)
-                                    // Open key binding GUI & add new keybind
-                                    Quickplay.INSTANCE.keybinds.keybinds.add(new QuickplayKeybind(((Game) component.origin).name, Keyboard.KEY_NONE, QuickplayGuiGame.class, ((Game) component.origin).unlocalizedName));
-
-                                try {
-                                    Quickplay.INSTANCE.keybinds.save();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    Quickplay.INSTANCE.sendExceptionRequest(e);
-                                }
-                                Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
-                                break;
+                        if (index == 0) {
+                            if (component.origin instanceof Game) {    // Open key binding GUI & add new keybind
+                                Quickplay.INSTANCE.keybinds.keybinds.add(new QuickplayKeybind(((Game) component.origin).name,
+                                        Keyboard.KEY_NONE, QuickplayGuiGame.class, ((Game) component.origin).unlocalizedName));
+                            }
+                            try {
+                                Quickplay.INSTANCE.keybinds.save();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Quickplay.INSTANCE.sendExceptionRequest(e);
+                            }
+                            Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
 
                             /*    // Priority management. Users can't modify priorities
                             case 1:
@@ -393,8 +418,9 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
-        if(Quickplay.INSTANCE.settings.anyKeyClosesGui)
+        if(Quickplay.INSTANCE.settings.anyKeyClosesGui) {
             Minecraft.getMinecraft().displayGuiScreen(null);
+        }
     }
 
     @Override
@@ -404,7 +430,8 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
             mc.displayGuiScreen(new QuickplayGuiGame((Game) component.origin));
 
             // Send analytical data to Google
-            if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+            if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                    Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
                 Quickplay.INSTANCE.threadPool.submit(() -> {
                     try {
                         Quickplay.INSTANCE.ga.createEvent("GUIs", "Main Menu Option Pressed")

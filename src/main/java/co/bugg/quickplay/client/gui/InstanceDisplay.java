@@ -2,7 +2,7 @@ package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
 import net.minecraft.client.Minecraft;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
 
 import java.io.IOException;
 
@@ -39,21 +39,23 @@ public class InstanceDisplay extends MoveableHudElement {
         final int scaledX = (int) (x * screenWidth / scale);
         final int scaledY = (int) (y * screenHeight / scale);
 
-        GL11.glPushMatrix();
-        GL11.glScaled(scale, scale, scale);
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(scale, scale, scale);
 
         drawRect((scaledX - this.backgroundHorizontalPadding - stringWidth / 2),
                 (scaledY - this.backgroungVerticalPadding),
-                (scaledX + stringWidth + this.backgroundHorizontalPadding - stringWidth / 2 - 1), // -1 due to a padding issue I don't
-                                                                                                                // understand it but it's uneven without.
+                /* -1 due to a padding issue I don't understand it but it's uneven without. */
+                (scaledX + stringWidth + this.backgroundHorizontalPadding - stringWidth / 2 - 1),
                 (scaledY + stringHeight + this.backgroungVerticalPadding),
                 0x000000 | (int) (opacity * 100 * 0.5) << 24);
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.enableBlend();
 
-        drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY,
+                Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
-        GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
-        GL11.glPopMatrix();
+        GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     @Override
@@ -68,15 +70,17 @@ public class InstanceDisplay extends MoveableHudElement {
 
     @Override
     public double getxRatio() {
-        if(Quickplay.INSTANCE.settings != null)
+        if(Quickplay.INSTANCE.settings != null) {
             return Quickplay.INSTANCE.settings.instanceDisplayX;
+        }
         else return 0.5;
     }
 
     @Override
     public double getyRatio() {
-        if(Quickplay.INSTANCE.settings != null)
+        if(Quickplay.INSTANCE.settings != null) {
             return Quickplay.INSTANCE.settings.instanceDisplayY;
+        }
         else return 0.05;
     }
 

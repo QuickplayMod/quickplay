@@ -24,10 +24,11 @@ public class ExceptionRequest extends AnalyticsRequest {
      * @return This
      */
     public ExceptionRequest setExceptionDescription(String description) {
-        if(description == null || description.length() == 0)
+        if(description == null || description.length() == 0) {
             parameters.remove("exd");
-        else
+        } else {
             parameters.put("exd", description);
+        }
         return this;
     }
 
@@ -37,10 +38,11 @@ public class ExceptionRequest extends AnalyticsRequest {
      * @return This
      */
     public ExceptionRequest setIsFatal(boolean fatal) {
-        if(fatal)
+        if(fatal) {
             parameters.put("exf", "1");
-        else
+        } else {
             parameters.remove("exf");
+        }
         return this;
     }
 }

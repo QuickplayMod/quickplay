@@ -8,10 +8,10 @@ import co.bugg.quickplay.games.Mode;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,10 +71,13 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
 
         // Create a list of all applicable modes
         for(Game game : Quickplay.INSTANCE.gameList) {
-            if(game.unlocalizedName.equals("partyMode"))
+            if(game.unlocalizedName.equals("partyMode")) {
                 continue;
+            }
             for(Mode mode : game.modes) {
-                modes.add(new PartyMode(game.name + " - " + mode.name, mode.command, game.unlocalizedName.replace("/", "") + "/" + mode.command.replace("/", "")));
+                modes.add(new PartyMode(game.name + " - " + mode.name, mode.command,
+                        game.unlocalizedName.replace("/", "") + "/" +
+                                mode.command.replace("/", "")));
             }
         }
 
@@ -82,15 +85,24 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         // Add all the buttons for each mode
         for(PartyMode mode : modes) {
             // Display string for whether this mode is currently enabled or not
-            final String trueOrFalse = checkIfModeToggled(mode) != null ? EnumChatFormatting.GREEN + I18n.format("quickplay.config.gui.true") : EnumChatFormatting.RED + I18n.format("quickplay.config.gui.false");
-            componentList.add(new QuickplayGuiButton(mode, buttonId, width / 2 - buttonWidth / 2, topOfButtons + (buttonHeight + buttonYMargins) * buttonId, buttonWidth, buttonHeight, mode.name + ": " + trueOrFalse, true));
+            final String trueOrFalse = checkIfModeToggled(mode) != null ?
+                    EnumChatFormatting.GREEN + I18n.format("quickplay.config.gui.true") :
+                    EnumChatFormatting.RED + I18n.format("quickplay.config.gui.false");
+            componentList.add(new QuickplayGuiButton(mode, buttonId, width / 2 - buttonWidth / 2,
+                    topOfButtons + (buttonHeight + buttonYMargins) * buttonId, buttonWidth, buttonHeight,
+                    mode.name + ": " + trueOrFalse, true));
             buttonId++;
         }
 
         // Add launch, "All On" and "All Off" buttons
-        componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2  - topButtonWidth / 2, 10, topButtonWidth, buttonHeight, I18n.format("quickplay.gui.party.launch"), false)); // Launch
-        componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2 - topButtonWidth / 2 - topButtonWidth - topButtonMargins, 10, topButtonWidth, 20, I18n.format("quickplay.gui.party.allon"), false)); // All on
-        componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2 + topButtonWidth / 2 + topButtonMargins, 10, topButtonWidth, 20, I18n.format("quickplay.gui.party.alloff"), false)); // All off
+        componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2  - topButtonWidth / 2, 10,
+                topButtonWidth, buttonHeight, I18n.format("quickplay.gui.party.launch"), false)); // Launch
+        componentList.add(new QuickplayGuiButton(null, buttonId++,
+                width / 2 - topButtonWidth / 2 - topButtonWidth - topButtonMargins,
+                10, topButtonWidth, 20, I18n.format("quickplay.gui.party.allon"), false)); // All on
+        componentList.add(new QuickplayGuiButton(null, buttonId++,
+                width / 2 + topButtonWidth / 2 + topButtonMargins, 10, topButtonWidth, 20,
+                I18n.format("quickplay.gui.party.alloff"), false)); // All off
 
         setScrollingValues();
     }
@@ -117,8 +129,8 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         drawDefaultBackground();
 
@@ -127,12 +139,15 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         //Override super.drawScreen(mouseX, mouseY, partialTicks);
         updateOpacity();
         for (QuickplayGuiComponent component : componentList) {
-            double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfButtons ? 1 : (component.y - scrollPixel) + scrollFadeDistance < topOfButtons ? 0 : (scrollFadeDistance - ((double) topOfButtons - (double) (component.y - scrollPixel))) / (double) scrollFadeDistance) : 1;
+            double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfButtons ? 1 :
+                    (component.y - scrollPixel) + scrollFadeDistance < topOfButtons ? 0 :
+                            (scrollFadeDistance - ((double) topOfButtons - (double) (component.y - scrollPixel))) /
+                                    (double) scrollFadeDistance) : 1;
             component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
         }
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     @Override

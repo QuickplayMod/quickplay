@@ -82,8 +82,9 @@ public class AnalyticsRequest {
                     .append("=")
                     .append(URLEncoder.encode(map.getValue(), "UTF-8"));
 
-            if(iter.hasNext())
+            if(iter.hasNext()) {
                 urlEncodedBodyBuilder.append("&");
+            }
         }
         final String urlEncodedBody = urlEncodedBodyBuilder.toString();
 
@@ -102,10 +103,11 @@ public class AnalyticsRequest {
 
         if(analytics.debug) {
             BufferedReader reader;
-            if(connection.getResponseCode() == 200)
+            if(connection.getResponseCode() == 200) {
                 reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            else
+            } else {
                 reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            }
 
             final StringBuilder builder = new StringBuilder();
             String line;
@@ -116,8 +118,9 @@ public class AnalyticsRequest {
             System.out.println(builder.toString());
         }
 
-        if(connection.getResponseCode() != 200)
+        if(connection.getResponseCode() != 200) {
             throw new IOException("Response code not equal to 200! Illegal request. Response: " + connection.getResponseCode());
+        }
 
     }
 
@@ -128,10 +131,11 @@ public class AnalyticsRequest {
      * @return This
      */
     public AnalyticsRequest setAnonymizeIP(boolean anonymizeIP) {
-        if(anonymizeIP)
+        if(anonymizeIP) {
             parameters.put("aip", "1");
-        else
+        } else {
             parameters.remove("aip");
+        }
         return this;
     }
 
@@ -141,10 +145,11 @@ public class AnalyticsRequest {
      * @return This
      */
     public AnalyticsRequest setScreenResolution(String resolution) {
-        if(resolution == null || resolution.length() == 0)
+        if(resolution == null || resolution.length() == 0) {
             parameters.remove("sr");
-        else
+        } else {
             parameters.put("sr", resolution);
+        }
         return this;
     }
 
@@ -156,10 +161,11 @@ public class AnalyticsRequest {
      * @return this
      */
     public AnalyticsRequest setDataSource(String dataSource) {
-        if(dataSource == null || dataSource.length() == 0)
+        if(dataSource == null || dataSource.length() == 0) {
             parameters.remove("ds");
-        else
+        } else {
             parameters.put("ds", dataSource);
+        }
         return this;
     }
 
@@ -169,10 +175,11 @@ public class AnalyticsRequest {
      * @return This
      */
     public AnalyticsRequest setLanguage(String language) {
-        if(language == null || language.length() == 0)
+        if(language == null || language.length() == 0) {
             parameters.remove("ul");
-        else
+        } else {
             parameters.put("ul", language);
+        }
         return this;
     }
 
@@ -182,10 +189,11 @@ public class AnalyticsRequest {
      * @return This
      */
     public AnalyticsRequest setHostname(String hostname) {
-        if(hostname == null || hostname.length() == 0)
+        if(hostname == null || hostname.length() == 0) {
             parameters.remove("dh");
-        else
+        } else {
             parameters.put("dh", hostname);
+        }
         return this;
     }
 
@@ -195,10 +203,11 @@ public class AnalyticsRequest {
      * @return This
      */
     public AnalyticsRequest setPage(String page) {
-        if(page == null || page.length() == 0)
+        if(page == null || page.length() == 0) {
             parameters.remove("dp");
-        else
+        } else {
             parameters.put("dp", page);
+        }
         return this;
     }
 
@@ -208,10 +217,11 @@ public class AnalyticsRequest {
      * @return This
      */
     public AnalyticsRequest setTitle(String title) {
-        if(title == null || title.length() == 0)
+        if(title == null || title.length() == 0) {
             parameters.remove("dt");
-        else
+        } else {
             parameters.put("dt", title);
+        }
         return this;
     }
 
@@ -224,10 +234,11 @@ public class AnalyticsRequest {
      * @return This
      */
     public AnalyticsRequest setSessionControl(SessionControl sessionControl) {
-        if(sessionControl == null)
+        if(sessionControl == null) {
             parameters.remove("sc");
-        else
+        } else {
             parameters.put("sc", sessionControl.toString());
+        }
         return this;
     }
 
@@ -237,10 +248,11 @@ public class AnalyticsRequest {
      * @return This
      */
     public AnalyticsRequest setUserAgent(String ua) {
-        if(ua == null || ua.length() == 0)
+        if(ua == null || ua.length() == 0) {
             parameters.remove("ua");
-        else
+        } else {
             parameters.put("ua", ua);
+        }
         return this;
     }
 

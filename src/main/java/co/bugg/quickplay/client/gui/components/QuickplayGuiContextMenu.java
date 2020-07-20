@@ -5,8 +5,8 @@ import co.bugg.quickplay.client.ContextMenu;
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -62,8 +62,9 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
         // Calculate width
         int longestStringLength = 0;
         for(String option : options) {
-            if(fontRendererObj.getStringWidth(option) > longestStringLength)
+            if(fontRendererObj.getStringWidth(option) > longestStringLength) {
                 longestStringLength = fontRendererObj.getStringWidth(option);
+            }
         }
 
         this.width = longestStringLength + boxPadding * 2;
@@ -78,15 +79,17 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
         // Down/tab buttons move highlighting down the list. Up arrow/shift+tab does opposite. Enter key selects the option.
         if(keyCode == KEY_UP || (keyCode == KEY_TAB && (isKeyDown(Keyboard.KEY_LSHIFT) || isKeyDown(KEY_RSHIFT)))) {
-            if(highlightedOptionIndex <= 0 || highlightedOptionIndex > options.size() - 1)
+            if(highlightedOptionIndex <= 0 || highlightedOptionIndex > options.size() - 1) {
                 highlightedOptionIndex = options.size() - 1;
-            else
+            } else {
                 highlightedOptionIndex--;
+            }
         } else if(keyCode == KEY_DOWN || keyCode == KEY_TAB) {
-            if(highlightedOptionIndex < 0 || highlightedOptionIndex >= options.size() - 1)
+            if(highlightedOptionIndex < 0 || highlightedOptionIndex >= options.size() - 1) {
                 highlightedOptionIndex = 0;
-            else
+            } else {
                 highlightedOptionIndex++;
+            }
         } else if(keyCode == KEY_RETURN && highlightedOptionIndex >= 0) {
             optionSelected(highlightedOptionIndex);
             highlightedOptionIndex = -1;
@@ -114,13 +117,17 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
      * @return The index of the option the mouse is currently hovering over, or -1 if none
      */
     private int mouseHoveringOverOption(QuickplayGui gui, int mouseX, int mouseY) {
-        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
         for(ListIterator<String> iter = options.listIterator(); iter.hasNext();) {
             final int index = iter.nextIndex();
-            final int stringY = (int) (scrollAdjustedY + boxPadding * scale + index * (fontRendererObj.FONT_HEIGHT + stringBottomMargin) * scale);
-            if(mouseX > x && mouseX < x + width * scale && mouseY > stringY && mouseY < stringY + fontRendererObj.FONT_HEIGHT * scale)
+            final int stringY = (int) (scrollAdjustedY + boxPadding * scale + index *
+                    (fontRendererObj.FONT_HEIGHT + stringBottomMargin) * scale);
+
+            if(mouseX > x && mouseX < x + width * scale && mouseY > stringY && mouseY <
+                    stringY + fontRendererObj.FONT_HEIGHT * scale) {
                 return index;
+            }
 
             iter.next();
         }
@@ -132,29 +139,45 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
         if(opacity > 0) {
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
 
-            GL11.glScaled(scale, scale, scale);
+            GlStateManager.scale(scale,scale,scale);
 
             // Draw right click box
-            drawRect((int) (x / scale), (int) (scrollAdjustedY / scale), (int) (x / scale + width), (int) (scrollAdjustedY / scale + height), (int) (opacity * boxOpacity * 255) << 24);
-            GL11.glEnable(GL11.GL_BLEND);
+            drawRect((int) (x / scale), (int) (scrollAdjustedY / scale), (int) (x / scale + width),
+                    (int) (scrollAdjustedY / scale + height), (int) (opacity * boxOpacity * 255) << 24);
+            GlStateManager.enableBlend();
 
             for (ListIterator<String> iter = options.listIterator(); iter.hasNext(); ) {
                 final int index = iter.nextIndex();
                 final String string = iter.next();
-                final int stringY = (int) (scrollAdjustedY / scale + boxPadding + index * (fontRendererObj.FONT_HEIGHT + stringBottomMargin));
-                final int color = highlightedOptionIndex == index ? Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() : Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
-                drawString(fontRendererObj, string, (int) (x / scale + boxPadding), stringY, color & 0xFFFFFF | (int) (opacity * 255) << 24);
-                if (mouseX > x && mouseX < x + width * scale && mouseY > stringY * scale && mouseY < (stringY + fontRendererObj.FONT_HEIGHT) * scale)
-                    drawRect((int) (x / scale + boxPadding), stringY + fontRendererObj.FONT_HEIGHT, (int) (x / scale + boxPadding + fontRendererObj.getStringWidth(string)), stringY + fontRendererObj.FONT_HEIGHT + 1, color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                final int stringY = (int) (scrollAdjustedY / scale + boxPadding + index *
+                        (fontRendererObj.FONT_HEIGHT + stringBottomMargin));
+
+                int color;
+                if(highlightedOptionIndex == index) {
+                    color = Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB();
+                } else {
+                    color = Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
+                }
+
+                drawString(fontRendererObj, string, (int) (x / scale + boxPadding), stringY,
+                        color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                if (mouseX > x && mouseX < x + width * scale && mouseY > stringY * scale && mouseY <
+                        (stringY + fontRendererObj.FONT_HEIGHT) * scale) {
+
+                    drawRect((int) (x / scale + boxPadding), stringY + fontRendererObj.FONT_HEIGHT,
+                            (int) (x / scale + boxPadding + fontRendererObj.getStringWidth(string)),
+                            stringY + fontRendererObj.FONT_HEIGHT + 1,
+                            color & 0xFFFFFF | (int) (opacity * 255) << 24);
+                }
             }
 
-            GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
+            GlStateManager.scale(1/scale,1/scale,1/scale);
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 
@@ -162,7 +185,7 @@ public abstract class QuickplayGuiContextMenu extends QuickplayGuiComponent impl
 
     @Override
     public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY) {
-        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;;
+        final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
         return mouseX > x && mouseX < x + width * scale && mouseY > scrollAdjustedY && mouseY < scrollAdjustedY + height * scale;
     }
 

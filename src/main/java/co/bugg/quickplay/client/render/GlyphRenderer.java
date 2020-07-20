@@ -16,7 +16,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -41,6 +41,7 @@ public class GlyphRenderer {
 
     @SubscribeEvent
     public void onPlayerRender(RenderPlayerEvent.Pre e) {
+
         final String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
         // Don't render at all if F1 is hit or if the client is in a game (or unknown location)
         if(!Minecraft.getMinecraft().gameSettings.hideGUI) {
@@ -57,8 +58,9 @@ public class GlyphRenderer {
                         if (Quickplay.INSTANCE.glyphs.stream().anyMatch(glyph -> glyph.uuid.toString().equals(player.getUniqueID().toString()))) {
                             final PlayerGlyph glyph = Quickplay.INSTANCE.glyphs.stream().filter(thisGlyph -> thisGlyph.uuid.equals(player.getGameProfile().getId())).collect(Collectors.toList()).get(0);
                             // If this client is currently not in a game OR if the glyph is set to display in-game
-                            if ((currentServer != null && !gameServerPattern.matcher(currentServer).matches()) || glyph.displayInGames)
+                            if ((currentServer != null && !gameServerPattern.matcher(currentServer).matches()) || glyph.displayInGames) {
                                 renderGlyph(e.renderer, glyph, e.entityPlayer, e.x, e.y + offset + player.height, e.z);
+                            }
                         }
                     }
                 }
@@ -78,7 +80,8 @@ public class GlyphRenderer {
      */
     public synchronized void renderGlyph(RendererLivingEntity renderer, PlayerGlyph glyph, EntityPlayer player, double x, double y, double z) {
 
-        final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" + Hashing.md5().hashString(glyph.path.toString(), Charset.forName("UTF-8")).toString() + ".png");
+        final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" +
+                Hashing.md5().hashString(glyph.path.toString(), StandardCharsets.UTF_8).toString() + ".png");
         if(Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {
             float scale = (float) (glyph.height * 0.0015);
 
@@ -96,8 +99,9 @@ public class GlyphRenderer {
             // Calculate x-axis rotation
             int xRotationMultiplier = 1;
             // Flip x rotation if in front-facing 3rd person
-            if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 2)
+            if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 2) {
                 xRotationMultiplier = -1;
+            }
             GlStateManager.rotate(renderer.getRenderManager().playerViewX * xRotationMultiplier, 1.0F, 0.0F, 0.0F);
 
             // Scale
@@ -108,10 +112,10 @@ public class GlyphRenderer {
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             renderer.bindTexture(resource);
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-            worldrenderer.pos((double) (-16), (double) (-16), 0.0D).tex(0, 0).endVertex();
-            worldrenderer.pos((double) (-16), (double) (16), 0.0D).tex(0, 1).endVertex();
-            worldrenderer.pos((double) (16), (double) (16), 0.0D).tex(1, 1).endVertex();
-            worldrenderer.pos((double) (16), (double) (-16), 0.0D).tex(1, 0).endVertex();
+            worldrenderer.pos(-16, -16, 0.0D).tex(0, 0).endVertex();
+            worldrenderer.pos(-16, 16, 0.0D).tex(0, 1).endVertex();
+            worldrenderer.pos(16, 16, 0.0D).tex(1, 1).endVertex();
+            worldrenderer.pos(16, -16, 0.0D).tex(1, 0).endVertex();
             tessellator.draw();
 
             // Remove GL properties

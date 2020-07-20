@@ -43,7 +43,8 @@ public class ConfigElement {
             ) {
             this.element = element;
         } else {
-            throw new IllegalArgumentException("element not of recognized type! Recognized types: Double, Boolean, Color, Runnable, Enum");
+            throw new IllegalArgumentException("element not of recognized type! Recognized types: Double, Boolean, " +
+                    "Color, Runnable, Enum");
         }
         this.optionInfo = optionInfo;
         this.configFieldName = configFieldName;

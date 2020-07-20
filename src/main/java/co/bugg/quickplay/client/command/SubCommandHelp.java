@@ -39,17 +39,24 @@ public class SubCommandHelp extends ASubCommand {
         boolean separators;
         IChatComponent helpMessage = new ChatComponentText("");
 
+        // If an argument is provided, tell the user how to use that command, if it exists.
         if(args.length == 0) {
             separators = true;
             // Duplicate
             List<ASubCommand> subCommands = new ArrayList<>(getParent().subCommands);
             // Sort by priority & remove items that can't be displayed
-            subCommands = subCommands.stream().filter(ASubCommand::canDisplayInHelpMenu).sorted(Comparator.comparing(ASubCommand::getPriority).reversed()).collect(Collectors.toList());
+            subCommands = subCommands
+                    .stream()
+                    .filter(ASubCommand::canDisplayInHelpMenu)
+                    .sorted(Comparator.comparing(ASubCommand::getPriority).reversed())
+                    .collect(Collectors.toList());
 
             for(ListIterator<ASubCommand> iterator = subCommands.listIterator(); iterator.hasNext();) {
                 ASubCommand subCommand = iterator.next();
                 helpMessage.appendSibling(getFormattedHelpMessage(subCommand));
-                if(iterator.hasNext()) helpMessage.appendText("\n");
+                if(iterator.hasNext()) {
+                    helpMessage.appendText("\n");
+                }
             }
         } else {
             separators = false;
@@ -57,7 +64,8 @@ public class SubCommandHelp extends ASubCommand {
             if(commandToDisplay != null) {
                 helpMessage.appendSibling(new ChatComponentTranslation("quickplay.commands.usage"));
                 helpMessage.appendText("\n");
-                helpMessage.appendText("/" + commandToDisplay.getParent().getCommandName() + " " + commandToDisplay.getName() + " " + commandToDisplay.getUsage());
+                helpMessage.appendText("/" + commandToDisplay.getParent().getCommandName() + " " +
+                        commandToDisplay.getName() + " " + commandToDisplay.getUsage());
                 helpMessage.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
             }
         }
@@ -70,10 +78,13 @@ public class SubCommandHelp extends ASubCommand {
         List<String> list = new ArrayList<>();
 
         List<ASubCommand> subCommands = getParent().getSubCommands().stream()
+                // Get parent commands which allow being displayed via tab
                 .filter(ASubCommand::canDisplayInTabList)
+                // Filter out commands which don't start with what has already been typed
                 .filter(scmd -> scmd.getName().startsWith(args[args.length - 1]))
-                .sorted(Comparator.comparing(ASubCommand::getPriority).reversed())
+                .sorted(Comparator.comparing(ASubCommand::getPriority).reversed()) // Sort
                 .collect(Collectors.toList());
+
         if(args.length < 2) {
             for(ASubCommand subCommand : subCommands) {
                 list.add(subCommand.getName());

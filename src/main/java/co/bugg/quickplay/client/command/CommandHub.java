@@ -40,13 +40,18 @@ public class CommandHub extends ACommand {
      */
     public CommandHub(String command, String serverCommand) {
         super(command);
-        if(command != null && command.length() > 0)
-            this.command = command;
-        else throw new IllegalArgumentException("command cannot be null and must be at least one character in length");
+        if(command != null && command.length() > 0) {
 
-        if(serverCommand != null && serverCommand.length() > 0)
+            this.command = command;
+        } else {
+            throw new IllegalArgumentException("command cannot be null and must be at least one character in length");
+        }
+
+        if(serverCommand != null && serverCommand.length() > 0) {
             this.serverCommand = serverCommand;
-        else throw new IllegalArgumentException("serverCommand cannot be null and must be at least one character in length");
+        } else {
+            throw new IllegalArgumentException("serverCommand cannot be null and must be at least one character in length");
+        }
     }
 
     @Override
@@ -85,7 +90,10 @@ public class CommandHub extends ACommand {
                             Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
                         } catch(NumberFormatException e) {
                             // Send usage
-                            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.hub.numberexception", "/" + command + " " + commandSyntax).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                            Quickplay.INSTANCE.messageBuffer.push(new Message(
+                                    new ChatComponentTranslation("quickplay.commands.hub.numberexception",
+                                            "/" + command + " " + commandSyntax)
+                                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                         }
                     }
 

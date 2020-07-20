@@ -41,8 +41,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -181,8 +181,9 @@ public class Quickplay {
      * @param handler Object to register
      */
     public void registerEventHandler(Object handler) {
-        if(!eventHandlers.contains(handler))
+        if(!eventHandlers.contains(handler)) {
             eventHandlers.add(handler);
+        }
         MinecraftForge.EVENT_BUS.register(handler);
     }
 
@@ -218,10 +219,12 @@ public class Quickplay {
                 e.printStackTrace();
                 assetFactory.createDirectories();
 
-                if(settings == null)
+                if(settings == null) {
                     settings = new ConfigSettings();
-                if(keybinds == null)
+                }
+                if(keybinds == null) {
                     keybinds = new ConfigKeybinds(true);
+                }
                 if(usageStats == null) {
                     promptUserForUsageStats = true;
                 }
@@ -234,7 +237,8 @@ public class Quickplay {
                     // File couldn't be saved
                     e1.printStackTrace();
                     sendExceptionRequest(e1);
-                    Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                    Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
+                            "quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 }
             }
 
@@ -260,8 +264,9 @@ public class Quickplay {
             // Web server will probably instruct to reload if it's available
             try {
                 final Game[] gameListArray = this.assetFactory.loadCachedGamelist();
-                if(gameListArray != null)
+                if(gameListArray != null) {
                     this.gameList = java.util.Arrays.asList(gameListArray);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 sendExceptionRequest(e);
@@ -280,11 +285,15 @@ public class Quickplay {
                         try {
                             if (response.ok && response.content != null) {
                                 // Add the premium about information
-                                if(response.content.getAsJsonObject().get("premiumInfo") != null)
-                                    premiumAbout = IChatComponent.Serializer.jsonToComponent(response.content.getAsJsonObject().get("premiumInfo").toString());
+                                if(response.content.getAsJsonObject().get("premiumInfo") != null) {
+                                    premiumAbout = IChatComponent.Serializer
+                                            .jsonToComponent(response.content.getAsJsonObject().get("premiumInfo").toString());
+                                }
                                 // Add all glyphs
-                                if(response.content.getAsJsonObject().get("glyphs") != null)
-                                    glyphs.addAll(Arrays.asList(new Gson().fromJson(response.content.getAsJsonObject().get("glyphs"), PlayerGlyph[].class)));
+                                if(response.content.getAsJsonObject().get("glyphs") != null) {
+                                    glyphs.addAll(Arrays.asList(new Gson().fromJson(response.content
+                                            .getAsJsonObject().get("glyphs"), PlayerGlyph[].class)));
+                                }
                             }
                         } catch (IllegalStateException e) {
                             e.printStackTrace();
@@ -322,7 +331,8 @@ public class Quickplay {
      * Create the Google Analytics instance with customized settings for this Quickplay instance
      */
     public void createGoogleAnalytics() {
-        ga = GoogleAnalyticsFactory.create(Reference.ANALYTICS_TRACKING_ID, usageStats.statsToken.toString(), Reference.MOD_NAME, Reference.VERSION);
+        ga = GoogleAnalyticsFactory.create(Reference.ANALYTICS_TRACKING_ID, usageStats.statsToken.toString(),
+                Reference.MOD_NAME, Reference.VERSION);
         final AnalyticsRequest defaultRequest = ga.getDefaultRequest();
 
         defaultRequest.setLanguage(String.valueOf(Minecraft.getMinecraft().gameSettings.language).toLowerCase());
@@ -346,11 +356,13 @@ public class Quickplay {
             eventHandlers.forEach(this::unregisterEventHandler);
             this.disabledReason = reason;
 
-            if(chatBuffer != null)
+            if(chatBuffer != null) {
                 chatBuffer.stop();
+            }
 
-            if(instanceWatcher != null)
+            if(instanceWatcher != null) {
                 instanceWatcher.stop();
+            }
         }
     }
 
@@ -376,7 +388,8 @@ public class Quickplay {
      */
     public static Game[] organizeGameList(Game[] gameList) {
         return Arrays.stream(gameList)
-                .sorted(Comparator.comparing(game -> Quickplay.INSTANCE.settings.gamePriorities.getOrDefault(((Game) game).unlocalizedName, 0)).reversed())
+                .sorted(Comparator.comparing(game -> Quickplay.INSTANCE.settings.gamePriorities
+                        .getOrDefault(((Game) game).unlocalizedName, 0)).reversed())
                 .toArray(Game[]::new);
     }
 
@@ -387,10 +400,10 @@ public class Quickplay {
     public void sendExceptionRequest(Exception e) {
         if(usageStats != null && usageStats.sendUsageStats) {
             final WebResponse response = requestFactory.newExceptionRequest(e).execute();
-            if(response != null)
-                for(ResponseAction action : response.actions)
+            if(response != null) {
+                for (ResponseAction action : response.actions)
                     action.run();
-
+            }
             if(ga != null) {
                 try {
                     ga.createException().setExceptionDescription(e.getMessage()).send();
@@ -413,7 +426,8 @@ public class Quickplay {
 
                 // Send commencement message if delay is greater than 0 seconds
                 if(settings.partyModeDelay > 0) {
-                    messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.commencing").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE))));
+                    messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.commencing")
+                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE))));
                 }
 
                 // Calculate mode
@@ -432,11 +446,13 @@ public class Quickplay {
                     e.printStackTrace();
                 }
 
-                messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
+                messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name)
+                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
                 chatBuffer.push(mode.command);
             }
         } else {
-            messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.nogames").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.nogames")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }
 

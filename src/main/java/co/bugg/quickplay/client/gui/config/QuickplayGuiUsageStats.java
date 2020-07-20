@@ -7,8 +7,8 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.config.ConfigUsageStats;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
@@ -74,16 +74,22 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
     public void initGui() {
         super.initGui();
         buttonY = (int) (height * 0.8);
-        componentList.add(new QuickplayGuiButton(usageStats, 0, width / 2 - buttonWidth - buttonMargins / 2, buttonY, buttonWidth, buttonHeight, yesText, true));
-        componentList.add(new QuickplayGuiButton(usageStats, 1, width / 2 + buttonMargins / 2, buttonY, buttonWidth, buttonHeight, noText, true));
+        componentList.add(new QuickplayGuiButton(usageStats, 0, width / 2 - buttonWidth - buttonMargins / 2,
+                buttonY, buttonWidth, buttonHeight, yesText, true));
+        componentList.add(new QuickplayGuiButton(usageStats, 1, width / 2 + buttonMargins / 2, buttonY,
+                buttonWidth, buttonHeight, noText, true));
 
 
         // Draw the stats token if it's available
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null) {
             tokenText = I18n.format("quickplay.gui.stats.token", Quickplay.INSTANCE.usageStats.statsToken.toString());
-            componentList.add(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2, buttonY - fontRendererObj.FONT_HEIGHT - 3, fontRendererObj.getStringWidth(tokenText), fontRendererObj.FONT_HEIGHT, tokenText, true, true));
+            componentList.add(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2,
+                    buttonY - fontRendererObj.FONT_HEIGHT - 3, fontRendererObj.getStringWidth(tokenText),
+                    fontRendererObj.FONT_HEIGHT, tokenText, true, true));
         }
-        componentList.add(new QuickplayGuiString("https://bugg.co/quickplay/privacy", 3, width / 2, buttonY - (fontRendererObj.FONT_HEIGHT + 3) * 2, fontRendererObj.getStringWidth(privacyText), fontRendererObj.FONT_HEIGHT, privacyText, true, true));
+        componentList.add(new QuickplayGuiString("https://bugg.co/quickplay/privacy", 3, width / 2,
+                buttonY - (fontRendererObj.FONT_HEIGHT + 3) * 2, fontRendererObj.getStringWidth(privacyText),
+                fontRendererObj.FONT_HEIGHT, privacyText, true, true));
 
         descriptionWidth = (int) (width * 0.8);
         final String description = I18n.format("quickplay.gui.stats.description");
@@ -92,18 +98,20 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         drawDefaultBackground();
 
         if(opacity > 0) {
             final int headerY = (int) (height * 0.1);
-            drawCenteredString(fontRendererObj, I18n.format("quickplay.gui.stats.title"), width / 2, headerY, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            drawCenteredString(fontRendererObj, I18n.format("quickplay.gui.stats.title"), width / 2, headerY,
+                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
             int lineHeight = headerY + fontRendererObj.FONT_HEIGHT + 5;
             for (String line : descriptionLines) {
-                drawCenteredString(fontRendererObj, line, width / 2, lineHeight, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                drawCenteredString(fontRendererObj, line, width / 2, lineHeight,
+                        Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
                 lineHeight += fontRendererObj.FONT_HEIGHT;
             }
         }
@@ -116,8 +124,8 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
             drawHoveringText(Collections.singletonList(I18n.format("quickplay.gui.stats.copy")), mouseX, mouseY);
         }
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     @Override
