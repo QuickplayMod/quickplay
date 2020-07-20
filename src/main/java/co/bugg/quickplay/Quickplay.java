@@ -41,8 +41,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -191,8 +191,7 @@ public class Quickplay {
      * @param handler Object to unregister
      */
     public void unregisterEventHandler(Object handler) {
-        if(eventHandlers.contains(handler))
-            eventHandlers.remove(handler);
+        eventHandlers.remove(handler);
         MinecraftForge.EVENT_BUS.unregister(handler);
     }
 

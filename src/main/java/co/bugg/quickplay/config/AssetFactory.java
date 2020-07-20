@@ -19,7 +19,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -311,7 +311,7 @@ public class AssetFactory {
      * @return A new {@link File}
      */
     public File getIconFile(URL url) {
-        HashCode hash = Hashing.md5().hashString(url.toString(), Charset.forName("UTF-8"));
+        HashCode hash = Hashing.md5().hashString(url.toString(), StandardCharsets.UTF_8);
         return new File(assetsDirectory + hash.toString() + "." + FilenameUtils.getExtension(url.getPath()));
     }
 }
