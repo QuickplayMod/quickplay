@@ -15,7 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
@@ -82,12 +82,15 @@ public class PlayerGlyph {
 
                 // If the response code is a successful one & request header is png
                 final String contentType = httpResponse.getEntity().getContentType().getValue();
-                if (200 <= responseCode && responseCode < 300 && (contentType.equals("image/png") || contentType.equals("image/jpg") || contentType.equals("image/jpeg"))) {
+                if (200 <= responseCode && responseCode < 300 && (contentType.equals("image/png") ||
+                        contentType.equals("image/jpg") || contentType.equals("image/jpeg"))) {
 
-                    final File file = new File(AssetFactory.glyphsDirectory + Hashing.md5().hashString(path.toString(), Charset.forName("UTF-8")).toString() + ".png");
+                    final File file = new File(AssetFactory.glyphsDirectory +
+                            Hashing.md5().hashString(path.toString(), StandardCharsets.UTF_8).toString() + ".png");
                     // Try to create file if necessary
-                    if(!file.exists() && !file.createNewFile())
+                    if(!file.exists() && !file.createNewFile()) {
                         throw new IllegalStateException("Glyph file could not be created.");
+                    }
 
                     // Write contents
                     final InputStream in = httpResponse.getEntity().getContent();
@@ -98,7 +101,8 @@ public class PlayerGlyph {
 
                     // Reload the resource
                     QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-                        Quickplay.INSTANCE.reloadResource(file, new ResourceLocation(Reference.MOD_ID, "glyphs/" + file.getName()));
+                        Quickplay.INSTANCE.reloadResource(file, new ResourceLocation(Reference.MOD_ID,
+                                "glyphs/" + file.getName()));
                         downloading = false;
                     });
                 }

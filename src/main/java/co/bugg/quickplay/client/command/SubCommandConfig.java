@@ -32,7 +32,8 @@ public class SubCommandConfig extends ASubCommand {
 
     @Override
     public void run(String[] args) {
-        new TickDelay(() -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiEditConfig(Quickplay.INSTANCE.settings)), 1);
+        new TickDelay(() -> Minecraft.getMinecraft().displayGuiScreen(
+                new QuickplayGuiEditConfig(Quickplay.INSTANCE.settings)), 1);
     }
 
     @Override

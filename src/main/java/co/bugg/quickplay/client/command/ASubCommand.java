@@ -17,7 +17,8 @@ public abstract class ASubCommand {
      * @param displayInTabList Whether this sub command can be tabbed into chat
      * @param priority the priority of this sub command in help menu and tab list (bigger = higher)
      */
-    public ASubCommand(ACommand parent, String name, String helpMessage, String usage, boolean displayInHelpMenu, boolean displayInTabList, double priority) {
+    public ASubCommand(ACommand parent, String name, String helpMessage, String usage, boolean displayInHelpMenu,
+                       boolean displayInTabList, double priority) {
         this.parent = parent;
         this.name = name;
         this.helpMessage = helpMessage;
@@ -30,32 +31,32 @@ public abstract class ASubCommand {
     /**
      * The parent command of this sub command
      */
-    private ACommand parent;
+    private final ACommand parent;
     /**
      * The name of this sub command (what's used when executing)
      */
-    private String name;
+    private final String name;
     /**
      * Help message to give information about this sub command
      */
-    private String helpMessage;
+    private final String helpMessage;
     /**
      * Syntax or example usage of parameters for this command
      * Example: "<game> <lobby> [yes|no]"
      */
-    private String usage;
+    private final String usage;
     /**
      * Whether this sub command can be displayed in a help menu
      */
-    private boolean displayInHelpMenu;
+    private final boolean displayInHelpMenu;
     /**
      * Whether this sub command can be tabbed in chat
      */
-    private boolean displayInTabList;
+    private final boolean displayInTabList;
     /**
      * the priority of this sub command in tab & help menu & such
      */
-    private double priority;
+    private final double priority;
 
     /**
      * Called when getting the possible tab completion options for this sub command

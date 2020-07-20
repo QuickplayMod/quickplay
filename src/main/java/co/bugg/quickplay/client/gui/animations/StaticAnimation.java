@@ -36,8 +36,9 @@ public class StaticAnimation extends Animation {
     @Override
     public Animation start() {
         super.start();
-        if(threadFuture != null)
+        if(threadFuture != null) {
             threadFuture.cancel(true);
+        }
         threadFuture = Quickplay.INSTANCE.threadPool.submit(() -> {
             try {
                 Thread.sleep(updateFrequency);

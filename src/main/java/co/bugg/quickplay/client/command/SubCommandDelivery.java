@@ -39,10 +39,11 @@ public class SubCommandDelivery extends ASubCommand {
 
             // TODO false positive in Megawalls lobby
             if(currentServer.contains("mini") || currentServer.contains("mega") || currentServer.contains("limbo")) {
-                if(currentServer.contains("limbo"))
+                if(currentServer.contains("limbo")) {
                     Quickplay.INSTANCE.chatBuffer.push("/lobby");
-                else
+                } else {
                     Quickplay.INSTANCE.chatBuffer.push("/achat §");
+                }
 
                 // Sleep for a sec to give time to get to the lobby
                 // Just try regardless to open if interrupted
@@ -58,7 +59,8 @@ public class SubCommandDelivery extends ASubCommand {
 
             Quickplay.INSTANCE.chatBuffer.push("/delivery");
         } else {
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.offline").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.offline")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }
 

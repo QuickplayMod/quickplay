@@ -13,13 +13,13 @@ import co.bugg.quickplay.config.AssetFactory;
 import co.bugg.quickplay.config.GuiOption;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.gui.GuiPageButtonList;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.io.File;
@@ -198,9 +198,11 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         int nextButtonId = 0;
         // Get the width of each button
         int buttonWidth = 200;
-        if(boxWidth < 200 + ConfigElement.ELEMENT_MARGINS * 2)
+        if(boxWidth < 200 + ConfigElement.ELEMENT_MARGINS * 2) {
             // If scroll bar is being drawn, buttons should be moved over a lil bit to give it room
-            buttonWidth = boxWidth - ConfigElement.ELEMENT_MARGINS * 2 - ((scrollFrameBottom - scrollFrameTop) / scrollContentHeight < 1 ? scrollbarWidth + ConfigElement.ELEMENT_MARGINS : 0);
+            buttonWidth = boxWidth - ConfigElement.ELEMENT_MARGINS * 2 - ((scrollFrameBottom - scrollFrameTop) /
+                    scrollContentHeight < 1 ? scrollbarWidth + ConfigElement.ELEMENT_MARGINS : 0);
+        }
 
         // These objects help format & handle changes to sliders, text boxes, and boolean boxes
         ConfigGuiResponder guiResponder = new ConfigGuiResponder();
@@ -210,7 +212,11 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         for(ConfigElement element : configElements) {
             if(previousCategory == null || !previousCategory.equals(I18n.format(element.optionInfo.category()))) {
-                componentList.add(new QuickplayGuiString(null, nextButtonId, width / 2, getElementY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS - mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.category()), true, true));
+                componentList.add(new QuickplayGuiString(null, nextButtonId, width / 2,
+                        getElementY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS -
+                                mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT,
+                        I18n.format(element.optionInfo.category()), true, true));
+
                 nextButtonId++;
             }
             previousCategory = I18n.format(element.optionInfo.category());
@@ -219,19 +225,30 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             int buttonY = getElementY(nextButtonId);
 
             // Figure out what button type needs to be rendered & give it the appropriate text
-            if(element.element instanceof Boolean)
-                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()) + ": " + I18n.format((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false"), true));
-            else if(element.element instanceof QuickplayColor || element.element instanceof Runnable)
-                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()), true));
-            else if(element.element instanceof Double)
-                componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()), element.optionInfo.minValue(), element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper, true));
-            else if(element.element.getClass().isEnum())
-                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth, ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()) + ": " + I18n.format(String.valueOf(element.element)), true));
+            if(element.element instanceof Boolean) {
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth,
+                        ConfigElement.ELEMENT_HEIGHT,
+                        I18n.format(element.optionInfo.name()) + ": " + I18n.format((boolean) element.element ?
+                                "quickplay.config.gui.true" : "quickplay.config.gui.false"), true));
+            } else if(element.element instanceof QuickplayColor || element.element instanceof Runnable) {
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth,
+                        ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()), true));
+            } else if(element.element instanceof Double) {
+                componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth,
+                        ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()), element.optionInfo.minValue(),
+                        element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper, true));
+            } else if(element.element.getClass().isEnum()) {
+                componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth,
+                        ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()) + ": " +
+                        I18n.format(String.valueOf(element.element)), true));
+            }
 
             nextButtonId++;
         }
 
-        componentList.add(new QuickplayGuiButton(null, nextButtonId, width - openFolderButtonMargins - openFolderButtonWidth, openFolderButtonMargins, openFolderButtonWidth, 20, openFolderText, false));
+        componentList.add(new QuickplayGuiButton(null, nextButtonId,
+                width - openFolderButtonMargins - openFolderButtonWidth, openFolderButtonMargins,
+                openFolderButtonWidth, 20, openFolderText, false));
 
         setScrollingValues();
     }
@@ -258,13 +275,15 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         lastTwoMouseY[0] = mouseY;
 
         // If the mouse moved enough within the last two frames then reset stand still length
-        if(Math.abs(lastTwoMouseX[0] - lastTwoMouseX[1]) >= mouseStandStillMargin || Math.abs(lastTwoMouseY[0] - lastTwoMouseY[1]) >= mouseStandStillMargin)
+        if(Math.abs(lastTwoMouseX[0] - lastTwoMouseX[1]) >= mouseStandStillMargin ||
+                Math.abs(lastTwoMouseY[0] - lastTwoMouseY[1]) >= mouseStandStillMargin) {
             mouseStandStillTicks = 0;
+        }
 
         // Blend is enabled for the GUI fadein
         // Fade in opacity has to be applied individually to each component that you want to fade in
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         /*
          * Draw background
@@ -278,28 +297,31 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         if(opacity > 0) {
             // Scale up to header size
-            GL11.glScaled(headerScale, headerScale, headerScale);
-            drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.title"), (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
+            GlStateManager.scale(headerScale, headerScale, headerScale);
+            drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.title"),
+                    (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
                     // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
                     (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             // Scale back down
-            GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
+            GlStateManager.scale(1 / headerScale, 1 / headerScale, 1 / headerScale);
 
             // Scale up to subheader size
-            GL11.glScaled(subheaderScale, subheaderScale, subheaderScale);
-            drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.version") + " " + Reference.VERSION, (int) (width / 2 / subheaderScale),
+            GlStateManager.scale(subheaderScale, subheaderScale, subheaderScale);
+            drawCenteredString(fontRendererObj, I18n.format("quickplay.config.gui.version") + " " +
+                            Reference.VERSION, (int) (width / 2 / subheaderScale),
                     subheaderY,
                     // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
                     (Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             // Scale back down
-            GL11.glScaled(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
+            GlStateManager.scale(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
         }
 
         /*
          * Draw options list background
          */
 
-        drawRect((int) (width * boxMargins), topOfBox, (int) (width * (1 - boxMargins)), height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
+        drawRect((int) (width * boxMargins), topOfBox, (int) (width * (1 - boxMargins)), height,
+                0x000000 | ((int) (opacity * 0.5 * 255) << 24));
 
         drawScrollbar((int) ((width * (1 - boxMargins)) - scrollbarWidth) - ConfigElement.ELEMENT_MARGINS);
 
@@ -310,10 +332,16 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         updateOpacity();
         for (QuickplayGuiComponent component : componentList) {
             if(!component.displayString.equals(openFolderText)) {
-                double scrollOpacity = ((component.y - scrollPixel) > topOfBox ? 1 : (component.y - scrollPixel) + ConfigElement.ELEMENT_HEIGHT < topOfBox ? 0 : (fadeDistance - ((double) topOfBox - (double) (component.y - scrollPixel))) / (double) fadeDistance);
-                if((component.y - scrollPixel) + fadeDistance > topOfBox) component.draw(this, mouseX, mouseY, opacity * (float) scrollOpacity);
-            } else
+                double scrollOpacity = ((component.y - scrollPixel) > topOfBox ? 1 :
+                        (component.y - scrollPixel) + ConfigElement.ELEMENT_HEIGHT < topOfBox ? 0 :
+                                (fadeDistance - ((double) topOfBox - (double) (component.y - scrollPixel))) / (double) fadeDistance);
+
+                if((component.y - scrollPixel) + fadeDistance > topOfBox) {
+                    component.draw(this, mouseX, mouseY, opacity * (float) scrollOpacity);
+                }
+            } else {
                 component.draw(this, mouseX, mouseY, opacity);
+            }
         }
 
         /*
@@ -338,8 +366,8 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             }
         }
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     /**
@@ -364,10 +392,12 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                 if(element != null) {
                     if(element.element instanceof Boolean) {
                         element.element = !(boolean) element.element;
-                        component.displayString = I18n.format(element.optionInfo.name()) + ": " + I18n.format((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false");
+                        component.displayString = I18n.format(element.optionInfo.name()) + ": " +
+                                I18n.format((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false");
 
                         // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                                Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
                             Quickplay.INSTANCE.threadPool.submit(() -> {
                                 try {
                                     Quickplay.INSTANCE.ga.createEvent("Config", "Boolean Changed")
@@ -383,7 +413,8 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                         ((Runnable) element.element).run();
 
                         // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                                Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
                             Quickplay.INSTANCE.threadPool.submit(() -> {
                                 try {
                                     Quickplay.INSTANCE.ga.createEvent("Config", "Runnable Clicked")
@@ -395,7 +426,8 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                             });
                         }
                     } else if(element.element instanceof QuickplayColor) {
-                        mc.displayGuiScreen(new QuickplayGuiEditColor((QuickplayColor) element.element, I18n.format(element.optionInfo.name()), config, this));
+                        mc.displayGuiScreen(new QuickplayGuiEditColor((QuickplayColor) element.element,
+                                I18n.format(element.optionInfo.name()), config, this));
                     } else if(element.element.getClass().isEnum()) {
                         // Find out what the next enum in the list is
                         final List list = Arrays.asList(element.element.getClass().getEnumConstants());
@@ -406,7 +438,8 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                         component.displayString = I18n.format(element.optionInfo.name()) + ": " + I18n.format(String.valueOf(element.element));
                     } else if(element.element instanceof Double) {
                         // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                                Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
                             Quickplay.INSTANCE.threadPool.submit(() -> {
                                 try {
                                     Quickplay.INSTANCE.ga.createEvent("Config", "Slider Changed")
@@ -446,7 +479,9 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             }
         } catch (IOException | IllegalAccessException | NoSuchFieldException e) {
             System.out.println("Failed to save option " + element.configFieldName + ".");
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(
+                    new ChatComponentTranslation("quickplay.config.saveerror")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
@@ -464,9 +499,12 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         // Increase the number of ticks the mouse has been standing still if necessary
-        if(event.phase == TickEvent.Phase.START)
-            if(Math.abs(lastTwoMouseX[0] - lastTwoMouseX[1]) < mouseStandStillMargin && Math.abs(lastTwoMouseY[0] - lastTwoMouseY[1]) < mouseStandStillMargin)
+        if(event.phase == TickEvent.Phase.START) {
+            if (Math.abs(lastTwoMouseX[0] - lastTwoMouseX[1]) < mouseStandStillMargin &&
+                    Math.abs(lastTwoMouseY[0] - lastTwoMouseY[1]) < mouseStandStillMargin) {
                 mouseStandStillTicks++;
+            }
+        }
     }
 
     // ------
@@ -516,10 +554,11 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         @Override
         public String getText(int id, String name, float value) {
             String pattern;
-            if(componentList.size() >= id + 1 && componentList.get(id).origin != null)
+            if(componentList.size() >= id + 1 && componentList.get(id).origin != null) {
                 pattern = ((ConfigElement) componentList.get(id).origin).optionInfo.decimalFormat();
-            else
+            } else {
                 pattern = "0.00";
+            }
 
             final DecimalFormat format = new DecimalFormat(pattern);
             return name + ": " + format.format(value);

@@ -68,7 +68,8 @@ public class QuickplayEventHandler {
     public void onWorldLoad(WorldEvent.Load event) {
         // Prompt the user for usage stats setting every time they join a world until they select an
         // option (at which point promptUserForUsageStats is set to false & ConfigUsageStats is created)
-        if(Quickplay.INSTANCE.promptUserForUsageStats)
+        if(Quickplay.INSTANCE.promptUserForUsageStats) {
             new TickDelay(() -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiUsageStats()), 20);
+        }
     }
 }

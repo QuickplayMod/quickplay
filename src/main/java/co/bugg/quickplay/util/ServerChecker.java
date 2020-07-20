@@ -94,17 +94,21 @@ public class ServerChecker {
         // First check tab list, if it contains any references to Hypixel in the header & footer.
         final GuiPlayerTabOverlay tab = Minecraft.getMinecraft().ingameGUI.getTabList();
         try {
-            if(checkTabField(tab, "header", "field_175256_i"))
+            if(checkTabField(tab, "header", "field_175256_i")) {
                 return VerificationMethod.HEADER;
-        } catch (NoSuchFieldException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+            }
+        } catch (NoSuchFieldException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException
+                | InvocationTargetException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
 
         try {
-            if(checkTabField(tab, "footer", "field_175255_h"))
+            if(checkTabField(tab, "footer", "field_175255_h")) {
                 return VerificationMethod.FOOTER;
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+            }
+        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | NoSuchMethodException
+                | InvocationTargetException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
@@ -122,9 +126,11 @@ public class ServerChecker {
                 // Next check server favicon
                 final String faviconBase64 = serverData.getBase64EncodedIconData();
                 if (faviconBase64 != null) {
-                    final String hypixelBase64 = Base64.encodeBase64String(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("HypixelMCLogo.png")));
-                    if (faviconBase64.equals(hypixelBase64))
+                    final String hypixelBase64 = Base64.encodeBase64String(IOUtils
+                            .toByteArray(getClass().getClassLoader().getResourceAsStream("HypixelMCLogo.png")));
+                    if (faviconBase64.equals(hypixelBase64)) {
                         return VerificationMethod.FAVICON;
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -145,7 +151,8 @@ public class ServerChecker {
      * @throws NoSuchFieldException The field couldn't be found
      * @throws IllegalAccessException The field couldn't be accessed
      */
-    public boolean checkTabField(GuiPlayerTabOverlay tabOverlay, String fieldName, String srgName) throws NoSuchFieldException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
+    public boolean checkTabField(GuiPlayerTabOverlay tabOverlay, String fieldName, String srgName) throws
+            NoSuchFieldException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
         Field headerField;
         try {
             // Try deobfuscated
@@ -201,9 +208,9 @@ public class ServerChecker {
      */
     public static String getCurrentIP() {
         String ip;
-        if(Minecraft.getMinecraft().isSingleplayer())
+        if(Minecraft.getMinecraft().isSingleplayer()) {
             ip = "singleplayer";
-        else {
+        } else {
             ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();
             ip = (serverData == null) ? "unknown/null" : serverData.serverIP;
         }

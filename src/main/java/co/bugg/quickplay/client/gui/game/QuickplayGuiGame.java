@@ -12,13 +12,13 @@ import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.Mode;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -118,10 +118,11 @@ public class QuickplayGuiGame extends QuickplayGui {
      * @param game Game this GUI is for
      */
     public QuickplayGuiGame(Game game) {
-        if(game != null)
+        if(game != null) {
             this.game = game;
-        else
+        } else {
             throw new IllegalArgumentException("game cannot be null.");
+        }
     }
 
     /**
@@ -133,13 +134,19 @@ public class QuickplayGuiGame extends QuickplayGui {
     @SuppressWarnings("unused")
     public QuickplayGuiGame(String unlocalizedGameName) {
         if(unlocalizedGameName != null) {
-            List<Game> filteredList = Quickplay.INSTANCE.gameList.stream().filter(game -> game.unlocalizedName.equals(unlocalizedGameName)).collect(Collectors.toList());
-            if(filteredList.size() <= 0)
+            List<Game> filteredList = Quickplay.INSTANCE.gameList
+                    .stream()
+                    .filter(game -> game.unlocalizedName.equals(unlocalizedGameName))
+                    .collect(Collectors.toList());
+            if(filteredList.size() <= 0) {
                 throw new IllegalArgumentException("unlocalizedGameName could not find a matching game in gameList!");
-            else
+            }
+            else {
                 game = filteredList.get(0);
-        } else
+            }
+        } else {
             throw new IllegalArgumentException("unlocalizedGameName cannot be null.");
+        }
     }
 
     @Override
@@ -155,7 +162,8 @@ public class QuickplayGuiGame extends QuickplayGui {
         headerScale = height > 300 ? 1.5 : 1.0;
         logoScale = height > 300 ? 0.25 : 0.15;
 
-        topOfBackgroundBox = (int) (headerHeight + fontRendererObj.FONT_HEIGHT * headerScale + headerBottomMargins + logoSize * logoScale) + logoBottomMargins;
+        topOfBackgroundBox = (int) (headerHeight + fontRendererObj.FONT_HEIGHT * headerScale + headerBottomMargins +
+                logoSize * logoScale) + logoBottomMargins;
 
         buttonWidth = 200;
         columnCount = (int) Math.floor((double) (width - windowPadding) / (buttonWidth + buttonMargins));
@@ -165,8 +173,9 @@ public class QuickplayGuiGame extends QuickplayGui {
             buttonWidth = width - buttonMargins * 2;
         }
         // If there are more columns than items then decrease column count
-        if(columnCount > game.modes.size())
+        if(columnCount > game.modes.size()) {
             columnCount = game.modes.size();
+        }
 
         // Calculate X position of column zero
         columnZeroX = width / 2 - (buttonWidth + buttonMargins) * columnCount / 2;
@@ -175,7 +184,9 @@ public class QuickplayGuiGame extends QuickplayGui {
         for(ListIterator<Mode> iter = game.modes.listIterator(); iter.hasNext();) {
             final int index = iter.nextIndex();
             final Mode next = iter.next();
-            componentList.add(new QuickplayGuiButton(next, index, columnZeroX + (buttonWidth + buttonMargins) * currentColumn, topOfBackgroundBox + backgroundBoxPadding + (buttonHeight + buttonMargins) * currentRow, buttonWidth, buttonHeight, next.name, true));
+            componentList.add(new QuickplayGuiButton(next, index, columnZeroX + (buttonWidth + buttonMargins) * currentColumn,
+                    topOfBackgroundBox + backgroundBoxPadding + (buttonHeight + buttonMargins) * currentRow,
+                    buttonWidth, buttonHeight, next.name, true));
             // Proceed to next position
             if(currentColumn + 1 >= columnCount) {
                 currentColumn = 0;
@@ -188,7 +199,8 @@ public class QuickplayGuiGame extends QuickplayGui {
                 currentColumn++;
             }
         }
-        componentList.add(new QuickplayGuiButton(null, game.modes.size() + 1, 3, 3, 100, 20, I18n.format("quickplay.gui.back"), false));
+        componentList.add(new QuickplayGuiButton(null, game.modes.size() + 1, 3, 3, 100, 20,
+                I18n.format("quickplay.gui.back"), false));
 
         setScrollingValues();
     }
@@ -210,11 +222,13 @@ public class QuickplayGuiGame extends QuickplayGui {
         if(component.origin instanceof Mode && contextMenu == null) {
             final Mode mode = (Mode) component.origin;
             // For security purposes, only actual commands are sent and chat messages can't be sent.
-            if(mode.command.startsWith("/"))
+            if(mode.command.startsWith("/")) {
                 Quickplay.INSTANCE.chatBuffer.push(mode.command);
+            }
 
             // Send analytical data to Google
-            if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+            if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                    Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
                 Quickplay.INSTANCE.threadPool.submit(() -> {
                     try {
                         Quickplay.INSTANCE.ga.createEvent("GUIs", "Game Option Pressed")
@@ -232,24 +246,29 @@ public class QuickplayGuiGame extends QuickplayGui {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         drawDefaultBackground();
 
         if(opacity > 0) {
-            GL11.glScaled(headerScale, headerScale, headerScale);
-            drawCenteredString(fontRendererObj, game.name, (int) (width / 2 / headerScale), (int) (headerHeight / headerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-            GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
+            GlStateManager.scale(headerScale, headerScale, headerScale);
+            drawCenteredString(fontRendererObj, game.name, (int) (width / 2 / headerScale), (int) (headerHeight / headerScale),
+                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            GlStateManager.scale(1 / headerScale, 1 / headerScale, 1 / headerScale);
         }
 
-        GL11.glScaled(logoScale, logoScale, logoScale);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glColor4f(1, 1, 1, opacity);
-        mc.getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, Hashing.md5().hashString(game.imageURL.toString(), Charset.forName("UTF-8")).toString() + ".png"));
-        drawTexturedModalRect((float) ((width / 2 - logoSize * logoScale / 2) / logoScale), (float) ((headerHeight + fontRendererObj.FONT_HEIGHT * headerScale + headerBottomMargins) / logoScale), 0, 0, logoSize, logoSize);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glScaled(1 / logoScale, 1 / logoScale, 1 / logoScale);
+        GlStateManager.scale(logoScale, logoScale, logoScale);
+        GlStateManager.enableBlend();
+        GlStateManager.color(1,1,1,opacity);
+        mc.getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID,
+                Hashing.md5().hashString(game.imageURL.toString(), StandardCharsets.UTF_8).toString() + ".png"));
+
+        drawTexturedModalRect((float) ((width / 2 - logoSize * logoScale / 2) / logoScale),
+                (float) ((headerHeight + fontRendererObj.FONT_HEIGHT * headerScale + headerBottomMargins) / logoScale),
+                0, 0, logoSize, logoSize);
+        GlStateManager.enableBlend();
+        GlStateManager.scale(1 / logoScale, 1 / logoScale, 1 / logoScale);
 
         final int columnZeroRowZeroX = width / 2 - (buttonWidth + buttonMargins) * columnCount / 2;
         final int rightOfBox = columnZeroRowZeroX + columnCount * (buttonWidth + buttonMargins) - buttonMargins + backgroundBoxPadding;
@@ -262,25 +281,32 @@ public class QuickplayGuiGame extends QuickplayGui {
         updateOpacity();
         final int scrollFadeDistance = 10;
         for (QuickplayGuiComponent component : componentList) {
-            double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfBackgroundBox + backgroundBoxPadding ? 1 : (component.y - scrollPixel) + scrollFadeDistance < topOfBackgroundBox + backgroundBoxPadding ? 0 : (scrollFadeDistance - ((double) topOfBackgroundBox + backgroundBoxPadding - (double) (component.y - scrollPixel))) / (double) scrollFadeDistance) : 1;
-            if(opacity * scrollOpacity > 0)
+            double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfBackgroundBox +
+                    backgroundBoxPadding ? 1 : (component.y - scrollPixel) + scrollFadeDistance < topOfBackgroundBox +
+                    backgroundBoxPadding ? 0 : (scrollFadeDistance - ((double) topOfBackgroundBox + backgroundBoxPadding -
+                    (double) (component.y - scrollPixel))) / (double) scrollFadeDistance) : 1;
+            if(opacity * scrollOpacity > 0) {
                 component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
+            }
         }
 
         drawScrollbar(rightOfBox);
 
-        if(opacity > 0)
-            drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        if(opacity > 0) {
+            drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins,
+                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        }
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
-        if(Quickplay.INSTANCE.settings.anyKeyClosesGui)
+        if(Quickplay.INSTANCE.settings.anyKeyClosesGui) {
             Minecraft.getMinecraft().displayGuiScreen(null);
+        }
     }
 
     @Override
@@ -288,24 +314,22 @@ public class QuickplayGuiGame extends QuickplayGui {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         for(QuickplayGuiComponent component : componentList) {
             if (!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(this, mouseX, mouseY) && mouseButton == 1) {
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new String[]{I18n.format("quickplay.gui.favorite")}), component, -1, mouseX, mouseY) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new String[]{I18n.format("quickplay.gui.favorite")}),
+                        component, -1, mouseX, mouseY) {
                     @Override
                     public void optionSelected(int index) {
-                        switch(index) {
-                            case 0:
-                                if(component.origin instanceof Mode)
-                                    // Open key binding GUI & add new keybind
-                                    Quickplay.INSTANCE.keybinds.keybinds.add(new QuickplayKeybind(game.name + " " + ((Mode) component.origin).name, Keyboard.KEY_NONE, ((Mode) component.origin).command));
-
-                                try {
-                                    Quickplay.INSTANCE.keybinds.save();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    Quickplay.INSTANCE.sendExceptionRequest(e);
-                                }
-                                Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
-                                break;
-
+                        if (index == 0) {
+                            if (component.origin instanceof Mode) {// Open key binding GUI & add new keybind
+                                Quickplay.INSTANCE.keybinds.keybinds.add(new QuickplayKeybind(game.name + " " +
+                                        ((Mode) component.origin).name, Keyboard.KEY_NONE, ((Mode) component.origin).command));
+                            }
+                            try {
+                                Quickplay.INSTANCE.keybinds.save();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Quickplay.INSTANCE.sendExceptionRequest(e);
+                            }
+                            Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
                         }
                         closeContextMenu();
                     }

@@ -143,8 +143,9 @@ public class AssetFactory {
         final File[] glyphFiles = new File(glyphsDirectory).listFiles();
         if(glyphFiles != null) {
             for (final File file : glyphFiles) {
-                if(file.exists() && file.isFile() && file.lastModified() + glyphCacheLife < now)
+                if(file.exists() && file.isFile() && file.lastModified() + glyphCacheLife < now) {
                     file.delete();
+                }
             }
         }
 
@@ -152,8 +153,9 @@ public class AssetFactory {
         final File[] iconFiles = new File(assetsDirectory).listFiles();
         if(iconFiles != null) {
             for(final File file : iconFiles) {
-                if(file.exists() && file.isFile() && file.lastModified() + iconCacheLife < now)
+                if(file.exists() && file.isFile() && file.lastModified() + iconCacheLife < now) {
                     file.delete();
+                }
             }
         }
     }
@@ -167,8 +169,9 @@ public class AssetFactory {
         final File[] glyphFiles = new File(glyphsDirectory).listFiles();
         if(glyphFiles != null) {
             for (final File file : glyphFiles) {
-                if(file.exists() && file.isFile())
+                if(file.exists() && file.isFile()) {
                     file.delete();
+                }
             }
         }
 
@@ -176,15 +179,17 @@ public class AssetFactory {
         final File[] iconFiles = new File(resourcesDirectory).listFiles();
         if(iconFiles != null) {
             for(final File file : iconFiles) {
-                if(file.exists() && file.isFile())
+                if(file.exists() && file.isFile()) {
                     file.delete();
+                }
             }
         }
 
         // Delete cached gamelist
         final File gameList = new File(gamelistCacheFile);
-        if(gameList.exists() && gameList.isFile())
+        if(gameList.exists() && gameList.isFile()) {
             gameList.delete();
+        }
     }
 
     /**
@@ -197,25 +202,30 @@ public class AssetFactory {
         final File assetsDirFile = new File(assetsDirectory);
         final File glyphsDirFile = new File(glyphsDirectory);
 
-        if(!configDirFile.isDirectory())
+        if(!configDirFile.isDirectory()) {
             configDirFile.mkdirs();
+        }
 
-        if(!resourcesDirFile.isDirectory())
+        if(!resourcesDirFile.isDirectory()) {
             resourcesDirFile.mkdirs();
+        }
 
-        if(!assetsDirFile.isDirectory())
+        if(!assetsDirFile.isDirectory()) {
             assetsDirFile.mkdirs();
+        }
 
-        if(!glyphsDirFile.isDirectory())
+        if(!glyphsDirFile.isDirectory()) {
             glyphsDirFile.mkdirs();
+        }
 
         // Create the mcmeta file for the "resource pack"
         final File mcmetaFile = new File(resourcesDirectory + "pack.mcmeta");
         final String mcmetaFileContents = "{\"pack\": {\"pack_format\": 1, \"description\": \"Dynamic mod resources are stored in this pack.\"}}";
 
         try {
-            if (!mcmetaFile.exists())
+            if (!mcmetaFile.exists()) {
                 mcmetaFile.createNewFile();
+            }
             Files.write(mcmetaFile.toPath(), mcmetaFileContents.getBytes());
         } catch(IOException e) {
             System.out.println("Failed to generate mcmeta file! Mod may or may not work properly.");
@@ -253,7 +263,8 @@ public class AssetFactory {
             return resourcePack;
         } catch (IllegalAccessException | NoSuchFieldException e) {
             System.out.println("Disabling the mod, as we can't add our custom resource pack.");
-            System.out.println("Please report this to @bugfroggy, providing this error log and this list: " + Arrays.toString(Minecraft.class.getDeclaredFields()));
+            System.out.println("Please report this to @bugfroggy, providing this error log and this list: " +
+                    Arrays.toString(Minecraft.class.getDeclaredFields()));
             Quickplay.INSTANCE.disable("Failed to load resources!");
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
@@ -270,8 +281,9 @@ public class AssetFactory {
     public Game[] loadCachedGamelist() throws IOException {
         final File gameListFile = new File(gamelistCacheFile);
 
-        if(!gameListFile.exists() || (!gameListFile.canRead() && !gameListFile.setReadable(true)))
+        if(!gameListFile.exists() || (!gameListFile.canRead() && !gameListFile.setReadable(true))) {
             return null;
+        }
 
         final String contents = new String(Files.readAllBytes(gameListFile.toPath()));
         try {
@@ -292,12 +304,14 @@ public class AssetFactory {
         gameList = Quickplay.organizeGameList(gameList);
 
         // If file doesn't exist and couldn't be created
-        if(!gameListFile.exists() && !gameListFile.createNewFile())
+        if(!gameListFile.exists() && !gameListFile.createNewFile()) {
             throw new IOException("Failed to create file for cached game list");
+        }
 
         // If file can't be written to and attempts to make it writable failed
-        if(!gameListFile.canWrite() && !gameListFile.setWritable(true))
+        if(!gameListFile.canWrite() && !gameListFile.setWritable(true)) {
             throw new IOException("Cannot write to file for cached game list");
+        }
 
         final String serializedGameList = new Gson().toJson(gameList);
 

@@ -61,8 +61,9 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
     public QuickplayKeybind(String name, int defaultKey, String chatCommand) {
         this(name, defaultKey);
         this.chatCommand = chatCommand;
-        if(!this.chatCommand.startsWith("/"))
+        if(!this.chatCommand.startsWith("/")) {
             this.chatCommand = "/" + chatCommand;
+        }
     }
 
     /**
@@ -104,21 +105,24 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
      */
     public void keyPressed() {
         // Open a GUI if one is available
-        if(className != null && constructorParams != null)
+        if(className != null && constructorParams != null) {
             try {
                 final Class clazz = Class.forName(className);
-                if(clazz == null || (clazz != GuiScreen.class && !GuiScreen.class.isAssignableFrom(clazz)))
+                if (clazz == null || (clazz != GuiScreen.class && !GuiScreen.class.isAssignableFrom(clazz))) {
                     throw new IllegalArgumentException("class corresponding to className could not be found or is not of type GuiScreen");
+                }
 
                 Class[] paramsClasses = new Class[constructorParams.length];
                 int i = 0;
                 for (Object param : constructorParams)
                     paramsClasses[i++] = param.getClass();
 
-                Minecraft.getMinecraft().displayGuiScreen((GuiScreen) clazz.getDeclaredConstructor(paramsClasses).newInstance(constructorParams));
+                Minecraft.getMinecraft().displayGuiScreen((GuiScreen) clazz.getDeclaredConstructor(paramsClasses)
+                        .newInstance(constructorParams));
 
                 // Send analytical data to Google
-                if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                if (Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                        Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
                     Quickplay.INSTANCE.threadPool.submit(() -> {
                         try {
                             Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Pressed")
@@ -133,19 +137,24 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.keybinds.illegal", name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
+                        "quickplay.keybinds.illegal", name)
+                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 Quickplay.INSTANCE.sendExceptionRequest(e);
             }
+        }
 
         if(chatCommand != null) {
-            if(!chatCommand.startsWith("/"))
+            if(!chatCommand.startsWith("/")) {
                 chatCommand = "/" + chatCommand;
+            }
 
             System.out.println(chatCommand);
             Quickplay.INSTANCE.chatBuffer.push(chatCommand);
 
             // Send analytical data to Google
-            if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+            if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                    Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
                 Quickplay.INSTANCE.threadPool.submit(() -> {
                     try {
                         Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Pressed")
@@ -168,7 +177,8 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
-        if(key != Keyboard.KEY_NONE && Keyboard.isKeyDown(key))
+        if(key != Keyboard.KEY_NONE && Keyboard.isKeyDown(key)) {
             keyPressed();
+        }
     }
 }

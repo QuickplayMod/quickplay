@@ -59,15 +59,21 @@ public class SubCommandHistory extends ASubCommand {
 
                 instanceList.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW));
 
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.quickplay.history.header", instanceCount).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD))));
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
+                        "quickplay.commands.quickplay.history.header", instanceCount)
+                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD))));
                 Quickplay.INSTANCE.messageBuffer.push(new Message(instanceList));
             } else {
                 // Something went wrong
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.commands.quickplay.history.error").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
+                        "quickplay.commands.quickplay.history.error")
+                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             }
         } else {
             // Not online hypixel
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.offline").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
+                    "quickplay.offline")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }
 

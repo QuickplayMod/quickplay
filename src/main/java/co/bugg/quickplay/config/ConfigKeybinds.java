@@ -28,7 +28,8 @@ public class ConfigKeybinds extends AConfiguration {
     public ConfigKeybinds(boolean addDefaultKeybinds) {
         this();
         if(addDefaultKeybinds) {
-            keybinds.add(new QuickplayKeybind(I18n.format("quickplay.config.keybinds.openmain"), Keyboard.KEY_R, QuickplayGuiMainMenu.class));
+            keybinds.add(new QuickplayKeybind(I18n.format("quickplay.config.keybinds.openmain"),
+                    Keyboard.KEY_R, QuickplayGuiMainMenu.class));
         }
     }
 

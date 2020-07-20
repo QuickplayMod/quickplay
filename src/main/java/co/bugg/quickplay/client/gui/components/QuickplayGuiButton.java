@@ -25,16 +25,16 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
      * X location corresponding to the left of this button's texture
      * -1 means draw as a vanilla button
      */
-    protected int textureX = -1;
+    protected int textureX;
     /**
      * Y location corresponding to the top of this button's texture
      * -1 means draw as a vanilla button
      */
-    protected int textureY = -1;
+    protected int textureY;
     /**
      * Scale of this button
      */
-    protected double scale = 1.0;
+    protected double scale;
 
     /**
      * Constructor
@@ -68,7 +68,8 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
      * @param scale The scale of this button
      * @param scrollable Whether this button should be scrollable
      */
-    public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text, ResourceLocation texture, int textureX, int textureY, double scale, boolean scrollable) {
+    public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text,
+                              ResourceLocation texture, int textureX, int textureY, double scale, boolean scrollable) {
         super(origin, id, x, y, widthIn, heightIn, text, scrollable);
         // Adjust width & height according to scale
         this.width = (int) (widthIn * scale);
@@ -87,8 +88,8 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
         if(opacity > 0) {
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
             gui.mc.getTextureManager().bindTexture(texture);
             GlStateManager.color(1, 1, 1, (float) opacity);
 
@@ -98,21 +99,25 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
             int buttonTextureMultiplier = getDefaultButtonTexture(hovering);
 
             // If default button
-            GL11.glScaled(scale, scale, scale);
+            GlStateManager.scale(scale, scale, scale);
             if (texture == buttonTextures || textureX < 0 || textureY < 0) {
                 // Draw the different parts of the button
-                drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), 0, 46 + buttonTextureMultiplier * 20, width / 2, height);
-                drawTexturedModalRect((int) (x + width / 2 / scale), (int) (scrollAdjustedY / scale), 200 - width / 2, 46 + buttonTextureMultiplier * 20, width / 2, height);
+                drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), 0,
+                        46 + buttonTextureMultiplier * 20, width / 2, height);
+                drawTexturedModalRect((int) (x + width / 2 / scale), (int) (scrollAdjustedY / scale),
+                        200 - width / 2, 46 + buttonTextureMultiplier * 20, width / 2, height);
             } else {
-                drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), textureX, textureY, (int) (width / scale), (int) (height / scale));
+                drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), textureX, textureY,
+                        (int) (width / scale), (int) (height / scale));
             }
-            GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
+            GlStateManager.scale(1/scale, 1/scale, 1/scale);
 
-            if (opacity > 0)
+            if (opacity > 0) {
                 drawDisplayString(gui, opacity, scrollAdjustedY);
+            }
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 

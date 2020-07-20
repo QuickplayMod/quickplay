@@ -38,13 +38,15 @@ public interface IPremiumCommand {
      * A user can execute this command by running the parent premium command
      * with {@link #getName()} as the next argument
      *
-     * @param args All arguments, minus the {@link co.bugg.quickplay.client.command.ASubCommand} if applicable (See it's documentation)
+     * @param args All arguments, minus the {@link co.bugg.quickplay.client.command.ASubCommand}
+     *             if applicable (See it's documentation)
      */
     void run(final String[] args);
 
     /**
      * Called whenever the user pressed the tab key and this command is the last argument
-     * @param args All arguments, minus the {@link co.bugg.quickplay.client.command.ASubCommand} if applicable (See it's documentation)
+     * @param args All arguments, minus the {@link co.bugg.quickplay.client.command.ASubCommand}
+     *             if applicable (See it's documentation)
      * @return A list of all options the user should be provided with for autocomplete
      */
     List<String> getTabCompletions(final String[] args);

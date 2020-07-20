@@ -36,15 +36,23 @@ public class PremiumCommandAbout implements IPremiumCommand {
     @Override
     public void run(String[] args) {
         if (Quickplay.INSTANCE.premiumAbout != null) {
-            Quickplay.INSTANCE.messageBuffer.push(new Message(Quickplay.INSTANCE.premiumAbout, true, false));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(Quickplay.INSTANCE.premiumAbout, true,
+                    false));
         } else {
             final String premiumLink = "https://bugg.co/quickplay/premium";
 
-            final IChatComponent chatComponent = new ChatComponentTranslation("quickplay.commands.quickplay.premium.about.menuMissing", premiumLink).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
-            final ChatStyle chatStyle = new ChatStyle().setColor(EnumChatFormatting.RED);
-            chatStyle.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentTranslation("quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen", premiumLink).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY))));
-            chatStyle.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, premiumLink));
-            chatComponent.setChatStyle(chatStyle);
+            final ChatStyle redChatStyle = new ChatStyle().setColor(EnumChatFormatting.RED);
+            final IChatComponent chatComponent = new ChatComponentTranslation(
+                    "quickplay.commands.quickplay.premium.about.menuMissing", premiumLink)
+                    .setChatStyle(redChatStyle);
+
+            final ChatStyle clickChatStyle = new ChatStyle().setColor(EnumChatFormatting.RED);
+            clickChatStyle.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentTranslation(
+                    "quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen", premiumLink)
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY))));
+
+            clickChatStyle.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, premiumLink));
+            chatComponent.setChatStyle(clickChatStyle);
 
             Quickplay.INSTANCE.messageBuffer.push(new Message(chatComponent, true, false));
         }

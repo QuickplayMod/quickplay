@@ -82,8 +82,9 @@ public class HttpRequestFactory {
         addStatisticsParameters(params);
 
         String message = e.getMessage();
-        if(message == null)
+        if(message == null) {
             message = "<null>";
+        }
 
         params.put("error_message", message);
         params.put("stack_trace", Arrays.toString(e.getStackTrace()));
@@ -105,8 +106,9 @@ public class HttpRequestFactory {
      */
     public void addStatisticsParameters(HashMap<String, String> params) {
         // These values are always sent regardless of usage stats setting
-        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null)
+        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null) {
             params.put("token", Quickplay.INSTANCE.usageStats.statsToken.toString()); // Unique token users can use to link their data to themselves
+        }
         params.put("manager", Reference.MOD_NAME + " v" + Reference.VERSION); // manager of this data, who sent it (e.g. Quickplay, HCC)
         params.put("version", Reference.VERSION);
         // Tells the web server if the client wants to be notified of any new updates
@@ -126,10 +128,12 @@ public class HttpRequestFactory {
             params.put("installedMods", gson.toJson(Loader.instance().getModList()
                     .stream().map(ModContainer::getName).toArray()));
             // Add settings
-            if(Quickplay.INSTANCE.settings != null)
+            if(Quickplay.INSTANCE.settings != null) {
                 params.put("settings", gson.toJson(Quickplay.INSTANCE.settings));
-            if(Quickplay.INSTANCE.keybinds != null)
+            }
+            if(Quickplay.INSTANCE.keybinds != null) {
                 params.put("keybinds", gson.toJson(Quickplay.INSTANCE.keybinds));
+            }
 
             try {
                 params.put("mcVersion", ReflectionUtil.getMCVersion());
