@@ -12,8 +12,8 @@ import net.minecraft.util.EnumChatFormatting;
  * Improved Hypixel /hub command
  * /hub on Hypixel is poor, so this adds a few extra features to the command
  */
-public class CommandHub extends BaseCommand {
-    public static final String commandSyntax = "[lobbyName | lobbyNumber] [lobbyNumber]";
+public class CommandMain extends BaseCommand {
+    public static final String commandSyntax = "[lobbyNumber]";
 
     /**
      * Command the player sends to trigger this <code>ACommand</code>.
@@ -29,8 +29,8 @@ public class CommandHub extends BaseCommand {
      * If only one argument is provided, that argument is used as both the {@link #command} and {@link #serverCommand}
      * @param command Command to use as {@link #command} and {@link #serverCommand}
      */
-    public CommandHub(String command) {
-        this(commandSyntax, command);
+    public CommandMain(String command) {
+        this(command, command);
     }
 
     /**
@@ -38,8 +38,8 @@ public class CommandHub extends BaseCommand {
      * @param command Command the user sends to trigger this <code>ACommand</code>
      * @param serverCommand Command this <code>ACommand</code> sends to the server when changing lobbies
      */
-    public CommandHub(String command, String serverCommand) {
-        super(command, command);
+    public CommandMain(String command, String serverCommand) {
+        super("<number>", command);
         if(command != null && command.length() > 0) {
 
             this.command = command;
@@ -63,29 +63,24 @@ public class CommandHub extends BaseCommand {
                 if(Quickplay.INSTANCE.onHypixel) {
                     if(args.length == 0) {
                         Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand);
-                    } else if(args.length == 1) {
-                        // Check if the user is trying to swap lobbies by checking
-                        // if they sent a lobby number instead of a lobby name
-                        try {
-                            final int lobbyNumber = Integer.parseInt(args[0]);
-                            Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
-                        } catch(NumberFormatException e) {
-                            // It's a string so just send them to that lobby instead of lobby number
-                            Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand + " " + args[0]);
-                        }
                     } else {
                         // Two parameters or greater were sent
                         try {
                             // Lobby number we're going to go to
-                            final int lobbyNumber = Integer.parseInt(args[1]);
-                            // First go to the lobby itself
-                            Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand + " " + args[0]);
+                            final int lobbyNumber = Integer.parseInt(args[0]);
 
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                            // If not in main lobby, go to main lobby first
+                            if(!Quickplay.INSTANCE.instanceWatcher.getCurrentServer().startsWith("lobby")) {
+                                Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand);
+
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
+
+
                             // Swap lobbies after waiting a sec
                             Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
                         } catch(NumberFormatException e) {

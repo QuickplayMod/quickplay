@@ -1,6 +1,7 @@
 package co.bugg.quickplay;
 
 import co.bugg.quickplay.client.command.CommandHub;
+import co.bugg.quickplay.client.command.CommandMain;
 import co.bugg.quickplay.client.command.CommandQuickplay;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.client.gui.QuickplayGuiPartySpinner;
@@ -338,6 +339,7 @@ public class Quickplay {
                 commands.add(new CommandHub("hub"));
                 commands.add(new CommandHub("spawn"));
                 commands.add(new CommandHub("leave"));
+                commands.add(new CommandMain("main"));
             }
             // Copy of the lobby command that doesn't override server commands
             // Used for "Go to Lobby" buttons
