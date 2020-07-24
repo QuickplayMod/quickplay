@@ -5,6 +5,7 @@ import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.util.ReflectionUtil;
 import co.bugg.quickplay.util.ServerChecker;
 import com.google.gson.Gson;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import org.apache.http.client.HttpClient;
@@ -97,6 +98,31 @@ public class HttpRequestFactory {
         addStatisticsParameters(params);
 
         return newRequest("https://bugg.co/quickplay/mod/ping", params);
+    }
+
+    public Request premiumVerificationRequest() {
+        HashMap<String, String> params = new HashMap<>();
+        addStatisticsParameters(params);
+        params.put("uuid", Minecraft.getMinecraft().getSession().getPlayerID());
+        params.put("username", Minecraft.getMinecraft().getSession().getUsername());
+
+        return newRequest("https://bugg.co/quickplay/mod/premium/verify", params);
+    }
+
+    public Request newPremiumStartAuthRequest() {
+        HashMap<String, String> params = new HashMap<>();
+        addStatisticsParameters(params);
+        params.put("uuid", Minecraft.getMinecraft().getSession().getPlayerID());
+
+        return newRequest("https://bugg.co/quickplay/mod/premium/startAuth", params);
+    }
+
+    public Request newGlyphModificationRequest(HashMap<String, String> params) {
+        addStatisticsParameters(params);
+        params.put("uuid", Minecraft.getMinecraft().getSession().getPlayerID());
+        params.put("key", String.valueOf(Quickplay.INSTANCE.sessionKey));
+
+        return newRequest("https://bugg.co/quickplay/mod/premium/glyph", params);
     }
 
     /**

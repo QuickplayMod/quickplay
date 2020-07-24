@@ -1,0 +1,22 @@
+{
+  "card.turn.common": {
+    "sounds":["card/turn/common"],
+    "category": "record"
+  },
+  "card.turn.rare": {
+    "sounds":["card/turn/rare"],
+    "category": "record"
+  },
+  "card.turn.epic": {
+    "sounds":["card/turn/epic"],
+    "category": "record"
+  },
+  "card.turn.legendary": {
+    "sounds":["card/turn/legendary"],
+    "category": "record"
+  },
+  "card.pick": {
+    "sounds":["card/pick"],
+    "category": "record"
+  }
+}

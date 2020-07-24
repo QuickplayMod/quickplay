@@ -12,7 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
  * Improved Hypixel /hub command
  * /hub on Hypixel is poor, so this adds a few extra features to the command
  */
-public class CommandHub extends ACommand {
+public class CommandHub extends BaseCommand {
     public static final String commandSyntax = "[lobbyName | lobbyNumber] [lobbyNumber]";
 
     /**
@@ -39,7 +39,7 @@ public class CommandHub extends ACommand {
      * @param serverCommand Command this <code>ACommand</code> sends to the server when changing lobbies
      */
     public CommandHub(String command, String serverCommand) {
-        super(command);
+        super(command, command);
         if(command != null && command.length() > 0) {
 
             this.command = command;

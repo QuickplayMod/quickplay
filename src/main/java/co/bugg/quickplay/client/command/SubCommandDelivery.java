@@ -8,12 +8,13 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Sub command for the delivery menu
  */
-public class SubCommandDelivery extends ASubCommand {
+public class SubCommandDelivery extends ACommand {
 
     /**
      * Constructor
@@ -22,12 +23,14 @@ public class SubCommandDelivery extends ASubCommand {
     public SubCommandDelivery(ACommand parent) {
         super(
                 parent,
-                "delivery",
+                Collections.singletonList("delivery"),
                  I18n.format("quickplay.commands.quickplay.delivery.help"),
                 "",
                 true,
                 true,
-                -100.0
+                -100.0,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
         );
     }
 
@@ -37,8 +40,8 @@ public class SubCommandDelivery extends ASubCommand {
             String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
             if(currentServer == null) currentServer = "null";
 
-            // TODO false positive in Megawalls lobby
-            if(currentServer.contains("mini") || currentServer.contains("mega") || currentServer.contains("limbo")) {
+            if((currentServer.contains("mini") || currentServer.contains("mega") || currentServer.contains("limbo")) &&
+                    !currentServer.contains("walls")) {
                 if(currentServer.contains("limbo")) {
                     Quickplay.INSTANCE.chatBuffer.push("/lobby");
                 } else {
@@ -53,7 +56,6 @@ public class SubCommandDelivery extends ASubCommand {
                     e.printStackTrace();
                     Quickplay.INSTANCE.chatBuffer.push("/delivery");
                     Quickplay.INSTANCE.sendExceptionRequest(e);
-                    return;
                 }
             }
 

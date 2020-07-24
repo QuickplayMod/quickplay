@@ -149,7 +149,6 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
                 chatCommand = "/" + chatCommand;
             }
 
-            System.out.println(chatCommand);
             Quickplay.INSTANCE.chatBuffer.push(chatCommand);
 
             // Send analytical data to Google

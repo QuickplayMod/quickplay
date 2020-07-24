@@ -6,12 +6,13 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Sub command to display instance history
  */
-public class SubCommandHistory extends ASubCommand {
+public class SubCommandHistory extends ACommand {
 
     /**
      * Constructor
@@ -20,12 +21,14 @@ public class SubCommandHistory extends ASubCommand {
     public SubCommandHistory(ACommand parent) {
         super(
                 parent,
-                "history",
+                Collections.singletonList("history"),
                 I18n.format("quickplay.commands.quickplay.history.help"),
                 "[count]",
                 true,
                 true,
-                85
+                85,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
         );
     }
 

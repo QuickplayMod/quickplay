@@ -11,16 +11,26 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Sub command for the Quickplay Party system
  */
-public class SubCommandParty extends ASubCommand {
+public class SubCommandParty extends ACommand {
 
     public SubCommandParty(ACommand parent) {
-        super(parent, "party", I18n.format(
-                "quickplay.commands.quickplay.party.help"), "[launch]", true, true, 88);
+        super(
+                parent,
+                Collections.singletonList("party"),
+                I18n.format("quickplay.commands.quickplay.party.help"),
+                "[launch]",
+                true,
+                true,
+                88,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
+        );
     }
 
     @Override
@@ -34,10 +44,10 @@ public class SubCommandParty extends ASubCommand {
 
     @Override
     public void run(String[] args) {
-        if(args.length == 0) {
+        if(args.length == 1) {
             new TickDelay(() -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiPartyEditor()), 1);
         } else {
-            if(args[0].equals("launch")) {
+            if(args[1].equals("launch")) {
                 new TickDelay(() -> Quickplay.INSTANCE.threadPool.submit(Quickplay.INSTANCE::launchPartyMode), 1);
             } else {
                 Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
