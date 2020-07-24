@@ -15,7 +15,6 @@ public class SubCommandHelp extends BasicHelpCommand {
         super(
                 parent,
                 I18n.format("quickplay.commands.quickplay.help.help"),
-                "[subcommand]",
                 true,
                 true,
                 100.0,

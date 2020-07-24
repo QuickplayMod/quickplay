@@ -12,7 +12,6 @@ public class GlyphCommandHelp extends BasicHelpCommand {
         super(
                 parent,
                 "Displays Glyph command help information",
-                "",
                 true,
                 true,
                 80,

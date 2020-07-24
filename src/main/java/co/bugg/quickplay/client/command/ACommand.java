@@ -93,7 +93,13 @@ public abstract class ACommand {
 
         if(args.length < this.depth + 2) {
             for(final ACommand subCommand : this.getSubCommands()) {
-                for(final String alias : subCommand.getAliases()) {
+                for(int i = 0; i < subCommand.getAliases().size(); i++) {
+                    final String alias = subCommand.getAliases().get(i);
+                    // If the user hasn't began typing an argument, only provide the first command instead of all aliases.
+                    if(args[args.length - 1].length() <= 0 && i != 0) {
+                        continue;
+                    }
+                    // Otherwise, check if the typed input is the beginning to any alias, not just the first one.
                     if(!alias.startsWith(args[args.length - 1])) {
                         continue;
                     }

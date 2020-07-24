@@ -33,6 +33,13 @@ public class GlyphCommandSet extends GlyphCommand {
     @Override
     public void run(String[] args) {
         try {
+            if(args.length < 4) {
+                Quickplay.INSTANCE.messageBuffer.push(new Message(
+                        new ChatComponentTranslation("quickplay.premium.command.glyph.set.illegal")
+                                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                return;
+            }
+
             final URL url = new URL(args[3]);
 
             HashMap<String, String> params = new HashMap<>();

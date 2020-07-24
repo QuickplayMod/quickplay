@@ -18,18 +18,17 @@ public class BasicHelpCommand extends ACommand {
      *
      * @param parent            Parent command
      * @param helpMessage       Help message for this sub command, usually displayed in a help menu
-     * @param usage             Command syntax. See {@link ACommand#usage}
      * @param displayInHelpMenu Whether this sub command can be displayed in a help menu
      * @param displayInTabList  Whether this sub command can be tabbed into chat
      * @param priority          the priority of this sub command in help menu and tab list (bigger = higher)
      * @param requiresPremium   Whether this command requires Premium to be used/displayed
      */
-    public BasicHelpCommand(ACommand parent, String helpMessage, String usage, boolean displayInHelpMenu, boolean displayInTabList, double priority, boolean requiresPremium) {
+    public BasicHelpCommand(ACommand parent, String helpMessage, boolean displayInHelpMenu, boolean displayInTabList, double priority, boolean requiresPremium) {
         super(
                 parent,
                 Arrays.asList("help", "h", "?"),
                 helpMessage,
-                usage,
+                "<command>",
                 displayInHelpMenu,
                 displayInTabList,
                 priority,
@@ -78,13 +77,15 @@ public class BasicHelpCommand extends ACommand {
             }
         } else {
             separators = false;
-            ACommand commandToDisplay = getParent().getCommand(args[this.getDepth() - 1]);
+            ACommand commandToDisplay = getParent().getCommand(args[this.getDepth()]);
             if(commandToDisplay != null) {
                 helpMessage.appendSibling(new ChatComponentTranslation("quickplay.commands.usage"));
                 helpMessage.appendText("\n");
-                helpMessage.appendText(this.prependedFullCommand + commandToDisplay.getUsage());
-                helpMessage.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
+                helpMessage.appendText(this.prependedFullCommand + commandToDisplay.getName() + " " + commandToDisplay.getUsage());
+            } else {
+                helpMessage.appendSibling(new ChatComponentTranslation("quickplay.commands.invalid"));
             }
+            helpMessage.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
         }
 
         Quickplay.INSTANCE.messageBuffer.push(new Message(helpMessage, separators));

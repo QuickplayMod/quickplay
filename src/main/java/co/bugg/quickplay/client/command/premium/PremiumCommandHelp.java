@@ -12,7 +12,6 @@ public class PremiumCommandHelp extends BasicHelpCommand {
         super(
                 parent,
                 "Displays Premium command help information",
-                "",
                 true,
                 true,
                 91,

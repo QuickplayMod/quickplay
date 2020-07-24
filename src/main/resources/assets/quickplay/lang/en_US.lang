@@ -172,6 +172,7 @@ quickplay.premium.command.glyph.height.help=Set the vertical height of your Quic
 quickplay.premium.command.glyph.height.illegal=Illegal argument! Argument "number" must be a number between 1 and 40.
 quickplay.premium.command.glyph.reset.help=Remove your Quickplay Glyph so nothing displays above your head.
 quickplay.premium.command.glyph.ingame.help=Set whether or not your Glyph should display in-game for others, or only in lobbies.
+quickplay.premium.command.glyph.ingame.illegal=Illegal argument! You must set this to either "true" or "false".
 quickplay.premium.command.glyph.displayown.help=Whether your own Glyph should display over your head. Does not affect how others see it.
 quickplay.premium.command.glyph.displayown.set=Personal glyph visibility set to %s.
 
