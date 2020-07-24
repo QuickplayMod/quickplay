@@ -6,12 +6,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Sub command to open the keybinds GUI
  */
-public class SubCommandKeybinds extends ASubCommand {
+public class SubCommandKeybinds extends ACommand {
 
     /**
      * Constructor
@@ -20,7 +21,7 @@ public class SubCommandKeybinds extends ASubCommand {
     public SubCommandKeybinds(ACommand parent) {
         super(
                 parent,
-                "keybinds",
+                Collections.singletonList("keybinds"),
                 I18n.format("quickplay.commands.quickplay.keybinds.help"),
                 "",
                 true,

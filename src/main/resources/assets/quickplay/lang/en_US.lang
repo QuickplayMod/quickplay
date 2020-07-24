@@ -3,6 +3,7 @@ quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
 quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Click to open.
 
+quickplay.commands.invalid=Invalid command!
 quickplay.commands.quickplay.help.help=Display the available commands.
 quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
 quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.

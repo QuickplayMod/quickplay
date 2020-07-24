@@ -8,12 +8,13 @@ import net.minecraft.util.ResourceLocation;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Sub command to refresh Quickplay resources
  */
-public class SubCommandRefreshResource extends ASubCommand {
+public class SubCommandRefreshResource extends ACommand {
 
     /**
      * Constructor
@@ -22,7 +23,7 @@ public class SubCommandRefreshResource extends ASubCommand {
     public SubCommandRefreshResource(ACommand parent) {
         super(
                 parent,
-                "refreshresource",
+                Collections.singletonList("refreshresource"),
                 "Refresh the provided Quickplay Resource.",
                 "<path>",
                 false,

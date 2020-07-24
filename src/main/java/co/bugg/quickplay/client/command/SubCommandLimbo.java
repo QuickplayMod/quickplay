@@ -8,12 +8,13 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Sub command for the limbo command
  */
-public class SubCommandLimbo extends ASubCommand {
+public class SubCommandLimbo extends ACommand {
 
     /**
      * Constructor
@@ -22,7 +23,7 @@ public class SubCommandLimbo extends ASubCommand {
     public SubCommandLimbo(ACommand parent) {
         super(
                 parent,
-                "limbo",
+                Collections.singletonList("limbo"),
                 I18n.format("quickplay.commands.quickplay.limbo.help"),
                 "",
                 true,
@@ -37,8 +38,7 @@ public class SubCommandLimbo extends ASubCommand {
             String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
             if(currentServer == null) currentServer = "null";
 
-            // TODO false positive in Megawalls lobby
-            if(currentServer.contains("mini") || currentServer.contains("mega")) {
+            if(currentServer.contains("mini") || currentServer.contains("mega") && !currentServer.contains("walls")) {
                 Quickplay.INSTANCE.chatBuffer.push("/achat §");
 
                 // Sleep for a sec to give time to get to the lobby

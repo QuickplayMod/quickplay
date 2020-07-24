@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.command.premium;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.client.command.ACommand;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
@@ -10,6 +11,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,20 +19,20 @@ import java.util.List;
  * Quickplay attempts to grab this information from the web server on startup
  * If it doesn't exist, an error is sent.
  */
-public class PremiumCommandAbout implements IPremiumCommand {
-    @Override
-    public String getName() {
-        return "about";
-    }
+public class PremiumCommandAbout extends ACommand {
 
-    @Override
-    public String getUsage() {
-        return "";
-    }
-
-    @Override
-    public String getHelpText() {
-        return "Retrieve information about Quickplay Premium.";
+    public PremiumCommandAbout(ACommand parent) {
+        super(
+                parent,
+                Collections.singletonList("about"),
+                "Retrieve information about Quickplay Premium.",
+                "",
+                true,
+                true,
+                85,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
+        );
     }
 
     @Override

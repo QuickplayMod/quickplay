@@ -13,9 +13,7 @@ import co.bugg.quickplay.http.HttpRequestFactory;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.ResponseAction;
 import co.bugg.quickplay.http.response.WebResponse;
-import co.bugg.quickplay.util.InstanceWatcher;
-import co.bugg.quickplay.util.Message;
-import co.bugg.quickplay.util.ServerChecker;
+import co.bugg.quickplay.util.*;
 import co.bugg.quickplay.util.analytics.AnalyticsRequest;
 import co.bugg.quickplay.util.analytics.GoogleAnalytics;
 import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
@@ -166,6 +164,20 @@ public class Quickplay {
      */
     public int currentPing = 0;
 
+    /**
+     * Whether this client is premium or not
+     * Verified from the web server
+     */
+    boolean premiumClient = false;
+    /**
+     * When Quickplay Premium expires for this user
+     */
+    public long expirationTime = 0;
+    /**
+     * Session key used for Premium-related resource requests
+     */
+    public String sessionKey;
+
     @EventHandler
     public void init(FMLInitializationEvent event) {
         // The message buffer should remain online even
@@ -302,6 +314,13 @@ public class Quickplay {
                     }
                 }
             });
+
+            // Check for Premium subscription
+            try {
+                verifyPremium();
+            } catch (IOException | NoSubscriptionException e) {
+                e.printStackTrace();
+            }
 
             registerEventHandler(new GlyphRenderer());
             registerEventHandler(new QuickplayEventHandler());
@@ -486,5 +505,68 @@ public class Quickplay {
             ITextureObject object = new ThreadDownloadImageData(file, null, resourceLocation, null);
             texturemanager.loadTexture(resourceLocation, object);
         }
+    }
+
+    /**
+     * Verify whether this client has a Quickplay Premium subscription, and authenticate
+     * {@link #expirationTime} and {@link #premiumClient} are set by this method.
+     * This method also returns {@link #premiumClient} on completion.
+     * @throws NoSubscriptionException when the client attempts to get a handshake secret,
+     *      but doesnt have a subscription.
+     */
+    public boolean verifyPremium() throws IOException, NoSubscriptionException {
+
+        final PremiumAuthenticator authenticator = new PremiumAuthenticator();
+        final String secret = authenticator.getHandshakeSecret();
+
+        authenticator.sendSessionServerRequest(secret);
+
+        final Request request = requestFactory.premiumVerificationRequest();
+        if(request != null) {
+            final WebResponse response = request.execute();
+            if(response != null && response.ok) {
+                if(response.actions != null)
+                    for(final ResponseAction action : response.actions)
+                        action.run();
+
+                if(response.content != null && response.content.getAsJsonObject().get("premium") != null) {
+                    this.premiumClient = response.content.getAsJsonObject().get("premium").getAsBoolean();
+
+                    if(response.content.getAsJsonObject().get("sessionKey") != null) {
+                        this.sessionKey = response.content.getAsJsonObject().get("sessionKey").getAsString();
+                    }
+
+                    // Reauthenticate just before the session expires
+                    if(response.content.getAsJsonObject().get("sessionExpriesIn") != null)
+                        Quickplay.INSTANCE.threadPool.submit(() -> {
+                            try {
+                                // Sleep until 5 minutes before the session expires, or for at least 5 minutes.
+                                Thread.sleep(Math.max(response.content.getAsJsonObject().get("sessionExpiresIn")
+                                        .getAsLong() - 300000, 300000));
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                verifyPremium();
+                            } catch (IOException | NoSubscriptionException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                    if(this.premiumClient && response.content.getAsJsonObject().get("expires") != null) {
+                        this.expirationTime = response.content.getAsJsonObject().get("expires").getAsLong();
+                    }
+                } else {
+                    this.premiumClient = false;
+                }
+
+                return this.premiumClient;
+            } else {
+                throw new IOException("Failed to verify Premium: null or not-ok response from web server.");
+            }
+        } else {
+            throw new RuntimeException("Null request was returned by PremiumRequestFactory#premiumVerificationRequest()");
+        }
+
     }
 }

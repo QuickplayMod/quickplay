@@ -7,12 +7,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Sub command to open the config GUI
  */
-public class SubCommandConfig extends ASubCommand {
+public class SubCommandConfig extends ACommand {
 
     /**
      * Constructor
@@ -21,7 +22,7 @@ public class SubCommandConfig extends ASubCommand {
     public SubCommandConfig(ACommand parent) {
         super(
                 parent,
-                "config",
+                Arrays.asList("config", "settings"),
                 I18n.format("quickplay.commands.quickplay.config.help"),
                 "",
                 true,

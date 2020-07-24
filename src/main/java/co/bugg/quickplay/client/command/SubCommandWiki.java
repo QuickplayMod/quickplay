@@ -8,12 +8,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Sub command to open up the Quickplay wiki
  */
-public class SubCommandWiki extends ASubCommand {
+public class SubCommandWiki extends ACommand {
 
     /**
      * Constructor
@@ -22,7 +23,7 @@ public class SubCommandWiki extends ASubCommand {
     public SubCommandWiki(ACommand parent) {
         super(
                 parent,
-                "wiki",
+                Collections.singletonList("wiki"),
                  I18n.format("quickplay.commands.quickplay.wiki.help"),
                 "",
                 true,

@@ -1,22 +1,17 @@
 package co.bugg.quickplay.client.command.premium;
 
 import co.bugg.quickplay.client.command.ACommand;
-import co.bugg.quickplay.client.command.ASubCommand;
+import co.bugg.quickplay.util.InvalidCommandException;
 import net.minecraft.client.resources.I18n;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 /**
  * Sub command for Quickplay Premium
  */
-public class SubCommandPremium extends ASubCommand {
+public class SubCommandPremium extends ACommand {
 
-    /**
-     * List of Quickplay Premium commands
-     */
-    public List<IPremiumCommand> premiumCommands = new ArrayList<>();
+    final PremiumCommandHelp helpCommand;
 
     /**
      * Constructor
@@ -25,59 +20,33 @@ public class SubCommandPremium extends ASubCommand {
     public SubCommandPremium(ACommand parent) {
         super(
                 parent,
-                "premium",
+                Collections.singletonList("premium"),
                 I18n.format("quickplay.commands.quickplay.premium.help"),
-                "",
+                "help",
                 true,
                 true,
                 91
         );
 
-        premiumCommands.add(new PremiumCommandHelp(this));
-        premiumCommands.add(new PremiumCommandAbout());
+        this.helpCommand = new PremiumCommandHelp(this);
+        this.addSubCommand(this.helpCommand);
+        this.addSubCommand(new PremiumCommandAbout(this));
+        this.addSubCommand(new PremiumCommandAccount(this));
+        this.addSubCommand(new PremiumCommandTransfer(this));
+        this.addSubCommand(new PremiumCommandGlyph(this));
+        this.addSubCommand(new PremiumCommandAuth(this));
     }
 
     @Override
     public void run(String[] args) {
-        if(premiumCommands.size() > 0) {
-            if (args.length > 0) {
-                // Look for the command executed by the user
-                final List<IPremiumCommand> filteredList = premiumCommands
-                        .stream()
-                        .filter(cmd -> cmd.getName().equals(args[0]))
-                        .collect(Collectors.toList());
-
-                if(filteredList.size() > 0) {
-                    filteredList.get(0).run(args);
-                } else {
-                    premiumCommands.get(0).run(args); // Run help command
-                }
-            } else {
-                premiumCommands.get(0).run(args); // Run help command
-            }
+        if(args.length == this.getDepth()) {
+            this.helpCommand.run(new String[0]);
+            return;
         }
-    }
-
-    @Override
-    public List<String> getTabCompletions(String[] args) {
-        final ArrayList<String> list = new ArrayList<>();
-        if(args.length == 1) {
-            // Add all premium commands that begin with what's already typed out
-            list.addAll(premiumCommands
-                    .stream()
-                    .filter(cmd -> cmd.getName().startsWith(args[0]))
-                    .map(IPremiumCommand::getName)
-                    .collect(Collectors.toList()));
-        } else {
-            // Find the Premium command which equals the currently already typed in command - Should be one item.
-            final List<IPremiumCommand> filteredList = premiumCommands
-                    .stream()
-                    .filter(cmd -> cmd.getName().equals(args[0]))
-                    .collect(Collectors.toList());
-            if(filteredList.size() > 0) { // If found, get that command's tab completions.
-                list.addAll(filteredList.get(0).getTabCompletions(args));
-            }
+        try {
+            super.run(args);
+        } catch (InvalidCommandException e) {
+            this.helpCommand.run(new String[0]);
         }
-        return list;
     }
 }

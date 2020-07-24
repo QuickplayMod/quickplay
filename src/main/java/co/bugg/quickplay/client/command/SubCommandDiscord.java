@@ -8,12 +8,13 @@ import net.minecraft.event.HoverEvent;
 import net.minecraft.util.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Sub command to retrieve a link to the Quickplay Discord
  */
-public class SubCommandDiscord extends ASubCommand {
+public class SubCommandDiscord extends ACommand {
 
     /**
      * Constructor
@@ -22,7 +23,7 @@ public class SubCommandDiscord extends ASubCommand {
     public SubCommandDiscord(ACommand parent) {
         super(
                 parent,
-                "discord",
+                Collections.singletonList("discord"),
                 I18n.format("quickplay.commands.quickplay.discord.help"),
                 "",
                 true,
