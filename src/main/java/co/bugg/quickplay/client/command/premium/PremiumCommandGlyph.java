@@ -16,7 +16,7 @@ public class PremiumCommandGlyph extends ACommand {
         super(
                 parent,
                 Arrays.asList("glyph", "icon"),
-                I18n.format("quickplay.premium.command.glyph.help"),
+                I18n.format("quickplay.commands.quickplay.premium.glyph.help"),
                 "",
                 true,
                 true,

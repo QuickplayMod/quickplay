@@ -20,7 +20,7 @@ public class PremiumCommandAuth extends ACommand {
         super(
                 parent,
                 Arrays.asList("auth", "login"),
-                I18n.format("quickplay.premium.command.auth.help"),
+                I18n.format("quickplay.commands.quickplay.premium.auth.help"),
                 "",
                 true,
                 true,
@@ -33,29 +33,29 @@ public class PremiumCommandAuth extends ACommand {
     @Override
     public void run(String[] args) {
         Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
-                "quickplay.premium.command.auth.runningRequest").setChatStyle(new ChatStyle()
+                "quickplay.commands.quickplay.premium.auth.runningRequest").setChatStyle(new ChatStyle()
                 .setColor(EnumChatFormatting.GREEN))));
 
         Quickplay.INSTANCE.threadPool.submit(() -> {
             try {
                 if(Quickplay.INSTANCE.verifyPremium()) {
                     Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
-                            "quickplay.premium.command.auth.done").setChatStyle(new ChatStyle()
+                            "quickplay.commands.quickplay.premium.auth.done").setChatStyle(new ChatStyle()
                             .setColor(EnumChatFormatting.GREEN))));
                 } else {
                     Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
-                            "quickplay.premium.command.auth.noSubscription").setChatStyle(new ChatStyle()
+                            "quickplay.commands.quickplay.premium.auth.noSubscription").setChatStyle(new ChatStyle()
                             .setColor(EnumChatFormatting.RED))));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
                 Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
-                        "quickplay.premium.command.auth.error").setChatStyle(new ChatStyle()
+                        "quickplay.commands.quickplay.premium.auth.error").setChatStyle(new ChatStyle()
                         .setColor(EnumChatFormatting.RED))));
             } catch (NoSubscriptionException e) {
                 e.printStackTrace();
                 Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
-                        "quickplay.premium.command.auth.noSubscription").setChatStyle(new ChatStyle()
+                        "quickplay.commands.quickplay.premium.auth.noSubscription").setChatStyle(new ChatStyle()
                         .setColor(EnumChatFormatting.RED))));
             }
         });

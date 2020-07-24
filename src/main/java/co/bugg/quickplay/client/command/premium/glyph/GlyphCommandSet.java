@@ -20,7 +20,7 @@ public class GlyphCommandSet extends GlyphCommand {
         super(
                 parent,
                 Collections.singletonList("set"),
-                I18n.format("quickplay.premium.command.glyph.set.help"),
+                I18n.format("quickplay.commands.quickplay.premium.glyph.set.help"),
                 "<imageURL>",
                 true,
                 true,
@@ -35,7 +35,7 @@ public class GlyphCommandSet extends GlyphCommand {
         try {
             if(args.length < 4) {
                 Quickplay.INSTANCE.messageBuffer.push(new Message(
-                        new ChatComponentTranslation("quickplay.premium.command.glyph.set.illegal")
+                        new ChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.set.illegal")
                                 .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 return;
             }
@@ -51,12 +51,12 @@ public class GlyphCommandSet extends GlyphCommand {
                 runGlyphRequest(request);
             else
                 Quickplay.INSTANCE.messageBuffer.push(new Message(
-                        new ChatComponentTranslation("quickplay.premium.command.glyph.error")
+                        new ChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.error")
                                 .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         } catch(MalformedURLException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.messageBuffer.push(new Message(
-                    new ChatComponentTranslation("quickplay.premium.command.glyph.set.illegal")
+                    new ChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.set.illegal")
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }

@@ -27,7 +27,7 @@ public class SubCommandVersion extends ACommand {
                 Arrays.asList("version", "v"),
                  I18n.format("quickplay.commands.quickplay.version.help"),
                 "",
-                true,
+                false,
                 true,
                 85,
                 false,

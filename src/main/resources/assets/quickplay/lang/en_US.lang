@@ -22,6 +22,32 @@ quickplay.commands.quickplay.history.help=View what instances you've last been o
 quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
 quickplay.commands.quickplay.history.error=Something went wrong!
 quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
+quickplay.commands.quickplay.version.help=View the current Quickplay version.
+quickplay.commands.quickplay.version.message=Quickplay v%s
+
+quickplay.commands.quickplay.premium.account.help=Retrieve information about your account.
+quickplay.commands.quickplay.premium.auth.help=Re-authenticate with the Quickplay Premium backend servers.
+quickplay.commands.quickplay.premium.auth.runningRequest=Thinking...
+quickplay.commands.quickplay.premium.auth.done=Authenticated!
+quickplay.commands.quickplay.premium.auth.error=Something went wrong while doing that! Contact bugfroggy if this persists.
+quickplay.commands.quickplay.premium.auth.noSubscription=Seems like you don't have any Quickplay Premium subscription! Contact bugfroggy if you believe this is an error.
+quickplay.commands.quickplay.premium.transfer.help=Transfer your Quickplay Premium subscription to another account.
+quickplay.commands.quickplay.premium.transfer.todo=Sorry, but this command isn't implemented yet. In the mean time, contact bugfroggy on the Quickplay Discord! /qp discord
+quickplay.commands.quickplay.premium.glyph.help=Change your Quickplay Premium Glyph settings.
+quickplay.commands.quickplay.premium.glyph.runningRequest=Thinking...
+quickplay.commands.quickplay.premium.glyph.error=Something went wrong... Try contact bugfroggy if this doesn't resolve itself.
+quickplay.commands.quickplay.premium.glyph.offset.help=Set the vertical offset for your Quickplay Glyph.
+quickplay.commands.quickplay.premium.glyph.offset.illegal=Illegal argument! Argument "number" must be a number between -3 and 2 (decimals are valid).
+quickplay.commands.quickplay.premium.glyph.set.help=Set the image URL of your Quickplay Glyph.
+quickplay.commands.quickplay.premium.glyph.set.illegal=The URL provided is invalid! Please provide a URL that directs to an image.
+quickplay.commands.quickplay.premium.glyph.height.help=Set the vertical height of your Quickplay Glyph.
+quickplay.commands.quickplay.premium.glyph.height.illegal=Illegal argument! Argument "number" must be a number between 1 and 40.
+quickplay.commands.quickplay.premium.glyph.reset.help=Remove your Quickplay Glyph so nothing displays above your head.
+quickplay.commands.quickplay.premium.glyph.ingame.help=Set whether or not your Glyph should display in-game for others, or only in lobbies.
+quickplay.commands.quickplay.premium.glyph.ingame.illegal=Illegal argument! You must set this to either "true" or "false".
+quickplay.commands.quickplay.premium.glyph.displayown.help=Whether your own Glyph should display over your head. Does not affect how others see it.
+quickplay.commands.quickplay.premium.glyph.displayown.set=Personal glyph visibility set to %s.
+
 quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
 quickplay.commands.usage=Command syntax:
 
@@ -143,38 +169,7 @@ quickplay.moveableHudElement.medium=MEDIUM
 quickplay.moveableHudElement.large=LARGE
 quickplay.moveableHudElement.xlarge=EXTRA LARGE
 
-
-
-
-quickplay.premium.requestFail=Sorry, but your Quickplay Premium subscription couldn't be verified! Some Quickplay Premium features may be unavailable.
 quickplay.premium.expiresIn=Your Quickplay Premium subscription expires in %s days.
-
-quickplay.premium.command.missingApiToken=Looks like something went wrong. Try running "/qp premium auth" to re-authenticate.
-quickplay.premium.command.account.help=Retrieve information about your account.
-quickplay.premium.command.version.help=Get what version of Quickplay Premium you are using.
-quickplay.premium.command.version.message=Quickplay Premium v%s (Quickplay v%s).
-quickplay.premium.command.auth.help=Re-authenticate with the Quickplay Premium backend servers.
-quickplay.premium.command.auth.runningRequest=Thinking...
-quickplay.premium.command.auth.done=Authenticated!
-quickplay.premium.command.auth.error=Something went wrong while doing that! Contact bugfroggy if this persists.
-quickplay.premium.command.auth.noSubscription=Seems like you don't have any Quickplay Premium subscription! Contact bugfroggy if you believe this is an error.
-quickplay.premium.command.auth.headsUpChanges=Psst..! Just a heads up, API tokens are no longer required to authorize. You should automatically be authorized when you launch your game, however you can do "/qp premium auth" to re-authorize.
-quickplay.commands.quickplay.premium.transfer.help=Transfer your Quickplay Premium subscription to another account.
-quickplay.commands.quickplay.premium.transfer.todo=Sorry, but this command isn't implemented yet. In the mean time, contact bugfroggy on the Quickplay Discord! /qp discord
-quickplay.premium.command.glyph.help=Change your Quickplay Premium Glyph settings.
-quickplay.premium.command.glyph.runningRequest=Thinking...
-quickplay.premium.command.glyph.error=Something went wrong... Try contact bugfroggy if this doesn't resolve itself.
-quickplay.premium.command.glyph.offset.help=Set the vertical offset for your Quickplay Glyph.
-quickplay.premium.command.glyph.offset.illegal=Illegal argument! Argument "number" must be a number between -3 and 2 (decimals are valid).
-quickplay.premium.command.glyph.set.help=Set the image URL of your Quickplay Glyph.
-quickplay.premium.command.glyph.set.illegal=The URL provided is invalid! Please provide a URL that directs to an image.
-quickplay.premium.command.glyph.height.help=Set the vertical height of your Quickplay Glyph.
-quickplay.premium.command.glyph.height.illegal=Illegal argument! Argument "number" must be a number between 1 and 40.
-quickplay.premium.command.glyph.reset.help=Remove your Quickplay Glyph so nothing displays above your head.
-quickplay.premium.command.glyph.ingame.help=Set whether or not your Glyph should display in-game for others, or only in lobbies.
-quickplay.premium.command.glyph.ingame.illegal=Illegal argument! You must set this to either "true" or "false".
-quickplay.premium.command.glyph.displayown.help=Whether your own Glyph should display over your head. Does not affect how others see it.
-quickplay.premium.command.glyph.displayown.set=Personal glyph visibility set to %s.
 
 quickplay.premium.ingameReward.error=Weird, something went wrong while trying to do that! Try re-authorizing with "/qp premium auth", or contact bugfroggy if this issue persists.
 quickplay.premium.ingameReward.openLink=Open Web Version

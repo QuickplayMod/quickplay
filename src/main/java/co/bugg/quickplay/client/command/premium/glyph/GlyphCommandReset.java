@@ -18,7 +18,7 @@ public class GlyphCommandReset extends GlyphCommand {
         super(
                 parent,
                 Collections.singletonList("reset"),
-                I18n.format("quickplay.premium.command.glyph.reset.help"),
+                I18n.format("quickplay.commands.quickplay.premium.glyph.reset.help"),
                 "",
                 true,
                 true,
@@ -39,7 +39,7 @@ public class GlyphCommandReset extends GlyphCommand {
             runGlyphRequest(request);
         } else {
             Quickplay.INSTANCE.messageBuffer.push(new Message(
-                    new ChatComponentTranslation("quickplay.premium.command.glyph.error")
+                    new ChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.error")
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
 

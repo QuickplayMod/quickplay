@@ -19,7 +19,7 @@ public class PremiumCommandAccount extends ACommand {
         super(
                 parent,
                 Collections.singletonList("account"),
-                I18n.format("quickplay.premium.command.account.help"),
+                I18n.format("quickplay.commands.quickplay.premium.account.help"),
                 "",
                 true,
                 true,

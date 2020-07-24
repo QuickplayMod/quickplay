@@ -33,7 +33,7 @@ public abstract class GlyphCommand extends ACommand {
      */
     public void runGlyphRequest(Request request) {
         Quickplay.INSTANCE.messageBuffer.push(new Message(
-                new ChatComponentTranslation("quickplay.premium.command.glyph.runningRequest")
+                new ChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.runningRequest")
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
 
         Quickplay.INSTANCE.threadPool.submit(() -> {
@@ -71,7 +71,7 @@ public abstract class GlyphCommand extends ACommand {
 
             } else {
                 Quickplay.INSTANCE.messageBuffer.push(new Message(
-                        new ChatComponentTranslation("quickplay.premium.command.glyph.error")
+                        new ChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.error")
                                 .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
                 ));
             }
