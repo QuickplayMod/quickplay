@@ -26,7 +26,9 @@ public class SubCommandKeybinds extends ACommand {
                 "",
                 true,
                 true,
-                80
+                80,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
         );
     }
 

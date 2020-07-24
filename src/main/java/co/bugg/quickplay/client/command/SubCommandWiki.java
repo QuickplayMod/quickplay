@@ -28,7 +28,9 @@ public class SubCommandWiki extends ACommand {
                 "",
                 true,
                 true,
-                86
+                86,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
         );
     }
 

@@ -25,7 +25,9 @@ public class SubCommandPremium extends ACommand {
                 "help",
                 true,
                 true,
-                91
+                91,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
         );
 
         this.helpCommand = new PremiumCommandHelp(this);

@@ -39,7 +39,7 @@ public class CommandHub extends BaseCommand {
      * @param serverCommand Command this <code>ACommand</code> sends to the server when changing lobbies
      */
     public CommandHub(String command, String serverCommand) {
-        super(command);
+        super(command, command);
         if(command != null && command.length() > 0) {
 
             this.command = command;

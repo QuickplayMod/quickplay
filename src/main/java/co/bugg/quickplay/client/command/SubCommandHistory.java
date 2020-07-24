@@ -26,7 +26,9 @@ public class SubCommandHistory extends ACommand {
                 "[count]",
                 true,
                 true,
-                85
+                85,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
         );
     }
 

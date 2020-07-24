@@ -28,7 +28,9 @@ public class SubCommandDiscord extends ACommand {
                 "",
                 true,
                 true,
-                90
+                90,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
         );
     }
 

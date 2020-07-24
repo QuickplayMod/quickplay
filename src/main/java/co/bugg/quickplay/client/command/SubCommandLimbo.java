@@ -28,7 +28,9 @@ public class SubCommandLimbo extends ACommand {
                 "",
                 true,
                 true,
-                -90.0
+                -90.0,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
         );
     }
 

@@ -142,3 +142,53 @@ quickplay.moveableHudElement.small=SMALL
 quickplay.moveableHudElement.medium=MEDIUM
 quickplay.moveableHudElement.large=LARGE
 quickplay.moveableHudElement.xlarge=EXTRA LARGE
+
+
+
+
+quickplay.premium.requestFail=Sorry, but your Quickplay Premium subscription couldn't be verified! Some Quickplay Premium features may be unavailable.
+quickplay.premium.expiresIn=Your Quickplay Premium subscription expires in %s days.
+
+quickplay.premium.command.missingApiToken=Looks like something went wrong. Try running "/qp premium auth" to re-authenticate.
+quickplay.premium.command.account.help=Retrieve information about your account.
+quickplay.premium.command.version.help=Get what version of Quickplay Premium you are using.
+quickplay.premium.command.version.message=Quickplay Premium v%s (Quickplay v%s).
+quickplay.premium.command.auth.help=Re-authenticate with the Quickplay Premium backend servers.
+quickplay.premium.command.auth.runningRequest=Thinking...
+quickplay.premium.command.auth.done=Authenticated!
+quickplay.premium.command.auth.error=Something went wrong while doing that! Contact bugfroggy if this persists.
+quickplay.premium.command.auth.noSubscription=Seems like you don't have any Quickplay Premium subscription! Contact bugfroggy if you believe this is an error.
+quickplay.premium.command.auth.headsUpChanges=Psst..! Just a heads up, API tokens are no longer required to authorize. You should automatically be authorized when you launch your game, however you can do "/qp premium auth" to re-authorize.
+quickplay.commands.quickplay.premium.transfer.help=Transfer your Quickplay Premium subscription to another account.
+quickplay.commands.quickplay.premium.transfer.todo=Sorry, but this command isn't implemented yet. In the mean time, contact bugfroggy on the Quickplay Discord! /qp discord
+quickplay.premium.command.glyph.help=Change your Quickplay Premium Glyph settings.
+quickplay.premium.command.glyph.runningRequest=Thinking...
+quickplay.premium.command.glyph.error=Something went wrong... Try contact bugfroggy if this doesn't resolve itself.
+quickplay.premium.command.glyph.offset.help=Set the vertical offset for your Quickplay Glyph.
+quickplay.premium.command.glyph.offset.illegal=Illegal argument! Argument "number" must be a number between -3 and 2 (decimals are valid).
+quickplay.premium.command.glyph.set.help=Set the image URL of your Quickplay Glyph.
+quickplay.premium.command.glyph.set.illegal=The URL provided is invalid! Please provide a URL that directs to an image.
+quickplay.premium.command.glyph.height.help=Set the vertical height of your Quickplay Glyph.
+quickplay.premium.command.glyph.height.illegal=Illegal argument! Argument "number" must be a number between 1 and 40.
+quickplay.premium.command.glyph.reset.help=Remove your Quickplay Glyph so nothing displays above your head.
+quickplay.premium.command.glyph.ingame.help=Set whether or not your Glyph should display in-game for others, or only in lobbies.
+quickplay.premium.command.glyph.displayown.help=Whether your own Glyph should display over your head. Does not affect how others see it.
+quickplay.premium.command.glyph.displayown.set=Personal glyph visibility set to %s.
+
+quickplay.premium.ingameReward.error=Weird, something went wrong while trying to do that! Try re-authorizing with "/qp premium auth", or contact bugfroggy if this issue persists.
+quickplay.premium.ingameReward.openLink=Open Web Version
+quickplay.premium.ingameReward.hypixelProperty=All assets are property of Hypixel Inc. Quickplay is not affiliated with Hypixel Inc. https://hypixel.net/
+quickplay.premium.ingameReward.error.header=(╯°□°)╯︵ ┻━┻
+quickplay.premium.ingameReward.adroll.header=Welcome to the Hypixel Zoo!
+quickplay.premium.ingamereward.remaining=Time remaining: %ss
+quickplay.premium.ingameReward.adroll.text=The Hypixel Store contains plenty of cool items to enhance your Hypixel player experience.
+quickplay.premium.ingameReward.adroll.skipAd=Purchase any server rank to permanently bypass this advertisement.
+quickplay.premium.ingameReward.adroll.clickToVisit=Click here to visit the store.
+quickplay.premium.ingameReward.menu.header=Choose your reward
+quickplay.premium.ingameReward.menu.streak=Daily Streak - Current: %s - High Score: %s
+quickplay.premium.ingameReward.menu.claim.error=Something went wrong while claiming your reward.. Try again, or perhaps the reward has expired.
+quickplay.premium.ingameReward.claimed.header=Reward Claimed!
+quickplay.premium.ingameReward.claimed.close=Press %s to close this menu.
+quickplay.premium.ingameReward.claimed.share=Share
+quickplay.premium.ingameReward.loading=Loading...
+quickplay.premium.ingameReward.loading.sub=Please allow up to 5 seconds...

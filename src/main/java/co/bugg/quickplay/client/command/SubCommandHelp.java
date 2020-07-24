@@ -18,7 +18,8 @@ public class SubCommandHelp extends BasicHelpCommand {
                 "[subcommand]",
                 true,
                 true,
-                100.0
+                100.0,
+                false
         );
     }
 }

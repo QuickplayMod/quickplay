@@ -20,8 +20,17 @@ import java.util.List;
 public class SubCommandParty extends ACommand {
 
     public SubCommandParty(ACommand parent) {
-        super(parent, "party", I18n.format(
-                "quickplay.commands.quickplay.party.help"), "[launch]", true, true, 88);
+        super(
+                parent,
+                Collections.singletonList("party"),
+                I18n.format("quickplay.commands.quickplay.party.help"),
+                "[launch]",
+                true,
+                true,
+                88,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
+        );
     }
 
     @Override

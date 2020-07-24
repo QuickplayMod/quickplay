@@ -28,7 +28,9 @@ public class SubCommandRefreshResource extends ACommand {
                 "<path>",
                 false,
                 true,
-                -10000
+                -10000,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
         );
     }
 

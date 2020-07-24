@@ -28,7 +28,9 @@ public class SubCommandDelivery extends ACommand {
                 "",
                 true,
                 true,
-                -100.0
+                -100.0,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
         );
     }
 

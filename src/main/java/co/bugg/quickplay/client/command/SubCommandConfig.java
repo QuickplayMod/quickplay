@@ -27,7 +27,9 @@ public class SubCommandConfig extends ACommand {
                 "",
                 true,
                 true,
-                99.9
+                99.9,
+                false,
+                parent == null ? 0 : parent.getDepth() + 1
         );
     }
 
