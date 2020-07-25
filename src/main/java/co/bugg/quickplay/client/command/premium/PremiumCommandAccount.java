@@ -5,9 +5,8 @@ import co.bugg.quickplay.client.command.ACommand;
 import co.bugg.quickplay.util.DateUtil;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.util.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,10 +30,23 @@ public class PremiumCommandAccount extends ACommand {
 
     @Override
     public void run(String[] strings) {
-        Quickplay.INSTANCE.messageBuffer.push(new Message(
-                new ChatComponentTranslation("quickplay.premium.expiresIn",
-                        DateUtil.calculateDaysUntil(Quickplay.INSTANCE.expirationTime))
-                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)), true));
+        IChatComponent component = new ChatComponentTranslation("quickplay.premium.expiresIn",
+                DateUtil.calculateDaysUntil(Quickplay.INSTANCE.expirationTime));
+        // Append purchase page if it is available
+        if(Quickplay.INSTANCE.purchasePageURL != null) {
+            IChatComponent purchagePageLang = new ChatComponentTranslation("quickplay.premium.purchasePage");
+            IChatComponent purchasePageLink = new ChatComponentText(Quickplay.INSTANCE.purchasePageURL);
+            // Make clickable link
+            purchasePageLink.setChatStyle(new ChatStyle().setChatClickEvent(
+                    new ClickEvent(ClickEvent.Action.OPEN_URL, Quickplay.INSTANCE.purchasePageURL)
+            ).setColor(EnumChatFormatting.AQUA));
+            component.appendText("\n\n");
+            component.appendSibling(purchagePageLang);
+            component.appendSibling(purchasePageLink);
+        }
+        component.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW));
+
+        Quickplay.INSTANCE.messageBuffer.push(new Message(component, true));
     }
 
     @Override

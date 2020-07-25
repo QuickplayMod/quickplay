@@ -175,6 +175,10 @@ public class Quickplay {
      */
     public long expirationTime = 0;
     /**
+     * URL to this Premium user's purchase page.
+     */
+    public String purchasePageURL = null;
+    /**
      * Session key used for Premium-related resource requests
      */
     public String sessionKey;
@@ -557,6 +561,9 @@ public class Quickplay {
 
                     if(this.premiumClient && response.content.getAsJsonObject().get("expires") != null) {
                         this.expirationTime = response.content.getAsJsonObject().get("expires").getAsLong();
+                    }
+                    if(this.premiumClient && response.content.getAsJsonObject().get("purchasePage") != null) {
+                        this.purchasePageURL = response.content.getAsJsonObject().get("purchasePage").getAsString();
                     }
                 } else {
                     this.premiumClient = false;
