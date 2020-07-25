@@ -170,6 +170,7 @@ quickplay.moveableHudElement.large=LARGE
 quickplay.moveableHudElement.xlarge=EXTRA LARGE
 
 quickplay.premium.expiresIn=Your Quickplay Premium subscription expires in %s days.
+quickplay.premium.purchasePage=Your Quickplay Premium account page is available at:
 
 quickplay.premium.ingameReward.error=Weird, something went wrong while trying to do that! Try re-authorizing with "/qp premium auth", or contact bugfroggy if this issue persists.
 quickplay.premium.ingameReward.openLink=Open Web Version
