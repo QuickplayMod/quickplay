@@ -81,6 +81,8 @@ quickplay.settings.anyKeyClosesGui.name=Любая клавиша закрыва
 quickplay.settings.anyKeyClosesGui.help=Главное меню Quickplay и интерфейс будут закрываться всякий раз, когда нажата любая клавиша.
 quickplay.settings.compactMainMenu.name=Уменьшить в масштабе главное меню
 quickplay.settings.compactMainMenu.help=Должно ли Главное Меню Quickplay быть компактным, чтобы скрыть игровые строки, если вы не нажимаете на них.
+quickplay.settings.swapMainGuiColors.name=Swap Main Menu Colors
+quickplay.settings.swapMainGuiColors.help=Whether the primary and secondary colors should be swapped in the Quickplay Main Menu.
 
 quickplay.settings.category.instanceDisplay=Отображение экрана 
 quickplay.settings.instanceDisplay.name=Отображение экрана
