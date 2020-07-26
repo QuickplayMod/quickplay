@@ -164,6 +164,7 @@ quickplay.gui.party.launch=启动！
 
 quickplay.keybinds.illegal=热键“%s”因某些原因无法使用！请重新设置。
 quickplay.keybinds.title=热键
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
 quickplay.keybinds.reset=重置热键
 quickplay.gui.keybinds.delete=删除
 quickplay.gui.keybinds.requireHolding=Holding required: %s
