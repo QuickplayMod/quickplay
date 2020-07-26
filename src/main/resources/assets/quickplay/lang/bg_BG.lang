@@ -81,6 +81,8 @@ quickplay.settings.anyKeyClosesGui.name=Някой клавиш затваря G
 quickplay.settings.anyKeyClosesGui.help=Главното меню на Quickplay и GUI-a ще се затворят когато някой клавиш е натиснат.
 quickplay.settings.compactMainMenu.name=Компактно Главно Меню
 quickplay.settings.compactMainMenu.help=Дали Главното Меню на Quickplay трябва да прикрие имената на игрите освен ако не задържиш върху тях.
+quickplay.settings.swapMainGuiColors.name=Swap Main Menu Colors
+quickplay.settings.swapMainGuiColors.help=Whether the primary and secondary colors should be swapped in the Quickplay Main Menu.
 
 quickplay.settings.category.instanceDisplay=Сървър/лоби дисплей
 quickplay.settings.instanceDisplay.name=Сървър/лоби дисплей
