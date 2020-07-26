@@ -81,6 +81,8 @@ quickplay.settings.anyKeyClosesGui.name=Elke toets sluit de GUI’s
 quickplay.settings.anyKeyClosesGui.help=Quickplay’s hoofdmenu en game GUI’s zullen sluiten wanneer een toets word ingedrukt.
 quickplay.settings.compactMainMenu.name=Compact Hoofdmenu
 quickplay.settings.compactMainMenu.help=Of het Quickplay hoofdmenu moet worden samengevoegd om game info the verstoppen tenzij je er overheen beweegt.
+quickplay.settings.swapMainGuiColors.name=Swap Main Menu Colors
+quickplay.settings.swapMainGuiColors.help=Whether the primary and secondary colors should be swapped in the Quickplay Main Menu.
 
 quickplay.settings.category.instanceDisplay=Directe weergave
 quickplay.settings.instanceDisplay.name=Directe weergave
