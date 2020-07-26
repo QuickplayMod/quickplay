@@ -81,6 +81,8 @@ quickplay.settings.anyKeyClosesGui.name=Alle Tasten schließen GUIs
 quickplay.settings.anyKeyClosesGui.help=Quickplays Hauptmenü und Spiel GUIs werden geschlossen, sobald eine Taste gedrückt wird.
 quickplay.settings.compactMainMenu.name=Kompaktes Hauptmenü
 quickplay.settings.compactMainMenu.help=Ob das Quickplay Hauptmenü kompakt sein soll um die Spiel Strings zu verstecken, wenn du nicht den Mauszeiger über sie bewegst.
+quickplay.settings.swapMainGuiColors.name=Swap Main Menu Colors
+quickplay.settings.swapMainGuiColors.help=Whether the primary and secondary colors should be swapped in the Quickplay Main Menu.
 
 quickplay.settings.category.instanceDisplay=Instanzanzeige
 quickplay.settings.instanceDisplay.name=Instanzanzeige
