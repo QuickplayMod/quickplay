@@ -100,6 +100,8 @@ quickplay.settings.sendUsageStatsButton.name=Estadísticas de Uso...
 quickplay.settings.sendUsageStatsButton.help=¡Envía estadísticas de uso anónimas para ayudarme a crear mejores mods para ti!
 quickplay.settings.editKeybinds.name=Editar atajos de tecla...
 quickplay.settings.editKeybinds.help=Asigna y quita atajos de tecla previamente creados haciendo clic derecho en juegos o modos.
+quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
 quickplay.settings.lobbyOneSwap.name=Cambiar al Lobby Uno
 quickplay.settings.lobbyOneSwap.help=Cambiar al lobby uno automáticamente cuando te unas a un nuevo lobby.
 quickplay.settings.updateNotifications.name=Actualizar Notificaciones
@@ -164,6 +166,7 @@ quickplay.keybinds.illegal=¡El atajo de teclas "%s" no es válido por algún mo
 quickplay.keybinds.title=Atajos de Tecla
 quickplay.keybinds.reset=Resetear Atajos de Tecla
 quickplay.gui.keybinds.delete=Eliminar
+quickplay.gui.keybinds.requireHolding=Holding required: %s
 quickplay.gui.keybinds.taken=¡Esa tecla ya está asignada a una función Quickplay!
 
 quickplay.moveableHudElement.small=PEQUEÑO
