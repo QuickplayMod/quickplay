@@ -81,6 +81,8 @@ quickplay.settings.anyKeyClosesGui.name=按下任意按鍵關閉 GUI
 quickplay.settings.anyKeyClosesGui.help=Quickplay 的主選單及選擇遊戲 GUI 將在按下任何按鍵時關閉。
 quickplay.settings.compactMainMenu.name=簡化主選單
 quickplay.settings.compactMainMenu.help=將 Quickplay 主選單設定為簡化模式並隱藏遊戲名稱，直到鼠標停在遊戲圖示內。
+quickplay.settings.swapMainGuiColors.name=Swap Main Menu Colors
+quickplay.settings.swapMainGuiColors.help=Whether the primary and secondary colors should be swapped in the Quickplay Main Menu.
 
 quickplay.settings.category.instanceDisplay=伺服器視窗顯示
 quickplay.settings.instanceDisplay.name=顯示視窗
