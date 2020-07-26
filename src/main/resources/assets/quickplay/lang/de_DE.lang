@@ -100,6 +100,8 @@ quickplay.settings.sendUsageStatsButton.name=Nutzungsstatistiken...
 quickplay.settings.sendUsageStatsButton.help=Sende anonyme Nutzungsstatistiken, damit wir bessere Mods für dich erstellen können!
 quickplay.settings.editKeybinds.name=Gebundene Tasten bearbeiten...
 quickplay.settings.editKeybinds.help=Weise zuvor erstellte Tastaturkürzeln zu und entferne sie, indem du mit der rechten Maustaste auf Spiele oder Modis klickst.
+quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
 quickplay.settings.lobbyOneSwap.name=Zur Lobby 1 wechseln
 quickplay.settings.lobbyOneSwap.help=Wechsel automatisch zur Lobby 1 sobald du einen neue Lobby betrittst.
 quickplay.settings.updateNotifications.name=Aktualisiere Benachrichtigungen
@@ -164,6 +166,7 @@ quickplay.keybinds.illegal=Die gebundene Taste "%s" ist aus irgendeinem Grund un
 quickplay.keybinds.title=Tastaturkürzel
 quickplay.keybinds.reset=Tastaturkürzel zurücksetzen
 quickplay.gui.keybinds.delete=Löschen
+quickplay.gui.keybinds.requireHolding=Holding required: %s
 quickplay.gui.keybinds.taken=Diese Taste wurde schon zu einer Quickplay-Funktion zugeteilt!
 
 quickplay.moveableHudElement.small=KLEIN
