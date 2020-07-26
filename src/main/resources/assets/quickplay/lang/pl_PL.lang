@@ -81,6 +81,8 @@ quickplay.settings.anyKeyClosesGui.name=Każdy przycisk zamyka GUI
 quickplay.settings.anyKeyClosesGui.help=Menu główne Quickplaya i GUI gier będą zamykane po wciśnięciu jakiegokolwiek przycisku.
 quickplay.settings.compactMainMenu.name=Kompaktowe menu główne
 quickplay.settings.compactMainMenu.help=Ustal, czy menu główne Quickplaya ma być uproszczone poprzez ukrycie nazw gier, będą one widoczne po najechaniu na ikony.
+quickplay.settings.swapMainGuiColors.name=Swap Main Menu Colors
+quickplay.settings.swapMainGuiColors.help=Whether the primary and secondary colors should be swapped in the Quickplay Main Menu.
 
 quickplay.settings.category.instanceDisplay=Wyświetlanie podserwera
 quickplay.settings.instanceDisplay.name=Wyświetlanie podserwera
