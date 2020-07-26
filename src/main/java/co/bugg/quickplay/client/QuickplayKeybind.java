@@ -185,6 +185,10 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
+        // Keybinds only work On Hypixel and if Quickplay is enabled.
+        if(!Quickplay.INSTANCE.checkEnabledStatus() || !Quickplay.INSTANCE.onHypixel) {
+            return;
+        }
         if(key != Keyboard.KEY_NONE && Keyboard.isKeyDown(key)) {
             int currentPressCount = ++this.pressCount;
             Quickplay.INSTANCE.threadPool.submit(() -> {
