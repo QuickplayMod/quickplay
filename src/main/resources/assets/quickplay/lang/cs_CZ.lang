@@ -164,6 +164,7 @@ quickplay.gui.party.launch=Spustit!
 
 quickplay.keybinds.illegal=Klávesová zkratka "%s" je z nějakého důvodu neplatná! Zkus jí znovu vytvořit.
 quickplay.keybinds.title=Klávesové zkratky
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
 quickplay.keybinds.reset=Resetovat klávesové zkratky
 quickplay.gui.keybinds.delete=Smazat
 quickplay.gui.keybinds.requireHolding=Holding required: %s
