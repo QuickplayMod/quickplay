@@ -100,6 +100,8 @@ quickplay.settings.sendUsageStatsButton.name=Usage Statistics...
 quickplay.settings.sendUsageStatsButton.help=Send anonymous usage statistics to help me create better mods for you!
 quickplay.settings.editKeybinds.name=Edit Keybinds...
 quickplay.settings.editKeybinds.help=Assign & remove keybinds previously created by right-clicking games or modes.
+quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
 quickplay.settings.lobbyOneSwap.name=Swap to Lobby One
 quickplay.settings.lobbyOneSwap.help=Swap to lobby one automatically whenever you join a new lobby.
 quickplay.settings.updateNotifications.name=Update Notifications
@@ -164,6 +166,7 @@ quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recr
 quickplay.keybinds.title=Keybinds
 quickplay.keybinds.reset=Reset Keybinds
 quickplay.gui.keybinds.delete=Delete
+quickplay.gui.keybinds.requireHolding=Holding required: %s
 quickplay.gui.keybinds.taken=That key is already assigned to a Quickplay function!
 
 quickplay.moveableHudElement.small=SMALL
