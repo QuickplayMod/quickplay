@@ -100,6 +100,8 @@ quickplay.settings.sendUsageStatsButton.name=Statistiky používání...
 quickplay.settings.sendUsageStatsButton.help=Pošli anonymní statistiky používání, abys mi pomohl vytvořit lepší módy!
 quickplay.settings.editKeybinds.name=Upravit zkratky...
 quickplay.settings.editKeybinds.help=Kliknutím pravým tlačítkem na hry nebo módy přiřadíš nebo vymažeš klávesové zkratky, které jsi již vytvořil.
+quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
 quickplay.settings.lobbyOneSwap.name=Přepnout na Lobby jedna
 quickplay.settings.lobbyOneSwap.help=Přepojit na lobby jedna automaticky při každém připojení na lobby.
 quickplay.settings.updateNotifications.name=Oznámení o aktualizaci
@@ -164,6 +166,7 @@ quickplay.keybinds.illegal=Klávesová zkratka "%s" je z nějakého důvodu nepl
 quickplay.keybinds.title=Klávesové zkratky
 quickplay.keybinds.reset=Resetovat klávesové zkratky
 quickplay.gui.keybinds.delete=Smazat
+quickplay.gui.keybinds.requireHolding=Holding required: %s
 quickplay.gui.keybinds.taken=Tato zkratka je již přiřazena v Quickplay módu!
 
 quickplay.moveableHudElement.small=MALÁ
