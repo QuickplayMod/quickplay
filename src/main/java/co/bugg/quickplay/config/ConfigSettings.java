@@ -220,7 +220,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             minValue = 0.0f,
             maxValue = 3.0f
     )
-    public double keybindPressTime = 0.0;
+    public double keybindPressTime = 0.5;
 
     /**
      * Whether the client should swap to lobby one when it joins a new lobby
