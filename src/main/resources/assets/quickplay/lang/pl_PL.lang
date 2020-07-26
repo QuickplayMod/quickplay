@@ -100,6 +100,8 @@ quickplay.settings.sendUsageStatsButton.name=Statystyki użytkowania…
 quickplay.settings.sendUsageStatsButton.help=Wysyłaj anonimowe statystyki użytkowania, aby pomóc mi w tworzeniu lepszych modyfikacji dla Ciebie!
 quickplay.settings.editKeybinds.name=Edytuj skróty klawiszowe…
 quickplay.settings.editKeybinds.help=Przypisz oraz usuń skróty klawiszowe tworzone wcześniej poprzez naciskanie na gry lub tryby prawym przyciskiem myszy.
+quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
 quickplay.settings.lobbyOneSwap.name=Przenieś do poczekalni numer 1
 quickplay.settings.lobbyOneSwap.help=Automatycznie zamień na poczekalnię numer jeden za każdym razem, gdy dołączysz do nowej poczekalni.
 quickplay.settings.updateNotifications.name=Powiadomienia o aktualizacjach
@@ -164,6 +166,7 @@ quickplay.keybinds.illegal=Skrót klawiszowy „%s” jest z jakiegoś powodu ni
 quickplay.keybinds.title=Skróty klawiszowe
 quickplay.keybinds.reset=Zresetuj skróty klawiszowe
 quickplay.gui.keybinds.delete=Usuń
+quickplay.gui.keybinds.requireHolding=Holding required: %s
 quickplay.gui.keybinds.taken=Ten klawisz jest już przypisany do funkcji Quickplaya!
 
 quickplay.moveableHudElement.small=MAŁA
