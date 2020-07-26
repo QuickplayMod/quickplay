@@ -100,6 +100,8 @@ quickplay.settings.sendUsageStatsButton.name=Gebruik Statistieken...
 quickplay.settings.sendUsageStatsButton.help=Stuur anonieme gebruik statistieken om mij te helpen betere modusen te maken voor jou!
 quickplay.settings.editKeybinds.name=Bewerk Keybinds...
 quickplay.settings.editKeybinds.help=Wijs toe & verwijder keybinds hiervoor gecreëerd door rechts-klikken op games of modes.
+quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
 quickplay.settings.lobbyOneSwap.name=Verander naar Lobby Een
 quickplay.settings.lobbyOneSwap.help=Wissel naar lobby een automatisch wanneer je een nieuwe lobby Joined.
 quickplay.settings.updateNotifications.name=Update Notificaties
@@ -164,6 +166,7 @@ quickplay.keybinds.illegal=The keybind “%s” is om een of andere reden ongeld
 quickplay.keybinds.title=Toetskoppelingen
 quickplay.keybinds.reset=Reset toetskoppelingen
 quickplay.gui.keybinds.delete=Verwijder
+quickplay.gui.keybinds.requireHolding=Holding required: %s
 quickplay.gui.keybinds.taken=Die toets is al toegewezen aan een Quickplay functie!
 
 quickplay.moveableHudElement.small=KLEIN
