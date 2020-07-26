@@ -164,6 +164,7 @@ quickplay.gui.party.launch=啟動！
 
 quickplay.keybinds.illegal=快速鍵 "%s" 因為某些原因無法使用！請重新設定。
 quickplay.keybinds.title=快速鍵
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
 quickplay.keybinds.reset=重設快速鍵
 quickplay.gui.keybinds.delete=刪除
 quickplay.gui.keybinds.requireHolding=Holding required: %s
