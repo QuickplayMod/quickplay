@@ -90,6 +90,10 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         componentList.add(new QuickplayGuiString(null, buttonId, width / 2,
                 topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
                 I18n.format("quickplay.keybinds.title"), true, true));
+        // Subheader
+        componentList.add(new QuickplayGuiString(null, buttonId, width / 2,
+                topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
+                I18n.format("quickplay.keybinds.subtitle"), true, true, true));
 
         for(QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds) {
             final QuickplayGuiComponent component = new QuickplayGuiButton(keybind, buttonId, width / 2 - buttonWidth / 2,

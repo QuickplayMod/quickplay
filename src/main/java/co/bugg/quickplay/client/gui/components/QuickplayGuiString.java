@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.gui.components;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import net.minecraft.client.renderer.GlStateManager;
 
@@ -12,6 +13,10 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
      * Whether the string should be centered
      */
     public boolean centered;
+    /**
+     * Whether to render the string in the user's secondary color.
+     */
+    public boolean secondaryColor;
 
     /**
      * Constructor
@@ -29,22 +34,44 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
     public QuickplayGuiString(Object origin, int id, int x, int y, int width, int height, String displayString,
                               boolean centered, boolean scrollable) {
         super(origin, id, x, y, width, height, displayString, scrollable);
+        this.secondaryColor = false;
         this.centered = centered;
+    }
+    /**
+     * Constructor
+     *
+     * @param origin Origin of this component
+     * @param id ID of this component
+     * @param x X position of this component when scrolling = 0
+     * @param y Y position of this component when scrolling = 0
+     * @param width Width of this component - Doesn't do much in this case unless you want to detect clicks on this component
+     * @param height Height of this component - Doesn't do much in this case unless you want to detect clicks on this component
+     * @param displayString String to be drawn
+     * @param centered Whether this string should be centered
+     * @param scrollable Whether this string is scrollable
+     * @param secondaryColor Whether this string should be rendered in the secondaryColor
+     */
+    public QuickplayGuiString(Object origin, int id, int x, int y, int width, int height, String displayString,
+                              boolean centered, boolean scrollable, boolean secondaryColor) {
+        this(origin, id, x, y, width, height, displayString, centered, scrollable);
+        this.secondaryColor = secondaryColor;
     }
 
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
         if(opacity > 0) {
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
+            final QuickplayColor color = this.secondaryColor ?
+                    Quickplay.INSTANCE.settings.secondaryColor : Quickplay.INSTANCE.settings.primaryColor;
 
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
             if (centered) {
                 drawCenteredString(gui.mc.fontRendererObj, displayString, x, scrollAdjustedY,
-                        (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+                        (color.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             } else {
                 drawString(gui.mc.fontRendererObj, displayString, x, scrollAdjustedY,
-                        (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+                        (color.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             }
             GlStateManager.disableBlend();
             GlStateManager.popMatrix();
