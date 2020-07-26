@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.gui.game;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
+import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.QuickplayKeybind;
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
@@ -215,11 +216,18 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                     GlStateManager.scale(1 / scaleMultiplier, 1 / scaleMultiplier, 1 / scaleMultiplier);
 
                     if(!compact && opacity > 0) {
+                        // Swap the static non-hover color and the hover color if the user has the setting enabled.
+                        QuickplayColor staticColor = Quickplay.INSTANCE.settings.secondaryColor;
+                        QuickplayColor hoverColor = Quickplay.INSTANCE.settings.primaryColor;
+                        if(Quickplay.INSTANCE.settings.swapMainGuiColors) {
+                            staticColor = Quickplay.INSTANCE.settings.primaryColor;
+                            hoverColor = Quickplay.INSTANCE.settings.secondaryColor;
+                        }
+
                         // Draw text
                         GlStateManager.scale(stringScale, stringScale, stringScale);
                         final int color = component.mouseHovering(this, mouseX, mouseY) && contextMenu == null ?
-                                Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() :
-                                Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB();
+                                hoverColor.getColor().getRGB() : staticColor.getColor().getRGB();
                         drawString(mc.fontRendererObj, ((Game) component.origin).name,
                                 (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale),
                                 (int) ((((scrollAdjustedY + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale),
