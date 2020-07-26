@@ -164,6 +164,7 @@ quickplay.gui.party.launch=Пуснете!
 
 quickplay.keybinds.illegal=Клавишът "%s" е инвалиден поради някаква причина! Опитайте да го редактирате.
 quickplay.keybinds.title=Клавиши
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
 quickplay.keybinds.reset=Върни клавишите към тяхните първоначални настройки
 quickplay.gui.keybinds.delete=Изтрий
 quickplay.gui.keybinds.requireHolding=Holding required: %s
