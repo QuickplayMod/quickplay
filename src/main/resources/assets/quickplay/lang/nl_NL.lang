@@ -164,6 +164,7 @@ quickplay.gui.party.launch=Start!
 
 quickplay.keybinds.illegal=The keybind “%s” is om een of andere reden ongeldig! Probeer hem opnieuw aan te maken.
 quickplay.keybinds.title=Toetskoppelingen
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
 quickplay.keybinds.reset=Reset toetskoppelingen
 quickplay.gui.keybinds.delete=Verwijder
 quickplay.gui.keybinds.requireHolding=Holding required: %s
