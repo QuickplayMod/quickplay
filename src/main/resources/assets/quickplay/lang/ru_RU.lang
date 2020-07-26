@@ -164,6 +164,7 @@ quickplay.gui.party.launch=Запустить!
 
 quickplay.keybinds.illegal=Клавиша "%s" некорректна по какой-то причине! Попробуйте переназначить её.
 quickplay.keybinds.title=Сочетания клавиш
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
 quickplay.keybinds.reset=Сбросить сочетания клавиш
 quickplay.gui.keybinds.delete=Удалить
 quickplay.gui.keybinds.requireHolding=Holding required: %s
