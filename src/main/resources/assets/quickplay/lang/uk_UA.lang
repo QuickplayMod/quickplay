@@ -164,6 +164,7 @@ quickplay.gui.party.launch=Launch!
 
 quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recreating it.
 quickplay.keybinds.title=Keybinds
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
 quickplay.keybinds.reset=Reset Keybinds
 quickplay.gui.keybinds.delete=Delete
 quickplay.gui.keybinds.requireHolding=Holding required: %s
