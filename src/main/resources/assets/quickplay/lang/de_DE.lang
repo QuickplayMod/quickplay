@@ -164,6 +164,7 @@ quickplay.gui.party.launch=Starte!
 
 quickplay.keybinds.illegal=Die gebundene Taste "%s" ist aus irgendeinem Grund ungültig! Versuche es neu zu erstellen.
 quickplay.keybinds.title=Tastaturkürzel
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
 quickplay.keybinds.reset=Tastaturkürzel zurücksetzen
 quickplay.gui.keybinds.delete=Löschen
 quickplay.gui.keybinds.requireHolding=Holding required: %s
