@@ -100,6 +100,8 @@ quickplay.settings.sendUsageStatsButton.name=發送使用數據...
 quickplay.settings.sendUsageStatsButton.help=發送匿名的使用數據以幫助我們開發更好的模組！
 quickplay.settings.editKeybinds.name=編輯快速鍵...
 quickplay.settings.editKeybinds.help=右鍵點擊遊戲或模式以分配或刪除快速鍵。
+quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
 quickplay.settings.lobbyOneSwap.name=傳送到一號大廳
 quickplay.settings.lobbyOneSwap.help=當你進入大廳時自動傳送到一號大廳。
 quickplay.settings.updateNotifications.name=更新通知
@@ -164,6 +166,7 @@ quickplay.keybinds.illegal=快速鍵 "%s" 因為某些原因無法使用！請�
 quickplay.keybinds.title=快速鍵
 quickplay.keybinds.reset=重設快速鍵
 quickplay.gui.keybinds.delete=刪除
+quickplay.gui.keybinds.requireHolding=Holding required: %s
 quickplay.gui.keybinds.taken=此按鍵已被分配到某個 Quickplay 功能！
 
 quickplay.moveableHudElement.small=小
