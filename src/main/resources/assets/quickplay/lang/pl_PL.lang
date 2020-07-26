@@ -164,6 +164,7 @@ quickplay.gui.party.launch=Uruchom!
 
 quickplay.keybinds.illegal=Skrót klawiszowy „%s” jest z jakiegoś powodu nieprawidłowy! Spróbuj stworzyć go jeszcze raz.
 quickplay.keybinds.title=Skróty klawiszowe
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
 quickplay.keybinds.reset=Zresetuj skróty klawiszowe
 quickplay.gui.keybinds.delete=Usuń
 quickplay.gui.keybinds.requireHolding=Holding required: %s
