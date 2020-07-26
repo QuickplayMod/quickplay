@@ -164,6 +164,7 @@ quickplay.gui.party.launch=¡Iniciar!
 
 quickplay.keybinds.illegal=¡El atajo de teclas "%s" no es válido por algún motivo! Prueba recrearla.
 quickplay.keybinds.title=Atajos de Tecla
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
 quickplay.keybinds.reset=Resetear Atajos de Tecla
 quickplay.gui.keybinds.delete=Eliminar
 quickplay.gui.keybinds.requireHolding=Holding required: %s
