@@ -122,6 +122,16 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             category = "quickplay.settings.category.gui"
     )
     public boolean compactMainMenu = false;
+    /**
+     * Whether the Quickplay Main Menu colors should be swapped so secondary
+     * colors are non-hover and primary colors are hover.
+     */
+    @GuiOption(
+            name="quickplay.settings.swapMainGuiColors.name",
+            helpText = "quickplay.settings.swapMainGuiColors.help",
+            category = "quickplay.settings.category.gui"
+    )
+    public boolean swapMainGuiColors = false;
 
     /**
      * Whether Quickplay's instance displayer should be displayed
