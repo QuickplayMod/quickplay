@@ -100,6 +100,8 @@ quickplay.settings.sendUsageStatsButton.name=使用率统计...
 quickplay.settings.sendUsageStatsButton.help=发送匿名使用数据以帮助我更好地开发 mod！
 quickplay.settings.editKeybinds.name=编辑热键...
 quickplay.settings.editKeybinds.help=右键点击以分配并同时删除先前为游戏或模式绑定的按键。
+quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
 quickplay.settings.lobbyOneSwap.name=传送到一号大厅
 quickplay.settings.lobbyOneSwap.help=当你加入新大厅时自动传送到 1 号大厅
 quickplay.settings.updateNotifications.name=更新通知
@@ -164,6 +166,7 @@ quickplay.keybinds.illegal=热键“%s”因某些原因无法使用！请重新
 quickplay.keybinds.title=热键
 quickplay.keybinds.reset=重置热键
 quickplay.gui.keybinds.delete=删除
+quickplay.gui.keybinds.requireHolding=Holding required: %s
 quickplay.gui.keybinds.taken=此按键已经被分配到某个Quickplay功能了！
 
 quickplay.moveableHudElement.small=小
