@@ -212,6 +212,17 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     public transient final Runnable editKeybinds = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
 
     /**
+     * Opacity of the instance display
+     */
+    @GuiOption(
+            name = "quickplay.settings.keybindPressTime.name",
+            helpText = "quickplay.settings.keybindPressTime.help",
+            minValue = 0.0f,
+            maxValue = 3.0f
+    )
+    public double keybindPressTime = 0.5;
+
+    /**
      * Whether the client should swap to lobby one when it joins a new lobby
      */
     @GuiOption(

@@ -143,15 +143,21 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
 
         for(QuickplayGuiComponent component : componentList) {
             if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(this, mouseX, mouseY)) {
-                //noinspection ArraysAsListWithZeroOrOneArgument
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(I18n.format("quickplay.gui.keybinds.delete")),
-                        component, -1, mouseX, mouseY) {
+                final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
+                final String trueStr = I18n.format("quickplay.config.gui.true");
+                final String falseStr = I18n.format("quickplay.config.gui.false");
+                contextMenu = new QuickplayGuiContextMenu(
+                    Arrays.asList(
+                        I18n.format("quickplay.gui.keybinds.delete"),
+                        I18n.format("quickplay.gui.keybinds.requireHolding", keybind.requiresPressTimer ? trueStr : falseStr)
+                    ), component, -1, mouseX, mouseY) {
+
                     @Override
                     public void optionSelected(int index) {
                         switch(index) {
                             case 0:
-                                Quickplay.INSTANCE.keybinds.keybinds.remove(component.origin);
-                                Quickplay.INSTANCE.unregisterEventHandler(component.origin);
+                                Quickplay.INSTANCE.keybinds.keybinds.remove(keybind);
+                                Quickplay.INSTANCE.unregisterEventHandler(keybind);
                                 try {
                                     Quickplay.INSTANCE.keybinds.save();
                                 } catch (IOException e) {
@@ -160,6 +166,15 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                                 }
 
                                 initGui();
+                                break;
+                            case 1:
+                                keybind.requiresPressTimer = !keybind.requiresPressTimer;
+                                try {
+                                    Quickplay.INSTANCE.keybinds.save();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    Quickplay.INSTANCE.sendExceptionRequest(e);
+                                }
                                 break;
                         }
                     }
@@ -212,26 +227,23 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                     drawTakenPopup = false;
                 });
             } else {
-                switch (keyCode) {
-                    case Keyboard.KEY_ESCAPE:
-                        keybind.key = Keyboard.KEY_NONE;
-                        break;
-                    default:
-                        keybind.key = keyCode;
-                        // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
-                                Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
-                            Quickplay.INSTANCE.threadPool.submit(() -> {
-                                try {
-                                    Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Changed")
-                                            .setEventLabel(keybind.name + " : " + keybind.key)
-                                            .send();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                        }
-                        break;
+                if (keyCode == Keyboard.KEY_ESCAPE) {
+                    keybind.key = Keyboard.KEY_NONE;
+                } else {
+                    keybind.key = keyCode;
+                    // Send analytical data to Google
+                    if (Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                            Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                        Quickplay.INSTANCE.threadPool.submit(() -> {
+                            try {
+                                Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Changed")
+                                        .setEventLabel(keybind.name + " : " + keybind.key)
+                                        .send();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
                 }
             }
 

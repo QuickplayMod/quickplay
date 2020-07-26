@@ -50,6 +50,15 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
      * The parameters to the constructor for the GUI
      */
     public Object[] constructorParams = null;
+    /**
+     * Whether the user has to hold down the key for this keybind for it to activate.
+     */
+    public boolean requiresPressTimer = false;
+    /**
+     * The number of times this keybind is activated. This is used to make sure the user doesn't release the
+     * keybind and repress it before the keybind hold duration is complete.
+     */
+    private transient int pressCount = 0;
 
     /**
      * Constructor
@@ -177,7 +186,21 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
         if(key != Keyboard.KEY_NONE && Keyboard.isKeyDown(key)) {
-            keyPressed();
+            int currentPressCount = ++this.pressCount;
+            Quickplay.INSTANCE.threadPool.submit(() -> {
+                if(this.requiresPressTimer) {
+                    try {
+                        Thread.sleep((long) (Quickplay.INSTANCE.settings.keybindPressTime * 1000));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                /* Make sure the key wasn't let go and pressed again between
+                 the original press and the time this code runs. */
+                if(Keyboard.isKeyDown(key) && this.pressCount == currentPressCount) {
+                    keyPressed();
+                }
+            });
         }
     }
 }
