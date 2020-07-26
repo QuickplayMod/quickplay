@@ -100,6 +100,8 @@ quickplay.settings.sendUsageStatsButton.name=Статистика использ
 quickplay.settings.sendUsageStatsButton.help=Отправьте анонимную статистику использования, чтобы помочь нам сделать моды лучше!
 quickplay.settings.editKeybinds.name=Изменить сочетания клавиш...
 quickplay.settings.editKeybinds.help=Назначить и удалить клавиши, ранее созданные нажатием правой кнопкой мыши.
+quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
 quickplay.settings.lobbyOneSwap.name=Перейти в Лобби 1
 quickplay.settings.lobbyOneSwap.help=Переходить в лобби 1 автоматически всякий раз, когда вы присоединяетесь к новому лобби.
 quickplay.settings.updateNotifications.name=Уведомления об обновлении
@@ -164,6 +166,7 @@ quickplay.keybinds.illegal=Клавиша "%s" некорректна по ка�
 quickplay.keybinds.title=Сочетания клавиш
 quickplay.keybinds.reset=Сбросить сочетания клавиш
 quickplay.gui.keybinds.delete=Удалить
+quickplay.gui.keybinds.requireHolding=Holding required: %s
 quickplay.gui.keybinds.taken=Эта клавиша уже назначена для функции Quickplay!
 
 quickplay.moveableHudElement.small=МАЛЕНЬКИЙ
