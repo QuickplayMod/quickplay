@@ -100,7 +100,7 @@ quickplay.settings.sendUsageStatsButton.name=Statistiky používání...
 quickplay.settings.sendUsageStatsButton.help=Pošli anonymní statistiky používání, abys mi pomohl vytvořit lepší módy!
 quickplay.settings.editKeybinds.name=Upravit zkratky...
 quickplay.settings.editKeybinds.help=Kliknutím pravým tlačítkem na hry nebo módy přiřadíš nebo vymažeš klávesové zkratky, které jsi již vytvořil.
-quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.name=Délka stisknutí klávesy
 quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
 quickplay.settings.lobbyOneSwap.name=Přepnout na Lobby jedna
 quickplay.settings.lobbyOneSwap.help=Přepojit na lobby jedna automaticky při každém připojení na lobby.
@@ -167,7 +167,7 @@ quickplay.keybinds.title=Klávesové zkratky
 quickplay.keybinds.subtitle=Right-click a keybind for more options.
 quickplay.keybinds.reset=Resetovat klávesové zkratky
 quickplay.gui.keybinds.delete=Smazat
-quickplay.gui.keybinds.requireHolding=Holding required: %s
+quickplay.gui.keybinds.requireHolding=Požadované držení: %s
 quickplay.gui.keybinds.taken=Tato zkratka je již přiřazena v Quickplay módu!
 
 quickplay.moveableHudElement.small=MALÁ
@@ -176,7 +176,7 @@ quickplay.moveableHudElement.large=VELKÁ
 quickplay.moveableHudElement.xlarge=EXTRÉMNĚ VELKÁ
 
 quickplay.premium.expiresIn=Tvoje Quickplay Premium předplatné vyprší za %s dní.
-quickplay.premium.purchasePage=Your Quickplay Premium account page is available at:
+quickplay.premium.purchasePage=Tvoje stránka k Quickplay Premium účtu je k dispozici na:
 
 quickplay.premium.ingameReward.error=Divný, něco se při tom pokazilo! Zkus se znovu autorizovat pomoci "/qp premium auth", nebo kontaktuj bugfroggy, pokud se problém nevyřešil.
 quickplay.premium.ingameReward.openLink=Otevřít webovou verzi
