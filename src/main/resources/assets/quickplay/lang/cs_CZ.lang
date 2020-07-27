@@ -25,7 +25,7 @@ quickplay.commands.quickplay.wiki.help=Otevřít pomocnou stránku Quickplay mó
 quickplay.commands.quickplay.version.help=Zobrazení aktuální verze Quickplay.
 quickplay.commands.quickplay.version.message=Quickplay v%s
 
-quickplay.commands.quickplay.premium.account.help=Retrieve information about your account.
+quickplay.commands.quickplay.premium.account.help=Získat informace o tvém účtu.
 quickplay.commands.quickplay.premium.auth.help=Znovu se autorizovat se záložnými servery Quickplay Premium.
 quickplay.commands.quickplay.premium.auth.runningRequest=Přemýšlím...
 quickplay.commands.quickplay.premium.auth.done=Autorizováno!
@@ -44,7 +44,7 @@ quickplay.commands.quickplay.premium.glyph.height.help=Set the vertical height o
 quickplay.commands.quickplay.premium.glyph.height.illegal=Neplatný argument! Argument "číslo" musí být číslo mezi 1 a 40.
 quickplay.commands.quickplay.premium.glyph.reset.help=Remove your Quickplay Glyph so nothing displays above your head.
 quickplay.commands.quickplay.premium.glyph.ingame.help=Set whether or not your Glyph should display in-game for others, or only in lobbies.
-quickplay.commands.quickplay.premium.glyph.ingame.illegal=Illegal argument! You must set this to either "true" or "false".
+quickplay.commands.quickplay.premium.glyph.ingame.illegal=Neplatný argument! Musíš nastavit buď na "true" nebo "false".
 quickplay.commands.quickplay.premium.glyph.displayown.help=Whether your own Glyph should display over your head. Does not affect how others see it.
 quickplay.commands.quickplay.premium.glyph.displayown.set=Personal glyph visibility set to %s.
 
@@ -81,8 +81,8 @@ quickplay.settings.anyKeyClosesGui.name=Všechny tlačítka zavírají GUI
 quickplay.settings.anyKeyClosesGui.help=Hlavní nabídka Quickplay módu a GUI se zavřou při každém stisknutí libovolné klávesy.
 quickplay.settings.compactMainMenu.name=Kompaktní hlavní menu
 quickplay.settings.compactMainMenu.help=Urči, zda má být hlavní nabídka Quickplay módu zjednodušena skrytím názvu her. Názvy budou viditelné, když namíříš kurzor myši na ikony.
-quickplay.settings.swapMainGuiColors.name=Swap Main Menu Colors
-quickplay.settings.swapMainGuiColors.help=Whether the primary and secondary colors should be swapped in the Quickplay Main Menu.
+quickplay.settings.swapMainGuiColors.name=Změnit barvy hlavní nabídky
+quickplay.settings.swapMainGuiColors.help=Urči, zda se má v hlavní nabídce prohodit hlavní a sekundární barva.
 
 quickplay.settings.category.instanceDisplay=Zobrazení serveru
 quickplay.settings.instanceDisplay.name=Zobrazení serveru
