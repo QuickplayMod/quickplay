@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.util.GsonPostProcessorFactory;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
@@ -126,8 +127,12 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
                 for (Object param : constructorParams)
                     paramsClasses[i++] = param.getClass();
 
-                Minecraft.getMinecraft().displayGuiScreen((GuiScreen) clazz.getDeclaredConstructor(paramsClasses)
-                        .newInstance(constructorParams));
+                final GuiScreen screen = (GuiScreen) clazz.getDeclaredConstructor(paramsClasses)
+                        .newInstance(constructorParams);
+                // Minecraft doesn't like opening GUIs outside the main thread, or else the cursor disappears. Not sure why
+                QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+                    Minecraft.getMinecraft().displayGuiScreen(screen);
+                });
 
                 // Send analytical data to Google
                 if (Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
@@ -191,6 +196,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
         }
         if(key != Keyboard.KEY_NONE && Keyboard.isKeyDown(key)) {
             int currentPressCount = ++this.pressCount;
+
             Quickplay.INSTANCE.threadPool.submit(() -> {
                 if(this.requiresPressTimer) {
                     try {

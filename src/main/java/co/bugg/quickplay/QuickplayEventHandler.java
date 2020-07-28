@@ -49,7 +49,6 @@ public class QuickplayEventHandler {
         Quickplay.INSTANCE.verificationMethod = null;
     }
 
-
     @SubscribeEvent
     public void onRenderOverlay(RenderGameOverlayEvent event) {
         if(Quickplay.INSTANCE.onHypixel && event.type == RenderGameOverlayEvent.ElementType.TEXT) {
