@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.command.premium.glyph;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.client.command.ACommand;
 import co.bugg.quickplay.client.render.PlayerGlyph;
 import co.bugg.quickplay.http.Request;
@@ -60,8 +61,10 @@ public abstract class GlyphCommand extends ACommand {
                                 glyphsToRemove.add(glyph);
                             }
                         }
-                        glyphs.removeAll(glyphsToRemove);
-                        glyphs.add(newGlyph);
+                        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+                            glyphs.removeAll(glyphsToRemove);
+                            glyphs.add(newGlyph);
+                        });
 
                     } catch(JsonSyntaxException e) {
                         e.printStackTrace();
