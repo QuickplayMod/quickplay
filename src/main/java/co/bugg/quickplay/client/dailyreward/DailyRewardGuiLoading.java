@@ -2,7 +2,6 @@ package co.bugg.quickplay.client.dailyreward;
 
 import co.bugg.quickplay.client.gui.QuickplayGui;
 import net.minecraft.client.resources.I18n;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -16,8 +15,6 @@ public class DailyRewardGuiLoading extends QuickplayGui {
     @Override
     public void initGui() {
         super.initGui();
-        // Hack to fix this issue: https://www.minecraftforge.net/forum/topic/36866-189mouse-not-showing-up-in-gui/
-        Mouse.setGrabbed(false);
     }
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {

@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.dailyreward;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.ResponseAction;
 import co.bugg.quickplay.http.response.WebResponse;
@@ -41,7 +42,11 @@ public class DailyRewardParser {
 
         overrideBookGui = new DailyRewardGuiLoading();
         Quickplay.INSTANCE.registerEventHandler(this);
-        Minecraft.getMinecraft().displayGuiScreen(overrideBookGui);
+        // Open GUI screen next tick; Fixes cursor not being released bug
+        // https://www.minecraftforge.net/forum/topic/36866-189mouse-not-showing-up-in-gui/
+        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+            Minecraft.getMinecraft().displayGuiScreen(overrideBookGui);
+        });
 
         final HashMap<String, String> params = new HashMap<>();
         params.put("code", code);

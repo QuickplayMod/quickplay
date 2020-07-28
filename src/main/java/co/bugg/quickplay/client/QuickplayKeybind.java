@@ -129,7 +129,8 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
 
                 final GuiScreen screen = (GuiScreen) clazz.getDeclaredConstructor(paramsClasses)
                         .newInstance(constructorParams);
-                // Minecraft doesn't like opening GUIs outside the main thread, or else the cursor disappears. Not sure why
+                // Minecraft doesn't like opening GUIs outside the main thread, or else the cursor disappears.
+                // https://www.minecraftforge.net/forum/topic/36866-189mouse-not-showing-up-in-gui/
                 QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
                     Minecraft.getMinecraft().displayGuiScreen(screen);
                 });
