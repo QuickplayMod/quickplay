@@ -308,8 +308,10 @@ public class Quickplay {
                                 }
                                 // Add all glyphs
                                 if(response.content.getAsJsonObject().get("glyphs") != null) {
-                                    glyphs.addAll(Arrays.asList(new Gson().fromJson(response.content
-                                            .getAsJsonObject().get("glyphs"), PlayerGlyph[].class)));
+                                    QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+                                        glyphs.addAll(Arrays.asList(new Gson().fromJson(response.content
+                                                .getAsJsonObject().get("glyphs"), PlayerGlyph[].class)));
+                                    });
                                 }
                             }
                         } catch (IllegalStateException e) {
