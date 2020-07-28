@@ -68,7 +68,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
             int buttonId = 0;
 
             final String randomizingString = I18n.format("quickplay.gui.party.randomizing");
-            componentList.add(new QuickplayGuiString(null, buttonId++, width / 2, randomizingTextHeight,
+            this.addComponent(new QuickplayGuiString(null, buttonId++, width / 2, randomizingTextHeight,
                     fontRendererObj.getStringWidth(randomizingString), fontRendererObj.FONT_HEIGHT, randomizingString,
                     true, false));
 

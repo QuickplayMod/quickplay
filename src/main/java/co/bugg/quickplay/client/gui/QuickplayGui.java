@@ -171,7 +171,7 @@ public class QuickplayGui extends GuiScreen {
         }
 
         closeContextMenu();
-        componentList.clear();
+        this.removeAllComponents();
 
         scrollPixel = 0;
 
@@ -334,7 +334,7 @@ public class QuickplayGui extends GuiScreen {
      */
     public void closeContextMenu() {
         if(contextMenu != null) {
-            componentList.remove(contextMenu);
+            this.removeComponent(contextMenu);
             contextMenu = null;
         }
     }
@@ -563,5 +563,30 @@ public class QuickplayGui extends GuiScreen {
     public void componentClicked(QuickplayGuiComponent component) {
         // Play clicky sound
         mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+    }
+
+    /**
+     * Add a component to this GUI's component list before next screen render.
+     * @param component The component to add
+     */
+    public void addComponent(final QuickplayGuiComponent component) {
+        // Add components pre-render to avoid concurrent modification exception
+        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> this.componentList.add(component));
+    }
+
+    /**
+     * Remove a component from this GUI's component list before next screen render.
+     * @param component The component to remove
+     */
+    public void removeComponent(final QuickplayGuiComponent component) {
+        // Remove components pre-render to avoid concurrent modification exception
+        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> this.componentList.remove(component));
+    }
+
+    /**
+     * Remove all components from this GUI's component list before next screen render.
+     */
+    public void removeAllComponents() {
+        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> this.componentList.clear());
     }
 }

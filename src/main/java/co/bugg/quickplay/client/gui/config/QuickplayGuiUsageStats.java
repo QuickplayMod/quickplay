@@ -74,20 +74,20 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
     public void initGui() {
         super.initGui();
         buttonY = (int) (height * 0.8);
-        componentList.add(new QuickplayGuiButton(usageStats, 0, width / 2 - buttonWidth - buttonMargins / 2,
+        this.addComponent(new QuickplayGuiButton(usageStats, 0, width / 2 - buttonWidth - buttonMargins / 2,
                 buttonY, buttonWidth, buttonHeight, yesText, true));
-        componentList.add(new QuickplayGuiButton(usageStats, 1, width / 2 + buttonMargins / 2, buttonY,
+        this.addComponent(new QuickplayGuiButton(usageStats, 1, width / 2 + buttonMargins / 2, buttonY,
                 buttonWidth, buttonHeight, noText, true));
 
 
         // Draw the stats token if it's available
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null) {
             tokenText = I18n.format("quickplay.gui.stats.token", Quickplay.INSTANCE.usageStats.statsToken.toString());
-            componentList.add(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2,
+            this.addComponent(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2,
                     buttonY - fontRendererObj.FONT_HEIGHT - 3, fontRendererObj.getStringWidth(tokenText),
                     fontRendererObj.FONT_HEIGHT, tokenText, true, true));
         }
-        componentList.add(new QuickplayGuiString("https://bugg.co/quickplay/privacy", 3, width / 2,
+        this.addComponent(new QuickplayGuiString("https://bugg.co/quickplay/privacy", 3, width / 2,
                 buttonY - (fontRendererObj.FONT_HEIGHT + 3) * 2, fontRendererObj.getStringWidth(privacyText),
                 fontRendererObj.FONT_HEIGHT, privacyText, true, true));
 

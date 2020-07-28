@@ -163,7 +163,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         int nextButtonId = 0;
         for(Game game : Quickplay.INSTANCE.gameList) {
             // Create invisible button                                                                                                                                                                                              // Width can't be affected by scaling                       // Texture is of the game icon, although it's not rendered (opacity is 0 in drawScreen)
-            componentList.add(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth,
+            this.addComponent(new QuickplayGuiButton(game, nextButtonId, columnZeroX + currentColumn * itemWidth,
                     (int) ((gameImgSize * scaleMultiplier + BoxYPadding) * currentRow + scrollContentMargins / 2),
                     (int) (itemWidth / scaleMultiplier), gameImgSize, "", new ResourceLocation(Reference.MOD_ID,
                     Hashing.md5().hashString(game.imageURL.toString(), StandardCharsets.UTF_8).toString() + ".png"),
@@ -417,7 +417,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
                         }
                     }
                 };
-                componentList.add(contextMenu);
+                this.addComponent(contextMenu);
                 break;
             }
         }

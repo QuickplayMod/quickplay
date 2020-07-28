@@ -149,31 +149,31 @@ public class QuickplayGuiEditColor extends QuickplayGui {
 
         final int sampleTextBottom = (int) (sampleTextY + mc.fontRendererObj.FONT_HEIGHT * sampleTextScale);
 
-        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "RED", nextComponentId,
+        this.addComponent(new QuickplayGuiSlider(colorGuiResponder, "RED", nextComponentId,
                 width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
                 * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.red"),
                 0, 255, color.getColor().getRed(), formatHelper, true));
 
         nextComponentId++;
-        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "GREEN", nextComponentId,
+        this.addComponent(new QuickplayGuiSlider(colorGuiResponder, "GREEN", nextComponentId,
                 width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
                 * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.green"),
                 0, 255, color.getColor().getGreen(), formatHelper, true));
 
         nextComponentId++;
-        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "BLUE", nextComponentId,
+        this.addComponent(new QuickplayGuiSlider(colorGuiResponder, "BLUE", nextComponentId,
                 width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
                 * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.blue"),
                 0, 255, color.getColor().getBlue(), formatHelper, true));
 
         nextComponentId++;
-        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "CHROMA", nextComponentId,
+        this.addComponent(new QuickplayGuiSlider(colorGuiResponder, "CHROMA", nextComponentId,
                 width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
                 * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.chromaspeed"),
                 0, chromaMaxSpeed, color.getChromaSpeed(), formatHelper, true));
 
         nextComponentId++;
-        componentList.add(new QuickplayGuiButton("EXIT", nextComponentId, width / 2 - elementWidth / 2,
+        this.addComponent(new QuickplayGuiButton("EXIT", nextComponentId, width / 2 - elementWidth / 2,
                 sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth,
                 elementHeight, I18n.format("quickplay.gui." + (previousGui == null ? "close" : "back")), true));
     }
