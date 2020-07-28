@@ -94,7 +94,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
             GlStateManager.color(1, 1, 1, (float) opacity);
 
             // Update whether user is currently hovering over button
-            hovering = (mouseX >= x && mouseX < x + width) && (mouseY >= scrollAdjustedY && mouseY < scrollAdjustedY + height);
+            hovering = this.mouseHovering(gui, mouseX, mouseY);
             // Get the default button texture depending on if mouse is hovering or is enabled
             int buttonTextureMultiplier = getDefaultButtonTexture(hovering);
 

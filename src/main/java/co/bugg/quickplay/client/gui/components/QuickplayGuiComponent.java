@@ -103,7 +103,7 @@ public abstract class QuickplayGuiComponent extends Gui {
      */
     public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY) {
         final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
-        return (mouseX > x && mouseX < (x + width)) && (mouseY > scrollAdjustedY && mouseY < (scrollAdjustedY + height));
+        return (mouseX >= x && mouseX < (x + width)) && (mouseY >= scrollAdjustedY && mouseY < (scrollAdjustedY + height));
     }
 
     /**
