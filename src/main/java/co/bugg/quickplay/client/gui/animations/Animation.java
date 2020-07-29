@@ -80,7 +80,6 @@ public class Animation {
      * @return This
      */
     public synchronized Animation updateFrame() {
-        // If started
         if(started) {
             final long now = System.currentTimeMillis();
 
@@ -88,7 +87,9 @@ public class Animation {
                 progress = 0;
             } else if(startedMillis + length > now) {
                 progress = ((float) (now - startedMillis)) / (float) length;
-            } else progress = 1;
+            } else {
+                progress = 1;
+            }
 
         } else throw new IllegalStateException("This animation has not been started yet. You must call start() first.");
 
