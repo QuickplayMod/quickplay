@@ -212,7 +212,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
         for(ConfigElement element : configElements) {
             if(previousCategory == null || !previousCategory.equals(I18n.format(element.optionInfo.category()))) {
-                this.addComponent(new QuickplayGuiString(null, nextButtonId, width / 2,
+                this.componentList.add(new QuickplayGuiString(null, nextButtonId, width / 2,
                         getElementY(nextButtonId) + ConfigElement.ELEMENT_HEIGHT - ConfigElement.ELEMENT_MARGINS -
                                 mc.fontRendererObj.FONT_HEIGHT, buttonWidth, ConfigElement.ELEMENT_HEIGHT,
                         I18n.format(element.optionInfo.category()), true, true));
@@ -226,19 +226,19 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
             // Figure out what button type needs to be rendered & give it the appropriate text
             if(element.element instanceof Boolean) {
-                this.addComponent(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth,
+                this.componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth,
                         ConfigElement.ELEMENT_HEIGHT,
                         I18n.format(element.optionInfo.name()) + ": " + I18n.format((boolean) element.element ?
                                 "quickplay.config.gui.true" : "quickplay.config.gui.false"), true));
             } else if(element.element instanceof QuickplayColor || element.element instanceof Runnable) {
-                this.addComponent(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth,
+                this.componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth,
                         ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()), true));
             } else if(element.element instanceof Double) {
-                this.addComponent(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth,
+                this.componentList.add(new QuickplayGuiSlider(guiResponder, element, nextButtonId, buttonX, buttonY, buttonWidth,
                         ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()), element.optionInfo.minValue(),
                         element.optionInfo.maxValue(), ((Number) element.element).floatValue(), formatHelper, true));
             } else if(element.element.getClass().isEnum()) {
-                this.addComponent(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth,
+                this.componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth,
                         ConfigElement.ELEMENT_HEIGHT, I18n.format(element.optionInfo.name()) + ": " +
                         I18n.format(String.valueOf(element.element)), true));
             }
@@ -246,7 +246,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             nextButtonId++;
         }
 
-        this.addComponent(new QuickplayGuiButton(null, nextButtonId,
+        this.componentList.add(new QuickplayGuiButton(null, nextButtonId,
                 width - openFolderButtonMargins - openFolderButtonWidth, openFolderButtonMargins,
                 openFolderButtonWidth, 20, openFolderText, false));
 

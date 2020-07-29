@@ -215,7 +215,7 @@ public class DailyRewardGui extends QuickplayGui {
                         switchAdFrame();
                     }
                 });
-                this.addComponent(new QuickplayGuiString(storeUrl, currentId++, width / 2, (int) (height / 2 + adTextureSize / 2 * adScale), width, 20, I18n.format("quickplay.premium.ingameReward.adroll.clickToVisit"), true, false));
+                this.componentList.add(new QuickplayGuiString(storeUrl, currentId++, width / 2, (int) (height / 2 + adTextureSize / 2 * adScale), width, 20, I18n.format("quickplay.premium.ingameReward.adroll.clickToVisit"), true, false));
             } else if (currentState == State.MENU) {
 
                 int currentCard = 0;
@@ -223,7 +223,7 @@ public class DailyRewardGui extends QuickplayGui {
                 // Offset by half when card count is even - Otherwise just by missing width
                 final int xOffset = (cardCount % 2 == 0 ? (cardWidth / 2) + (256 - cardWidth) / 2 : (256 - cardWidth) / 2);
                 for (DailyRewardOption option : appData.rewards) {
-                    this.addComponent(new QuickplayGuiButton(option, currentId++, (int) ((width / 2 - (cardWidth + 36) * cardScale / 2) + ((currentCard - cardCount / 2) * (cardWidth * cardScale + cardMargins))) + xOffset, (int) (height / 2 - cardHeight * cardScale / 2), cardWidth, cardHeight, null, option.getTexture(), 0, 0, cardScale, false));
+                    this.componentList.add(new QuickplayGuiButton(option, currentId++, (int) ((width / 2 - (cardWidth + 36) * cardScale / 2) + ((currentCard - cardCount / 2) * (cardWidth * cardScale + cardMargins))) + xOffset, (int) (height / 2 - cardHeight * cardScale / 2), cardWidth, cardHeight, null, option.getTexture(), 0, 0, cardScale, false));
                     currentCard++;
                 }
             } else if (currentState == State.CLAIMED) {
@@ -236,7 +236,7 @@ public class DailyRewardGui extends QuickplayGui {
                 // Add share button
                 final int sharedWidth = 100;
                 final int sharedHeight = 20;
-                this.addComponent(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/shared/" + appData.id, currentId++, width / 2 - sharedWidth / 2, (int) (height / 2 + cardHeight / 2 * cardScale) + 5, sharedWidth, sharedHeight, I18n.format("quickplay.premium.ingameReward.claimed.share"), false));
+                this.componentList.add(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/shared/" + appData.id, currentId++, width / 2 - sharedWidth / 2, (int) (height / 2 + cardHeight / 2 * cardScale) + 5, sharedWidth, sharedHeight, I18n.format("quickplay.premium.ingameReward.claimed.share"), false));
             }
 
             // Open link button
@@ -244,7 +244,7 @@ public class DailyRewardGui extends QuickplayGui {
                 final int linkButtonWidth = 100;
                 final int linkButtonHeight = 20;
                 final int linkButtonMargins = 3;
-                this.addComponent(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/" + appData.id, currentId++, width - linkButtonWidth - linkButtonMargins, height - linkButtonHeight - linkButtonMargins, linkButtonWidth, linkButtonHeight, I18n.format("quickplay.premium.ingameReward.openLink"), false));
+                this.componentList.add(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/" + appData.id, currentId++, width - linkButtonWidth - linkButtonMargins, height - linkButtonHeight - linkButtonMargins, linkButtonWidth, linkButtonHeight, I18n.format("quickplay.premium.ingameReward.openLink"), false));
             }
         }
     }

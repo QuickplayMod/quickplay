@@ -171,7 +171,7 @@ public class QuickplayGui extends GuiScreen {
         }
 
         closeContextMenu();
-        this.removeAllComponents();
+        this.componentList.clear();
 
         scrollPixel = 0;
 
@@ -567,6 +567,8 @@ public class QuickplayGui extends GuiScreen {
 
     /**
      * Add a component to this GUI's component list before next screen render.
+     * Note that this could result in unexpected behavior if used in initGui directly.
+     * This is intended to avoid ConcurrentModificationExceptions, but it's unclear if it'll be effective.
      * @param component The component to add
      */
     public void addComponent(final QuickplayGuiComponent component) {
@@ -576,17 +578,12 @@ public class QuickplayGui extends GuiScreen {
 
     /**
      * Remove a component from this GUI's component list before next screen render.
+     * Note that this could result in unexpected behavior if used in initGui directly.
+     * This is intended to avoid ConcurrentModificationExceptions, but it's unclear if it'll be effective.
      * @param component The component to remove
      */
     public void removeComponent(final QuickplayGuiComponent component) {
         // Remove components pre-render to avoid concurrent modification exception
         QuickplayEventHandler.mainThreadScheduledTasks.add(() -> this.componentList.remove(component));
-    }
-
-    /**
-     * Remove all components from this GUI's component list before next screen render.
-     */
-    public void removeAllComponents() {
-        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> this.componentList.clear());
     }
 }

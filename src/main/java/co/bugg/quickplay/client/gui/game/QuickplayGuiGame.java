@@ -184,7 +184,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         for(ListIterator<Mode> iter = game.modes.listIterator(); iter.hasNext();) {
             final int index = iter.nextIndex();
             final Mode next = iter.next();
-            this.addComponent(new QuickplayGuiButton(next, index, columnZeroX + (buttonWidth + buttonMargins) * currentColumn,
+            this.componentList.add(new QuickplayGuiButton(next, index, columnZeroX + (buttonWidth + buttonMargins) * currentColumn,
                     topOfBackgroundBox + backgroundBoxPadding + (buttonHeight + buttonMargins) * currentRow,
                     buttonWidth, buttonHeight, next.name, true));
             // Proceed to next position
@@ -199,7 +199,7 @@ public class QuickplayGuiGame extends QuickplayGui {
                 currentColumn++;
             }
         }
-        this.addComponent(new QuickplayGuiButton(null, game.modes.size() + 1, 3, 3, 100, 20,
+        this.componentList.add(new QuickplayGuiButton(null, game.modes.size() + 1, 3, 3, 100, 20,
                 I18n.format("quickplay.gui.back"), false));
 
         setScrollingValues();

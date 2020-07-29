@@ -87,11 +87,11 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         int buttonId = 0;
 
         // Header
-        this.addComponent(new QuickplayGuiString(null, buttonId, width / 2,
+        this.componentList.add(new QuickplayGuiString(null, buttonId, width / 2,
                 topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
                 I18n.format("quickplay.keybinds.title"), true, true));
         // Subheader
-        this.addComponent(new QuickplayGuiString(null, buttonId, width / 2,
+        this.componentList.add(new QuickplayGuiString(null, buttonId, width / 2,
                 topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
                 I18n.format("quickplay.keybinds.subtitle"), true, true, true));
 
@@ -100,11 +100,11 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                     topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
                     keybind.name, true);
             formatComponentString(component, false);
-            this.addComponent(component);
+            this.componentList.add(component);
         }
 
         // Reset button
-        this.addComponent(new QuickplayGuiButton(null, buttonId, width - buttonMargins - resetButtonWidth,
+        this.componentList.add(new QuickplayGuiButton(null, buttonId, width - buttonMargins - resetButtonWidth,
                 height - buttonMargins - buttonHeight, resetButtonWidth, buttonHeight, resetButtonText, false));
 
         setScrollingValues();

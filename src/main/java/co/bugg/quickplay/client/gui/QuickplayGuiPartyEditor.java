@@ -88,19 +88,19 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             final String trueOrFalse = checkIfModeToggled(mode) != null ?
                     EnumChatFormatting.GREEN + I18n.format("quickplay.config.gui.true") :
                     EnumChatFormatting.RED + I18n.format("quickplay.config.gui.false");
-            this.addComponent(new QuickplayGuiButton(mode, buttonId, width / 2 - buttonWidth / 2,
+            this.componentList.add(new QuickplayGuiButton(mode, buttonId, width / 2 - buttonWidth / 2,
                     topOfButtons + (buttonHeight + buttonYMargins) * buttonId, buttonWidth, buttonHeight,
                     mode.name + ": " + trueOrFalse, true));
             buttonId++;
         }
 
         // Add launch, "All On" and "All Off" buttons
-        this.addComponent(new QuickplayGuiButton(null, buttonId++, width / 2  - topButtonWidth / 2, 10,
+        this.componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2  - topButtonWidth / 2, 10,
                 topButtonWidth, buttonHeight, I18n.format("quickplay.gui.party.launch"), false)); // Launch
-        this.addComponent(new QuickplayGuiButton(null, buttonId++,
+        this.componentList.add(new QuickplayGuiButton(null, buttonId++,
                 width / 2 - topButtonWidth / 2 - topButtonWidth - topButtonMargins,
                 10, topButtonWidth, 20, I18n.format("quickplay.gui.party.allon"), false)); // All on
-        this.addComponent(new QuickplayGuiButton(null, buttonId++,
+        this.componentList.add(new QuickplayGuiButton(null, buttonId++,
                 width / 2 + topButtonWidth / 2 + topButtonMargins, 10, topButtonWidth, 20,
                 I18n.format("quickplay.gui.party.alloff"), false)); // All off
 
