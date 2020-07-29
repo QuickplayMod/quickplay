@@ -116,10 +116,14 @@ quickplay.settings.partyModeGui.name=Launch Randomatization GUI
 quickplay.settings.partyModeGui.help=Дали трябва специално "спинер" GUI да се отвори когато потребителят стартира парти mode.
 
 quickplay.settings.category.premium=Premium Функции
-quickplay.settings.ingameDailyReward.name=Всекидневна награда
-quickplay.settings.ingameDailyReward.help=Дали даването на наградите трябва да бъде в игра а не в браузър,за да няма нужда да отваряш уеб страница.
+quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
+quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
+quickplay.settings.showGlyphsInF1.name=Show Glyphs in F1
+quickplay.settings.showGlyphsInF1.help=Whether Glyphs should be visible when you're in F1 mode.
 quickplay.settings.displayOwnGlyph.name=Покажи собствения си Глиф
 quickplay.settings.displayOwnGlyph.help=Дали твоя Глиф трябва да бъде показван върху твоята глава във F5 режим.
+quickplay.settings.ingameDailyReward.name=Всекидневна награда
+quickplay.settings.ingameDailyReward.help=Дали даването на наградите трябва да бъде в игра а не в браузър,за да няма нужда да отваряш уеб страница.
 quickplay.config.keybinds.openmain=Отвори главното GUI
 quickplay.config.saveerror=Имаше грешка,докато запазвахме твоите конфигурации. Настройките може и да не са се запазили!
 quickplay.config.gui.title=Quickplay Конфигурация
