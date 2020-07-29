@@ -84,12 +84,13 @@ public class GlyphRenderer {
                 return;
             }
 
+            final boolean isInGame = currentServer == null || gameServerPattern.matcher(currentServer).matches();
             for (PlayerGlyph glyph : Quickplay.INSTANCE.glyphs) {
                 if (!glyph.uuid.toString().equals(player.getUniqueID().toString())) {
                     continue;
                 }
                 // Don't display glyph if the glyph owner has disabled displaying the glyph in-game.
-                if (currentServer == null || (gameServerPattern.matcher(currentServer).matches() && !glyph.displayInGames)) {
+                if (isInGame && !glyph.displayInGames) {
                     return;
                 }
                 float opacity = 1.0f;
@@ -100,10 +101,9 @@ public class GlyphRenderer {
                     double zDist = Math.abs(player.posZ - self.posZ);
                     double pythagorean = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2) + Math.pow(zDist, 2));
 
-                    opacity = this.calcOpacityForPlayer(player, pythagorean,
-                            gameServerPattern.matcher(currentServer).matches() ? 8 : 4);
+                    opacity = this.calcOpacityForPlayer(player, pythagorean, isInGame ? 8 : 4);
                 }
-                renderGlyph(e.renderer, glyph, e.x, e.y + offset + player.height, e.z, opacity);
+                renderGlyph(e.renderer, glyph, e.x, e.y + offset + player.height, e.z, opacity, isInGame);
             }
 
         }
@@ -153,17 +153,21 @@ public class GlyphRenderer {
      * @param y y position
      * @param z z position
      * @param opacity Opacity to render the glyph at
+     * @param isInGame Whether the player is in-game, i.e. reasonable size and position should be forced.
      */
-    public synchronized void renderGlyph(RenderPlayer renderer, PlayerGlyph glyph, double x, double y, double z, float opacity) {
+    public synchronized void renderGlyph(RenderPlayer renderer, PlayerGlyph glyph, double x, double y, double z, float opacity, boolean isInGame) {
 
         final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" +
                 Hashing.md5().hashString(glyph.path.toString(), StandardCharsets.UTF_8).toString() + ".png");
         if(Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {
-            float scale = (float) (glyph.height * 0.0015);
+            // Glyph height and offset are forced to 20 and 0 respectively if the user is in-game
+            final float glyphHeight = isInGame ? 20 : (float) glyph.height.doubleValue();
+            final float glyphOffset = isInGame ? 0 : (float) glyph.yOffset.doubleValue();
+            float scale = (float) (glyphHeight * 0.0015);
 
             // Apply GL properties
             GlStateManager.pushMatrix();
-            GlStateManager.translate((float) x, (float) y + glyph.yOffset, (float) z);
+            GlStateManager.translate((float) x, (float) y + glyphOffset, (float) z);
             GL11.glNormal3f(0.0F, 1.0F, 0.0F);
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             GlStateManager.disableLighting();
