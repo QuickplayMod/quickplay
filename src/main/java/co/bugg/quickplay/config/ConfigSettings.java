@@ -274,14 +274,24 @@ public class ConfigSettings extends AConfiguration implements Serializable {
     public boolean partyModeGui = true;
 
     /**
-     * Whether the user's daily reward should be displayed in-game rather than in-browser
+     * Whether a user's glyph should fade as you get closer to them.
      */
     @GuiOption(
-            name = "quickplay.settings.ingameDailyReward.name",
-            helpText = "quickplay.settings.ingameDailyReward.help",
+            name = "quickplay.settings.fadeGlyphs.name",
+            helpText = "quickplay.settings.fadeGlyphs.help",
             category = "quickplay.settings.category.premium"
     )
-    public boolean ingameDailyReward = true;
+    public boolean fadeGlyphs = true;
+
+    /**
+     * Whether a glyphs should be visible when in F1 mode.
+     */
+    @GuiOption(
+            name = "quickplay.settings.showGlyphsInF1.name",
+            helpText = "quickplay.settings.showGlyphsInF1.help",
+            category = "quickplay.settings.category.premium"
+    )
+    public boolean showGlyphsInF1 = false;
 
     /**
      * Whether the client's own glyph should be visible or not
@@ -293,6 +303,17 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             category = "quickplay.settings.category.premium"
     )
     public boolean displayOwnGlyph = true;
+
+    /**
+     * Whether the user's daily reward should be displayed in-game rather than in-browser
+     */
+    @GuiOption(
+            name = "quickplay.settings.ingameDailyReward.name",
+            helpText = "quickplay.settings.ingameDailyReward.help",
+            category = "quickplay.settings.category.premium"
+    )
+    public boolean ingameDailyReward = true;
+
 
     /**
      * Allows users to change how much padding is on the
