@@ -116,10 +116,14 @@ quickplay.settings.partyModeGui.name=Zufällig generiertes GUI starten
 quickplay.settings.partyModeGui.help=Ob eine spezielle Spinner-GUI geöffnet werden soll, wenn der Benutzer den Party-Modus startet.
 
 quickplay.settings.category.premium=Premiumfunktionen
-quickplay.settings.ingameDailyReward.name=Tägliche Ingame-Belohnung
-quickplay.settings.ingameDailyReward.help=Ob die Handhabung der täglichen Belohnungen im Spiel sein sollte und nicht im Browser, so dass du keine Webseite öffnen musst.
+quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
+quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
+quickplay.settings.showGlyphsInF1.name=Show Glyphs in F1
+quickplay.settings.showGlyphsInF1.help=Whether Glyphs should be visible when you're in F1 mode.
 quickplay.settings.displayOwnGlyph.name=Eigenen Glyph anzeigen
 quickplay.settings.displayOwnGlyph.help=Ob dein eigener Glyph im F5-Modus über deinem Kopf angezeigt werden soll.
+quickplay.settings.ingameDailyReward.name=Tägliche Ingame-Belohnung
+quickplay.settings.ingameDailyReward.help=Ob die Handhabung der täglichen Belohnungen im Spiel sein sollte und nicht im Browser, so dass du keine Webseite öffnen musst.
 quickplay.config.keybinds.openmain=Haupt-GUI öffnen
 quickplay.config.saveerror=Beim Speichern deiner Konfiguration ist ein Fehler aufgetreten. Die Einstellungen können eventuell nicht gespeichert werden!
 quickplay.config.gui.title=Quickplay-Konfiguration
