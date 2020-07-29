@@ -116,10 +116,14 @@ quickplay.settings.partyModeGui.name=啟用隨機選擇遊戲 GUI
 quickplay.settings.partyModeGui.help=設定是否在啟動組隊模式時顯示轉盤 GUI。
 
 quickplay.settings.category.premium=Premium 功能
-quickplay.settings.ingameDailyReward.name=遊戲內領取每日獎勵
-quickplay.settings.ingameDailyReward.help=設定是否直接在遊戲内中打開每日獎勵頁面，這樣你就不需要再開啟瀏覽器了。
+quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
+quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
+quickplay.settings.showGlyphsInF1.name=Show Glyphs in F1
+quickplay.settings.showGlyphsInF1.help=Whether Glyphs should be visible when you're in F1 mode.
 quickplay.settings.displayOwnGlyph.name=顯示你的全息字幕
 quickplay.settings.displayOwnGlyph.help=設定第三人稱中是否在你的頭上顯示全息字幕。
+quickplay.settings.ingameDailyReward.name=遊戲內領取每日獎勵
+quickplay.settings.ingameDailyReward.help=設定是否直接在遊戲内中打開每日獎勵頁面，這樣你就不需要再開啟瀏覽器了。
 quickplay.config.keybinds.openmain=開啟主畫面
 quickplay.config.saveerror=保存設定時發生錯誤。設定可能尚未儲存！
 quickplay.config.gui.title=Quickplay 設定
