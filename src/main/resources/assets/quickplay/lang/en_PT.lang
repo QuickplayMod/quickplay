@@ -116,10 +116,14 @@ quickplay.settings.partyModeGui.name=Launch Randomization GUI
 quickplay.settings.partyModeGui.help=Whether a special spinner GUI should be opened when th` user launches party mode.
 
 quickplay.settings.category.premium=Premium Features
-quickplay.settings.ingameDailyReward.name=Ingame Daily Reward
-quickplay.settings.ingameDailyReward.help=Whether the handling of Daily Rewards should be in-game rather than in-browser, so you don't have to open a web page.
+quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
+quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
+quickplay.settings.showGlyphsInF1.name=Show Glyphs in F1
+quickplay.settings.showGlyphsInF1.help=Whether Glyphs should be visible when you're in F1 mode.
 quickplay.settings.displayOwnGlyph.name=Display Own Glyph
 quickplay.settings.displayOwnGlyph.help=Whether your own Glyph should be displayed over your head in F5 mode.
+quickplay.settings.ingameDailyReward.name=Ingame Daily Reward
+quickplay.settings.ingameDailyReward.help=Whether the handling of Daily Rewards should be in-game rather than in-browser, so you don't have to open a web page.
 quickplay.config.keybinds.openmain=Open Main GUI
 quickplay.config.saveerror=There was an error saving your configuration. Settings may not be saved!
 quickplay.config.gui.title=Quickplay Config
