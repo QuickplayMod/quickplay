@@ -116,10 +116,14 @@ quickplay.settings.partyModeGui.name=Запустить интерфейс сл�
 quickplay.settings.partyModeGui.help=Будет ли специальный вращатель интерфейса открываться, когда запускается режим компании.
 
 quickplay.settings.category.premium=Премиум возможности
-quickplay.settings.ingameDailyReward.name=Ежедневная внутриигровая награда
-quickplay.settings.ingameDailyReward.help=Будет ли отображение Ежедневных Наград в игре, вместо браузера. Вам не придется открывать веб-страницу.
+quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
+quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
+quickplay.settings.showGlyphsInF1.name=Show Glyphs in F1
+quickplay.settings.showGlyphsInF1.help=Whether Glyphs should be visible when you're in F1 mode.
 quickplay.settings.displayOwnGlyph.name=Показать свой символ
 quickplay.settings.displayOwnGlyph.help=Будет ли ваш Символ отображаться выше головы в режиме F5.
+quickplay.settings.ingameDailyReward.name=Ежедневная внутриигровая награда
+quickplay.settings.ingameDailyReward.help=Будет ли отображение Ежедневных Наград в игре, вместо браузера. Вам не придется открывать веб-страницу.
 quickplay.config.keybinds.openmain=Открыть основной интерфейс
 quickplay.config.saveerror=Произошла ошибка при сохранении конфигурации. Настройки не могут быть сохранены!
 quickplay.config.gui.title=Настройки Quickplay
