@@ -55,8 +55,8 @@ public class GlyphRenderer {
 
     @SubscribeEvent
     public void onPlayerRender(RenderPlayerEvent.Post e) {
-        // Don't render at all if F1 is hit or if the client is in a game (or unknown location)
-        if(!Minecraft.getMinecraft().gameSettings.hideGUI) {
+        // Don't render at all if F1 is hit and the user has showing in F1 disabled
+        if(!Minecraft.getMinecraft().gameSettings.hideGUI || Quickplay.INSTANCE.settings.showGlyphsInF1) {
             final String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
             final EntityPlayer self = Minecraft.getMinecraft().thePlayer;
             final EntityPlayer player = e.entityPlayer;
@@ -93,7 +93,8 @@ public class GlyphRenderer {
                     return;
                 }
                 float opacity = 1.0f;
-                if (!player.getUniqueID().toString().equals(self.getUniqueID().toString())) {
+                // If the user has glyph fading enabled, and we're not talking about the same user as the client, then fade
+                if (Quickplay.INSTANCE.settings.fadeGlyphs && !player.getUniqueID().toString().equals(self.getUniqueID().toString())) {
                     double xDist = Math.abs(player.posX - self.posX);
                     double yDist = Math.abs(player.posY - self.posY);
                     double zDist = Math.abs(player.posZ - self.posZ);
