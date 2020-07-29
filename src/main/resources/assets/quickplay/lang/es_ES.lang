@@ -116,10 +116,14 @@ quickplay.settings.partyModeGui.name=Iniciar GUI Aleatoria
 quickplay.settings.partyModeGui.help=Si una GUI de ruleta especial debe abrirse cuando el usuario inicia el modo party.
 
 quickplay.settings.category.premium=Funciones Premium
-quickplay.settings.ingameDailyReward.name=Recompensa Diaria En Juego
-quickplay.settings.ingameDailyReward.help=Si el manejo de Recompensas Diarias debe estar dentro de juego en vez de en navegador, para que no tengas que abrir una página web.
+quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
+quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
+quickplay.settings.showGlyphsInF1.name=Show Glyphs in F1
+quickplay.settings.showGlyphsInF1.help=Whether Glyphs should be visible when you're in F1 mode.
 quickplay.settings.displayOwnGlyph.name=Mostrar Glifo Propio
 quickplay.settings.displayOwnGlyph.help=Si tu Glifo propio debe mostrarse sobre tu cabeza en modo F5.
+quickplay.settings.ingameDailyReward.name=Recompensa Diaria En Juego
+quickplay.settings.ingameDailyReward.help=Si el manejo de Recompensas Diarias debe estar dentro de juego en vez de en navegador, para que no tengas que abrir una página web.
 quickplay.config.keybinds.openmain=Abrir Menú Principal
 quickplay.config.saveerror=Hubo un error al guardar la configuración. ¡Las opciones pueden no haberse guardado!
 quickplay.config.gui.title=Configuración de Quickplay
