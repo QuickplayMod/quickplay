@@ -51,7 +51,12 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+repositories {
+    mavenCentral()
+}
 dependencies {
+
+    compile "org.java-websocket:Java-WebSocket:1.5.1"
 
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..

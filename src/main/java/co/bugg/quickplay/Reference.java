@@ -20,4 +20,8 @@ public class Reference {
      * Google Analytics tracking ID
      */
     public static final String ANALYTICS_TRACKING_ID = "UA-60675209-4";
+    /**
+     * URI pointing to the backend's socket
+     */
+    public static final String BACKEND_SOCKET_URI = "ws://localhost:54678";
 }

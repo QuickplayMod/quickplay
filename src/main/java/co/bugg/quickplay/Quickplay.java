@@ -12,6 +12,7 @@ import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.http.HttpRequestFactory;
 import co.bugg.quickplay.http.Request;
+import co.bugg.quickplay.http.SocketClient;
 import co.bugg.quickplay.http.response.ResponseAction;
 import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.*;
@@ -40,6 +41,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -97,8 +100,14 @@ public class Quickplay {
     public ChatBuffer chatBuffer;
     /**
      * Factory for creating HTTP requests
+     * TODO remove
      */
+    @Deprecated
     public HttpRequestFactory requestFactory;
+    /**
+     * Socket client connected to the Quickplay backend
+     */
+    public SocketClient socket;
     /**
      * Factory for creating, loading, etc. of mod assets
      */
@@ -189,8 +198,15 @@ public class Quickplay {
         // if the mod is disabled - this allows for
         // communicating important information about why
         // the mod is currently disabled, or how to fix.
-        messageBuffer = (MessageBuffer) new MessageBuffer(100).start();
-        enable();
+        this.messageBuffer = (MessageBuffer) new MessageBuffer(100).start();
+        try {
+            enable();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            this.sendExceptionRequest(e);
+            this.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.failedToEnable"),
+                    true, true));
+        }
     }
 
     /**
@@ -216,59 +232,59 @@ public class Quickplay {
     /**
      * Enable the mod
      */
-    public void enable() {
+    public void enable() throws URISyntaxException {
         if(!this.enabled) {
-
             this.enabled = true;
-            requestFactory = new HttpRequestFactory();
-            assetFactory = new AssetFactory();
+            this.requestFactory = new HttpRequestFactory(); // TODO remove
+            this.socket = new SocketClient(new URI(Reference.BACKEND_SOCKET_URI));
+            this.assetFactory = new AssetFactory();
 
-            assetFactory.createDirectories();
-            assetFactory.dumpOldCache();
-            resourcePack = assetFactory.registerResourcePack();
+            this.assetFactory.createDirectories();
+            this.assetFactory.dumpOldCache();
+            this.resourcePack = this.assetFactory.registerResourcePack();
 
             try {
-                settings = (ConfigSettings) AConfiguration.load("settings.json", ConfigSettings.class);
-                keybinds = (ConfigKeybinds) AConfiguration.load("keybinds.json", ConfigKeybinds.class);
-                usageStats = (ConfigUsageStats) AConfiguration.load("privacy.json", ConfigUsageStats.class);
+                this.settings = (ConfigSettings) AConfiguration.load("settings.json", ConfigSettings.class);
+                this.keybinds = (ConfigKeybinds) AConfiguration.load("keybinds.json", ConfigKeybinds.class);
+                this.usageStats = (ConfigUsageStats) AConfiguration.load("privacy.json", ConfigUsageStats.class);
             } catch (IOException | JsonSyntaxException e) {
                 // Config either doesn't exist or couldn't be parsed
                 e.printStackTrace();
-                assetFactory.createDirectories();
+                this.assetFactory.createDirectories();
 
-                if(settings == null) {
-                    settings = new ConfigSettings();
+                if(this.settings == null) {
+                    this.settings = new ConfigSettings();
                 }
-                if(keybinds == null) {
-                    keybinds = new ConfigKeybinds(true);
+                if(this.keybinds == null) {
+                    this.keybinds = new ConfigKeybinds(true);
                 }
-                if(usageStats == null) {
-                    promptUserForUsageStats = true;
+                if(this.usageStats == null) {
+                    this.promptUserForUsageStats = true;
                 }
 
                 try {
                     // Write the default config that we just made to save it
-                    settings.save();
-                    keybinds.save();
+                    this.settings.save();
+                    this.keybinds.save();
                 } catch (IOException e1) {
                     // File couldn't be saved
                     e1.printStackTrace();
-                    sendExceptionRequest(e1);
-                    Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
+                    this.sendExceptionRequest(e1); // TODO replace
+                    this.messageBuffer.push(new Message(new ChatComponentTranslation(
                             "quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 }
             }
 
             // Create new Google Analytics instance if possible
-            if(usageStats != null && usageStats.statsToken != null) {
-                createGoogleAnalytics();
+            if(this.usageStats != null && this.usageStats.statsToken != null) {
+                this.createGoogleAnalytics();
             }
 
             // Send analytical data to Google
-            if(usageStats != null && usageStats.statsToken != null && usageStats.sendUsageStats && ga != null) {
-                threadPool.submit(() -> {
+            if(this.usageStats != null && this.usageStats.statsToken != null && this.usageStats.sendUsageStats && ga != null) {
+                this.threadPool.submit(() -> {
                     try {
-                        ga.createEvent("Systematic Events", "Mod Enable")
+                        this.ga.createEvent("Systematic Events", "Mod Enable")
                                 .setSessionControl(AnalyticsRequest.SessionControl.START)
                                 .send();
                     } catch (IOException e) {
@@ -286,11 +302,11 @@ public class Quickplay {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                sendExceptionRequest(e);
+                this.sendExceptionRequest(e);
             }
 
             this.threadPool.submit(() -> {
-                final Request request = requestFactory.newEnableRequest();
+                final Request request = this.requestFactory.newEnableRequest();
                 if(request != null) {
                     final WebResponse response = request.execute();
 
@@ -303,7 +319,7 @@ public class Quickplay {
                             if (response.ok && response.content != null) {
                                 // Add the premium about information
                                 if(response.content.getAsJsonObject().get("premiumInfo") != null) {
-                                    premiumAbout = IChatComponent.Serializer
+                                    this.premiumAbout = IChatComponent.Serializer
                                             .jsonToComponent(response.content.getAsJsonObject().get("premiumInfo").toString());
                                 }
                                 // Add all glyphs
@@ -316,7 +332,7 @@ public class Quickplay {
                             }
                         } catch (IllegalStateException e) {
                             e.printStackTrace();
-                            sendExceptionRequest(e);
+                            this.sendExceptionRequest(e);
                         }
                     }
                 }
@@ -324,33 +340,33 @@ public class Quickplay {
 
             // Check for Premium subscription
             try {
-                verifyPremium();
+                this.verifyPremium();
             } catch (IOException | NoSubscriptionException e) {
                 e.printStackTrace();
             }
 
-            registerEventHandler(new GlyphRenderer());
-            registerEventHandler(new QuickplayEventHandler());
+            this.registerEventHandler(new GlyphRenderer());
+            this.registerEventHandler(new QuickplayEventHandler());
 
-            chatBuffer = (ChatBuffer) new ChatBuffer(100).start();
-            instanceWatcher = new InstanceWatcher(30).start();
-            instanceDisplay = new InstanceDisplay();
+            this.chatBuffer = (ChatBuffer) new ChatBuffer(100).start();
+            this.instanceWatcher = new InstanceWatcher(30).start();
+            this.instanceDisplay = new InstanceDisplay();
 
-            commands.add(new CommandQuickplay());
+            this.commands.add(new CommandQuickplay());
 
-            if(settings.redesignedLobbyCommand) {
+            if(this.settings.redesignedLobbyCommand) {
                 // Register lobby commands
-                commands.add(new CommandHub("l"));
-                commands.add(new CommandHub("lobby"));
-                commands.add(new CommandHub("hub"));
-                commands.add(new CommandHub("spawn"));
-                commands.add(new CommandHub("leave"));
-                commands.add(new CommandMain("main"));
+                this.commands.add(new CommandHub("l"));
+                this.commands.add(new CommandHub("lobby"));
+                this.commands.add(new CommandHub("hub"));
+                this.commands.add(new CommandHub("spawn"));
+                this.commands.add(new CommandHub("leave"));
+                this.commands.add(new CommandMain("main"));
             }
             // Copy of the lobby command that doesn't override server commands
             // Used for "Go to Lobby" buttons
-            commands.add(new CommandHub("quickplaylobby", "lobby"));
-            commands.forEach(ClientCommandHandler.instance::registerCommand);
+            this.commands.add(new CommandHub("quickplaylobby", "lobby"));
+            this.commands.forEach(ClientCommandHandler.instance::registerCommand);
         }
     }
 
@@ -358,7 +374,7 @@ public class Quickplay {
      * Create the Google Analytics instance with customized settings for this Quickplay instance
      */
     public void createGoogleAnalytics() {
-        ga = GoogleAnalyticsFactory.create(Reference.ANALYTICS_TRACKING_ID, usageStats.statsToken.toString(),
+        this.ga = GoogleAnalyticsFactory.create(Reference.ANALYTICS_TRACKING_ID, usageStats.statsToken.toString(),
                 Reference.MOD_NAME, Reference.VERSION);
         final AnalyticsRequest defaultRequest = ga.getDefaultRequest();
 
@@ -380,15 +396,15 @@ public class Quickplay {
         // TODO This gets stuck when event handlers are unregistered.
         if(this.enabled) {
             this.enabled = false;
-            eventHandlers.forEach(this::unregisterEventHandler);
+            this.eventHandlers.forEach(this::unregisterEventHandler);
             this.disabledReason = reason;
 
-            if(chatBuffer != null) {
-                chatBuffer.stop();
+            if(this.chatBuffer != null) {
+                this.chatBuffer.stop();
             }
 
-            if(instanceWatcher != null) {
-                instanceWatcher.stop();
+            if(this.instanceWatcher != null) {
+                this.instanceWatcher.stop();
             }
         }
     }
@@ -399,13 +415,13 @@ public class Quickplay {
      * @return Whether the mod is enabled
      */
     public boolean checkEnabledStatus() {
-        if(!enabled) {
+        if(!this.enabled) {
             IChatComponent message = new ChatComponentTranslation("quickplay.disabled", this.disabledReason);
             message.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
 
         }
 
-        return enabled;
+        return this.enabled;
     }
 
     /**
@@ -425,15 +441,15 @@ public class Quickplay {
      * @param e Exception that occurred
      */
     public void sendExceptionRequest(Exception e) {
-        if(usageStats != null && usageStats.sendUsageStats) {
-            final WebResponse response = requestFactory.newExceptionRequest(e).execute();
+        if(this.usageStats != null && this.usageStats.sendUsageStats) {
+            final WebResponse response = this.requestFactory.newExceptionRequest(e).execute();
             if(response != null) {
                 for (ResponseAction action : response.actions)
                     action.run();
             }
-            if(ga != null) {
+            if(this.ga != null) {
                 try {
-                    ga.createException().setExceptionDescription(e.getMessage()).send();
+                    this.ga.createException().setExceptionDescription(e.getMessage()).send();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -445,40 +461,40 @@ public class Quickplay {
      * Start a party mode session by randomizing selected games & then executing the command
      */
     public void launchPartyMode() {
-        if(settings.partyModes.size() > 0) {
-            if(settings.partyModeGui) {
+        if(this.settings.partyModes.size() > 0) {
+            if(this.settings.partyModeGui) {
                 Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiPartySpinner());
             } else {
                 // No GUI, handle randomization in chat
 
                 // Send commencement message if delay is greater than 0 seconds
-                if(settings.partyModeDelay > 0) {
-                    messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.commencing")
+                if(this.settings.partyModeDelay > 0) {
+                    this.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.commencing")
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE))));
                 }
 
                 // Calculate mode
                 PartyMode mode;
                 // Don't need to randomize on size 1
-                if(settings.partyModes.size() == 1) {
-                    mode = settings.partyModes.get(0);
+                if(this.settings.partyModes.size() == 1) {
+                    mode = this.settings.partyModes.get(0);
                 } else {
                     final Random random = new Random();
-                    mode = settings.partyModes.get(random.nextInt(settings.partyModes.size()));
+                    mode = this.settings.partyModes.get(random.nextInt(this.settings.partyModes.size()));
                 }
 
                 try {
-                    Thread.sleep((long) (settings.partyModeDelay * 1000));
+                    Thread.sleep((long) (this.settings.partyModeDelay * 1000));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-                messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name)
+                this.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name)
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
-                chatBuffer.push(mode.command);
+                this.chatBuffer.push(mode.command);
             }
         } else {
-            messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.nogames")
+            this.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.nogames")
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }
@@ -497,7 +513,7 @@ public class Quickplay {
         resourceManagerField.setAccessible(true);
         SimpleReloadableResourceManager resourceManager = (SimpleReloadableResourceManager) resourceManagerField.get(Minecraft.getMinecraft());
 
-        resourceManager.reloadResourcePack(resourcePack);
+        resourceManager.reloadResourcePack(this.resourcePack);
     }
 
     /**
@@ -529,7 +545,7 @@ public class Quickplay {
 
         authenticator.sendSessionServerRequest(secret);
 
-        final Request request = requestFactory.premiumVerificationRequest();
+        final Request request = this.requestFactory.premiumVerificationRequest();
         if(request != null) {
             final WebResponse response = request.execute();
             if(response != null && response.ok) {
@@ -546,7 +562,7 @@ public class Quickplay {
 
                     // Reauthenticate just before the session expires
                     if(response.content.getAsJsonObject().get("sessionExpriesIn") != null)
-                        Quickplay.INSTANCE.threadPool.submit(() -> {
+                        this.threadPool.submit(() -> {
                             try {
                                 // Sleep until 5 minutes before the session expires, or for at least 5 minutes.
                                 Thread.sleep(Math.max(response.content.getAsJsonObject().get("sessionExpiresIn")

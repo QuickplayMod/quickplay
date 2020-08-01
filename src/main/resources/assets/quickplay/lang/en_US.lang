@@ -3,6 +3,8 @@ quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
 quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Click to open.
 
+quickplay.failedToEnable=Sorry, something went wrong and Quickplay couldn't enable! Try restarting or checking for updates.
+
 quickplay.commands.invalid=Invalid command!
 quickplay.commands.quickplay.help.help=Display the available commands.
 quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
