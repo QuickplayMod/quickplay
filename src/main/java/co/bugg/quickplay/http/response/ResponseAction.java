@@ -10,8 +10,10 @@ import co.bugg.quickplay.util.Message;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChatComponentTranslation;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
@@ -174,7 +176,14 @@ public class ResponseAction {
                 break;
             case ENABLE_MOD:
                 System.out.println("Enabling mod, per web request guidelines. Reason: " + value.getAsString());
-                Quickplay.INSTANCE.enable();
+                try {
+                    Quickplay.INSTANCE.enable();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
+                    Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.failedToEnable"),
+                            true, true));
+                }
                 break;
             case START_PING:
                 Quickplay.INSTANCE.pingFrequency = value.getAsInt();

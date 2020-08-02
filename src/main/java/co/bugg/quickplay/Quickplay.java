@@ -54,8 +54,7 @@ import java.util.concurrent.Future;
         name = Reference.MOD_NAME,
         version = Reference.VERSION,
         clientSideOnly = true,
-        acceptedMinecraftVersions = "[1.8.8, 1.8.9]",
-        dependencies = "before:quickplaypremium@[1.0.1,]"
+        acceptedMinecraftVersions = "[1.8.8, 1.8.9]"
 )
 public class Quickplay {
 
@@ -116,6 +115,11 @@ public class Quickplay {
      * List of games
      */
     public List<Game> gameList = new ArrayList<>();
+
+    public Map<String, Screen> screenMap = new HashMap<>();
+    public Map<String, Button> buttonMap = new HashMap<>();
+    public Map<String, AliasedAction> aliasedActionMap = new HashMap<>();
+
     /**
      * InstanceWatcher that constantly watches for what Hypixel server instance the client is on
      */
@@ -237,6 +241,7 @@ public class Quickplay {
             this.enabled = true;
             this.requestFactory = new HttpRequestFactory(); // TODO remove
             this.socket = new SocketClient(new URI(Reference.BACKEND_SOCKET_URI));
+            this.socket.connect();
             this.assetFactory = new AssetFactory();
 
             this.assetFactory.createDirectories();
@@ -271,7 +276,7 @@ public class Quickplay {
                     e1.printStackTrace();
                     this.sendExceptionRequest(e1); // TODO replace
                     this.messageBuffer.push(new Message(new ChatComponentTranslation(
-                            "quickplay.config.saveerror").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                            "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 }
             }
 
@@ -494,7 +499,7 @@ public class Quickplay {
                 this.chatBuffer.push(mode.command);
             }
         } else {
-            this.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.nogames")
+            this.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.noGames")
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }
@@ -561,7 +566,7 @@ public class Quickplay {
                     }
 
                     // Reauthenticate just before the session expires
-                    if(response.content.getAsJsonObject().get("sessionExpriesIn") != null)
+                    if(response.content.getAsJsonObject().get("sessionExpiresIn") != null)
                         this.threadPool.submit(() -> {
                             try {
                                 // Sleep until 5 minutes before the session expires, or for at least 5 minutes.

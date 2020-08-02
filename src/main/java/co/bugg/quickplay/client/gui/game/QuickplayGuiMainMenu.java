@@ -197,7 +197,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
         // if there are no games to display
         if(Quickplay.INSTANCE.gameList == null || Quickplay.INSTANCE.gameList.size() <= 0) {
-            drawNoGamesMenu();
+            drawnoGamesMenu();
         } else {
 
             // Draw images & strings for all the games buttons
@@ -273,7 +273,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
      * they cannot connect to the Quickplay web server for whatever reason (or have not
      * been instructed to contact the web server due to some server error)
      */
-    protected void drawNoGamesMenu() {
+    protected void drawnoGamesMenu() {
 
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
@@ -283,9 +283,9 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
 
         // Get the various strings displayed on screen
-        final String lineOne = I18n.format("quickplay.gui.main.nogames.issue");
-        final String lineTwo = I18n.format("quickplay.gui.main.nogames.why");
-        final String lineThree = I18n.format("quickplay.gui.main.nogames.contact");
+        final String lineOne = I18n.format("quickplay.gui.main.noGames.issue");
+        final String lineTwo = I18n.format("quickplay.gui.main.noGames.why");
+        final String lineThree = I18n.format("quickplay.gui.main.noGames.contact");
 
         // Calculate longest string for scaling
         int longestStringLength = mc.fontRendererObj.getStringWidth(lineOne) + boxMargins * 2;
@@ -312,20 +312,20 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
         // Draw header
         GlStateManager.scale(oopsHeaderScale, oopsHeaderScale, oopsHeaderScale);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.header"),
+        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.noGames.header"),
                 (int) (width / 2 / oopsHeaderScale), (int) (oopsHeaderY / oopsHeaderScale),
                 Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         GlStateManager.scale(1 / oopsHeaderScale, 1 / oopsHeaderScale, 1 / oopsHeaderScale);
 
         // Draw error text
         GlStateManager.scale(errorScale, errorScale, errorScale);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.issue"),
+        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.noGames.issue"),
                 (int) (width / 2 / errorScale), (int) (lineOneY / errorScale),
                 Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.why"),
+        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.noGames.why"),
                 (int) (width / 2 / errorScale), (int) (lineTwoY / errorScale),
                 Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.nogames.contact"),
+        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.noGames.contact"),
                 (int) (width / 2 / errorScale), (int) (lineThreeY / errorScale),
                 Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         GlStateManager.scale(1 / errorScale, 1 / errorScale, 1 / errorScale);

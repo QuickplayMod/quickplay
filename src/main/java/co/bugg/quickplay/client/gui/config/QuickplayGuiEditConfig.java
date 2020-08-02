@@ -480,7 +480,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         } catch (IOException | IllegalAccessException | NoSuchFieldException e) {
             System.out.println("Failed to save option " + element.configFieldName + ".");
             Quickplay.INSTANCE.messageBuffer.push(new Message(
-                    new ChatComponentTranslation("quickplay.config.saveerror")
+                    new ChatComponentTranslation("quickplay.config.saveError")
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);

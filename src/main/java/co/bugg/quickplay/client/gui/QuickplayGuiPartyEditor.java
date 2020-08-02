@@ -193,7 +193,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             Quickplay.INSTANCE.settings.save();
         } catch (IOException e) {
             e.printStackTrace();
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveerror")));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveError")));
         }
     }
 }

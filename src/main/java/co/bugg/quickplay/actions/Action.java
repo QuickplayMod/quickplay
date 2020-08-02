@@ -45,6 +45,9 @@ public abstract class Action {
         actionIdToActionClass.put((short) 4, SystemOutAction.class);
         actionIdToActionClass.put((short) 5, ResetConfigAction.class);
         actionIdToActionClass.put((short) 6, SendChatCommandAction.class);
+        actionIdToActionClass.put((short) 7, SetAliasedActionAction.class);
+        actionIdToActionClass.put((short) 8, SetButtonAction.class);
+        actionIdToActionClass.put((short) 9, SetScreenAction.class);
     }
 
     /**
