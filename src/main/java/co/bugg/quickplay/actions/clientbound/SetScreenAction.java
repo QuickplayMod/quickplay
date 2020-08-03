@@ -25,9 +25,10 @@ public class SetScreenAction extends Action {
             final String protocol = this.getPayloadObjectAsString(3);
             final String key = this.getPayloadObjectAsString(0);
             final String translationKey = this.getPayloadObjectAsString(6);
+            final String imageURL = this.getPayloadObjectAsString(7);
 
             final Screen screen = new Screen(key, screenType, availableOnArr, protocol, buttonsArr,
-                    backButtonActionsArr, translationKey);
+                    backButtonActionsArr, translationKey, imageURL);
 
             Quickplay.INSTANCE.screenMap.put(key, screen);
         } catch (JsonSyntaxException | BufferUnderflowException e) {

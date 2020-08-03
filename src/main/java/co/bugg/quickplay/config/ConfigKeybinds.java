@@ -1,8 +1,8 @@
 package co.bugg.quickplay.config;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayKeybind;
 import co.bugg.quickplay.client.gui.game.QuickplayGuiMainMenu;
-import net.minecraft.client.resources.I18n;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class ConfigKeybinds extends AConfiguration {
     public ConfigKeybinds(boolean addDefaultKeybinds) {
         this();
         if(addDefaultKeybinds) {
-            keybinds.add(new QuickplayKeybind(I18n.format("quickplay.config.keybinds.openmain"),
+            keybinds.add(new QuickplayKeybind(Quickplay.INSTANCE.translator.get("quickplay.config.keybinds.openmain"),
                     Keyboard.KEY_R, QuickplayGuiMainMenu.class));
         }
     }

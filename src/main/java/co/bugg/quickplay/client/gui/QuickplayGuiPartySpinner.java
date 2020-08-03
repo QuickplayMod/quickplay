@@ -4,10 +4,9 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -67,7 +66,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
             int buttonId = 0;
 
-            final String randomizingString = I18n.format("quickplay.gui.party.randomizing");
+            final String randomizingString = Quickplay.INSTANCE.translator.get("quickplay.gui.party.randomizing");
             this.componentList.add(new QuickplayGuiString(null, buttonId++, width / 2, randomizingTextHeight,
                     fontRendererObj.getStringWidth(randomizingString), fontRendererObj.FONT_HEIGHT, randomizingString,
                     true, false));
@@ -78,7 +77,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
         } else {
             // close the GUI and send an error
             Minecraft.getMinecraft().displayGuiScreen(null);
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.noGames")
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }

@@ -3,8 +3,7 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -25,7 +24,7 @@ public class SubCommandVersion extends ACommand {
         super(
                 parent,
                 Arrays.asList("version", "v"),
-                 I18n.format("quickplay.commands.quickplay.version.help"),
+                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.version.help"),
                 "",
                 false,
                 true,
@@ -37,7 +36,7 @@ public class SubCommandVersion extends ACommand {
 
     @Override
     public void run(String[] args) {
-        Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
+        Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
                 "quickplay.commands.quickplay.version.message", Reference.VERSION)
                 .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD))));
     }

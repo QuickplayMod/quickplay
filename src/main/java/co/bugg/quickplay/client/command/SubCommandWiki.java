@@ -1,7 +1,6 @@
 package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
-import net.minecraft.client.resources.I18n;
 
 import java.awt.*;
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class SubCommandWiki extends ACommand {
         super(
                 parent,
                 Collections.singletonList("wiki"),
-                 I18n.format("quickplay.commands.quickplay.wiki.help"),
+                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.wiki.help"),
                 "",
                 true,
                 true,

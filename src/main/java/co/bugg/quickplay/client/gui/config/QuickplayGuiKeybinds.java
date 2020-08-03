@@ -9,7 +9,6 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiContextMenu;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.config.ConfigKeybinds;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 
@@ -46,7 +45,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     /**
      * The display text of the reset button
      */
-    public final String resetButtonText = I18n.format("quickplay.keybinds.reset");
+    public final String resetButtonText = Quickplay.INSTANCE.translator.get("quickplay.keybinds.reset");
     /**
      * The color of keybinds on buttons when they are not being edited
      */
@@ -89,11 +88,11 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         // Header
         this.componentList.add(new QuickplayGuiString(null, buttonId, width / 2,
                 topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
-                I18n.format("quickplay.keybinds.title"), true, true));
+                Quickplay.INSTANCE.translator.get("quickplay.keybinds.title"), true, true));
         // Subheader
         this.componentList.add(new QuickplayGuiString(null, buttonId, width / 2,
                 topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
-                I18n.format("quickplay.keybinds.subtitle"), true, true, true));
+                Quickplay.INSTANCE.translator.get("quickplay.keybinds.subtitle"), true, true, true));
 
         for(QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds) {
             final QuickplayGuiComponent component = new QuickplayGuiButton(keybind, buttonId, width / 2 - buttonWidth / 2,
@@ -131,7 +130,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
 
         if(drawTakenPopup) {
             final List<String> hoverText = new ArrayList<>();
-            hoverText.add(I18n.format("quickplay.gui.keybinds.taken"));
+            hoverText.add(Quickplay.INSTANCE.translator.get("quickplay.gui.keybinds.taken"));
             drawHoveringText(hoverText, mouseX, mouseY);
         }
 
@@ -148,12 +147,12 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         for(QuickplayGuiComponent component : componentList) {
             if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(this, mouseX, mouseY)) {
                 final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
-                final String trueStr = I18n.format("quickplay.config.gui.true");
-                final String falseStr = I18n.format("quickplay.config.gui.false");
+                final String trueStr = Quickplay.INSTANCE.translator.get("quickplay.config.gui.true");
+                final String falseStr = Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
                 contextMenu = new QuickplayGuiContextMenu(
                     Arrays.asList(
-                        I18n.format("quickplay.gui.keybinds.delete"),
-                        I18n.format("quickplay.gui.keybinds.requireHolding", keybind.requiresPressTimer ? trueStr : falseStr)
+                        Quickplay.INSTANCE.translator.get("quickplay.gui.keybinds.delete"),
+                        Quickplay.INSTANCE.translator.get("quickplay.gui.keybinds.requireHolding", keybind.requiresPressTimer ? trueStr : falseStr)
                     ), component, -1, mouseX, mouseY) {
 
                     @Override

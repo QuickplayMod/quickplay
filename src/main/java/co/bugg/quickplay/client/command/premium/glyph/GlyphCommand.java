@@ -8,9 +8,9 @@ import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.ResponseAction;
 import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -34,7 +34,7 @@ public abstract class GlyphCommand extends ACommand {
      */
     public void runGlyphRequest(Request request) {
         Quickplay.INSTANCE.messageBuffer.push(new Message(
-                new ChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.runningRequest")
+                new QuickplayChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.runningRequest")
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
 
         Quickplay.INSTANCE.threadPool.submit(() -> {
@@ -74,7 +74,7 @@ public abstract class GlyphCommand extends ACommand {
 
             } else {
                 Quickplay.INSTANCE.messageBuffer.push(new Message(
-                        new ChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.error")
+                        new QuickplayChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.error")
                                 .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
                 ));
             }

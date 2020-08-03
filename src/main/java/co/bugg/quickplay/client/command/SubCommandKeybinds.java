@@ -1,9 +1,9 @@
 package co.bugg.quickplay.client.command;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +22,7 @@ public class SubCommandKeybinds extends ACommand {
         super(
                 parent,
                 Collections.singletonList("keybinds"),
-                I18n.format("quickplay.commands.quickplay.keybinds.help"),
+                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.keybinds.help"),
                 "",
                 true,
                 true,

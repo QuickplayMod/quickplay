@@ -2,8 +2,7 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -24,7 +23,7 @@ public class SubCommandLimbo extends ACommand {
         super(
                 parent,
                 Collections.singletonList("limbo"),
-                I18n.format("quickplay.commands.quickplay.limbo.help"),
+                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.limbo.help"),
                 "",
                 true,
                 true,
@@ -58,12 +57,12 @@ public class SubCommandLimbo extends ACommand {
             if(!currentServer.equals("limbo")) {
                 Quickplay.INSTANCE.chatBuffer.push("/achat §");
             } else {
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
                         "quickplay.commands.quickplay.limbo.alreadythere")
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             }
         } else {
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
                     "quickplay.offline").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }

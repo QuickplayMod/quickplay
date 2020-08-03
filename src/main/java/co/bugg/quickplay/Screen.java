@@ -8,10 +8,11 @@ public class Screen {
     public final String[] buttonKeys;
     public final ScreenType screenType;
     public final String translationKey;
+    public final String imageURL;
     public final String[] backButtonActions;
 
     public Screen(final String key, final ScreenType screenType, final String[] availableOn, final String protocol,
-                  final String[] buttonKeys, final String[] backButtonActions, final String translationKey) {
+                  final String[] buttonKeys, final String[] backButtonActions, final String translationKey, final String imageURL) {
         this.key = key;
         this.availableOn = availableOn;
         this.protocol = protocol;
@@ -19,5 +20,6 @@ public class Screen {
         this.screenType = screenType;
         this.backButtonActions = backButtonActions;
         this.translationKey = translationKey;
+        this.imageURL = imageURL;
     }
 }

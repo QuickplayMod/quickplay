@@ -3,8 +3,7 @@ package co.bugg.quickplay.client.command.premium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.command.ACommand;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -18,7 +17,7 @@ public class PremiumCommandTransfer extends ACommand {
         super(
                 parent,
                 Collections.singletonList("transfer"),
-                I18n.format("quickplay.commands.quickplay.premium.transfer.help"),
+                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.transfer.help"),
                 "",
                 true,
                 true,
@@ -41,7 +40,7 @@ public class PremiumCommandTransfer extends ACommand {
     @Override
     public void run(String[] args) {
         Quickplay.INSTANCE.messageBuffer.push(new Message(
-                new ChatComponentTranslation("quickplay.commands.quickplay.premium.transfer.todo")
+                new QuickplayChatComponentTranslation("quickplay.commands.quickplay.premium.transfer.todo")
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
         ));
     }

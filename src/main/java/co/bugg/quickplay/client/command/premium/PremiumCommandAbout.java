@@ -3,9 +3,9 @@ package co.bugg.quickplay.client.command.premium;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.command.ACommand;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -44,12 +44,12 @@ public class PremiumCommandAbout extends ACommand {
             final String premiumLink = "https://bugg.co/quickplay/premium";
 
             final ChatStyle redChatStyle = new ChatStyle().setColor(EnumChatFormatting.RED);
-            final IChatComponent chatComponent = new ChatComponentTranslation(
+            final IChatComponent chatComponent = new QuickplayChatComponentTranslation(
                     "quickplay.commands.quickplay.premium.about.menuMissing", premiumLink)
                     .setChatStyle(redChatStyle);
 
             final ChatStyle clickChatStyle = new ChatStyle().setColor(EnumChatFormatting.RED);
-            clickChatStyle.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentTranslation(
+            clickChatStyle.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new QuickplayChatComponentTranslation(
                     "quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen", premiumLink)
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY))));
 

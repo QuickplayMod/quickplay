@@ -4,9 +4,12 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.command.ACommand;
 import co.bugg.quickplay.util.DateUtil;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.client.resources.I18n;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.event.ClickEvent;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +21,7 @@ public class PremiumCommandAccount extends ACommand {
         super(
                 parent,
                 Collections.singletonList("account"),
-                I18n.format("quickplay.commands.quickplay.premium.account.help"),
+                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.account.help"),
                 "",
                 true,
                 true,
@@ -30,11 +33,11 @@ public class PremiumCommandAccount extends ACommand {
 
     @Override
     public void run(String[] strings) {
-        IChatComponent component = new ChatComponentTranslation("quickplay.premium.expiresIn",
-                DateUtil.calculateDaysUntil(Quickplay.INSTANCE.expirationTime));
+        IChatComponent component = new QuickplayChatComponentTranslation("quickplay.premium.expiresIn",
+                String.valueOf(DateUtil.calculateDaysUntil(Quickplay.INSTANCE.expirationTime)));
         // Append purchase page if it is available
         if(Quickplay.INSTANCE.purchasePageURL != null) {
-            IChatComponent purchagePageLang = new ChatComponentTranslation("quickplay.premium.purchasePage");
+            IChatComponent purchagePageLang = new QuickplayChatComponentTranslation("quickplay.premium.purchasePage");
             IChatComponent purchasePageLink = new ChatComponentText(Quickplay.INSTANCE.purchasePageURL);
             // Make clickable link
             purchasePageLink.setChatStyle(new ChatStyle().setChatClickEvent(

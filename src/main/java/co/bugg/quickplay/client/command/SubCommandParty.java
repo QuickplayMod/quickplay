@@ -3,10 +3,9 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.QuickplayGuiPartyEditor;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -23,7 +22,7 @@ public class SubCommandParty extends ACommand {
         super(
                 parent,
                 Collections.singletonList("party"),
-                I18n.format("quickplay.commands.quickplay.party.help"),
+                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.party.help"),
                 "[launch]",
                 true,
                 true,
@@ -50,7 +49,7 @@ public class SubCommandParty extends ACommand {
             if(args[1].equals("launch")) {
                 new TickDelay(() -> Quickplay.INSTANCE.threadPool.submit(Quickplay.INSTANCE::launchPartyMode), 1);
             } else {
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
                         "quickplay.party.syntax", "/qp party launch")
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             }

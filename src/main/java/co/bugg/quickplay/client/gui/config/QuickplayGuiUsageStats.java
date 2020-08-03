@@ -8,7 +8,6 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.config.ConfigUsageStats;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
@@ -48,11 +47,11 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
     /**
      * Display string for the "YES" button
      */
-    public final String yesText = I18n.format("quickplay.gui.stats.yes");
+    public final String yesText = Quickplay.INSTANCE.translator.get("quickplay.gui.stats.yes");
     /**
      * Display string for the "NO" button
      */
-    public final String noText = I18n.format("quickplay.gui.stats.no");
+    public final String noText = Quickplay.INSTANCE.translator.get("quickplay.gui.stats.no");
     /**
      * String displaying the user's current Quickplay statistics token
      */
@@ -60,7 +59,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
     /**
      * String for the user to click to visit the privacy policy
      */
-    public String privacyText = I18n.format("quickplay.gui.stats.privacy");
+    public String privacyText = Quickplay.INSTANCE.translator.get("quickplay.gui.stats.privacy");
     /**
      * The max width of the description text on what data Quickplay collects & such
      */
@@ -82,7 +81,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
 
         // Draw the stats token if it's available
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null) {
-            tokenText = I18n.format("quickplay.gui.stats.token", Quickplay.INSTANCE.usageStats.statsToken.toString());
+            tokenText = Quickplay.INSTANCE.translator.get("quickplay.gui.stats.token", Quickplay.INSTANCE.usageStats.statsToken.toString());
             this.componentList.add(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2,
                     buttonY - fontRendererObj.FONT_HEIGHT - 3, fontRendererObj.getStringWidth(tokenText),
                     fontRendererObj.FONT_HEIGHT, tokenText, true, true));
@@ -92,7 +91,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
                 fontRendererObj.FONT_HEIGHT, privacyText, true, true));
 
         descriptionWidth = (int) (width * 0.8);
-        final String description = I18n.format("quickplay.gui.stats.description");
+        final String description = Quickplay.INSTANCE.translator.get("quickplay.gui.stats.description");
         descriptionLines = fontRendererObj.listFormattedStringToWidth(description, descriptionWidth).toArray(new String[0]);
     }
 
@@ -105,7 +104,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
 
         if(opacity > 0) {
             final int headerY = (int) (height * 0.1);
-            drawCenteredString(fontRendererObj, I18n.format("quickplay.gui.stats.title"), width / 2, headerY,
+            drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.gui.stats.title"), width / 2, headerY,
                     Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
             int lineHeight = headerY + fontRendererObj.FONT_HEIGHT + 5;
@@ -121,7 +120,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
         // If hovering over the token button
         Optional<QuickplayGuiComponent> filteredStream = componentList.stream().filter(component -> component.displayString.equals(tokenText)).findFirst();
         if(tokenText != null && filteredStream.isPresent() && filteredStream.get().mouseHovering(this, mouseX, mouseY)) {
-            drawHoveringText(Collections.singletonList(I18n.format("quickplay.gui.stats.copy")), mouseX, mouseY);
+            drawHoveringText(Collections.singletonList(Quickplay.INSTANCE.translator.get("quickplay.gui.stats.copy")), mouseX, mouseY);
         }
 
         GlStateManager.disableBlend();
@@ -139,13 +138,13 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
                 Quickplay.INSTANCE.sendExceptionRequest(e);
                 // If origin isn't string for some reason, just put "contact bugfroggy" instead of a url.
                 final String url = (component.origin instanceof String) ? "Visit " + component.origin : "Contact @bugfroggy.";
-                component.displayString = I18n.format("quickplay.gui.stats.privacyerror", url);
+                component.displayString = Quickplay.INSTANCE.translator.get("quickplay.gui.stats.privacyerror", url);
             }
             // If the copy to clipboard text is clicked
         } else if(tokenText != null && tokenText.equals(component.displayString)) {
             final UUID token = (UUID) component.origin;
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(token.toString()), null);
-            component.displayString = I18n.format("quickplay.gui.stats.copied");
+            component.displayString = Quickplay.INSTANCE.translator.get("quickplay.gui.stats.copied");
         } else {
             Quickplay.INSTANCE.promptUserForUsageStats = false;
             Quickplay.INSTANCE.usageStats = new ConfigUsageStats();

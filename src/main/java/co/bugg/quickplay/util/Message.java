@@ -1,9 +1,9 @@
 package co.bugg.quickplay.util;
 
+import co.bugg.quickplay.Quickplay;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
@@ -83,7 +83,7 @@ public class Message {
      * @return Separator
      */
     public static IChatComponent getMessageSeparator() {
-        char separatorChar = I18n.format("quickplay.chat.separator").charAt(0);
+        char separatorChar = Quickplay.INSTANCE.translator.get("quickplay.chat.separator").charAt(0);
         final int chatWidth = Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatWidth();
         final int separatorWidth = Minecraft.getMinecraft().fontRendererObj.getCharWidth(separatorChar);
 

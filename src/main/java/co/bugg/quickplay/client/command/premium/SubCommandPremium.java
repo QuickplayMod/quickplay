@@ -1,8 +1,8 @@
 package co.bugg.quickplay.client.command.premium;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.command.ACommand;
 import co.bugg.quickplay.util.InvalidCommandException;
-import net.minecraft.client.resources.I18n;
 
 import java.util.Collections;
 
@@ -21,7 +21,7 @@ public class SubCommandPremium extends ACommand {
         super(
                 parent,
                 Collections.singletonList("premium"),
-                I18n.format("quickplay.commands.quickplay.premium.help"),
+                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.help"),
                 "help",
                 true,
                 true,

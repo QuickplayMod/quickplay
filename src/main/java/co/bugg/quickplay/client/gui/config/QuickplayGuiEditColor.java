@@ -8,10 +8,9 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiSlider;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -118,7 +117,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
             GlStateManager.scale(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
 
             GlStateManager.scale(sampleTextScale, sampleTextScale, sampleTextScale);
-            drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.config.color.gui.sampletext"),
+            drawCenteredString(mc.fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.config.color.gui.sampletext"),
                     (int) (width / 2 / sampleTextScale), (int) (sampleTextY / sampleTextScale),
                     color.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
             GlStateManager.scale(1 / sampleTextScale, 1 / sampleTextScale, 1 / sampleTextScale);
@@ -151,31 +150,31 @@ public class QuickplayGuiEditColor extends QuickplayGui {
 
         this.componentList.add(new QuickplayGuiSlider(colorGuiResponder, "RED", nextComponentId,
                 width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
-                * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.red"),
+                * nextComponentId, elementWidth, elementHeight, Quickplay.INSTANCE.translator.get("quickplay.config.color.gui.red"),
                 0, 255, color.getColor().getRed(), formatHelper, true));
 
         nextComponentId++;
         this.componentList.add(new QuickplayGuiSlider(colorGuiResponder, "GREEN", nextComponentId,
                 width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
-                * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.green"),
+                * nextComponentId, elementWidth, elementHeight, Quickplay.INSTANCE.translator.get("quickplay.config.color.gui.green"),
                 0, 255, color.getColor().getGreen(), formatHelper, true));
 
         nextComponentId++;
         this.componentList.add(new QuickplayGuiSlider(colorGuiResponder, "BLUE", nextComponentId,
                 width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
-                * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.blue"),
+                * nextComponentId, elementWidth, elementHeight, Quickplay.INSTANCE.translator.get("quickplay.config.color.gui.blue"),
                 0, 255, color.getColor().getBlue(), formatHelper, true));
 
         nextComponentId++;
         this.componentList.add(new QuickplayGuiSlider(colorGuiResponder, "CHROMA", nextComponentId,
                 width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
-                * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.chromaspeed"),
+                * nextComponentId, elementWidth, elementHeight, Quickplay.INSTANCE.translator.get("quickplay.config.color.gui.chromaspeed"),
                 0, chromaMaxSpeed, color.getChromaSpeed(), formatHelper, true));
 
         nextComponentId++;
         this.componentList.add(new QuickplayGuiButton("EXIT", nextComponentId, width / 2 - elementWidth / 2,
                 sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth,
-                elementHeight, I18n.format("quickplay.gui." + (previousGui == null ? "close" : "back")), true));
+                elementHeight, Quickplay.INSTANCE.translator.get("quickplay.gui." + (previousGui == null ? "close" : "back")), true));
     }
 
     @Override
@@ -197,7 +196,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
             config.save();
         } catch (IOException e) {
             System.out.println("Failed to save color " + colorName + ".");
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
@@ -223,7 +222,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
                 } else {
                     speedLang = "insane";
                 }
-                return name + ": " + I18n.format("quickplay.config.color.gui.chromaspeed." + speedLang);
+                return name + ": " + Quickplay.INSTANCE.translator.get("quickplay.config.color.gui.chromaspeed." + speedLang);
             }
             return name + ": " + ((Number) value).intValue();
         }

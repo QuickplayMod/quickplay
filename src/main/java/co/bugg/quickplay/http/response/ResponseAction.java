@@ -7,10 +7,10 @@ import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentTranslation;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -181,7 +181,7 @@ public class ResponseAction {
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                     Quickplay.INSTANCE.sendExceptionRequest(e);
-                    Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.failedToEnable"),
+                    Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.failedToEnable"),
                             true, true));
                 }
                 break;

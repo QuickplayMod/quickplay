@@ -13,7 +13,6 @@ import co.bugg.quickplay.games.Game;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
@@ -116,7 +115,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         currentColumn = 0;
         currentRow = 0;
 
-        copyright = I18n.format("quickplay.gui.copyright", Calendar.getInstance().get(Calendar.YEAR));
+        copyright = Quickplay.INSTANCE.translator.get("quickplay.gui.copyright", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         // Change the window Y padding if it's set
         if(Quickplay.INSTANCE.settings != null && Quickplay.INSTANCE.settings.mainMenuYPadding > 0) {
@@ -157,7 +156,7 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
         // Column zero can't be off the screen
         if(columnZeroX < 0) columnZeroX = 0;
 
-        favoriteString = I18n.format("quickplay.gui.favorite");
+        favoriteString = Quickplay.INSTANCE.translator.get("quickplay.gui.favorite");
 
         // Add buttons to the component list in the proper grid
         int nextButtonId = 0;
@@ -283,9 +282,9 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
 
         // Get the various strings displayed on screen
-        final String lineOne = I18n.format("quickplay.gui.main.noGames.issue");
-        final String lineTwo = I18n.format("quickplay.gui.main.noGames.why");
-        final String lineThree = I18n.format("quickplay.gui.main.noGames.contact");
+        final String lineOne = Quickplay.INSTANCE.translator.get("quickplay.gui.main.noGames.issue");
+        final String lineTwo = Quickplay.INSTANCE.translator.get("quickplay.gui.main.noGames.why");
+        final String lineThree = Quickplay.INSTANCE.translator.get("quickplay.gui.main.noGames.contact");
 
         // Calculate longest string for scaling
         int longestStringLength = mc.fontRendererObj.getStringWidth(lineOne) + boxMargins * 2;
@@ -312,20 +311,20 @@ public class QuickplayGuiMainMenu extends QuickplayGui {
 
         // Draw header
         GlStateManager.scale(oopsHeaderScale, oopsHeaderScale, oopsHeaderScale);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.noGames.header"),
+        drawCenteredString(mc.fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.gui.main.noGames.header"),
                 (int) (width / 2 / oopsHeaderScale), (int) (oopsHeaderY / oopsHeaderScale),
                 Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         GlStateManager.scale(1 / oopsHeaderScale, 1 / oopsHeaderScale, 1 / oopsHeaderScale);
 
         // Draw error text
         GlStateManager.scale(errorScale, errorScale, errorScale);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.noGames.issue"),
+        drawCenteredString(mc.fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.gui.main.noGames.issue"),
                 (int) (width / 2 / errorScale), (int) (lineOneY / errorScale),
                 Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.noGames.why"),
+        drawCenteredString(mc.fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.gui.main.noGames.why"),
                 (int) (width / 2 / errorScale), (int) (lineTwoY / errorScale),
                 Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-        drawCenteredString(mc.fontRendererObj, I18n.format("quickplay.gui.main.noGames.contact"),
+        drawCenteredString(mc.fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.gui.main.noGames.contact"),
                 (int) (width / 2 / errorScale), (int) (lineThreeY / errorScale),
                 Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
         GlStateManager.scale(1 / errorScale, 1 / errorScale, 1 / errorScale);

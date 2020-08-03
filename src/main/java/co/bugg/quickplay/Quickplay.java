@@ -1,5 +1,6 @@
 package co.bugg.quickplay;
 
+import co.bugg.quickplay.actions.clientbound.SystemOutAction;
 import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandMain;
 import co.bugg.quickplay.client.command.CommandQuickplay;
@@ -30,7 +31,10 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.command.ICommand;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -43,6 +47,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -195,6 +200,10 @@ public class Quickplay {
      * Session key used for Premium-related resource requests
      */
     public String sessionKey;
+    /**
+     * Translation handler for Quickplay.
+     */
+    public ConfigTranslations translator;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -208,7 +217,7 @@ public class Quickplay {
         } catch (URISyntaxException e) {
             e.printStackTrace();
             this.sendExceptionRequest(e);
-            this.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.failedToEnable"),
+            this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.failedToEnable"),
                     true, true));
         }
     }
@@ -242,6 +251,43 @@ public class Quickplay {
             this.requestFactory = new HttpRequestFactory(); // TODO remove
             this.socket = new SocketClient(new URI(Reference.BACKEND_SOCKET_URI));
             this.socket.connect();
+
+            // TODO remove this - debug
+            this.screenMap.put("mainButtons", new Screen("mainButtons", ScreenType.BUTTONS, new String[0], "", new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}, new String[0], "Screen Title", "https://bugg.co/quickplay/images/games/platform-pc-256.png"));
+            this.screenMap.put("mainImages", new Screen("mainImages", ScreenType.IMAGES, new String[0], "", new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}, new String[0], "Screen Title", "https://bugg.co/quickplay/images/games/platform-pc-256.png"));
+            this.buttonMap.put("a", new Button("a", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button A"));
+            this.buttonMap.put("b", new Button("b", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button B"));
+            this.buttonMap.put("c", new Button("c", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button C"));
+            this.buttonMap.put("d", new Button("d", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button D"));
+            this.buttonMap.put("e", new Button("e", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button E"));
+            this.buttonMap.put("f", new Button("f", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button F"));
+            this.buttonMap.put("g", new Button("g", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button G"));
+            this.buttonMap.put("h", new Button("h", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button H"));
+            this.buttonMap.put("i", new Button("i", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button I"));
+            this.buttonMap.put("j", new Button("j", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button J"));
+            this.buttonMap.put("k", new Button("k", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button K"));
+            this.buttonMap.put("l", new Button("l", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button L"));
+            this.buttonMap.put("m", new Button("m", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button M"));
+            this.buttonMap.put("n", new Button("n", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button N"));
+            this.buttonMap.put("o", new Button("o", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button O"));
+            this.buttonMap.put("p", new Button("p", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button P"));
+            this.buttonMap.put("q", new Button("q", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button Q"));
+            this.buttonMap.put("r", new Button("r", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button R"));
+            this.buttonMap.put("s", new Button("s", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button S"));
+            this.buttonMap.put("t", new Button("t", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button T"));
+            this.buttonMap.put("u", new Button("u", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button U"));
+            this.buttonMap.put("v", new Button("v", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button V"));
+            this.buttonMap.put("w", new Button("w", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button W"));
+            this.buttonMap.put("x", new Button("x", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button X"));
+            this.buttonMap.put("y", new Button("y", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button Y"));
+            this.buttonMap.put("z", new Button("z", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button Z"));
+            final SystemOutAction x = new SystemOutAction();
+            final SystemOutAction y = new SystemOutAction();
+            x.addPayload(ByteBuffer.wrap("X String".getBytes()));
+            y.addPayload(ByteBuffer.wrap("String Y".getBytes()));
+            this.aliasedActionMap.put("x", new AliasedAction("x", new String[0], "", x));
+            this.aliasedActionMap.put("y", new AliasedAction("y", new String[0], "", y));
+
             this.assetFactory = new AssetFactory();
 
             this.assetFactory.createDirectories();
@@ -252,6 +298,7 @@ public class Quickplay {
                 this.settings = (ConfigSettings) AConfiguration.load("settings.json", ConfigSettings.class);
                 this.keybinds = (ConfigKeybinds) AConfiguration.load("keybinds.json", ConfigKeybinds.class);
                 this.usageStats = (ConfigUsageStats) AConfiguration.load("privacy.json", ConfigUsageStats.class);
+                this.translator = (ConfigTranslations) AConfiguration.load("lang.json", ConfigTranslations.class);
             } catch (IOException | JsonSyntaxException e) {
                 // Config either doesn't exist or couldn't be parsed
                 e.printStackTrace();
@@ -266,16 +313,20 @@ public class Quickplay {
                 if(this.usageStats == null) {
                     this.promptUserForUsageStats = true;
                 }
+                if(this.translator == null) {
+                    this.translator = new ConfigTranslations();
+                }
 
                 try {
                     // Write the default config that we just made to save it
                     this.settings.save();
                     this.keybinds.save();
+                    this.translator.save();
                 } catch (IOException e1) {
                     // File couldn't be saved
                     e1.printStackTrace();
                     this.sendExceptionRequest(e1); // TODO replace
-                    this.messageBuffer.push(new Message(new ChatComponentTranslation(
+                    this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
                             "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 }
             }
@@ -421,7 +472,7 @@ public class Quickplay {
      */
     public boolean checkEnabledStatus() {
         if(!this.enabled) {
-            IChatComponent message = new ChatComponentTranslation("quickplay.disabled", this.disabledReason);
+            IChatComponent message = new QuickplayChatComponentTranslation("quickplay.disabled", this.disabledReason);
             message.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
 
         }
@@ -474,7 +525,7 @@ public class Quickplay {
 
                 // Send commencement message if delay is greater than 0 seconds
                 if(this.settings.partyModeDelay > 0) {
-                    this.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.commencing")
+                    this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.commencing")
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE))));
                 }
 
@@ -494,12 +545,12 @@ public class Quickplay {
                     e.printStackTrace();
                 }
 
-                this.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.sendingYou", mode.name)
+                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.sendingYou", mode.name)
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
                 this.chatBuffer.push(mode.command);
             }
         } else {
-            this.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.party.noGames")
+            this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }

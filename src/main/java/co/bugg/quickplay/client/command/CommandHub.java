@@ -2,9 +2,9 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -91,7 +91,7 @@ public class CommandHub extends BaseCommand {
                         } catch(NumberFormatException e) {
                             // Send usage
                             Quickplay.INSTANCE.messageBuffer.push(new Message(
-                                    new ChatComponentTranslation("quickplay.commands.hub.numberexception",
+                                    new QuickplayChatComponentTranslation("quickplay.commands.hub.numberexception",
                                             "/" + command + " " + commandSyntax)
                                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                         }

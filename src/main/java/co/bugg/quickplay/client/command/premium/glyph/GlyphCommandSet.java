@@ -4,8 +4,7 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.command.ACommand;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -20,7 +19,7 @@ public class GlyphCommandSet extends GlyphCommand {
         super(
                 parent,
                 Collections.singletonList("set"),
-                I18n.format("quickplay.commands.quickplay.premium.glyph.set.help"),
+                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.glyph.set.help"),
                 "<imageURL>",
                 true,
                 true,
@@ -35,7 +34,7 @@ public class GlyphCommandSet extends GlyphCommand {
         try {
             if(args.length < 4) {
                 Quickplay.INSTANCE.messageBuffer.push(new Message(
-                        new ChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.set.illegal")
+                        new QuickplayChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.set.illegal")
                                 .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 return;
             }
@@ -51,12 +50,12 @@ public class GlyphCommandSet extends GlyphCommand {
                 runGlyphRequest(request);
             else
                 Quickplay.INSTANCE.messageBuffer.push(new Message(
-                        new ChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.error")
+                        new QuickplayChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.error")
                                 .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         } catch(MalformedURLException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.messageBuffer.push(new Message(
-                    new ChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.set.illegal")
+                    new QuickplayChatComponentTranslation("quickplay.commands.quickplay.premium.glyph.set.illegal")
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }

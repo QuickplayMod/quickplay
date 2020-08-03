@@ -1,6 +1,6 @@
 package co.bugg.quickplay.client.command;
 
-import net.minecraft.client.resources.I18n;
+import co.bugg.quickplay.Quickplay;
 
 /**
  * Sub command for the "help" message
@@ -14,7 +14,7 @@ public class SubCommandHelp extends BasicHelpCommand {
     public SubCommandHelp(ACommand parent) {
         super(
                 parent,
-                I18n.format("quickplay.commands.quickplay.help.help"),
+                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.help.help"),
                 true,
                 true,
                 100.0,

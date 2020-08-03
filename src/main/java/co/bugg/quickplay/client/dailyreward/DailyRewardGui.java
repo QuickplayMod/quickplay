@@ -11,14 +11,17 @@ import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.ResponseAction;
 import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.analytics.GoogleAnalytics;
 import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -215,7 +218,7 @@ public class DailyRewardGui extends QuickplayGui {
                         switchAdFrame();
                     }
                 });
-                this.componentList.add(new QuickplayGuiString(storeUrl, currentId++, width / 2, (int) (height / 2 + adTextureSize / 2 * adScale), width, 20, I18n.format("quickplay.premium.ingameReward.adroll.clickToVisit"), true, false));
+                this.componentList.add(new QuickplayGuiString(storeUrl, currentId++, width / 2, (int) (height / 2 + adTextureSize / 2 * adScale), width, 20, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.adroll.clickToVisit"), true, false));
             } else if (currentState == State.MENU) {
 
                 int currentCard = 0;
@@ -236,7 +239,7 @@ public class DailyRewardGui extends QuickplayGui {
                 // Add share button
                 final int sharedWidth = 100;
                 final int sharedHeight = 20;
-                this.componentList.add(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/shared/" + appData.id, currentId++, width / 2 - sharedWidth / 2, (int) (height / 2 + cardHeight / 2 * cardScale) + 5, sharedWidth, sharedHeight, I18n.format("quickplay.premium.ingameReward.claimed.share"), false));
+                this.componentList.add(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/shared/" + appData.id, currentId++, width / 2 - sharedWidth / 2, (int) (height / 2 + cardHeight / 2 * cardScale) + 5, sharedWidth, sharedHeight, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.claimed.share"), false));
             }
 
             // Open link button
@@ -244,7 +247,7 @@ public class DailyRewardGui extends QuickplayGui {
                 final int linkButtonWidth = 100;
                 final int linkButtonHeight = 20;
                 final int linkButtonMargins = 3;
-                this.componentList.add(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/" + appData.id, currentId++, width - linkButtonWidth - linkButtonMargins, height - linkButtonHeight - linkButtonMargins, linkButtonWidth, linkButtonHeight, I18n.format("quickplay.premium.ingameReward.openLink"), false));
+                this.componentList.add(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/" + appData.id, currentId++, width - linkButtonWidth - linkButtonMargins, height - linkButtonHeight - linkButtonMargins, linkButtonWidth, linkButtonHeight, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.openLink"), false));
             }
         }
     }
@@ -268,7 +271,7 @@ public class DailyRewardGui extends QuickplayGui {
         // Draw legal notes
         final double legalScale = 1.0;
         GL11.glScaled(legalScale, legalScale, legalScale);
-        final String[] legalLines = fontRendererObj.listFormattedStringToWidth(I18n.format("quickplay.premium.ingameReward.hypixelProperty"), (int) (width * 0.9 / legalScale)).toArray(new String[0]);
+        final String[] legalLines = fontRendererObj.listFormattedStringToWidth(Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.hypixelProperty"), (int) (width * 0.9 / legalScale)).toArray(new String[0]);
         int legalLineHeight = height > 300 ? 22 : 5;
         for(String line : legalLines) {
             drawCenteredString(fontRendererObj, line, (int) (width / 2 / legalScale), legalLineHeight, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
@@ -280,7 +283,7 @@ public class DailyRewardGui extends QuickplayGui {
 
             // Draw header
             GL11.glScaled(headerScale, headerScale, headerScale);
-            drawCenteredString(fontRendererObj, I18n.format("quickplay.premium.ingameReward.error.header"), (int)(width / 2 / headerScale), (int) (height * 0.2 / headerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.error.header"), (int)(width / 2 / headerScale), (int) (height * 0.2 / headerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
             GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
 
             // Draw error text
@@ -296,17 +299,17 @@ public class DailyRewardGui extends QuickplayGui {
 
             // Draw header
             GL11.glScaled(headerScale, headerScale, headerScale);
-            drawCenteredString(fontRendererObj, I18n.format("quickplay.premium.ingameReward.adroll.header"), (int) (width / 2 / headerScale), (int) ((height / 2 - adTextureSize / 2 * adScale) / headerScale - 5 - fontRendererObj.FONT_HEIGHT), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.adroll.header"), (int) (width / 2 / headerScale), (int) ((height / 2 - adTextureSize / 2 * adScale) / headerScale - 5 - fontRendererObj.FONT_HEIGHT), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
             GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
 
             // Draw remaining time text
             final double remainingTimeScale = 1.5;
             GL11.glScaled(remainingTimeScale, remainingTimeScale, remainingTimeScale);
-            drawCenteredString(fontRendererObj, I18n.format("quickplay.premium.ingamereward.remaining", ((Number) Math.ceil((totalAdTime * (1 - adTimerBarAnimation.progress)) / 1000)).intValue()), (int) (width / 2 / remainingTimeScale), (int) (legalLineHeight / remainingTimeScale) + 2, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingamereward.remaining", String.valueOf(((Number) Math.ceil((totalAdTime * (1 - adTimerBarAnimation.progress)) / 1000)).intValue())), (int) (width / 2 / remainingTimeScale), (int) (legalLineHeight / remainingTimeScale) + 2, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
             GL11.glScaled(1 / remainingTimeScale, 1 / remainingTimeScale, 1 / remainingTimeScale);
 
             // Draw description text
-            final String[] descriptionLines = fontRendererObj.listFormattedStringToWidth(I18n.format("quickplay.premium.ingameReward.adroll.text"), (int) (width * 0.9)).toArray(new String[0]);
+            final String[] descriptionLines = fontRendererObj.listFormattedStringToWidth(Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.adroll.text"), (int) (width * 0.9)).toArray(new String[0]);
             int lineHeight = (int) (height / 2 + adTextureSize / 2 * adScale) + fontRendererObj.FONT_HEIGHT + 5;
             for(String line : descriptionLines) {
                 drawCenteredString(fontRendererObj, line, width / 2, lineHeight, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
@@ -314,7 +317,7 @@ public class DailyRewardGui extends QuickplayGui {
             }
 
             // Draw VIP advertisement to skip
-            drawCenteredString(fontRendererObj, I18n.format("quickplay.premium.ingameReward.adroll.skipAd"), width / 2, lineHeight + 5, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.adroll.skipAd"), width / 2, lineHeight + 5, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
             // Draw ad loading bar
             if(adTimerBarAnimation != null)
@@ -347,7 +350,7 @@ public class DailyRewardGui extends QuickplayGui {
             if (appData.rewards != null) {
                 // Draw header
                 GL11.glScaled(headerScale, headerScale, headerScale);
-                drawCenteredString(fontRendererObj, I18n.format("quickplay.premium.ingameReward.menu.header"), (int) (width / 2 / headerScale), (int) ((height / 2 - adTextureSize / 2 * adScale) / headerScale - 10 - fontRendererObj.FONT_HEIGHT), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.menu.header"), (int) (width / 2 / headerScale), (int) ((height / 2 - adTextureSize / 2 * adScale) / headerScale - 10 - fontRendererObj.FONT_HEIGHT), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
                 GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
 
                 // Draw daily streak
@@ -357,7 +360,7 @@ public class DailyRewardGui extends QuickplayGui {
                     final int highScore = appData.dailyStreak.getAsJsonObject().get("highScore").getAsInt();
 
                     GL11.glScaled(dailyStreakScale, dailyStreakScale, dailyStreakScale);
-                    drawCenteredString(fontRendererObj, I18n.format("quickplay.premium.ingameReward.menu.streak", currentScore, highScore), (int) (width / 2 / dailyStreakScale), (int) ((height / 2 + cardHeight / 2 * cardScale + 10) / dailyStreakScale), Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                    drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.menu.streak", String.valueOf(currentScore), String.valueOf(highScore)), (int) (width / 2 / dailyStreakScale), (int) ((height / 2 + cardHeight / 2 * cardScale + 10) / dailyStreakScale), Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
                     GL11.glScaled(1 / dailyStreakScale, 1 / dailyStreakScale, 1 / dailyStreakScale);
                 }
 
@@ -464,11 +467,11 @@ public class DailyRewardGui extends QuickplayGui {
 
                 // Draw header
                 GL11.glScaled(headerScale, headerScale, headerScale);
-                drawCenteredString(fontRendererObj, I18n.format("quickplay.premium.ingameReward.claimed.header"), (int) (width / 2 / headerScale), (int) ((height / 2 - adTextureSize / 2 * adScale) / headerScale - 10 - fontRendererObj.FONT_HEIGHT), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.claimed.header"), (int) (width / 2 / headerScale), (int) ((height / 2 - adTextureSize / 2 * adScale) / headerScale - 10 - fontRendererObj.FONT_HEIGHT), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
                 GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
 
                 // Draw close string
-                drawCenteredString(fontRendererObj, I18n.format("quickplay.premium.ingameReward.claimed.close", Keyboard.getKeyName(Keyboard.KEY_ESCAPE)), width / 2, (int) ((cardTop + cardHeight) * cardScale) + 30, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.claimed.close", Keyboard.getKeyName(Keyboard.KEY_ESCAPE)), width / 2, (int) ((cardTop + cardHeight) * cardScale) + 30, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
                 final int optionIndex = Arrays.asList(appData.rewards).indexOf(claimedReward);
                 // Cards are animated. Old cards slide off screen and picked card slides to center
@@ -561,13 +564,13 @@ public class DailyRewardGui extends QuickplayGui {
 
         } else {
             // State unknown, draw loading text
-            drawCenteredString(fontRendererObj, I18n.format("quickplay.premium.ingameReward.loading"), width / 2, height / 2, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.loading"), width / 2, height / 2, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
             super.drawScreen(mouseX, mouseY, partialTicks);
         }
 
         for(QuickplayGuiComponent component : componentList)
             if(component.origin.equals(storeUrl) && component.mouseHovering(this, mouseX, mouseY))
-                drawHoveringText(Collections.singletonList(I18n.format("quickplay.premium.ingameReward.adroll.clickToVisit")), mouseX, mouseY);
+                drawHoveringText(Collections.singletonList(Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.adroll.clickToVisit")), mouseX, mouseY);
 
 
         GL11.glDisable(GL11.GL_BLEND);
@@ -687,7 +690,7 @@ public class DailyRewardGui extends QuickplayGui {
 
         // If the "Open URL" button or "Share" button
         if(component.origin instanceof String &&
-                (component.displayString.equals(I18n.format("quickplay.premium.ingameReward.openLink")) || component.displayString.equals(I18n.format("quickplay.premium.ingameReward.claimed.share")))) {
+                (component.displayString.equals(Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.openLink")) || component.displayString.equals(Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.claimed.share")))) {
             try {
                 Desktop.getDesktop().browse(new URI((String) component.origin));
             } catch (IOException | URISyntaxException e) {
@@ -744,7 +747,7 @@ public class DailyRewardGui extends QuickplayGui {
                 final WebResponse response = req.execute();
 
                 if(response == null || !response.ok) {
-                    IChatComponent msg = new ChatComponentTranslation("quickplay.premium.ingameReward.menu.claim.error");
+                    IChatComponent msg = new QuickplayChatComponentTranslation("quickplay.premium.ingameReward.menu.claim.error");
                     msg.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
                     Quickplay.INSTANCE.messageBuffer.push(new Message(msg, true));
                 }

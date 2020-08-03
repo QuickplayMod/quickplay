@@ -3,10 +3,10 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.InvalidCommandException;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -48,7 +48,7 @@ public abstract class BaseCommand extends ACommand implements ICommand {
         } catch (InvalidCommandException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.messageBuffer.push(new Message(
-                    new ChatComponentTranslation("quickplay.commands.invalid")
+                    new QuickplayChatComponentTranslation("quickplay.commands.invalid")
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }

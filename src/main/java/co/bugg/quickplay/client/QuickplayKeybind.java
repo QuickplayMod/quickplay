@@ -4,9 +4,9 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.util.GsonPostProcessorFactory;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -152,7 +152,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation(
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
                         "quickplay.keybinds.illegal", name)
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 Quickplay.INSTANCE.sendExceptionRequest(e);

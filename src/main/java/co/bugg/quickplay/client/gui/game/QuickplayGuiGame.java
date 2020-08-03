@@ -13,7 +13,6 @@ import co.bugg.quickplay.games.Mode;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
@@ -154,7 +153,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         super.initGui();
         currentColumn = currentRow = 0;
 
-        copyright = I18n.format("quickplay.gui.copyright", Calendar.getInstance().get(Calendar.YEAR));
+        copyright = Quickplay.INSTANCE.translator.get("quickplay.gui.copyright", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         windowPadding = (int) (width * (width > 500 ? 0.25 : 0.15));
         headerHeight = (int) (height * 0.05);
@@ -200,7 +199,7 @@ public class QuickplayGuiGame extends QuickplayGui {
             }
         }
         this.componentList.add(new QuickplayGuiButton(null, game.modes.size() + 1, 3, 3, 100, 20,
-                I18n.format("quickplay.gui.back"), false));
+                Quickplay.INSTANCE.translator.get("quickplay.gui.back"), false));
 
         setScrollingValues();
     }
@@ -239,7 +238,7 @@ public class QuickplayGuiGame extends QuickplayGui {
                     }
                 });
             }
-        } else if(component.displayString.equals(I18n.format("quickplay.gui.back"))) {
+        } else if(component.displayString.equals(Quickplay.INSTANCE.translator.get("quickplay.gui.back"))) {
             Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiMainMenu());
         }
     }
@@ -314,7 +313,7 @@ public class QuickplayGuiGame extends QuickplayGui {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         for(QuickplayGuiComponent component : componentList) {
             if (!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(this, mouseX, mouseY) && mouseButton == 1) {
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new String[]{I18n.format("quickplay.gui.favorite")}),
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(new String[]{Quickplay.INSTANCE.translator.get("quickplay.gui.favorite")}),
                         component, -1, mouseX, mouseY) {
                     @Override
                     public void optionSelected(int index) {

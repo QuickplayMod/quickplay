@@ -2,9 +2,13 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -79,11 +83,11 @@ public class BasicHelpCommand extends ACommand {
             separators = false;
             ACommand commandToDisplay = getParent().getCommand(args[this.getDepth()]);
             if(commandToDisplay != null) {
-                helpMessage.appendSibling(new ChatComponentTranslation("quickplay.commands.usage"));
+                helpMessage.appendSibling(new QuickplayChatComponentTranslation("quickplay.commands.usage"));
                 helpMessage.appendText("\n");
                 helpMessage.appendText(this.prependedFullCommand + commandToDisplay.getName() + " " + commandToDisplay.getUsage());
             } else {
-                helpMessage.appendSibling(new ChatComponentTranslation("quickplay.commands.invalid"));
+                helpMessage.appendSibling(new QuickplayChatComponentTranslation("quickplay.commands.invalid"));
             }
             helpMessage.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
         }

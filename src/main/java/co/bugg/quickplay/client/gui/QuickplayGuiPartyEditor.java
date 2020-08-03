@@ -7,10 +7,9 @@ import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.games.Mode;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.io.IOException;
@@ -86,8 +85,8 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         for(PartyMode mode : modes) {
             // Display string for whether this mode is currently enabled or not
             final String trueOrFalse = checkIfModeToggled(mode) != null ?
-                    EnumChatFormatting.GREEN + I18n.format("quickplay.config.gui.true") :
-                    EnumChatFormatting.RED + I18n.format("quickplay.config.gui.false");
+                    EnumChatFormatting.GREEN + Quickplay.INSTANCE.translator.get("quickplay.config.gui.true") :
+                    EnumChatFormatting.RED + Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
             this.componentList.add(new QuickplayGuiButton(mode, buttonId, width / 2 - buttonWidth / 2,
                     topOfButtons + (buttonHeight + buttonYMargins) * buttonId, buttonWidth, buttonHeight,
                     mode.name + ": " + trueOrFalse, true));
@@ -96,13 +95,13 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
 
         // Add launch, "All On" and "All Off" buttons
         this.componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2  - topButtonWidth / 2, 10,
-                topButtonWidth, buttonHeight, I18n.format("quickplay.gui.party.launch"), false)); // Launch
+                topButtonWidth, buttonHeight, Quickplay.INSTANCE.translator.get("quickplay.gui.party.launch"), false)); // Launch
         this.componentList.add(new QuickplayGuiButton(null, buttonId++,
                 width / 2 - topButtonWidth / 2 - topButtonWidth - topButtonMargins,
-                10, topButtonWidth, 20, I18n.format("quickplay.gui.party.allon"), false)); // All on
+                10, topButtonWidth, 20, Quickplay.INSTANCE.translator.get("quickplay.gui.party.allon"), false)); // All on
         this.componentList.add(new QuickplayGuiButton(null, buttonId++,
                 width / 2 + topButtonWidth / 2 + topButtonMargins, 10, topButtonWidth, 20,
-                I18n.format("quickplay.gui.party.alloff"), false)); // All off
+                Quickplay.INSTANCE.translator.get("quickplay.gui.party.alloff"), false)); // All off
 
         setScrollingValues();
     }
@@ -164,22 +163,22 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
                 // If the mode is toggled on remove it, otherwise add it
                 if(toggledModeReference != null) {
                     toggledModes.remove(toggledModeReference);
-                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.RED + I18n.format("quickplay.config.gui.false");
+                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.RED + Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
                 } else {
                     toggledModes.add(mode);
-                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.GREEN + I18n.format("quickplay.config.gui.true");
+                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.GREEN + Quickplay.INSTANCE.translator.get("quickplay.config.gui.true");
                 }
             }
-        } else if(component.displayString.equals(I18n.format("quickplay.gui.party.alloff"))) {
+        } else if(component.displayString.equals(Quickplay.INSTANCE.translator.get("quickplay.gui.party.alloff"))) {
             // Disable all
             toggledModes.clear();
             initGui();
-        } else if(component.displayString.equals(I18n.format("quickplay.gui.party.allon"))) {
+        } else if(component.displayString.equals(Quickplay.INSTANCE.translator.get("quickplay.gui.party.allon"))) {
             // Enable all
             toggledModes.clear();
             toggledModes.addAll(modes);
             initGui();
-        } else if(component.displayString.equals(I18n.format("quickplay.gui.party.launch"))) {
+        } else if(component.displayString.equals(Quickplay.INSTANCE.translator.get("quickplay.gui.party.launch"))) {
             // Launch!
             Minecraft.getMinecraft().displayGuiScreen(null);
             Quickplay.INSTANCE.threadPool.submit(Quickplay.INSTANCE::launchPartyMode);
@@ -193,7 +192,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             Quickplay.INSTANCE.settings.save();
         } catch (IOException e) {
             e.printStackTrace();
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentTranslation("quickplay.config.saveError")));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.config.saveError")));
         }
     }
 }

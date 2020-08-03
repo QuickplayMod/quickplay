@@ -4,7 +4,6 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiEditConfig;
 import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +22,7 @@ public class SubCommandConfig extends ACommand {
         super(
                 parent,
                 Arrays.asList("config", "settings"),
-                I18n.format("quickplay.commands.quickplay.config.help"),
+                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.config.help"),
                 "",
                 true,
                 true,
