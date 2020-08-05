@@ -3,7 +3,7 @@ quickplay.disabled=¡Quickplay se ha deshabilitado forzadamente! Razón: %s.
 quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Clic para abrir.
 
-quickplay.commands.invalid=Invalid command!
+quickplay.commands.invalid=¡Comando inválido!
 quickplay.commands.quickplay.help.help=Muestra los comandos disponibles.
 quickplay.commands.quickplay.config.help=Configura tu mod Quickplay.
 quickplay.commands.quickplay.limbo.help=Enviado al Limbo.
@@ -22,13 +22,13 @@ quickplay.commands.quickplay.history.help=Ver en qué instancias has estado por 
 quickplay.commands.quickplay.history.header=Aquí están las últimas %s instancias en las que has estado conectado, la más reciente aparece en la parte superior:
 quickplay.commands.quickplay.history.error=¡Algo ha fallado!
 quickplay.commands.quickplay.wiki.help=Abre la página web de Ayuda de Quickplay.
-quickplay.commands.quickplay.version.help=View the current Quickplay version.
+quickplay.commands.quickplay.version.help=Ver la versión actual de Quickplay.
 quickplay.commands.quickplay.version.message=Quickplay v%s
 
-quickplay.commands.quickplay.premium.account.help=Retrieve information about your account.
-quickplay.commands.quickplay.premium.auth.help=Re-authenticate with the Quickplay Premium backend servers.
-quickplay.commands.quickplay.premium.auth.runningRequest=Thinking...
-quickplay.commands.quickplay.premium.auth.done=Authenticated!
+quickplay.commands.quickplay.premium.account.help=Obtener información sobre tu cuenta.
+quickplay.commands.quickplay.premium.auth.help=Vuelve a autentificarte con los servidores backend Quickplay Premium.
+quickplay.commands.quickplay.premium.auth.runningRequest=Pensando...
+quickplay.commands.quickplay.premium.auth.done=¡Autentificado!
 quickplay.commands.quickplay.premium.auth.error=Something went wrong while doing that! Contact bugfroggy if this persists.
 quickplay.commands.quickplay.premium.auth.noSubscription=Seems like you don't have any Quickplay Premium subscription! Contact bugfroggy if you believe this is an error.
 quickplay.commands.quickplay.premium.transfer.help=Transfer your Quickplay Premium subscription to another account.
