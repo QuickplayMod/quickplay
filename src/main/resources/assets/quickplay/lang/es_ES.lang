@@ -116,10 +116,10 @@ quickplay.settings.partyModeGui.name=Iniciar GUI Aleatoria
 quickplay.settings.partyModeGui.help=Si una GUI de ruleta especial debe abrirse cuando el usuario inicia el modo party.
 
 quickplay.settings.category.premium=Funciones Premium
-quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
-quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
-quickplay.settings.showGlyphsInF1.name=Show Glyphs in F1
-quickplay.settings.showGlyphsInF1.help=Whether Glyphs should be visible when you're in F1 mode.
+quickplay.settings.fadeGlyphs.name=Desvanecer Glyphs de Otros Usuarios
+quickplay.settings.fadeGlyphs.help=Si los glyphs de otros usuarios deben desaparecer a medida que te acerques a ellos. La distancia de desvanecimiento es mayor en los juegos vs. en los lobbies.
+quickplay.settings.showGlyphsInF1.name=Mostrar Glyphs en F1
+quickplay.settings.showGlyphsInF1.help=Si los Glyphs deben ser visibles cuando estás en modo F1.
 quickplay.settings.displayOwnGlyph.name=Mostrar Glifo Propio
 quickplay.settings.displayOwnGlyph.help=Si tu Glifo propio debe mostrarse sobre tu cabeza en modo F5.
 quickplay.settings.ingameDailyReward.name=Recompensa Diaria En Juego
