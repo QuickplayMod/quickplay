@@ -7,7 +7,20 @@ import co.bugg.quickplay.config.ConfigSettings;
 
 import java.io.IOException;
 
+/**
+ * ID: 5
+ * Reset the client's configuration. Use sparingly.
+ */
 public class ResetConfigAction extends Action {
+
+    /**
+     * Create a new ResetConfigAction.
+     */
+    public ResetConfigAction() {
+        super();
+        this.id = 5;
+    }
+
     @Override
     public void run() {
         // Overwrite settings

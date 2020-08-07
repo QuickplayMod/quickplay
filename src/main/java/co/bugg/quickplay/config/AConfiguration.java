@@ -39,6 +39,41 @@ public abstract class AConfiguration implements Serializable {
     }
 
     /**
+     * Create a backup of the passed file name in the new file location.
+     * @param currentFile File name of the current file.
+     * @param newLocation File name of the file it should be backed up to.
+     * @throws IOException File read/write error
+     */
+    public static void createBackup(String currentFile, String newLocation) throws IOException {
+        File current = new File(AssetFactory.configDirectory + currentFile);
+        if(!current.exists()) {
+            return;
+        }
+        final String contents = AConfiguration.getConfigContents(currentFile);
+
+        File newFile = new File(AssetFactory.configDirectory + newLocation);
+        newFile.createNewFile();
+        Files.write(contents, newFile, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Get the contents of the file with the passed file name
+     * @param fileName Name of the file to get the contents of
+     * @return The contents of the file with the passed name. Null if the file does not exist.
+     * @throws IOException File read error
+     */
+    public static String getConfigContents(String fileName) throws IOException {
+        if(fileName == null || fileName.length() <= 0 || fileName.equals(".")) {
+            return null;
+        }
+        File f = new File(AssetFactory.configDirectory + fileName);
+        if(!f.exists()) {
+            return null;
+        }
+        return Files.toString(f, StandardCharsets.UTF_8);
+    }
+
+    /**
      * Set the file of this configuration
      * @param file File to set
      * @return this
@@ -77,7 +112,7 @@ public abstract class AConfiguration implements Serializable {
         }
 
         final Gson gson = new GsonBuilder().registerTypeAdapterFactory(new GsonPostProcessorFactory()).create();
-        final String contents = Files.toString(file, StandardCharsets.UTF_8);
+        final String contents = AConfiguration.getConfigContents(name);
 
         final AConfiguration newConfig = gson.fromJson(contents, type);
         newConfig.setFile(file);

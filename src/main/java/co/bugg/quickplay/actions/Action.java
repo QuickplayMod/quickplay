@@ -1,6 +1,7 @@
 package co.bugg.quickplay.actions;
 
 import co.bugg.quickplay.actions.clientbound.*;
+import co.bugg.quickplay.actions.serverbound.*;
 
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
@@ -29,9 +30,9 @@ import java.util.Map;
  * not enough arguments provided in the payload.
  *
  * Actions can also be sent to the web server, providing context to actions/events occurring on the client,
- * such as exceptions, connection status, etc.
+ * such as exceptions, connection status, button presses, etc.
  */
-public abstract class Action {
+public class Action {
 
     /**
      * A map mapping action IDs to their classes
@@ -48,6 +49,22 @@ public abstract class Action {
         actionIdToActionClass.put((short) 7, SetAliasedActionAction.class);
         actionIdToActionClass.put((short) 8, SetButtonAction.class);
         actionIdToActionClass.put((short) 9, SetScreenAction.class);
+        actionIdToActionClass.put((short) 10, OpenGuiAction.class);
+        actionIdToActionClass.put((short) 11, OpenScreenAction.class);
+        actionIdToActionClass.put((short) 12, RefreshCacheAction.class);
+        actionIdToActionClass.put((short) 13, SetCurrentServerAction.class);
+        actionIdToActionClass.put((short) 14, SetGlyphForUserAction.class);
+        actionIdToActionClass.put((short) 15, SetKeybindsAction.class);
+        actionIdToActionClass.put((short) 16, SetPremiumAboutAction.class);
+        actionIdToActionClass.put((short) 17, SetTranslationAction.class);
+        actionIdToActionClass.put((short) 18, ButtonPressedAction.class);
+        actionIdToActionClass.put((short) 19, ExceptionThrownAction.class);
+        actionIdToActionClass.put((short) 20, HypixelLocationChangedAction.class);
+        actionIdToActionClass.put((short) 21, MigrateKeybindsAction.class);
+        actionIdToActionClass.put((short) 22, LanguageChangedAction.class);
+        actionIdToActionClass.put((short) 23, ServerJoinedAction.class);
+        actionIdToActionClass.put((short) 24, ServerLeftAction.class);
+        actionIdToActionClass.put((short) 25, InitializeClientAction.class);
     }
 
     /**
@@ -58,7 +75,7 @@ public abstract class Action {
      * The items in the payload, stored as raw ByteBuffers.
      * @see this#getPayloadObjectAsString(int)
      */
-    protected final List<ByteBuffer> payloadObjs;
+    private final List<ByteBuffer> payloadObjs;
 
     public Action () {
         this.id = 0;
@@ -112,19 +129,58 @@ public abstract class Action {
     }
 
     /**
+     * Get an object from the payload at the specified index
+     * @param index Index of the item to get. Should be >= 0 and < {@link this#payloadCount()}
+     * @return The payload item, or null if it does not exist.
+     */
+    public ByteBuffer getPayloadObject(int index) {
+        final ByteBuffer obj = this.payloadObjs.get(index);
+        if(obj == null) {
+            return null;
+        }
+        obj.rewind();
+        return obj;
+    }
+
+    /**
      * Get an item from the Payload and convert it to a String in UTF-8.
      * @param index Index of the item to get. Must be >= 0 and < payloadObjs.size()
      * @return Decoded String
      */
     protected String getPayloadObjectAsString(int index) {
-        return StandardCharsets.UTF_8.decode(this.payloadObjs.get(index)).toString();
+
+        return StandardCharsets.UTF_8.decode(this.getPayloadObject(index)).toString();
     }
 
     /**
      * This method can be called to run the implementation of whatever this Action is
-     * supposed to do.
+     * supposed to do. Should be overridden for clientbound actions.
      */
-    public abstract void run();
+    public void run() {}
+
+    /**
+     * Build an action into a Buffer from its ID and payload list.
+     * @return {Buffer} Built buffer which can be sent over the wire.
+     */
+    public ByteBuffer build() {
+        ByteBuffer body = ByteBuffer.allocate(2);
+        body.putShort(this.id);
+
+        for (ByteBuffer payload : this.payloadObjs) {
+            ByteBuffer payloadSizeBuf = ByteBuffer.allocate(4);
+            int payloadSize = payload.rewind().remaining();
+            int bodySize = body.rewind().remaining();
+
+            payloadSizeBuf.putInt(payloadSize).rewind();
+            ByteBuffer newBody = ByteBuffer.allocate(bodySize + 4 + payloadSize);
+            newBody.put(body).put(payloadSizeBuf).put(payload);
+
+            body = newBody;
+        }
+
+        body.rewind();
+        return body;
+    }
 
     /**
      * Add an item to the payload of this Action.

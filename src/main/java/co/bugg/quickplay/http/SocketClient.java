@@ -2,6 +2,7 @@ package co.bugg.quickplay.http;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
+import co.bugg.quickplay.actions.serverbound.InitializeClientAction;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -17,8 +18,8 @@ public class SocketClient extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        this.send("Hello, world!");
-        System.out.println("> Hello, world!");
+
+        this.sendAction(new InitializeClientAction());
     }
 
     @Override
@@ -35,6 +36,13 @@ public class SocketClient extends WebSocketClient {
             e.printStackTrace();
             Quickplay.INSTANCE.threadPool.submit(() -> Quickplay.INSTANCE.sendExceptionRequest(e));
         }
+    }
+
+    public void sendAction(Action action) {
+        if(action == null) {
+            return;
+        }
+        this.send(action.build());
     }
 
     @Override

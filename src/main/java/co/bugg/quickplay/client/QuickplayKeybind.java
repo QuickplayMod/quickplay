@@ -27,6 +27,15 @@ import java.io.Serializable;
  */
 public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.PostProcessor{
 
+    // NEW FIELDS:
+    // key - trigger key
+    // target - target button ID / the button that was right-clicked to create this keybind
+    // TODO When rebinding keybinds, while checking if any other keybind uses the same key, before denying also
+    //  check if the server lists at all overlap. If not, then the keybind should be allowed.
+    //  The keybind changing GUI can also only display keybinds which match the current server,
+    //  and contain a "show all" button.
+
+
     /**
      * Name of this keybind
      */

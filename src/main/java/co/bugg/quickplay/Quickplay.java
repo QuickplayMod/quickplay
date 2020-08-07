@@ -1,6 +1,8 @@
 package co.bugg.quickplay;
 
+import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.actions.clientbound.SystemOutAction;
+import co.bugg.quickplay.actions.serverbound.MigrateKeybindsAction;
 import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandMain;
 import co.bugg.quickplay.client.command.CommandQuickplay;
@@ -23,6 +25,8 @@ import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
@@ -47,7 +51,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -243,6 +246,113 @@ public class Quickplay {
     }
 
     /**
+     * Loads settings config from minecraft installation folder.
+     * If not present, creates new config file
+     */
+    private void loadSettings() {
+        try {
+            this.settings = (ConfigSettings) AConfiguration.load("settings.json", ConfigSettings.class);
+        } catch (IOException | JsonSyntaxException e) {
+            e.printStackTrace();
+            this.assetFactory.createDirectories();
+            this.settings = new ConfigSettings();
+            try {
+                // Write the default config that we just made to save it
+                this.settings.save();
+            } catch (IOException e1) {
+                // File couldn't be saved
+                e1.printStackTrace();
+                this.sendExceptionRequest(e1); // TODO replace
+                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
+                        "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            }
+        }
+    }
+
+    /**
+     * Loads cached translations from minecraft installation folder.
+     * If not present, creates new file.
+     */
+    private void loadTranslations() {
+        try {
+            this.translator = (ConfigTranslations) AConfiguration.load("lang.json", ConfigTranslations.class);
+        } catch (IOException | JsonSyntaxException e) {
+            e.printStackTrace();
+            this.assetFactory.createDirectories();
+            this.translator = new ConfigTranslations();
+            try {
+                // Write the default config that we just made to save it
+                this.translator.save();
+            } catch (IOException e1) {
+                // File couldn't be saved
+                e1.printStackTrace();
+                this.sendExceptionRequest(e1); // TODO replace
+                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
+                        "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            }
+        }
+    }
+
+    /**
+     * Loads usage stats config from minecraft installation folder.
+     * If not present, sets flag requiring the user to opt-in or opt-out.
+     */
+    private void loadUsageStats() {
+        try {
+            this.usageStats = (ConfigUsageStats) AConfiguration.load("privacy.json", ConfigUsageStats.class);
+        } catch (IOException | JsonSyntaxException e) {
+            this.promptUserForUsageStats = true;
+        }
+    }
+
+    /**
+     * Loads keybinds config from minecraft installation folder.
+     * If using an outdated format (i.e. format from prior to 2.1.0), sends MigrateKeybindsAction to the server. Also
+     * creates a backup of the current keybinds, and notifies the user of the migration.
+     * If not present, creates new config.
+     */
+    private void loadKeybinds() {
+        boolean conversionNeeded = ConfigKeybinds.checkForConversionNeeded("keybinds.json");
+
+        if(conversionNeeded) {
+            this.socket.sendAction(new MigrateKeybindsAction());
+            try {
+                final String fileName = "keybinds.json";
+                AConfiguration.createBackup(fileName, "keybinds-backup.json");
+                final String contents = AConfiguration.getConfigContents(fileName);
+                final JsonElement base = new Gson().fromJson(contents, JsonElement.class);
+                // checkForConversionNeeded asserts that none of the items on the following line return null.
+                final JsonArray arr = base.getAsJsonObject().get("keybinds").getAsJsonArray();
+                final Action action = new MigrateKeybindsAction(arr);
+                this.messageBuffer.push(new Message(
+                        new QuickplayChatComponentTranslation("quickplay.keybinds.migrating"), true));
+                this.socket.sendAction(action);
+                this.keybinds = new ConfigKeybinds(true);
+            } catch (JsonSyntaxException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                this.keybinds = (ConfigKeybinds) AConfiguration.load("keybinds.json", ConfigKeybinds.class);
+            } catch (IOException | JsonSyntaxException e) {
+                e.printStackTrace();
+                this.assetFactory.createDirectories();
+                this.keybinds = new ConfigKeybinds(true);
+                try {
+                    // Write the default config that we just made to save it
+                    this.keybinds.save();
+                } catch (IOException e1) {
+                    // File couldn't be saved
+                    e1.printStackTrace();
+                    this.sendExceptionRequest(e1); // TODO replace
+                    this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
+                            "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                }
+            }
+        }
+    }
+
+    /**
      * Enable the mod
      */
     public void enable() throws URISyntaxException {
@@ -281,10 +391,8 @@ public class Quickplay {
             this.buttonMap.put("x", new Button("x", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button X"));
             this.buttonMap.put("y", new Button("y", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button Y"));
             this.buttonMap.put("z", new Button("z", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button Z"));
-            final SystemOutAction x = new SystemOutAction();
-            final SystemOutAction y = new SystemOutAction();
-            x.addPayload(ByteBuffer.wrap("X String".getBytes()));
-            y.addPayload(ByteBuffer.wrap("String Y".getBytes()));
+            final SystemOutAction x = new SystemOutAction("X String");
+            final SystemOutAction y = new SystemOutAction("String Y");
             this.aliasedActionMap.put("x", new AliasedAction("x", new String[0], "", x));
             this.aliasedActionMap.put("y", new AliasedAction("y", new String[0], "", y));
 
@@ -294,42 +402,10 @@ public class Quickplay {
             this.assetFactory.dumpOldCache();
             this.resourcePack = this.assetFactory.registerResourcePack();
 
-            try {
-                this.settings = (ConfigSettings) AConfiguration.load("settings.json", ConfigSettings.class);
-                this.keybinds = (ConfigKeybinds) AConfiguration.load("keybinds.json", ConfigKeybinds.class);
-                this.usageStats = (ConfigUsageStats) AConfiguration.load("privacy.json", ConfigUsageStats.class);
-                this.translator = (ConfigTranslations) AConfiguration.load("lang.json", ConfigTranslations.class);
-            } catch (IOException | JsonSyntaxException e) {
-                // Config either doesn't exist or couldn't be parsed
-                e.printStackTrace();
-                this.assetFactory.createDirectories();
-
-                if(this.settings == null) {
-                    this.settings = new ConfigSettings();
-                }
-                if(this.keybinds == null) {
-                    this.keybinds = new ConfigKeybinds(true);
-                }
-                if(this.usageStats == null) {
-                    this.promptUserForUsageStats = true;
-                }
-                if(this.translator == null) {
-                    this.translator = new ConfigTranslations();
-                }
-
-                try {
-                    // Write the default config that we just made to save it
-                    this.settings.save();
-                    this.keybinds.save();
-                    this.translator.save();
-                } catch (IOException e1) {
-                    // File couldn't be saved
-                    e1.printStackTrace();
-                    this.sendExceptionRequest(e1); // TODO replace
-                    this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
-                            "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
-                }
-            }
+            this.loadSettings();
+            this.loadTranslations();
+            this.loadUsageStats();
+            this.loadKeybinds();
 
             // Create new Google Analytics instance if possible
             if(this.usageStats != null && this.usageStats.statsToken != null) {

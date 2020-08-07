@@ -7,8 +7,40 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 
+/**
+ * ID: 8
+ * Set a button in the client with the provided key and parameters.
+ *
+ * Payload Order:
+ * key
+ * availableOn JSON array
+ * protocol
+ * actions JSON array of aliased action keys
+ * imageURL
+ * translationKey
+ */
 public class SetButtonAction extends Action {
+
+    public SetButtonAction() {}
+
+    /**
+     * Create a new SetButtonAction.
+     * @param button Button to be saved to the client.
+     */
+    public SetButtonAction(Button button) {
+        super();
+        this.id = 8;
+        this.addPayload(ByteBuffer.wrap(button.key.getBytes()));
+        this.addPayload(ByteBuffer.wrap(new Gson().toJson(button.availableOn).getBytes()));
+        this.addPayload(ByteBuffer.wrap(button.protocol.getBytes()));
+        this.addPayload(ByteBuffer.wrap(new Gson().toJson(button.actionKeys).getBytes()));
+        this.addPayload(ByteBuffer.wrap(button.imageURL.getBytes()));
+        this.addPayload(ByteBuffer.wrap(button.translationKey.getBytes()));
+
+    }
+
     @Override
     public void run() {
         try {

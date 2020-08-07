@@ -7,7 +7,17 @@ import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 
 import java.net.URISyntaxException;
 
+/**
+ * ID: 1
+ * Enable the Quickplay mod for the receiving client.
+ */
 public class EnableModAction extends Action {
+
+    public EnableModAction() {
+        super();
+        this.id = 1;
+    }
+
     @Override
     public void run() {
         try {

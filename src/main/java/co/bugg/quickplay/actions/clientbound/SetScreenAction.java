@@ -8,8 +8,42 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 
+/**
+ * ID: 9
+ * Set a screen in the client with the provided key and parameters.
+ *
+ * Payload Order:
+ * key
+ * screenType
+ * availableOn JSON array
+ * protocol
+ * buttons JSON array of button keys
+ * backButtonActions JSON array of aliased action keys which execute when the back button is pressed
+ * translationKey
+ * imageURL
+ */
 public class SetScreenAction extends Action {
+
+    public SetScreenAction() {}
+
+    /**
+     * Create a new SetScreenAction.
+     * @param screen Screen to be saved to the client.
+     */
+    public SetScreenAction(Screen screen) {
+        super();
+        this.id = 9;
+        this.addPayload(ByteBuffer.wrap(screen.key.getBytes()));
+        this.addPayload(ByteBuffer.wrap(new Gson().toJson(screen.availableOn).getBytes()));
+        this.addPayload(ByteBuffer.wrap(screen.protocol.getBytes()));
+        this.addPayload(ByteBuffer.wrap(new Gson().toJson(screen.buttonKeys).getBytes()));
+        this.addPayload(ByteBuffer.wrap(new Gson().toJson(screen.backButtonActions).getBytes()));
+        this.addPayload(ByteBuffer.wrap(screen.translationKey.getBytes()));
+        this.addPayload(ByteBuffer.wrap(screen.imageURL.getBytes()));
+    }
+
     @Override
     public void run() {
         try {
