@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
 
 /**
  * ID: 3
- * Send a chat component to the client's chat.
+ * Send a Quickplay chat message to the client's chat.
  */
 public class SendChatComponentAction extends Action {
 
@@ -21,7 +21,7 @@ public class SendChatComponentAction extends Action {
 
     /**
      * Create a new SendChatComponentAction.
-     * @param chatComponent Chat component for the client to send
+     * @param chatComponent Chat component message for the client to send
      */
     public SendChatComponentAction(IChatComponent chatComponent) {
         super();

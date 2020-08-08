@@ -315,7 +315,6 @@ public class Quickplay {
         boolean conversionNeeded = ConfigKeybinds.checkForConversionNeeded("keybinds.json");
 
         if(conversionNeeded) {
-            this.socket.sendAction(new MigrateKeybindsAction());
             try {
                 final String fileName = "keybinds.json";
                 AConfiguration.createBackup(fileName, "keybinds-backup.json");
@@ -326,7 +325,16 @@ public class Quickplay {
                 final Action action = new MigrateKeybindsAction(arr);
                 this.messageBuffer.push(new Message(
                         new QuickplayChatComponentTranslation("quickplay.keybinds.migrating"), true));
-                this.socket.sendAction(action);
+                try {
+                    this.socket.sendAction(action);
+                } catch(ServerUnavailableException e) {
+                    e.printStackTrace();
+                    this.messageBuffer.push(new Message(
+                            new QuickplayChatComponentTranslation("quickplay.keybinds.migratingFailed")
+                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
+                            , true));
+
+                }
                 this.keybinds = new ConfigKeybinds(true);
             } catch (JsonSyntaxException | IOException e) {
                 e.printStackTrace();
@@ -359,8 +367,6 @@ public class Quickplay {
         if(!this.enabled) {
             this.enabled = true;
             this.requestFactory = new HttpRequestFactory(); // TODO remove
-            this.socket = new SocketClient(new URI(Reference.BACKEND_SOCKET_URI));
-            this.socket.connect();
 
             // TODO remove this - debug
             this.screenMap.put("mainButtons", new Screen("mainButtons", ScreenType.BUTTONS, new String[0], "", new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}, new String[0], "Screen Title", "https://bugg.co/quickplay/images/games/platform-pc-256.png"));
@@ -405,6 +411,12 @@ public class Quickplay {
             this.loadSettings();
             this.loadTranslations();
             this.loadUsageStats();
+            this.socket = new SocketClient(new URI(Reference.BACKEND_SOCKET_URI));
+            try {
+                this.socket.connectBlocking();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             this.loadKeybinds();
 
             // Create new Google Analytics instance if possible

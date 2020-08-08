@@ -105,10 +105,19 @@ public class Message {
      */
     public static Message fromJson(JsonElement value) {
         JsonObject obj = value.getAsJsonObject();
+        boolean separators = false;
+        boolean bypassEnabledSetting = false;
+        if(obj.get("separators") != null) {
+            separators = obj.get("separators").getAsBoolean();
+        }
+        if(obj.get("bypassEnabledSetting") != null) {
+            bypassEnabledSetting = obj.get("bypassEnabledSetting").getAsBoolean();
+        }
+
         return new Message(
                 IChatComponent.Serializer.jsonToComponent(obj.get("message").toString()),
-                obj.get("separators").getAsBoolean(),
-                obj.get("bypassEnabledSetting").getAsBoolean()
+                separators,
+                bypassEnabledSetting
         );
     }
 }

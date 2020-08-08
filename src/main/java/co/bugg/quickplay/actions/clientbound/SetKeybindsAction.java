@@ -3,6 +3,7 @@ package co.bugg.quickplay.actions.clientbound;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.client.QuickplayKeybind;
+import co.bugg.quickplay.config.ConfigKeybinds;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,6 +39,9 @@ public class SetKeybindsAction extends Action {
     public void run() {
         final String json = this.getPayloadObjectAsString(0);
         Type listType = new TypeToken<ArrayList<QuickplayKeybind>>(){}.getType();
+        if(Quickplay.INSTANCE.keybinds == null) {
+            Quickplay.INSTANCE.keybinds = new ConfigKeybinds(false);
+        }
         Quickplay.INSTANCE.keybinds.keybinds = new Gson().fromJson(json, listType);
 
     }
