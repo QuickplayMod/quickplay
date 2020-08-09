@@ -35,14 +35,13 @@ public class ConfigTranslations extends AConfiguration implements Serializable {
         final Map<String, String> translationLangMap = this.translations.get(key);
 
         if(translationLangMap == null) {
-            this.translations.put(key, new HashMap<>());
             return I18n.format(key, (Object[]) args);
         }
 
-        String translation = translationLangMap.get(this.getCurrentLangKey());
+        String translation = translationLangMap.get(this.getCurrentLangKey().toLowerCase());
         // Swap to default language if translation is null in current language
         if(translation == null) {
-            translation = translationLangMap.get(ConfigTranslations.defaultLang);
+            translation = translationLangMap.get(ConfigTranslations.defaultLang.toLowerCase());
         }
         if(translation == null) {
             return I18n.format(key, (Object[]) args);

@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Sub command to open up the Quickplay wiki
+ * Sub command to open up a debug screen
  */
 public class SubCommandDebugScreen extends ACommand {
 

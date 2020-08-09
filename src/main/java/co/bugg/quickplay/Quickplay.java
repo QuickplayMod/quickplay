@@ -1,7 +1,6 @@
 package co.bugg.quickplay;
 
 import co.bugg.quickplay.actions.Action;
-import co.bugg.quickplay.actions.clientbound.SystemOutAction;
 import co.bugg.quickplay.actions.serverbound.MigrateKeybindsAction;
 import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandMain;
@@ -367,40 +366,6 @@ public class Quickplay {
         if(!this.enabled) {
             this.enabled = true;
             this.requestFactory = new HttpRequestFactory(); // TODO remove
-
-            // TODO remove this - debug
-            this.screenMap.put("mainButtons", new Screen("mainButtons", ScreenType.BUTTONS, new String[0], "", new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}, new String[0], "Screen Title", "https://bugg.co/quickplay/images/games/platform-pc-256.png"));
-            this.screenMap.put("mainImages", new Screen("mainImages", ScreenType.IMAGES, new String[0], "", new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}, new String[0], "Screen Title", "https://bugg.co/quickplay/images/games/platform-pc-256.png"));
-            this.buttonMap.put("a", new Button("a", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button A"));
-            this.buttonMap.put("b", new Button("b", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button B"));
-            this.buttonMap.put("c", new Button("c", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button C"));
-            this.buttonMap.put("d", new Button("d", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button D"));
-            this.buttonMap.put("e", new Button("e", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button E"));
-            this.buttonMap.put("f", new Button("f", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button F"));
-            this.buttonMap.put("g", new Button("g", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button G"));
-            this.buttonMap.put("h", new Button("h", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button H"));
-            this.buttonMap.put("i", new Button("i", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button I"));
-            this.buttonMap.put("j", new Button("j", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button J"));
-            this.buttonMap.put("k", new Button("k", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button K"));
-            this.buttonMap.put("l", new Button("l", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button L"));
-            this.buttonMap.put("m", new Button("m", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button M"));
-            this.buttonMap.put("n", new Button("n", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button N"));
-            this.buttonMap.put("o", new Button("o", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button O"));
-            this.buttonMap.put("p", new Button("p", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button P"));
-            this.buttonMap.put("q", new Button("q", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button Q"));
-            this.buttonMap.put("r", new Button("r", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button R"));
-            this.buttonMap.put("s", new Button("s", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button S"));
-            this.buttonMap.put("t", new Button("t", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button T"));
-            this.buttonMap.put("u", new Button("u", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button U"));
-            this.buttonMap.put("v", new Button("v", new String[0],"", new String[]{"x", "y"}, "https://bugg.co/quickplay/images/games/SkyBlock-256.png", "Button V"));
-            this.buttonMap.put("w", new Button("w", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button W"));
-            this.buttonMap.put("x", new Button("x", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button X"));
-            this.buttonMap.put("y", new Button("y", new String[0],"", new String[]{"x"}, "https://bugg.co/quickplay/images/games/Adventure-256.png", "Button Y"));
-            this.buttonMap.put("z", new Button("z", new String[0],"", new String[]{"y"}, "https://bugg.co/quickplay/images/games/BedWars-256.png", "Button Z"));
-            final SystemOutAction x = new SystemOutAction("X String");
-            final SystemOutAction y = new SystemOutAction("String Y");
-            this.aliasedActionMap.put("x", new AliasedAction("x", new String[0], "", x));
-            this.aliasedActionMap.put("y", new AliasedAction("y", new String[0], "", y));
 
             this.assetFactory = new AssetFactory();
 

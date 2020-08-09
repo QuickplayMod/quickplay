@@ -27,6 +27,7 @@ quickplay.commands.quickplay.history.error=Something went wrong!
 quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
 quickplay.commands.quickplay.version.help=View the current Quickplay version.
 quickplay.commands.quickplay.version.message=Quickplay v%s
+quickplay.commands.quickplay.reload.reloading=Reloading the connection to the Quickplay backend...
 
 quickplay.commands.quickplay.premium.account.help=Retrieve information about your account.
 quickplay.commands.quickplay.premium.auth.help=Re-authenticate with the Quickplay Premium backend servers.
