@@ -16,7 +16,6 @@ import java.nio.ByteBuffer;
  * Payload Order:
  * key
  * availableOn JSON array
- * protocol
  * The Action built as normal
  */
 public class SetAliasedActionAction extends Action {
@@ -32,23 +31,21 @@ public class SetAliasedActionAction extends Action {
         this.id = 7;
         this.addPayload(ByteBuffer.wrap(aliasedAction.key.getBytes()));
         this.addPayload(ByteBuffer.wrap(new Gson().toJson(aliasedAction.availableOn).getBytes()));
-        this.addPayload(ByteBuffer.wrap(aliasedAction.protocol.getBytes()));
         this.addPayload(aliasedAction.action.build());
     }
 
     @Override
     public void run() {
         try {
-            final ByteBuffer builtAction = this.getPayloadObject(3);
+            final ByteBuffer builtAction = this.getPayloadObject(2);
             final Action action = Action.from(builtAction);
 
             final String availableOnJson = this.getPayloadObjectAsString(1);
             final String[] availableOnArr = new Gson().fromJson(availableOnJson, String[].class);
 
-            final String protocol = this.getPayloadObjectAsString(2);
             final String key = this.getPayloadObjectAsString(0);
 
-            final AliasedAction aliasedAction = new AliasedAction(key, availableOnArr, protocol, action);
+            final AliasedAction aliasedAction = new AliasedAction(key, availableOnArr, action);
 
             Quickplay.INSTANCE.aliasedActionMap.put(key, aliasedAction);
         } catch (JsonSyntaxException | BufferUnderflowException | IllegalAccessException | InstantiationException e) {

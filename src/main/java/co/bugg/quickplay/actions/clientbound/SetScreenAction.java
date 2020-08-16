@@ -18,7 +18,6 @@ import java.nio.ByteBuffer;
  * key
  * screenType
  * availableOn JSON array
- * protocol
  * buttons JSON array of button keys
  * backButtonActions JSON array of aliased action keys which execute when the back button is pressed
  * translationKey
@@ -37,7 +36,6 @@ public class SetScreenAction extends Action {
         this.id = 9;
         this.addPayload(ByteBuffer.wrap(screen.key.getBytes()));
         this.addPayload(ByteBuffer.wrap(new Gson().toJson(screen.availableOn).getBytes()));
-        this.addPayload(ByteBuffer.wrap(screen.protocol.getBytes()));
         this.addPayload(ByteBuffer.wrap(new Gson().toJson(screen.buttonKeys).getBytes()));
         this.addPayload(ByteBuffer.wrap(new Gson().toJson(screen.backButtonActions).getBytes()));
         this.addPayload(ByteBuffer.wrap(screen.translationKey.getBytes()));
@@ -50,19 +48,18 @@ public class SetScreenAction extends Action {
 
             final String availableOnJson = this.getPayloadObjectAsString(2);
             final String[] availableOnArr = new Gson().fromJson(availableOnJson, String[].class);
-            final String buttonsJson = this.getPayloadObjectAsString(4);
+            final String buttonsJson = this.getPayloadObjectAsString(3);
             final String[] buttonsArr = new Gson().fromJson(buttonsJson, String[].class);
-            final String backButtonActionsJson = this.getPayloadObjectAsString(5);
+            final String backButtonActionsJson = this.getPayloadObjectAsString(4);
             final String[] backButtonActionsArr = new Gson().fromJson(backButtonActionsJson, String[].class);
 
             final ScreenType screenType = ScreenType.valueOf(this.getPayloadObjectAsString(1));
-            final String protocol = this.getPayloadObjectAsString(3);
             final String key = this.getPayloadObjectAsString(0);
-            final String translationKey = this.getPayloadObjectAsString(6);
-            final String imageURL = this.getPayloadObjectAsString(7);
+            final String translationKey = this.getPayloadObjectAsString(5);
+            final String imageURL = this.getPayloadObjectAsString(6);
 
-            final Screen screen = new Screen(key, screenType, availableOnArr, protocol, buttonsArr,
-                    backButtonActionsArr, translationKey, imageURL);
+            final Screen screen = new Screen(key, screenType, availableOnArr, buttonsArr, backButtonActionsArr,
+                    translationKey, imageURL);
 
             Quickplay.INSTANCE.screenMap.put(key, screen);
         } catch (JsonSyntaxException | BufferUnderflowException e) {

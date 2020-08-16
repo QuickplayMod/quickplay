@@ -65,6 +65,20 @@ public class Action {
         actionIdToActionClass.put((short) 23, ServerJoinedAction.class);
         actionIdToActionClass.put((short) 24, ServerLeftAction.class);
         actionIdToActionClass.put((short) 25, InitializeClientAction.class);
+        actionIdToActionClass.put((short) 26, AuthBeginHandshakeAction.class);
+        actionIdToActionClass.put((short) 27, AuthMojangEndHandshakeAction.class);
+        actionIdToActionClass.put((short) 28, AuthCompleteAction.class);
+        actionIdToActionClass.put((short) 29, AuthGoogleEndHandshakeAction.class);
+        actionIdToActionClass.put((short) 30, DeleteScreenAction.class);
+        actionIdToActionClass.put((short) 31, DeleteButtonAction.class);
+        actionIdToActionClass.put((short) 32, DeleteAliasedActionAction.class);
+        actionIdToActionClass.put((short) 33, AlterScreenAction.class);
+        actionIdToActionClass.put((short) 34, AlterButtonAction.class);
+        actionIdToActionClass.put((short) 35, AlterAliasedActionAction.class);
+        actionIdToActionClass.put((short) 36, SetCurrentUserCountAction.class);
+        actionIdToActionClass.put((short) 37, SetUserCountHistoryAction.class);
+        actionIdToActionClass.put((short) 38, AuthReestablishAuthedConnectionAction.class);
+        actionIdToActionClass.put((short) 39, AuthFailedAction.class);
     }
 
     /**

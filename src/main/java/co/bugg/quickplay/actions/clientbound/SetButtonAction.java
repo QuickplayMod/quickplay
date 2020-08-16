@@ -16,7 +16,6 @@ import java.nio.ByteBuffer;
  * Payload Order:
  * key
  * availableOn JSON array
- * protocol
  * actions JSON array of aliased action keys
  * imageURL
  * translationKey
@@ -34,7 +33,6 @@ public class SetButtonAction extends Action {
         this.id = 8;
         this.addPayload(ByteBuffer.wrap(button.key.getBytes()));
         this.addPayload(ByteBuffer.wrap(new Gson().toJson(button.availableOn).getBytes()));
-        this.addPayload(ByteBuffer.wrap(button.protocol.getBytes()));
         this.addPayload(ByteBuffer.wrap(new Gson().toJson(button.actionKeys).getBytes()));
         this.addPayload(ByteBuffer.wrap(button.imageURL.getBytes()));
         this.addPayload(ByteBuffer.wrap(button.translationKey.getBytes()));
@@ -47,15 +45,14 @@ public class SetButtonAction extends Action {
 
             final String availableOnJson = this.getPayloadObjectAsString(1);
             final String[] availableOnArr = new Gson().fromJson(availableOnJson, String[].class);
-            final String actionsJson = this.getPayloadObjectAsString(3);
+            final String actionsJson = this.getPayloadObjectAsString(2);
             final String[] actionsArr = new Gson().fromJson(actionsJson, String[].class);
 
-            final String protocol = this.getPayloadObjectAsString(2);
             final String key = this.getPayloadObjectAsString(0);
-            final String imageURL = this.getPayloadObjectAsString(4);
-            final String translationKey = this.getPayloadObjectAsString(5);
+            final String imageURL = this.getPayloadObjectAsString(3);
+            final String translationKey = this.getPayloadObjectAsString(4);
 
-            final Button button = new Button(key, availableOnArr, protocol, actionsArr, imageURL, translationKey);
+            final Button button = new Button(key, availableOnArr, actionsArr, imageURL, translationKey);
 
             Quickplay.INSTANCE.buttonMap.put(key, button);
         } catch (JsonSyntaxException | BufferUnderflowException e) {

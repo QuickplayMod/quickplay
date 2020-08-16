@@ -5,6 +5,7 @@ quickplay.chat.clickToOpen=Click to open.
 
 quickplay.failedToConnect=Sorry, Quickplay wasn't able to connect to the Quickplay servers! Some features may be unavailable.
 quickplay.failedToEnable=Sorry, something went wrong and Quickplay couldn't enable! Try restarting or checking for updates.
+quickplay.failedToAuth=Sorry, Quickplay wasn't able to authenticate with the Quickplay backend! Some features may be unavailable.
 
 quickplay.commands.invalid=Invalid command!
 quickplay.commands.quickplay.help.help=Display the available commands.
