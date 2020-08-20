@@ -1,16 +1,16 @@
 quickplay.offline=U aren't on HYPICKLE!
 quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
 quickplay.chat.separator=-
-quickplay.chat.clickToOpen=Click to open.
+quickplay.chat.clickToOpen=Click 2 open.
 
 quickplay.commands.invalid=Invalid command!
 quickplay.commands.quickplay.help.help=Show tha commandz.
-quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
-quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
-quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
-quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
-quickplay.commands.quickplay.keybinds.help=Open the Quickplay Keybind editor.
-quickplay.commands.quickplay.moveinstance.deprecated=This command is deprecated. You should use "/qp config" instead!
+quickplay.commands.quickplay.config.help=Configre ur Quickplay mod.
+quickplay.commands.quickplay.limbo.help=Send yourself 2 Limbo.
+quickplay.commands.quickplay.limbo.alreadythere=Doh! Ure already in Limbo!
+quickplay.commands.quickplay.delivery.help=Open teh Delivery Man menu.
+quickplay.commands.quickplay.keybinds.help=Open teh Quickplay Keybind editor.
+quickplay.commands.quickplay.moveinstance.deprecated=Dis command iz deprecatd. U shud use "/qp config" instead!
 quickplay.commands.quickplay.discord.help=Join the Quickplay Discord server.
 quickplay.commands.quickplay.discord.message=Discord is the #1 way to get in touch with @bugfroggy. Join the Quickplay Discord if you have any questions, feedback, or bug reports.
 quickplay.commands.quickplay.party.help=Customize your Quickplay Party Mode.
@@ -68,8 +68,8 @@ quickplay.settings.secondaryColor.help=Change your Quickplay secondary color
 
 quickplay.settings.category.gui=GUI
 quickplay.settings.blurGuiBackgrounds.name=Blur GUI Backgrounds
-quickplay.settings.blurGuiBackgrounds.help=Whether the background of Quickplay GUIs should be slightly blurred.
-quickplay.settings.fadeInGuis.name=Fade GUIs In
+quickplay.settings.blurGuiBackgrounds.help=Whethr the backgrond ov Quickplay GUIs shud be slightly burrd.
+quickplay.settings.fadeInGuis.name=Fade GUIs in
 quickplay.settings.fadeInGuis.help=Whether GUIs should fade in when opening.
 quickplay.settings.transparentBackgrounds.name=Transparent Backgrounds
 quickplay.settings.transparentBackgrounds.help=Whether Quickplay GUI backgrounds should be 100%% transparent or just a translucent black.
