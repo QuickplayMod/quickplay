@@ -9,9 +9,10 @@ public class Screen {
     public final String translationKey;
     public final String imageURL;
     public final String[] backButtonActions;
+    public final boolean adminOnly;
 
     public Screen(final String key, final ScreenType screenType, final String[] availableOn, final String[] buttonKeys,
-                  final String[] backButtonActions, final String translationKey, final String imageURL) {
+                  final String[] backButtonActions, final String translationKey, final String imageURL, final boolean adminOnly) {
         this.key = key;
         this.availableOn = availableOn;
         this.buttonKeys = buttonKeys;
@@ -19,5 +20,6 @@ public class Screen {
         this.backButtonActions = backButtonActions;
         this.translationKey = translationKey;
         this.imageURL = imageURL;
+        this.adminOnly = adminOnly;
     }
 }

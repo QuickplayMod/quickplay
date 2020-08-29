@@ -57,9 +57,11 @@ public class SetScreenAction extends Action {
             final String key = this.getPayloadObjectAsString(0);
             final String translationKey = this.getPayloadObjectAsString(5);
             final String imageURL = this.getPayloadObjectAsString(6);
+            final ByteBuffer adminOnlyBuf = this.getPayloadObject(7);
+            final boolean adminOnly = adminOnlyBuf.get() != (byte) 0;
 
             final Screen screen = new Screen(key, screenType, availableOnArr, buttonsArr, backButtonActionsArr,
-                    translationKey, imageURL);
+                    translationKey, imageURL, adminOnly);
 
             Quickplay.INSTANCE.screenMap.put(key, screen);
         } catch (JsonSyntaxException | BufferUnderflowException e) {

@@ -51,8 +51,10 @@ public class SetButtonAction extends Action {
             final String key = this.getPayloadObjectAsString(0);
             final String imageURL = this.getPayloadObjectAsString(3);
             final String translationKey = this.getPayloadObjectAsString(4);
+            final ByteBuffer adminOnlyBuf = this.getPayloadObject(5);
+            final boolean adminOnly = adminOnlyBuf.get() != (byte) 0;
 
-            final Button button = new Button(key, availableOnArr, actionsArr, imageURL, translationKey);
+            final Button button = new Button(key, availableOnArr, actionsArr, imageURL, translationKey, adminOnly);
 
             Quickplay.INSTANCE.buttonMap.put(key, button);
         } catch (JsonSyntaxException | BufferUnderflowException e) {

@@ -79,6 +79,12 @@ public class Action {
         actionIdToActionClass.put((short) 37, SetUserCountHistoryAction.class);
         actionIdToActionClass.put((short) 38, AuthReestablishAuthedConnectionAction.class);
         actionIdToActionClass.put((short) 39, AuthFailedAction.class);
+        actionIdToActionClass.put((short) 40, RemoveScreenAction.class);
+        actionIdToActionClass.put((short) 41, RemoveButtonAction.class);
+        actionIdToActionClass.put((short) 42, RemoveAliasedActionAction.class);
+        actionIdToActionClass.put((short) 43, AlterTranslationAction.class);
+        actionIdToActionClass.put((short) 44, DeleteTranslationAction.class);
+        actionIdToActionClass.put((short) 45, RemoveTranslationAction.class);
     }
 
     /**

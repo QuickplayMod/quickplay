@@ -23,5 +23,5 @@ public class Reference {
     /**
      * URI pointing to the backend's socket
      */
-    public static final String BACKEND_SOCKET_URI = "ws://localhost:54678";
+    public static final String BACKEND_SOCKET_URI = "wss://qp-socket.bugg.co/";
 }

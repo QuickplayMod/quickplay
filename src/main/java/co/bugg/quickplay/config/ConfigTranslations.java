@@ -69,6 +69,14 @@ public class ConfigTranslations extends AConfiguration implements Serializable {
         this.translations.put(key, translationLangMap);
     }
 
+    public void remove(final String key, final String lang) {
+        Map<String, String> translationLangMap = this.translations.get(key);
+        if(translationLangMap == null) {
+            return;
+        }
+        translationLangMap.remove(lang);
+    }
+
     /**
      * Get the current language used in Minecraft.
      * @return The language currently used by Minecraft.

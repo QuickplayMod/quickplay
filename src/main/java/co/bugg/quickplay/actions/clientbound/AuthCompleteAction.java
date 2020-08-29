@@ -32,9 +32,9 @@ public class AuthCompleteAction extends Action {
      * @param mcUuid Minecraft UUID associated with this user's account.
      * @param discordId Discord ID associated with this user's account.
      * @param googleId Google account ID associated with this user's account.
-     * @param isAdmin {boolean} Whether this user has Admin permissions.
-     * @param isPremium {boolean} Whether this user has a Premium subscription active.
-     * @param premiumExpiration {Date} Datetime of when this user's Premium expires, or null if the user has no subscription.
+     * @param isAdmin Whether this user has Admin permissions.
+     * @param isPremium Whether this user has a Premium subscription active.
+     * @param premiumExpiration Datetime of when this user's Premium expires, or null if the user has no subscription.
      */
     public AuthCompleteAction(String sessionToken, Date sessionExpiration, String mcUuid, String discordId,
                               String googleId, boolean isAdmin, boolean isPremium, Date premiumExpiration) {

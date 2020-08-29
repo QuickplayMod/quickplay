@@ -45,7 +45,10 @@ public class SetAliasedActionAction extends Action {
 
             final String key = this.getPayloadObjectAsString(0);
 
-            final AliasedAction aliasedAction = new AliasedAction(key, availableOnArr, action);
+            final ByteBuffer adminOnlyBuf = this.getPayloadObject(3);
+            final boolean adminOnly = adminOnlyBuf.get() != (byte) 0;
+
+            final AliasedAction aliasedAction = new AliasedAction(key, availableOnArr, action, adminOnly);
 
             Quickplay.INSTANCE.aliasedActionMap.put(key, aliasedAction);
         } catch (JsonSyntaxException | BufferUnderflowException | IllegalAccessException | InstantiationException e) {

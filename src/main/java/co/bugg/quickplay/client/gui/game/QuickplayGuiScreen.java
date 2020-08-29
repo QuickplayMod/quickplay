@@ -157,6 +157,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
                 // Calculate the average width of all strings & what the longest one is
                 for (final String buttonKey : this.screen.buttonKeys) {
                     final Button button = Quickplay.INSTANCE.buttonMap.get(buttonKey);
+                    // TODO check restrictions
                     final int stringWidth = this.fontRendererObj.getStringWidth(Quickplay.INSTANCE.translator.get(button.translationKey));
                     if (stringWidth > this.longestStringWidth) {
                         this.longestStringWidth = stringWidth;
@@ -221,6 +222,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
         int nextButtonId = 0;
         for(String buttonKey : this.screen.buttonKeys) {
             final Button button = Quickplay.INSTANCE.buttonMap.get(buttonKey);
+            // TODO check restrictions on button
             if(button == null) {
                 continue;
             }
@@ -437,6 +439,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
                 }
                 // TODO check protocol
                 // TODO check availableOn
+                // TODO check admin state
                 if(aa.action != null) {
                     aa.action.run();
                 }

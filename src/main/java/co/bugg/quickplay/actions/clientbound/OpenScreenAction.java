@@ -33,6 +33,7 @@ public class OpenScreenAction extends Action {
     @Override
     public void run() {
         final Screen screen = Quickplay.INSTANCE.screenMap.get(this.getPayloadObjectAsString(0));
+        // TODO check restrictions on Screen
         if(screen == null) {
             return;
             // TODO handle error

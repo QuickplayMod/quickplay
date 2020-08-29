@@ -6,14 +6,16 @@ public class Button {
     public final String[] actionKeys;
     public final String imageURL;
     public final String translationKey;
+    public final boolean adminOnly;
 
     public Button(final String key, final String[] availableOn, final String[] actionKeys, final String imageURL,
-                  final String translationKey) {
+                  final String translationKey, final boolean adminOnly) {
         this.key = key;
         this.availableOn = availableOn;
         this.actionKeys = actionKeys;
         this.imageURL = imageURL;
         this.translationKey = translationKey;
+        this.adminOnly = adminOnly;
     }
 
 

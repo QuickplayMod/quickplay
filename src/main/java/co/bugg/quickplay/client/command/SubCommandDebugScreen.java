@@ -35,13 +35,14 @@ public class SubCommandDebugScreen extends ACommand {
 
     @Override
     public void run(String[] args) {
-        String scr = "mainImages";
+        String scr = "MAIN";
         if(args.length > 1) {
             scr = args[1];
         }
         String finalScr = scr;
         QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
             Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiScreen(Quickplay.INSTANCE.screenMap.get(finalScr)));
+            // TODO check restrictions on Screen
         });
     }
 
