@@ -84,14 +84,21 @@ public class QuickplayEventHandler {
     /**
      * Regex pattern for the daily reward message
      */
-    final Pattern pattern = Pattern.compile("^\\n(?:Click the link to visit our website and claim your reward|" +
-            "Klicke den Link, um unsere Webseite zu besuchen und deine Belohnung abzuholen|" +
-            "Cliquez sur le lien pour visiter notre site et réclamer votre récompense|" +
-            "Klik de link om onze website te bezoeken, en je beloning te verkrijgen|" +
-            "Haz click en el link para visitar nuestra web y recoger tu recompensa|" +
+    final Pattern pattern = Pattern.compile("^\\n(?:" +
+            "Click the link to visit our website and claim your reward|" +
+            "Clica no link para visitares o nosso site e reivindicares a recompensa|" +
+            "Clique no link para visitar o nosso site e reivindicar sua recompensa|" +
+            "Haz clic en el link para visitar nuestra web y recoger tu recompensa|" +
             "点击链接访问我们的网站并领取奖励|" +
-            "Нажмите на ссылку, чтобы перейти на наш сайт и забрать свою награду|" +
-            "저희의 웹사이트에 방문하고 보상을 수령하려면 링크를 클릭하세요)" +
+            "點擊該網址來進入我們的網站並領取獎勵|" +
+            "Klik de link om onze website te bezoeken, en je beloning te verkrijgen|" +
+            "Cliquez sur le lien pour visiter notre site et réclamer votre récompense|" +
+            "Klicke den Link, um unsere Webseite zu besuchen und deine Belohnung abzuholen|" +
+            "Clicca il link per visitare il sito e riscattare la tua ricompensa|" +
+            "リンクをクリックしてウェブサイトにアクセスし、報酬を獲得してください|" +
+            "저희의 웹 사이트에 방문하고 보상을 수령하려면 링크를 클릭하세요|" +
+            "Kliknij link, aby odwiedzić naszą stronę internetową i odebrać swoją nagrodę|" +
+            "Нажмите на ссылку, чтобы перейти на наш сайт и забрать свою награду)" +
             ": (?:https?://rewards\\.hypixel\\.net/claim-reward/([a-zA-Z0-9]{0,12}))\\n$");
 
     @SubscribeEvent
