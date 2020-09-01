@@ -249,6 +249,12 @@ public class QuickplayGuiScreen extends QuickplayGui {
             nextButtonId++;
         }
 
+        // Add back button if there are back button actions for this screen.
+        if(this.screen.backButtonActions != null && this.screen.backButtonActions.length > 0) {
+            this.componentList.add(new QuickplayGuiButton(null, nextButtonId, 3, 3, 100, 20,
+                    Quickplay.INSTANCE.translator.get("quickplay.gui.back"), false));
+        }
+
         setScrollingValues();
     }
 
@@ -265,9 +271,9 @@ public class QuickplayGuiScreen extends QuickplayGui {
 
         // Draw images & strings for all the games buttons
         for(final QuickplayGuiComponent component : componentList) {
-            final int scrollAdjustedY = component.scrollable ? component.y - scrollPixel : component.y;
-            GlStateManager.color(1, 1, 1);
             if(component.origin instanceof Button) {
+                final int scrollAdjustedY = component.scrollable ? component.y - scrollPixel : component.y;
+                GlStateManager.color(1, 1, 1);
                 final Button button = (Button) component.origin;
                 // Draw icon
                 GlStateManager.color(1, 1, 1, opacity);
@@ -303,7 +309,9 @@ public class QuickplayGuiScreen extends QuickplayGui {
         for (QuickplayGuiComponent component : componentList) {
             updateOpacity();
 
-            component.draw(this, mouseX, mouseY, (component instanceof QuickplayGuiContextMenu) ? opacity : 0);
+            if(component instanceof QuickplayGuiContextMenu || component.origin == null) {
+                component.draw(this, mouseX, mouseY, opacity);
+            }
 
             // If hovering & in compact mode, draw hover text
             if(compact && component.origin instanceof Button && component.mouseHovering(this, mouseX, mouseY)) {
@@ -457,6 +465,17 @@ public class QuickplayGuiScreen extends QuickplayGui {
                         e.printStackTrace();
                     }
                 });
+            }
+        } else if(component.origin == null) {
+            // The only component with a null origin is the back button, at the moment.
+            for(int i = 0; i < this.screen.backButtonActions.length; i++) {
+                final String actionKey = this.screen.backButtonActions[i];
+                final AliasedAction action = Quickplay.INSTANCE.aliasedActionMap.get(actionKey);
+                if(action == null) {
+                    continue;
+                }
+                // TODO perform permission checks
+                action.action.run();
             }
         }
     }
