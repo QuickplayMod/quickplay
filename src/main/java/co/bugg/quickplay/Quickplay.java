@@ -122,11 +122,18 @@ public class Quickplay {
      * List of games
      */
     public List<Game> gameList = new ArrayList<>();
-
+    /**
+     * Map of screens, mapping their key to the screen object.
+     */
     public Map<String, Screen> screenMap = new HashMap<>();
+    /**
+     * Map of buttons, mapping their key to the button object.
+     */
     public Map<String, Button> buttonMap = new HashMap<>();
+    /**
+     * Map of aliased actions, mapping their key to the aliased action object.
+     */
     public Map<String, AliasedAction> aliasedActionMap = new HashMap<>();
-
     /**
      * InstanceWatcher that constantly watches for what Hypixel server instance the client is on
      */

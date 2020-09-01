@@ -7,6 +7,8 @@ import co.bugg.quickplay.actions.Action;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 
@@ -62,6 +64,15 @@ public class SetScreenAction extends Action {
 
             final Screen screen = new Screen(key, screenType, availableOnArr, buttonsArr, backButtonActionsArr,
                     translationKey, imageURL, adminOnly);
+
+            // Download the image URL, if it is set
+            if(screen.imageURL != null && screen.imageURL.length() > 0) {
+                try {
+                    Quickplay.INSTANCE.assetFactory.loadIcon(new URL(screen.imageURL));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
 
             Quickplay.INSTANCE.screenMap.put(key, screen);
         } catch (JsonSyntaxException | BufferUnderflowException e) {

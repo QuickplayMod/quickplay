@@ -6,6 +6,8 @@ import co.bugg.quickplay.actions.Action;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 
@@ -55,6 +57,15 @@ public class SetButtonAction extends Action {
             final boolean adminOnly = adminOnlyBuf.get() != (byte) 0;
 
             final Button button = new Button(key, availableOnArr, actionsArr, imageURL, translationKey, adminOnly);
+
+            // Download the image URL, if it is set
+            if(button.imageURL != null && button.imageURL.length() > 0) {
+                try {
+                    Quickplay.INSTANCE.assetFactory.loadIcon(new URL(button.imageURL));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
 
             Quickplay.INSTANCE.buttonMap.put(key, button);
         } catch (JsonSyntaxException | BufferUnderflowException e) {

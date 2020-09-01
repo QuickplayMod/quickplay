@@ -83,51 +83,59 @@ public class AssetFactory {
         List<ResourceLocation> resourceLocations = new ArrayList<>();
 
         for(URL url : urls) {
-            File file = getIconFile(url);
-            // If the file already exists, no need to download again.
-            // If the icon needs to be reset, use REFRESH_CACHE action type.
-            if(!file.exists()) {
-                System.out.println("Saving file " + file.getPath());
-                try {
-
-                    HttpGet get = new HttpGet(url.toURI());
-
-                    CloseableHttpResponse response = (CloseableHttpResponse) Quickplay.INSTANCE.requestFactory.httpClient.execute(get);
-                    if(response.getStatusLine().getStatusCode() < 300) {
-
-                        byte[] buffer = new byte[1024];
-
-                        InputStream is = response.getEntity().getContent();
-                        OutputStream os = new FileOutputStream(file);
-
-                        for (int length; (length = is.read(buffer)) > 0; ) {
-                            os.write(buffer, 0, length);
-                        }
-
-                        is.close();
-                        os.close();
-                        response.close();
-                    } else {
-                        System.out.println("Can't save file " + file.getPath());
-                        continue;
-                    }
-
-                } catch (IOException | URISyntaxException e) {
-                    e.printStackTrace();
-                    Quickplay.INSTANCE.sendExceptionRequest(e);
-                }
-            }
-
-            final ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, file.getName());
-
-            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-                Quickplay.INSTANCE.reloadResource(file, resourceLocation);
-            });
-
-            resourceLocations.add(resourceLocation);
+            resourceLocations.add(this.loadIcon(url));
         }
 
         return resourceLocations;
+    }
+
+    /**
+     * Download a specified icon, if necessary.
+     * @param url URL of the icon to download.
+     * @return ResourceLocation for the icon.
+     */
+    public ResourceLocation loadIcon(URL url) {
+        File file = getIconFile(url);
+        // If the file already exists, no need to download again.
+        // If the icon needs to be reset, use RefreshCacheAction.
+        if(!file.exists()) {
+            System.out.println("Saving file " + file.getPath());
+            try {
+
+                HttpGet get = new HttpGet(url.toURI());
+
+                CloseableHttpResponse response = (CloseableHttpResponse) Quickplay.INSTANCE.requestFactory.httpClient.execute(get);
+                if(response.getStatusLine().getStatusCode() < 300) {
+
+                    byte[] buffer = new byte[1024];
+
+                    InputStream is = response.getEntity().getContent();
+                    OutputStream os = new FileOutputStream(file);
+
+                    for (int length; (length = is.read(buffer)) > 0; ) {
+                        os.write(buffer, 0, length);
+                    }
+
+                    is.close();
+                    os.close();
+                    response.close();
+                } else {
+                    System.out.println("Can't save file " + file.getPath());
+                }
+
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+                Quickplay.INSTANCE.sendExceptionRequest(e);
+            }
+        }
+
+        final ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, file.getName());
+
+        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+            Quickplay.INSTANCE.reloadResource(file, resourceLocation);
+        });
+
+        return resourceLocation;
     }
 
     /**
