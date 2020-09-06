@@ -330,7 +330,8 @@ public class Quickplay {
                 final JsonArray arr = base.getAsJsonObject().get("keybinds").getAsJsonArray();
                 final Action action = new MigrateKeybindsAction(arr);
                 this.messageBuffer.push(new Message(
-                        new QuickplayChatComponentTranslation("quickplay.keybinds.migrating"), true));
+                        new QuickplayChatComponentTranslation("quickplay.keybinds.migrating")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY))));
                 try {
                     this.socket.sendAction(action);
                 } catch(ServerUnavailableException e) {

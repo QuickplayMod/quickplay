@@ -165,7 +165,6 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
 
     @Override
     public void postDeserializationProcess() {
-        System.out.println("Deserialized");
         registerAsEventHandler();
     }
 
