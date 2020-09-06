@@ -1,8 +1,6 @@
 package co.bugg.quickplay.config;
 
-import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayKeybind;
-import co.bugg.quickplay.client.gui.game.QuickplayGuiMainMenu;
 import com.google.common.io.Files;
 import com.google.gson.*;
 import org.lwjgl.input.Keyboard;
@@ -33,8 +31,7 @@ public class ConfigKeybinds extends AConfiguration {
     public ConfigKeybinds(boolean addDefaultKeybinds) {
         this();
         if(addDefaultKeybinds) {
-            keybinds.add(new QuickplayKeybind(Quickplay.INSTANCE.translator.get("quickplay.config.keybinds.openmain"),
-                    Keyboard.KEY_R, QuickplayGuiMainMenu.class));
+            keybinds.add(new QuickplayKeybind(Keyboard.KEY_R, "MAIN"));
         }
     }
 
@@ -44,8 +41,8 @@ public class ConfigKeybinds extends AConfiguration {
      * The logic is handled on the backend, since the backend has a full list of keys while the client doesn't necessarily.
      * A request is sent to the server with {@link co.bugg.quickplay.actions.serverbound.MigrateKeybindsAction}
      *
-     * A conversion is assumed to be required ONLY if the "name" field is present on any keybind.
-     * Other malformations do not trigger a conversion.
+     * A conversion is assumed to be required ONLY if the "name" field is present on any keybind and the "target"
+     * field is NOT present. Other malformations do not trigger a conversion.
      *
      * @param fileName Name of the file to convert
      * @return True if a conversion is necessary, false otherwise.
@@ -53,7 +50,7 @@ public class ConfigKeybinds extends AConfiguration {
     public static boolean checkForConversionNeeded(String fileName) {
         final File f = new File(AssetFactory.configDirectory + fileName);
         if(!f.exists()) { // If the file doesn't exist, no need to convert it...
-            return true;
+            return false;
         }
 
         try {
@@ -77,8 +74,10 @@ public class ConfigKeybinds extends AConfiguration {
                     continue;
                 }
                 JsonObject obj = keybindsArray.get(i).getAsJsonObject();
-                // Check for the name property on the keybind (which button it targets). If present, assume old version.
-                if(obj.get("name") != null && obj.get("name").getAsString() != null) {
+                // Check for the name property on the keybind (which button it targets). If present, and no target,
+                // assume old version
+                if(obj.get("name") != null && obj.get("name").getAsString() != null &&
+                        (obj.get("target") == null || obj.get("target").getAsString() == null)) {
                     return true;
                 }
 

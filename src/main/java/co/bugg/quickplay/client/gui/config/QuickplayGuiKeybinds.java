@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui.config;
 
+import co.bugg.quickplay.Button;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayKeybind;
 import co.bugg.quickplay.client.gui.QuickplayGui;
@@ -95,9 +96,16 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                 Quickplay.INSTANCE.translator.get("quickplay.keybinds.subtitle"), true, true, true));
 
         for(QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds) {
+            if(keybind == null || keybind.target == null) {
+                continue;
+            }
+            final Button button = Quickplay.INSTANCE.buttonMap.get(keybind.target);
+            if(button == null) {
+                continue;
+            }
             final QuickplayGuiComponent component = new QuickplayGuiButton(keybind, buttonId, width / 2 - buttonWidth / 2,
                     topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
-                    keybind.name, true);
+                    Quickplay.INSTANCE.translator.get(button.translationKey), true);
             formatComponentString(component, false);
             this.componentList.add(component);
         }
@@ -240,7 +248,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                         Quickplay.INSTANCE.threadPool.submit(() -> {
                             try {
                                 Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Changed")
-                                        .setEventLabel(keybind.name + " : " + keybind.key)
+                                        .setEventLabel(keybind.target + " : " + keybind.key)
                                         .send();
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -272,12 +280,14 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     public void formatComponentString(QuickplayGuiComponent component, boolean selected) {
         if(component.origin instanceof QuickplayKeybind) {
             final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
+            final Button button = Quickplay.INSTANCE.buttonMap.get(keybind.target);
+            final String title = button == null ? "null" : Quickplay.INSTANCE.translator.get(button.translationKey);
             if(selected) {
-                component.displayString = keybindPrependedEditingText + keybind.name + keybindNameSeparator +
+                component.displayString = keybindPrependedEditingText + title + keybindNameSeparator +
                         keybindEditingColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET +
                         keybindAppendedEditingText;
             } else {
-                component.displayString = keybind.name + keybindNameSeparator + keybindColor +
+                component.displayString = title + keybindNameSeparator + keybindColor +
                         Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET;
             }
         } else {

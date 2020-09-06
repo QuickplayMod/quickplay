@@ -1,5 +1,7 @@
 package co.bugg.quickplay;
 
+import net.minecraft.launchwrapper.Launch;
+
 /**
  * Static reference objects about this Minecraft mod
  */
@@ -23,5 +25,6 @@ public class Reference {
     /**
      * URI pointing to the backend's socket
      */
-    public static final String BACKEND_SOCKET_URI = "wss://qp-socket.bugg.co/";
+    public static final String BACKEND_SOCKET_URI = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment") ?
+            "ws://localhost:54678/" : "wss://qp-socket.bugg.co/";
 }

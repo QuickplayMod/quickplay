@@ -190,6 +190,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
 
         // Calculate column count
         if(this.screen.screenType == ScreenType.BUTTONS) {
+            windowPadding = (int) (width * (width > 500 ? 0.25 : 0.15));
             columnCount = (int) Math.floor((double) (width - windowPadding) / (buttonWidth + buttonMargins));
             if(this.columnCount <= 0) {
                 this.columnCount = 1;
@@ -365,7 +366,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
         drawDefaultBackground();
 
 
-        double mainLogoMultiplier = this.scaleMultiplier / 2;
+        double mainLogoMultiplier = this.scaleMultiplier / 1.5;
         // Draw screen logo if it's set
         if(this.screen.imageURL != null && this.screen.imageURL.length() > 0) {
             GlStateManager.color(1, 1, 1, opacity);
@@ -483,88 +484,39 @@ public class QuickplayGuiScreen extends QuickplayGui {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+
+        if(mouseButton != 1) {
+            return;
+        }
         for(QuickplayGuiComponent component : this.componentList) {
-            if(!(component instanceof QuickplayGuiContextMenu) && component.mouseHovering(this, mouseX, mouseY) && mouseButton == 1) {
-                this.contextMenu = new QuickplayGuiContextMenu(Collections.singletonList(this.favoriteString), component, -1, mouseX, mouseY) {
-                    @Override
-                    public void optionSelected(int index) {
-                        closeContextMenu();
-                        if (index == 0) {
-                            if (component.origin instanceof Game) {    // Open key binding GUI & add new keybind
-                                Quickplay.INSTANCE.keybinds.keybinds.add(new QuickplayKeybind(((Game) component.origin).name,
-                                        Keyboard.KEY_NONE, QuickplayGuiGame.class, ((Game) component.origin).unlocalizedName));
-                            }
-                            try {
-                                Quickplay.INSTANCE.keybinds.save();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Quickplay.INSTANCE.sendExceptionRequest(e);
-                            }
-                            Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
-
-                            /*    // Priority management. Users can't modify priorities
-                            case 1:
-                            case 2:
-                                // context menu origin contains a component. This component then has it's own origin,
-                                // which, if the right-click is on a game icon, should be instanceof Game
-                                final QuickplayGuiComponent origin = (QuickplayGuiComponent) this.origin;
-                                if(origin.origin instanceof Game) {
-                                    final Game game = (Game) origin.origin;
-                                    final HashMap<String, Integer> gamePriorities = Quickplay.INSTANCE.settings.gamePriorities;
-                                    // Default 0 priority
-                                    if(!gamePriorities.containsKey(game.unlocalizedName)) {
-                                        gamePriorities.put(game.unlocalizedName, 0);
-                                    }
-
-                                    // Get the current priority
-                                    final int currentPriority = gamePriorities.get(game.unlocalizedName);
-
-                                    // Raising priority
-                                    if(index == 1) {
-                                        // Get next highest priority
-                                        int nextHighestPriority;
-                                        Optional<Map.Entry<String, Integer>> nextHighestPriorityOptional = gamePriorities
-                                                .entrySet()
-                                                .stream()
-                                                .filter(entry -> entry.getValue() >= currentPriority && !entry.getKey().equals(game.unlocalizedName)).min(Comparator.comparing(Map.Entry::getValue));
-                                        if(nextHighestPriorityOptional.isPresent())
-                                            nextHighestPriority = nextHighestPriorityOptional.get().getValue();
-                                        else break;
-
-                                        // Set current priority to next highest priority + 1
-                                        gamePriorities.put(game.unlocalizedName, ++nextHighestPriority);
-                                    // Lowering priority
-                                    } else {
-                                        // Get next highest priority
-                                        int nextLowestPriority;
-                                        Optional<Map.Entry<String, Integer>> nextLowestPriorityOptional = gamePriorities
-                                                .entrySet()
-                                                .stream()
-                                                .filter(entry -> entry.getValue() <= currentPriority && !entry.getKey().equals(game.unlocalizedName)).max(Comparator.comparing(Map.Entry::getValue));
-                                        if(nextLowestPriorityOptional.isPresent())
-                                            nextLowestPriority = nextLowestPriorityOptional.get().getValue();
-                                        else break;
-
-                                        // Set current priority to next highest priority + 1
-                                        gamePriorities.put(game.unlocalizedName, --nextLowestPriority);
-                                    }
-
-                                    Quickplay.INSTANCE.gameList = Arrays.asList(Quickplay.organizeGameList(Quickplay.INSTANCE.gameList.toArray(new Game[]{})));
-                                    initGui();
-                                    try {
-                                        Quickplay.INSTANCE.settings.save();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                break;
-                            */
-                        }
-                    }
-                };
-                this.addComponent(contextMenu);
-                break;
+            if(component instanceof QuickplayGuiContextMenu) {
+                continue;
             }
+            if(!component.mouseHovering(this, mouseX, mouseY)) {
+                continue;
+            }
+
+            this.contextMenu = new QuickplayGuiContextMenu(Collections.singletonList(this.favoriteString), component, -1, mouseX, mouseY) {
+                @Override
+                public void optionSelected(int index) {
+                    closeContextMenu();
+                    if (index == 0) {
+                        if (component.origin instanceof Button) {    // Open key binding GUI & add new keybind
+                            Button button = (Button) component.origin;
+                            Quickplay.INSTANCE.keybinds.keybinds.add(new QuickplayKeybind(Keyboard.KEY_NONE, button.key));
+                        }
+                        try {
+                            Quickplay.INSTANCE.keybinds.save();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Quickplay.INSTANCE.sendExceptionRequest(e);
+                        }
+                        Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
+                    }
+                }
+            };
+            this.addComponent(contextMenu);
+            break;
         }
 
 
