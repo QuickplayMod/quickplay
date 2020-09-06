@@ -323,7 +323,8 @@ public class Quickplay {
         if(conversionNeeded) {
             try {
                 final String fileName = "keybinds.json";
-                AConfiguration.createBackup(fileName, "keybinds-backup.json");
+                long now = new Date().getTime();
+                AConfiguration.createBackup(fileName, "keybinds-backup-" + now + ".json");
                 final String contents = AConfiguration.getConfigContents(fileName);
                 final JsonElement base = new Gson().fromJson(contents, JsonElement.class);
                 // checkForConversionNeeded asserts that none of the items on the following line return null.
