@@ -466,9 +466,9 @@ public class Quickplay {
             this.registerEventHandler(new GlyphRenderer());
             this.registerEventHandler(new QuickplayEventHandler());
 
-            this.chatBuffer = (ChatBuffer) new ChatBuffer(100).start();
-            this.instanceWatcher = new InstanceWatcher(30).start();
-            this.instanceDisplay = new InstanceDisplay();
+            this.chatBuffer = (ChatBuffer) new ChatBuffer(200, 8, 5000, 1000).start();
+            this.instanceWatcher = new InstanceWatcher().start();
+            this.instanceDisplay = new InstanceDisplay(this.instanceWatcher);
 
             this.commands.add(new CommandQuickplay());
 

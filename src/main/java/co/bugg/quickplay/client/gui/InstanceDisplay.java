@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.util.InstanceWatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 
@@ -19,19 +20,24 @@ public class InstanceDisplay extends MoveableHudElement {
      * Vertical padding for the transparent background
      */
     int backgroungVerticalPadding = 3;
+    /**
+     * InstanceWatcher, source of the current instance.
+     */
+    InstanceWatcher source;
 
     /**
      * Constructor
      */
-    public InstanceDisplay() {
+    public InstanceDisplay(InstanceWatcher watcher) {
         super();
+        this.source = watcher;
     }
 
     @Override
     public void render(double x, double y, double opacity) {
         super.render(x, y, opacity);
 
-        final String instance = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
+        final String instance = this.source.getCurrentServer();
         final int stringHeight = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
         final int stringWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(instance);
 

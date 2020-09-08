@@ -3,68 +3,53 @@ package co.bugg.quickplay.util;
 import co.bugg.quickplay.Quickplay;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * When online Hypixel, enabled instances of
  * this class will watch for what instance the
- * client is on by occasionally executing
- * /whereami
+ * client is on by executing /locraw whenever the
+ * client changes worlds.
  */
 public class InstanceWatcher {
     /**
-     * List of all instances in this game session
+     * List of all locations in this game session
      * Index 0 is the latest
      */
-    public List<String> instanceHistory = new ArrayList<>();
+    public List<Location> instanceHistory = new ArrayList<>();
     /**
      * Whether the instance is running & registered
      * with the event handler
      */
     public boolean started = false;
     /**
-     * How often in seconds /whereami should be executed
+     * State of the location detection; Used to determine if a LocationDetector is already created and working,
      */
-    public int whereamiFrequency;
-
-    public InstanceWatcher(int frequency) {
-        whereamiFrequency = frequency;
-    }
-
-    public int tick;
-
-    @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent event) {
-        if(event.phase == TickEvent.Phase.START && tick++ > whereamiFrequency * 20) {
-            tick = 0;
-            runWhereami();
-        }
-    }
+    private boolean polling = false;
 
     @SubscribeEvent
     public void onWorldChange(WorldEvent.Load event) {
-        // Run twice, just in case first one doesn't trigger
-        new TickDelay(this::runWhereami, 15);
-        new TickDelay(this::runWhereami, 60);
+        detectLocation();
     }
 
     /**
-     * Start the event handler tick loop & listen for chat messages
+     * Start the event handler & listen for chat messages
      * @return this
      */
     public InstanceWatcher start() {
         Quickplay.INSTANCE.registerEventHandler(this);
         started = true;
-        runWhereami();
+        detectLocation();
         return this;
     }
 
     /**
-     * Stop the event handler
+     * Stop the event handler. This does not stop any ongoing polls, only prevents new ones from being created.
      * @return this
      */
     public InstanceWatcher stop() {
@@ -73,66 +58,120 @@ public class InstanceWatcher {
         return this;
     }
 
-    /**
-     * Send the /whereami message if possible
-     * @return this
-     */
-    public InstanceWatcher runWhereami() {
-        if(Quickplay.INSTANCE.onHypixel && Quickplay.INSTANCE.enabled) {
-            new WhereamiWrapper((server) -> {
-
-                // Automatic lobby 1 swapper
-                if (Quickplay.INSTANCE.settings.lobbyOneSwap) {
-                    // Swap if this is true by the end of this if statement
-                    boolean swapToLobbyOne = true;
-                    // Don't swap if we aren't in a lobby or we don't know where we are
-                    if (server == null || !server.contains("lobby")) {
-                        swapToLobbyOne = false;
+    public void detectLocation() {
+        if(!this.polling) {
+            Location startingLocation = this.getCurrentLocation();
+            this.polling = true;
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                int counter = 0;
+                @Override
+                public void run() {
+                    // Stop polling if not on Hypixel or client is not enabled
+                    if(!Quickplay.INSTANCE.onHypixel || !Quickplay.INSTANCE.enabled) {
+                        polling = false;
+                        timer.cancel();
+                        return;
                     }
-                    // If we have been in another server before this one
-                    else if (instanceHistory.size() > 0) {
-                        // Get what server/lobby type this is
-                        final String serverType = server.replaceAll("\\d", "");
-                        // Get what server/lobby type the previous server is
-                        final String previousServerType = instanceHistory.get(0).replaceAll("\\d", "");
-                        // Swap if they aren't the same
-                        swapToLobbyOne = !serverType.equals(previousServerType);
+                    // Stop polling after 10 rounds
+                    if(counter++ >= 10) {
+                        timer.cancel();
+                        polling = false;
+                        return;
                     }
-                    // Swap if: you're in a lobby & you just joined the server to a lobby or you just left an instance that was not the same type of lobby as this
-                    if (swapToLobbyOne) {
-                        Quickplay.INSTANCE.chatBuffer.push("/swaplobby 1");
-                    }
-
+                    new LocationDetector(location -> {
+                        // Only finalize if the location has changed, and it has not changed to limbo.
+                        // This could result in running /locraw more times than necessary, but this is better than
+                        // having incorrect data.
+                        if(location != null && !location.equals(startingLocation) &&
+                                location.server != null && !location.server.equals("limbo")) {
+                            timer.cancel();
+                            polling = false;
+                            handleLobbySwap(location);
+                            logLocationChange(location);
+                        }
+                    });
                 }
-
-                if (server != null && (instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(server))) {
-                    instanceHistory.add(0, server);
-
-                    // Send analytical data to Google
-                    if (Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
-                            Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
-                        Quickplay.INSTANCE.threadPool.submit(() -> {
-                            try {
-                                Quickplay.INSTANCE.ga.createEvent("Instance", "Instance Changed")
-                                        .setEventLabel(server)
-                                        .send();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                    }
-                }
-            });
+            }, 0, 1500);
         }
-        return this;
     }
 
+    /**
+     * Determine if the client needs to swap to lobby 1 (based on their lobbyOneSwap setting), and execute
+     * the command, if necessary.
+     * @param newLocation The location the client just joined, used to compare to their old location and
+     *                    check if it meets the criteria to require a swap to lobby 1.
+     */
+    public void handleLobbySwap(Location newLocation) {
+        // Automatic lobby 1 swapper
+        if (Quickplay.INSTANCE.settings.lobbyOneSwap) {
+            // Swap if this is true by the end of this if statement
+            boolean swapToLobbyOne = true;
+            // Don't swap if we aren't in a lobby or we don't know where we are
+            if (newLocation == null || !newLocation.server.contains("lobby")) {
+                swapToLobbyOne = false;
+            }
+            // If we have been in another server before this one
+            else if (instanceHistory.size() > 0) {
+                // Get what server/lobby type this is
+                final String serverType = newLocation.server.replaceAll("\\d", "");
+                // Get what server/lobby type the previous server is
+                final String previousServerType = instanceHistory.get(0).server.replaceAll("\\d", "");
+                // Swap if they aren't the same
+                swapToLobbyOne = !serverType.equals(previousServerType);
+            }
+            // Swap if: you're in a lobby & you just joined the server to a lobby or you just left an instance that was not the same type of lobby as this
+            if (swapToLobbyOne) {
+                Quickplay.INSTANCE.chatBuffer.push("/swaplobby 1");
+            }
+
+        }
+    }
+
+    /**
+     * Log a new location change to analytics and to the user's instance history
+     * @param location The location the user just changed to that should be logged.
+     */
+    public void logLocationChange(Location location) {
+        if (location != null && (instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(location))) {
+            instanceHistory.add(0, location);
+
+            // Send analytical data to Google
+            if (Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                    Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                Quickplay.INSTANCE.threadPool.submit(() -> {
+                    try {
+                        Quickplay.INSTANCE.ga.createEvent("Instance", "Instance Changed")
+                                .setEventLabel(location.toString())
+                                .send();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Get the latest location of the client, if it exists.
+     * @return The latest location of the client.
+     */
+    public Location getCurrentLocation() {
+        if(this.instanceHistory == null || this.instanceHistory.size() <= 0) {
+            return null;
+        }
+        return this.instanceHistory.get(0);
+    }
     /**
      * Get the latest instance if possible
      * @return The instance
      */
     public String getCurrentServer() {
-        return instanceHistory.size() > 0 ? instanceHistory.get(0) : null;
+        final Location loc = this.getCurrentLocation();
+        if(loc == null) {
+            return null;
+        }
+        return loc.server;
     }
 
 }

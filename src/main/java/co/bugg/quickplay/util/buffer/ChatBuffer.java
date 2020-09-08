@@ -18,11 +18,13 @@ public class ChatBuffer extends ABuffer {
 
     /**
      * Constructor
-     *
-     * @param sleepTime Time in milliseconds between {@link #run()} calls. See {@link ABuffer#sleepTime}
+     * @param burstDelay Delay between buffer pulls when in "burst" mode.
+     * @param burstCap Total number of items allowed per burst.
+     * @param burstCooldown Total time between bursts, before another burst can occur.
+     * @param normalDelay Delay between buffer pulls when not in "burst" mode.
      */
-    public ChatBuffer(int sleepTime) {
-        super(sleepTime);
+    public ChatBuffer(int burstDelay, int burstCap, int burstCooldown, int normalDelay) {
+        super(burstDelay, burstCap, burstCooldown, normalDelay);
     }
 
     /**
@@ -34,10 +36,13 @@ public class ChatBuffer extends ABuffer {
 
         // Only send a message if the player exists & there is a message to send
         if(size() > 0 && player != null) {
-            final String message = (String) pull();
+            String message = (String) pull();
 
             // Handle as a command
-            if(message.startsWith("/") && ClientCommandHandler.instance.executeCommand(player, message) == 0) {
+            if(!message.startsWith("/")) {
+                message = "/" + message;
+            }
+            if(ClientCommandHandler.instance.executeCommand(player, message) == 0) {
                 player.sendChatMessage(message);
             }
         }

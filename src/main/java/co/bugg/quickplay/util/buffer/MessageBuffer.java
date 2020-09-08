@@ -1,13 +1,9 @@
 package co.bugg.quickplay.util.buffer;
 
 
-import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.util.*;
-
-import java.util.ArrayList;
 
 /**
  * Buffer for chat messages sent to the
@@ -19,10 +15,10 @@ public class MessageBuffer extends ABuffer {
     /**
      * Constructor
      *
-     * @param sleepTime Time in milliseconds between {@link #run()} calls. See {@link #sleepTime}
+     * @param normalDelay Time in milliseconds between {@link #run()} calls.
      */
-    public MessageBuffer(int sleepTime) {
-        super(sleepTime);
+    public MessageBuffer(int normalDelay) {
+        super(normalDelay);
     }
 
     /**
