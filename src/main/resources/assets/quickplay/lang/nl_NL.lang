@@ -22,7 +22,7 @@ quickplay.commands.quickplay.history.help=Bekijk welke keren je voor het laatst 
 quickplay.commands.quickplay.history.header=Dit zijn de laatste %s keren dat je online was, meest recent bovenaan:
 quickplay.commands.quickplay.history.error=Er is iets misgegaan!
 quickplay.commands.quickplay.wiki.help=Open de Quickplay Help-website.
-quickplay.commands.quickplay.version.help=View the current Quickplay version.
+quickplay.commands.quickplay.version.help=Geef de huidige Quickplay-versie weer.
 quickplay.commands.quickplay.version.message=Quickplay v%s
 
 quickplay.commands.quickplay.premium.account.help=Retrieve information about your account.
@@ -193,7 +193,7 @@ quickplay.premium.ingameReward.adroll.skipAd=Purchase any server rank to permane
 quickplay.premium.ingameReward.adroll.clickToVisit=Click here to visit the store.
 quickplay.premium.ingameReward.menu.header=Kies je beloning
 quickplay.premium.ingameReward.menu.streak=Dagelijkse reeks - Huidig: %s - Highscore: %s
-quickplay.premium.ingameReward.menu.claim.error=Something went wrong while claiming your reward. Try again, or perhaps the reward has expired.
+quickplay.premium.ingameReward.menu.claim.error=Er is iets misgegaan bij het opeisen van je beloning... Probeer het opnieuw, of misschien is de beloning verlopen.
 quickplay.premium.ingameReward.claimed.header=Beloning opgeëist!
 quickplay.premium.ingameReward.claimed.close=Druk op %s om dit menu te sluiten.
 quickplay.premium.ingameReward.claimed.share=Delen
