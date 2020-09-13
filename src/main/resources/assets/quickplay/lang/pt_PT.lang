@@ -1,16 +1,16 @@
-quickplay.offline=You are not currently online the Hypixel Network!
-quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
+quickplay.offline=Não estás no servidor do Hypixel!
+quickplay.disabled=O Quickplay foi forçado a ser desativado! Razão: %s.
 quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Click to open.
 
 quickplay.commands.quickplay.help.help=Display the available commands.
-quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
+quickplay.commands.quickplay.config.help=Configura o Quickplay.
 quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
-quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
+quickplay.commands.quickplay.limbo.alreadythere=Ups! Já estás no Limbo!
 quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
 quickplay.commands.quickplay.keybinds.help=Open the Quickplay Keybind editor.
 quickplay.commands.quickplay.moveinstance.deprecated=This command is deprecated. You should use "/qp config" instead!
-quickplay.commands.quickplay.discord.help=Join the Quickplay Discord server.
+quickplay.commands.quickplay.discord.help=Entra no servidor de discord do Quickplay.
 quickplay.commands.quickplay.discord.message=Discord is the #1 way to get in touch with @bugfroggy. Join the Quickplay Discord if you have any questions, feedback, or bug reports.
 quickplay.commands.quickplay.party.help=Customize your Quickplay Party Mode.
 quickplay.commands.quickplay.premium.help=Command for Quickplay Premium features.
