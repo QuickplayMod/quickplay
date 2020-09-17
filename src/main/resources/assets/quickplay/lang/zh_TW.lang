@@ -25,7 +25,7 @@ quickplay.commands.quickplay.wiki.help=打開 Quickplay 說明網站。
 quickplay.commands.quickplay.version.help=查看目前的 Quickplay 版本。
 quickplay.commands.quickplay.version.message=Quickplay v%s
 
-quickplay.commands.quickplay.premium.account.help=Retrieve information about your account.
+quickplay.commands.quickplay.premium.account.help=取得你的帳戶資訊。
 quickplay.commands.quickplay.premium.auth.help=通過 Quickplay Premium 後端伺服器重新驗證。
 quickplay.commands.quickplay.premium.auth.runningRequest=驗證中...
 quickplay.commands.quickplay.premium.auth.done=驗證成功！
@@ -193,7 +193,7 @@ quickplay.premium.ingameReward.adroll.skipAd=購買 Rank 以永久跳過這個�
 quickplay.premium.ingameReward.adroll.clickToVisit=點擊這裡開啟商店網頁。
 quickplay.premium.ingameReward.menu.header=選擇你的獎勵
 quickplay.premium.ingameReward.menu.streak=每日獎勵連續領取次數 - 目前： %s - 最高： %s
-quickplay.premium.ingameReward.menu.claim.error=Something went wrong while claiming your reward. Try again, or perhaps the reward has expired.
+quickplay.premium.ingameReward.menu.claim.error=領取獎勵時發生錯誤。這可能是該獎勵已經失效，否則請稍後再試。
 quickplay.premium.ingameReward.claimed.header=獎勵已領取！
 quickplay.premium.ingameReward.claimed.close=按 %s 關閉這個選單。
 quickplay.premium.ingameReward.claimed.share=分享
