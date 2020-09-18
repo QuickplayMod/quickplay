@@ -34,17 +34,17 @@ public class PremiumCommandAccount extends ACommand {
     @Override
     public void run(String[] strings) {
         IChatComponent component = new QuickplayChatComponentTranslation("quickplay.premium.expiresIn",
-                String.valueOf(DateUtil.calculateDaysUntil(Quickplay.INSTANCE.expirationTime)));
+                String.valueOf(DateUtil.calculateDaysUntil(Quickplay.INSTANCE.premiumExpirationDate)));
         // Append purchase page if it is available
         if(Quickplay.INSTANCE.purchasePageURL != null) {
-            IChatComponent purchagePageLang = new QuickplayChatComponentTranslation("quickplay.premium.purchasePage");
+            IChatComponent purchasePageLang = new QuickplayChatComponentTranslation("quickplay.premium.purchasePage");
             IChatComponent purchasePageLink = new ChatComponentText(Quickplay.INSTANCE.purchasePageURL);
             // Make clickable link
             purchasePageLink.setChatStyle(new ChatStyle().setChatClickEvent(
                     new ClickEvent(ClickEvent.Action.OPEN_URL, Quickplay.INSTANCE.purchasePageURL)
             ).setColor(EnumChatFormatting.AQUA));
             component.appendText("\n\n");
-            component.appendSibling(purchagePageLang);
+            component.appendSibling(purchasePageLang);
             component.appendSibling(purchasePageLink);
         }
         component.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW));

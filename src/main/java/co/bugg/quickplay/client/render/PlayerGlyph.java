@@ -44,7 +44,7 @@ public class PlayerGlyph {
      */
     public Double yOffset = 0.0;
     /**
-     * Whether this glyph should be dipslayed in-game
+     * Whether this glyph should be displayed in-game
      */
     public boolean displayInGames = false;
     /**

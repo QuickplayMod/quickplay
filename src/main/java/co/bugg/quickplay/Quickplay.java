@@ -191,16 +191,22 @@ public class Quickplay {
      * How many ping requests have been sent out
      */
     public int currentPing = 0;
-
     /**
-     * Whether this client is premium or not
-     * Verified from the web server
+     * Whether this client has administrative privileges or not.
+     * Admins are able to make modifications to the games list, see
+     * restricted information, and interact with buttons which are
+     * marked as admin-only.
      */
-    boolean premiumClient = false;
+    public boolean isAdminClient = false;
+    /**
+     * Whether this client is premium or not. Premium clients
+     * are able to use some features which are otherwise locked.
+     */
+    public boolean isPremiumClient = false;
     /**
      * When Quickplay Premium expires for this user
      */
-    public long expirationTime = 0;
+    public Date premiumExpirationDate = new Date(0);
     /**
      * URL to this Premium user's purchase page.
      */
@@ -456,13 +462,6 @@ public class Quickplay {
                 }
             });
 
-            // Check for Premium subscription
-            try {
-                this.verifyPremium();
-            } catch (IOException | NoSubscriptionException e) {
-                e.printStackTrace();
-            }
-
             this.registerEventHandler(new GlyphRenderer());
             this.registerEventHandler(new QuickplayEventHandler());
 
@@ -647,71 +646,5 @@ public class Quickplay {
             ITextureObject object = new ThreadDownloadImageData(file, null, resourceLocation, null);
             texturemanager.loadTexture(resourceLocation, object);
         }
-    }
-
-    /**
-     * Verify whether this client has a Quickplay Premium subscription, and authenticate
-     * {@link #expirationTime} and {@link #premiumClient} are set by this method.
-     * This method also returns {@link #premiumClient} on completion.
-     * @throws NoSubscriptionException when the client attempts to get a handshake secret,
-     *      but doesnt have a subscription.
-     */
-    public boolean verifyPremium() throws IOException, NoSubscriptionException {
-
-        final PremiumAuthenticator authenticator = new PremiumAuthenticator();
-        final String secret = authenticator.getHandshakeSecret();
-
-        authenticator.sendSessionServerRequest(secret);
-
-        final Request request = this.requestFactory.premiumVerificationRequest();
-        if(request != null) {
-            final WebResponse response = request.execute();
-            if(response != null && response.ok) {
-                if(response.actions != null)
-                    for(final ResponseAction action : response.actions)
-                        action.run();
-
-                if(response.content != null && response.content.getAsJsonObject().get("premium") != null) {
-                    this.premiumClient = response.content.getAsJsonObject().get("premium").getAsBoolean();
-
-                    if(response.content.getAsJsonObject().get("sessionKey") != null) {
-                        this.sessionKey = response.content.getAsJsonObject().get("sessionKey").getAsString();
-                    }
-
-                    // Reauthenticate just before the session expires
-                    if(response.content.getAsJsonObject().get("sessionExpiresIn") != null)
-                        this.threadPool.submit(() -> {
-                            try {
-                                // Sleep until 5 minutes before the session expires, or for at least 5 minutes.
-                                Thread.sleep(Math.max(response.content.getAsJsonObject().get("sessionExpiresIn")
-                                        .getAsLong() - 300000, 300000));
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            try {
-                                verifyPremium();
-                            } catch (IOException | NoSubscriptionException e) {
-                                e.printStackTrace();
-                            }
-                        });
-
-                    if(this.premiumClient && response.content.getAsJsonObject().get("expires") != null) {
-                        this.expirationTime = response.content.getAsJsonObject().get("expires").getAsLong();
-                    }
-                    if(this.premiumClient && response.content.getAsJsonObject().get("purchasePage") != null) {
-                        this.purchasePageURL = response.content.getAsJsonObject().get("purchasePage").getAsString();
-                    }
-                } else {
-                    this.premiumClient = false;
-                }
-
-                return this.premiumClient;
-            } else {
-                throw new IOException("Failed to verify Premium: null or not-ok response from web server.");
-            }
-        } else {
-            throw new RuntimeException("Null request was returned by PremiumRequestFactory#premiumVerificationRequest()");
-        }
-
     }
 }

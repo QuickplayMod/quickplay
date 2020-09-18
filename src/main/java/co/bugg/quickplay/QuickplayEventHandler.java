@@ -104,7 +104,7 @@ public class QuickplayEventHandler {
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
 
-        if(Quickplay.INSTANCE.onHypixel && Quickplay.INSTANCE.settings.ingameDailyReward && Quickplay.INSTANCE.premiumClient) {
+        if(Quickplay.INSTANCE.onHypixel && Quickplay.INSTANCE.settings.ingameDailyReward && Quickplay.INSTANCE.isPremiumClient) {
             // Get & verify link from chat
             final Matcher matcher = pattern.matcher(event.message.getUnformattedText());
             if (matcher.find()) {

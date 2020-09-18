@@ -2,6 +2,12 @@ package co.bugg.quickplay.actions.clientbound;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
+import co.bugg.quickplay.actions.serverbound.InitializeClientAction;
+import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.ServerUnavailableException;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 
 import java.nio.ByteBuffer;
 import java.util.Date;
@@ -83,7 +89,29 @@ public class AuthCompleteAction extends Action {
     @Override
     public void run() {
         Quickplay.INSTANCE.sessionKey = this.getPayloadObjectAsString(0);
-        // TODO load other payload items
+        Date expires = new Date(this.getPayloadObject(1).getInt() * 1000);
+        long sleepTime = expires.getTime() - new Date().getTime();
+        Quickplay.INSTANCE.threadPool.submit(() -> {
+            try {
+                Thread.sleep(sleepTime);
+                Quickplay.INSTANCE.isAdminClient = false;
+                Quickplay.INSTANCE.isPremiumClient = false;
+                Quickplay.INSTANCE.premiumExpirationDate = new Date(0);
+                Quickplay.INSTANCE.sessionKey = "";
+                Quickplay.INSTANCE.socket.sendAction(new InitializeClientAction());
+            } catch (ServerUnavailableException | InterruptedException e) {
+                e.printStackTrace();
+                Quickplay.INSTANCE.sendExceptionRequest(e);
+                Quickplay.INSTANCE.messageBuffer.push(new Message(
+                        new ChatComponentTranslation("quickplay.failedToAuth")
+                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)),
+                        true
+                ));
+            }
+        });
+        Quickplay.INSTANCE.isAdminClient = this.getPayloadObject(5).get(0) != 0;
+        Quickplay.INSTANCE.isPremiumClient = this.getPayloadObject(6).get(0) != 0;
+        Quickplay.INSTANCE.premiumExpirationDate = new Date(this.getPayloadObject(7).getInt() * 1000);
         System.out.println("Authenticated with Quickplay backend.");
     }
 }

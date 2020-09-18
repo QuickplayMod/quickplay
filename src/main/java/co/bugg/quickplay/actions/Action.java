@@ -85,6 +85,11 @@ public class Action {
         actionIdToActionClass.put((short) 43, AlterTranslationAction.class);
         actionIdToActionClass.put((short) 44, DeleteTranslationAction.class);
         actionIdToActionClass.put((short) 45, RemoveTranslationAction.class);
+        actionIdToActionClass.put((short) 46, AlterGlyphAction.class);
+        actionIdToActionClass.put((short) 47, GetDailyRewardAction.class);
+        actionIdToActionClass.put((short) 48, SetDailyRewardDataAction.class);
+        actionIdToActionClass.put((short) 49, ClaimDailyRewardAction.class);
+        actionIdToActionClass.put((short) 50, PushEditHistoryEventAction.class);
     }
 
     /**
@@ -150,7 +155,7 @@ public class Action {
 
     /**
      * Get an object from the payload at the specified index
-     * @param index Index of the item to get. Should be >= 0 and < {@link this#payloadCount()}
+     * @param index Index of the item to get. Should be >= 0 and < {@link #payloadCount()}
      * @return The payload item, or null if it does not exist.
      */
     public ByteBuffer getPayloadObject(int index) {

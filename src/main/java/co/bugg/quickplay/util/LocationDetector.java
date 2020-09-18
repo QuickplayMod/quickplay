@@ -79,7 +79,7 @@ public class LocationDetector {
                 Quickplay.INSTANCE.onHypixel &&
                 !event.isCanceled() &&
                 matcher.find() &&
-                listening
+                this.listening
         ) {
 
             Location location;
@@ -94,7 +94,7 @@ public class LocationDetector {
             }
 
             // Get the current instance.
-            stopListening(location);
+            this.stopListening(location);
         }
 
     }
