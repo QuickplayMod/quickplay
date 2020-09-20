@@ -1,6 +1,11 @@
 package co.bugg.quickplay.actions.clientbound;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
+import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 
 /**
  * ID: 39
@@ -18,6 +23,8 @@ public class AuthFailedAction extends Action {
 
     @Override
     public void run() {
-        // TODO
+        Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
+                "quickplay.failedToAuth"
+        ).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
     }
 }

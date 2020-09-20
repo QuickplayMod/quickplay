@@ -1,16 +1,12 @@
 package co.bugg.quickplay;
 
-import co.bugg.quickplay.client.dailyreward.DailyRewardParser;
+import co.bugg.quickplay.client.dailyreward.DailyRewardInitiator;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
-import co.bugg.quickplay.util.Message;
-import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerChecker;
 import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -109,16 +105,7 @@ public class QuickplayEventHandler {
             final Matcher matcher = pattern.matcher(event.message.getUnformattedText());
             if (matcher.find()) {
                 Quickplay.INSTANCE.threadPool.submit(() -> {
-                    try {
-                        new DailyRewardParser(matcher.group(1));
-                    } catch(Exception e) {
-                        Quickplay.INSTANCE.messageBuffer.push(new Message(
-                                new QuickplayChatComponentTranslation("quickplay.premium.ingameReward.error")
-                                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)), true));
-
-                        e.printStackTrace();
-                        Quickplay.INSTANCE.sendExceptionRequest(e);
-                    }
+                    new DailyRewardInitiator(matcher.group(1));
 
                     // Send analytical data
                     if(Quickplay.INSTANCE.ga != null) {

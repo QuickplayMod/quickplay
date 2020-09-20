@@ -1,5 +1,6 @@
 quickplay.offline=You are not currently online the Hypixel Network!
-quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
+quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
+quickplay.bannedFromOfficialApi=You are banned from using the official Quickplay API! Please contact bugfroggy if you believe this is a mistake.
 quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Click to open.
 

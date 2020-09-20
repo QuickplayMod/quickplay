@@ -68,7 +68,7 @@ public class InstanceWatcher {
                 @Override
                 public void run() {
                     // Stop polling if not on Hypixel or client is not enabled
-                    if(!Quickplay.INSTANCE.onHypixel || !Quickplay.INSTANCE.enabled) {
+                    if(!Quickplay.INSTANCE.onHypixel || !Quickplay.INSTANCE.isEnabled) {
                         polling = false;
                         timer.cancel();
                         return;

@@ -30,7 +30,11 @@ public class MessageBuffer extends ABuffer {
 
         // Only send a message if the player exists & there is a message to send
         if(size() > 0 && player != null) {
-            player.addChatMessage(((Message) pull()).getMessage());
+            Object obj = this.pull();
+            if(!(obj instanceof Message)) {
+                return;
+            }
+            player.addChatMessage(((Message) obj).getMessage());
         }
     }
 

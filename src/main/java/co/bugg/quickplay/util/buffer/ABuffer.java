@@ -145,7 +145,7 @@ public abstract class ABuffer implements Runnable {
                 }
                 try {
                     if(this.size() > 0) {
-                        run();
+                        this.run();
                     }
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {

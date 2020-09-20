@@ -132,18 +132,26 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         GlStateManager.enableBlend();
 
         drawDefaultBackground();
-
-        drawScrollbar(width / 2 + buttonWidth / 2 + 3);
-
-        //Override super.drawScreen(mouseX, mouseY, partialTicks);
         updateOpacity();
-        for (QuickplayGuiComponent component : componentList) {
-            double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfButtons ? 1 :
-                    (component.y - scrollPixel) + scrollFadeDistance < topOfButtons ? 0 :
-                            (scrollFadeDistance - ((double) topOfButtons - (double) (component.y - scrollPixel))) /
-                                    (double) scrollFadeDistance) : 1;
-            component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
+
+        if(Quickplay.INSTANCE.isEnabled) {
+            drawScrollbar(width / 2 + buttonWidth / 2 + 3);
+
+            //Override super.drawScreen(mouseX, mouseY, partialTicks);
+            for (QuickplayGuiComponent component : componentList) {
+                double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfButtons ? 1 :
+                        (component.y - scrollPixel) + scrollFadeDistance < topOfButtons ? 0 :
+                                (scrollFadeDistance - ((double) topOfButtons - (double) (component.y - scrollPixel))) /
+                                        (double) scrollFadeDistance) : 1;
+                component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
+            }
+        } else {
+            // Quickplay is disabled, draw error message
+            this.drawCenteredString(this.fontRendererObj,
+                    Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.width / 2, this.height / 2, 0xffffff);
         }
+
 
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();

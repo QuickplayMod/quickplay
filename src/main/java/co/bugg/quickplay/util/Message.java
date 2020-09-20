@@ -63,9 +63,13 @@ public class Message {
      */
     public IChatComponent getMessage() {
         IChatComponent component = new ChatComponentText("");
-        if(separators) component.appendSibling(getMessageSeparator()).appendText("\n");
+        if(separators) {
+            component.appendSibling(getMessageSeparator()).appendText("\n");
+        }
         component.appendSibling(message);
-        if(separators) component.appendText("\n").appendSibling(getMessageSeparator());
+        if(separators) {
+            component.appendText("\n").appendSibling(getMessageSeparator());
+        }
         return component;
     }
 

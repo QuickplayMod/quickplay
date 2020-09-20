@@ -149,7 +149,7 @@ public class Action {
      * Get the total number of payload items.
      * @return Number of items in {@link this#payloadObjs}
      */
-    int payloadCount() {
+    public int payloadCount() {
         return this.payloadObjs.size();
     }
 

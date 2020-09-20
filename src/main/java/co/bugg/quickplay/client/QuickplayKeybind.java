@@ -145,6 +145,9 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
      * Called whenever this keybind is triggered
      */
     public void keyPressed() {
+        if(!Quickplay.INSTANCE.checkEnabledStatus()) {
+            return;
+        }
         if(this.target == null || this.target.length() <= 0) {
             return;
         }
@@ -170,8 +173,8 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
-        // Keybinds only work On Hypixel and if Quickplay is enabled.
-        if(!Quickplay.INSTANCE.checkEnabledStatus() || !Quickplay.INSTANCE.onHypixel) {
+        // Keybinds only work On Hypixel. Enabled checks are done when the keybind is triggered.
+        if(!Quickplay.INSTANCE.onHypixel) {
             return;
         }
         if(key != Keyboard.KEY_NONE && Keyboard.isKeyDown(key)) {
@@ -188,7 +191,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
                 /* Make sure the key wasn't let go and pressed again between
                  the original press and the time this code runs. */
                 if(Keyboard.isKeyDown(key) && this.pressCount == currentPressCount) {
-                    keyPressed();
+                    this.keyPressed();
                 }
             });
         }

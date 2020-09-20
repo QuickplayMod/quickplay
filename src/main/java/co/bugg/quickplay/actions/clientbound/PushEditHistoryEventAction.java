@@ -48,6 +48,6 @@ public class PushEditHistoryEventAction extends Action {
 
     @Override
     public void run() {
-        // TODO
+        // Currently only used in the web panel.
     }
 }

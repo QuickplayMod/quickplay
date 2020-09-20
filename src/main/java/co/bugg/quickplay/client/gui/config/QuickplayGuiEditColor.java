@@ -106,28 +106,32 @@ public class QuickplayGuiEditColor extends QuickplayGui {
         /*
          * Draw background
          */
-
         drawDefaultBackground();
 
-        // Draw text
-        if(opacity > 0) {
-            GlStateManager.scale(nameTextScale, nameTextScale, nameTextScale);
-            drawCenteredString(mc.fontRendererObj, colorName, (int) (width / 2 / nameTextScale),
-                    (int) (nameTextY / nameTextScale), 0xFFFFFF);
-            GlStateManager.scale(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
+        if(Quickplay.INSTANCE.isEnabled) {
+            // Draw text
+            if (opacity > 0) {
+                GlStateManager.scale(nameTextScale, nameTextScale, nameTextScale);
+                drawCenteredString(mc.fontRendererObj, colorName, (int) (width / 2 / nameTextScale),
+                        (int) (nameTextY / nameTextScale), 0xFFFFFF);
+                GlStateManager.scale(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
 
-            GlStateManager.scale(sampleTextScale, sampleTextScale, sampleTextScale);
-            drawCenteredString(mc.fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.config.color.gui.sampletext"),
-                    (int) (width / 2 / sampleTextScale), (int) (sampleTextY / sampleTextScale),
-                    color.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-            GlStateManager.scale(1 / sampleTextScale, 1 / sampleTextScale, 1 / sampleTextScale);
+                GlStateManager.scale(sampleTextScale, sampleTextScale, sampleTextScale);
+                drawCenteredString(mc.fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.config.color.gui.sampletext"),
+                        (int) (width / 2 / sampleTextScale), (int) (sampleTextY / sampleTextScale),
+                        color.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                GlStateManager.scale(1 / sampleTextScale, 1 / sampleTextScale, 1 / sampleTextScale);
+            }
+            super.drawScreen(mouseX, mouseY, partialTicks);
+        } else {
+            // Quickplay is disabled, draw error message
+            this.drawCenteredString(this.fontRendererObj,
+                    Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.width / 2, this.height / 2, 0xffffff);
         }
-
-        super.drawScreen(mouseX, mouseY, partialTicks);
 
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
-
     }
 
     @Override

@@ -67,6 +67,22 @@ public class PlayerGlyph {
     }
 
     /**
+     * Constructor
+     * @param uuid UUID of the owner
+     * @param resource URL to the glyph image
+     * @param height The height of the glyph in pixels
+     * @param yOffset The offset of the glyph from the original position in meters
+     * @param displayInGames Whether or not this Glyph should be displayed in-game
+     */
+    public PlayerGlyph(UUID uuid, URL resource, double height, double yOffset, boolean displayInGames) {
+        this.uuid = uuid;
+        this.path = resource;
+        this.height = height;
+        this.yOffset = yOffset;
+        this.displayInGames = displayInGames;
+    }
+
+    /**
      * Try to download this glyph to the Glyphs resource folder
      */
     public synchronized void download() {

@@ -1,5 +1,6 @@
 package co.bugg.quickplay.actions.clientbound;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 
 import java.nio.ByteBuffer;
@@ -32,6 +33,6 @@ public class SetCurrentServerAction extends Action {
 
     @Override
     public void run() {
-        // TODO
+        Quickplay.INSTANCE.currentServer = this.getPayloadObjectAsString(0);
     }
 }

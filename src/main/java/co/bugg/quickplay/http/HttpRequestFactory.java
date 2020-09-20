@@ -142,7 +142,7 @@ public class HttpRequestFactory {
 
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
             final Gson gson = new Gson();
-            params.put("enabled", String.valueOf(Quickplay.INSTANCE.enabled));
+            params.put("enabled", String.valueOf(Quickplay.INSTANCE.isEnabled));
             params.put("currentIP", ServerChecker.getCurrentIP());
             params.put("onHypixel", String.valueOf(Quickplay.INSTANCE.onHypixel));
             params.put("hypixelVerificationMethod", String.valueOf(Quickplay.INSTANCE.verificationMethod));

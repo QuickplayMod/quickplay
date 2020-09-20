@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.gui;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import org.lwjgl.opengl.GL11;
 
@@ -41,15 +42,16 @@ public class MoveableHudElementEditor extends QuickplayGui {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
 
-        /*
-         * Draw background
-         */
-
-        drawDefaultBackground();
-
-        element.render(xRatio, yRatio, opacity);
-
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        if(Quickplay.INSTANCE.isEnabled) {
+            drawDefaultBackground();
+            element.render(xRatio, yRatio, opacity);
+            super.drawScreen(mouseX, mouseY, partialTicks);
+        } else {
+            // Quickplay is disabled, draw error message
+            this.drawCenteredString(this.fontRendererObj,
+                    Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.width / 2, this.height / 2, 0xffffff);
+        }
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();

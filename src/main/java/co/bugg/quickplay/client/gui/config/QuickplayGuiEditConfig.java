@@ -284,85 +284,88 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
 
-        /*
-         * Draw background
-         */
-
         drawDefaultBackground();
-
-        /*
-         * Draw the header text
-         */
-
-        if(opacity > 0) {
-            // Scale up to header size
-            GlStateManager.scale(headerScale, headerScale, headerScale);
-            drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.config.gui.title"),
-                    (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
-                    // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
-                    (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-            // Scale back down
-            GlStateManager.scale(1 / headerScale, 1 / headerScale, 1 / headerScale);
-
-            // Scale up to subheader size
-            GlStateManager.scale(subheaderScale, subheaderScale, subheaderScale);
-            drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.config.gui.version") + " " +
-                            Reference.VERSION, (int) (width / 2 / subheaderScale),
-                    subheaderY,
-                    // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
-                    (Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-            // Scale back down
-            GlStateManager.scale(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
-        }
-
-        /*
-         * Draw options list background
-         */
-
-        drawRect((int) (width * boxMargins), topOfBox, (int) (width * (1 - boxMargins)), height,
-                0x000000 | ((int) (opacity * 0.5 * 255) << 24));
-
-        drawScrollbar((int) ((width * (1 - boxMargins)) - scrollbarWidth) - ConfigElement.ELEMENT_MARGINS);
-
-        /*
-         * Draw buttons
-         * super.drawScreen override
-         */
         updateOpacity();
-        for (QuickplayGuiComponent component : componentList) {
-            if(!component.displayString.equals(openFolderText)) {
-                double scrollOpacity = ((component.y - scrollPixel) > topOfBox ? 1 :
-                        (component.y - scrollPixel) + ConfigElement.ELEMENT_HEIGHT < topOfBox ? 0 :
-                                (fadeDistance - ((double) topOfBox - (double) (component.y - scrollPixel))) / (double) fadeDistance);
 
-                if((component.y - scrollPixel) + fadeDistance > topOfBox) {
-                    component.draw(this, mouseX, mouseY, opacity * (float) scrollOpacity);
-                }
-            } else {
-                component.draw(this, mouseX, mouseY, opacity);
+        if(Quickplay.INSTANCE.isEnabled) {
+            /*
+             * Draw the header text
+             */
+
+            if (opacity > 0) {
+                // Scale up to header size
+                GlStateManager.scale(headerScale, headerScale, headerScale);
+                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.config.gui.title"),
+                        (int) (width / 2 / headerScale), (int) (height * 0.05 / headerScale),
+                        // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
+                        (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+                // Scale back down
+                GlStateManager.scale(1 / headerScale, 1 / headerScale, 1 / headerScale);
+
+                // Scale up to subheader size
+                GlStateManager.scale(subheaderScale, subheaderScale, subheaderScale);
+                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.config.gui.version") + " " +
+                                Reference.VERSION, (int) (width / 2 / subheaderScale),
+                        subheaderY,
+                        // Replace the first 8 bits (built-in alpha) with the custom fade-in alpha
+                        (Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+                // Scale back down
+                GlStateManager.scale(1 / subheaderScale, 1 / subheaderScale, 1 / subheaderScale);
             }
-        }
 
-        /*
-         * Draw description text label
-         */
-        if(mouseStandStillTicks >= hoverDelayTicks) {
+            /*
+             * Draw options list background
+             */
+
+            drawRect((int) (width * boxMargins), topOfBox, (int) (width * (1 - boxMargins)), height,
+                    0x000000 | ((int) (opacity * 0.5 * 255) << 24));
+
+            drawScrollbar((int) ((width * (1 - boxMargins)) - scrollbarWidth) - ConfigElement.ELEMENT_MARGINS);
+
+            /*
+             * Draw buttons
+             * super.drawScreen override
+             */
             for (QuickplayGuiComponent component : componentList) {
-                if(component.origin instanceof ConfigElement && component.y - scrollPixel > scrollFrameTop - fadeDistance) {
-                    int y = component.y;
-                    if(component.scrollable) y -= scrollPixel;
+                if (!component.displayString.equals(openFolderText)) {
+                    double scrollOpacity = ((component.y - scrollPixel) > topOfBox ? 1 :
+                            (component.y - scrollPixel) + ConfigElement.ELEMENT_HEIGHT < topOfBox ? 0 :
+                                    (fadeDistance - ((double) topOfBox - (double) (component.y - scrollPixel))) / (double) fadeDistance);
 
-                    if((component.x < mouseX && component.x + component.width > mouseX) && (y < mouseY && y + component.height > mouseY)) {
-                        final ConfigElement element = (ConfigElement) component.origin;
-                        if(element != null && element.optionInfo != null && Quickplay.INSTANCE.translator.get(element.optionInfo.category()).length() > 0) {
-                            final List<String> text = new ArrayList<>();
-                            text.add(Quickplay.INSTANCE.translator.get(element.optionInfo.helpText()));
-                            drawHoveringText(text, mouseX, mouseY, mc.fontRendererObj);
+                    if ((component.y - scrollPixel) + fadeDistance > topOfBox) {
+                        component.draw(this, mouseX, mouseY, opacity * (float) scrollOpacity);
+                    }
+                } else {
+                    component.draw(this, mouseX, mouseY, opacity);
+                }
+            }
+
+            /*
+             * Draw description text label
+             */
+            if (mouseStandStillTicks >= hoverDelayTicks) {
+                for (QuickplayGuiComponent component : componentList) {
+                    if (component.origin instanceof ConfigElement && component.y - scrollPixel > scrollFrameTop - fadeDistance) {
+                        int y = component.y;
+                        if (component.scrollable) y -= scrollPixel;
+
+                        if ((component.x < mouseX && component.x + component.width > mouseX) && (y < mouseY && y + component.height > mouseY)) {
+                            final ConfigElement element = (ConfigElement) component.origin;
+                            if (element != null && element.optionInfo != null && Quickplay.INSTANCE.translator.get(element.optionInfo.category()).length() > 0) {
+                                final List<String> text = new ArrayList<>();
+                                text.add(Quickplay.INSTANCE.translator.get(element.optionInfo.helpText()));
+                                drawHoveringText(text, mouseX, mouseY, mc.fontRendererObj);
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
             }
+        } else {
+            // Quickplay is disabled, draw error message
+            this.drawCenteredString(this.fontRendererObj,
+                    Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.width / 2, this.height / 2, 0xffffff);
         }
 
         GlStateManager.disableBlend();

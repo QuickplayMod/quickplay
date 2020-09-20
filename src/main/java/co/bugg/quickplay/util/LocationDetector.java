@@ -75,7 +75,7 @@ public class LocationDetector {
         final Matcher matcher = pattern.matcher(message);
 
         if(
-                Quickplay.INSTANCE.enabled &&
+                Quickplay.INSTANCE.isEnabled &&
                 Quickplay.INSTANCE.onHypixel &&
                 !event.isCanceled() &&
                 matcher.find() &&

@@ -134,15 +134,22 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
 
         drawDefaultBackground();
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        if(Quickplay.INSTANCE.isEnabled) {
+            super.drawScreen(mouseX, mouseY, partialTicks);
 
-        if(drawTakenPopup) {
-            final List<String> hoverText = new ArrayList<>();
-            hoverText.add(Quickplay.INSTANCE.translator.get("quickplay.gui.keybinds.taken"));
-            drawHoveringText(hoverText, mouseX, mouseY);
+            if (drawTakenPopup) {
+                final List<String> hoverText = new ArrayList<>();
+                hoverText.add(Quickplay.INSTANCE.translator.get("quickplay.gui.keybinds.taken"));
+                drawHoveringText(hoverText, mouseX, mouseY);
+            }
+
+            drawScrollbar(width / 2 + buttonWidth / 2 + 3);
+        } else {
+            // Quickplay is disabled, draw error message
+            this.drawCenteredString(this.fontRendererObj,
+                    Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.width / 2, this.height / 2, 0xffffff);
         }
-
-        drawScrollbar(width / 2 + buttonWidth / 2 + 3);
 
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();

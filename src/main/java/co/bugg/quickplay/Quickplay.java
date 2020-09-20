@@ -70,19 +70,32 @@ public class Quickplay {
 
     /**
      * Whether the client is currently connected to the Hypixel network
+     * @deprecated in favor of {@link #currentServer}
+     * TODO remove
      */
+    @Deprecated
     public boolean onHypixel = false;
+    /**
+     * The recognized server that the user is currently on, according to the Quickplay backend.
+     * This is used for determining whether certain buttons/actions/screens should be visible/executable at any
+     * given moment or not, under the "availableOn" array. If this is within the "availableOn" array of an item, then
+     * that item should be "usable". If the "availableOn" array is empty, then this value isn't checked for that item.
+     */
+    public String currentServer = null;
     /**
      * Whether the mod is currently enabled
      */
-    public boolean enabled = false;
+    public boolean isEnabled = false;
     /**
      * The reason the mod has been disabled, if it is disabled
      */
     public String disabledReason = null;
     /**
      * Verification method used to verify the client is online Hypixel, or null if not on Hypixel.
+     * @deprecated Verification is done server-side as of 2.1.0.
+     * TODO remove
      */
+    @Deprecated
     public ServerChecker.VerificationMethod verificationMethod;
     /**
      * Thread pool for blocking code
@@ -120,7 +133,10 @@ public class Quickplay {
     public AssetFactory assetFactory;
     /**
      * List of games
+     * @deprecated as of 2.1.0
+     * TODO remove
      */
+    @Deprecated
     public List<Game> gameList = new ArrayList<>();
     /**
      * Map of screens, mapping their key to the screen object.
@@ -144,6 +160,7 @@ public class Quickplay {
     public InstanceDisplay instanceDisplay;
     /**
      * Mods settings
+     * TODO send this data to the backend on start, as well as whenever it's changed
      */
     public ConfigSettings settings;
     /**
@@ -152,10 +169,12 @@ public class Quickplay {
     public ConfigKeybinds keybinds;
     /**
      * Privacy settings for the mod's data collection
+     * TODO remove
      */
     public ConfigUsageStats usageStats;
     /**
      * Whether the user should be asked if they want to share stats next time they join a server
+     * TODO remove
      */
     public boolean promptUserForUsageStats = false;
     /**
@@ -164,10 +183,12 @@ public class Quickplay {
      * If it becomes time for the mod to execute a request but
      * the frequency is equal to 0 or less, then all ping
      * requests will be cancelled until the mod re-enables (usually at restart).
+     * TODO remove
      */
     public int pingFrequency = 0;
     /**
      * Thread containing code that's pinging the web server periodically
+     * TODO remove
      */
     public Future pingThread;
     /**
@@ -189,6 +210,7 @@ public class Quickplay {
     public GoogleAnalytics ga;
     /**
      * How many ping requests have been sent out
+     * TODO remove
      */
     public int currentPing = 0;
     /**
@@ -228,7 +250,7 @@ public class Quickplay {
         // the mod is currently disabled, or how to fix.
         this.messageBuffer = (MessageBuffer) new MessageBuffer(100).start();
         try {
-            enable();
+            this.enable();
         } catch (URISyntaxException e) {
             e.printStackTrace();
             this.sendExceptionRequest(e);
@@ -242,8 +264,8 @@ public class Quickplay {
      * @param handler Object to register
      */
     public void registerEventHandler(Object handler) {
-        if(!eventHandlers.contains(handler)) {
-            eventHandlers.add(handler);
+        if(!this.eventHandlers.contains(handler)) {
+            this.eventHandlers.add(handler);
         }
         MinecraftForge.EVENT_BUS.register(handler);
     }
@@ -378,8 +400,8 @@ public class Quickplay {
      * Enable the mod
      */
     public void enable() throws URISyntaxException {
-        if(!this.enabled) {
-            this.enabled = true;
+        if(!this.isEnabled) {
+            this.isEnabled = true;
             this.requestFactory = new HttpRequestFactory(); // TODO remove
 
             this.assetFactory = new AssetFactory();
@@ -510,10 +532,11 @@ public class Quickplay {
      * Disable the mod
      */
     public void disable(String reason) {
-        // TODO This gets stuck when event handlers are unregistered.
-        if(this.enabled) {
-            this.enabled = false;
-            this.eventHandlers.forEach(this::unregisterEventHandler);
+        if(this.isEnabled) {
+            this.isEnabled = false;
+            while(this.eventHandlers.size() > 0) {
+                this.unregisterEventHandler(this.eventHandlers.get(0));
+            }
             this.disabledReason = reason;
 
             if(this.chatBuffer != null) {
@@ -532,13 +555,13 @@ public class Quickplay {
      * @return Whether the mod is enabled
      */
     public boolean checkEnabledStatus() {
-        if(!this.enabled) {
+        if(!this.isEnabled) {
             IChatComponent message = new QuickplayChatComponentTranslation("quickplay.disabled", this.disabledReason);
             message.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
-
+            this.messageBuffer.push(new Message(message, true));
         }
 
-        return this.enabled;
+        return this.isEnabled;
     }
 
     /**

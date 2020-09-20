@@ -1,5 +1,6 @@
 package co.bugg.quickplay.actions.clientbound;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 import com.google.gson.Gson;
 import net.minecraft.util.IChatComponent;
@@ -29,6 +30,7 @@ public class SetPremiumAboutAction extends Action {
 
     @Override
     public void run() {
-        // TODO
+        Quickplay.INSTANCE.premiumAbout = IChatComponent.Serializer
+                .jsonToComponent(this.getPayloadObjectAsString(0));
     }
 }

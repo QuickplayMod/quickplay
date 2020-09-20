@@ -308,8 +308,6 @@ public class QuickplayGuiScreen extends QuickplayGui {
         // OVERRIDE
         //super.drawScreen(mouseX, mouseY, partialTicks);
         for (QuickplayGuiComponent component : componentList) {
-            updateOpacity();
-
             if(component instanceof QuickplayGuiContextMenu || component.origin == null) {
                 component.draw(this, mouseX, mouseY, opacity);
             }
@@ -343,7 +341,6 @@ public class QuickplayGuiScreen extends QuickplayGui {
         //drawRect(columnZeroRowZeroX - backgroundBoxPadding, topOfBackgroundBox, rightOfBox, bottomOfBox, (int) (opacity * 255 * 0.5) << 24);
 
         // Modified super.drawScreen()
-        updateOpacity();
         for (QuickplayGuiComponent component : componentList) {
             if(opacity > 0) {
                 component.draw(this, mouseX, mouseY, opacity);
@@ -363,48 +360,57 @@ public class QuickplayGuiScreen extends QuickplayGui {
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
 
-        drawDefaultBackground();
+        this.drawDefaultBackground();
+        this.updateOpacity();
 
+        if(Quickplay.INSTANCE.isEnabled) {
+            double mainLogoMultiplier = this.scaleMultiplier / 1.5;
+            // Draw screen logo if it's set
+            if(this.screen.imageURL != null && this.screen.imageURL.length() > 0) {
+                GlStateManager.color(1, 1, 1, opacity);
+                GlStateManager.scale(mainLogoMultiplier, mainLogoMultiplier, mainLogoMultiplier);
+                Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID,
+                        Hashing.md5().hashString(this.screen.imageURL,
+                                StandardCharsets.UTF_8).toString() + ".png"));
+                drawTexturedModalRect((int) ((this.width / 2 - this.gameImgSize / 2 * mainLogoMultiplier) / mainLogoMultiplier),
+                        (int) ((20 - this.scrollPixel) / mainLogoMultiplier),
+                        0, 0, this.gameImgSize, this.gameImgSize);
+                GlStateManager.scale(1 / mainLogoMultiplier, 1 / mainLogoMultiplier, 1 / mainLogoMultiplier);
 
-        double mainLogoMultiplier = this.scaleMultiplier / 1.5;
-        // Draw screen logo if it's set
-        if(this.screen.imageURL != null && this.screen.imageURL.length() > 0) {
-            GlStateManager.color(1, 1, 1, opacity);
-            GlStateManager.scale(mainLogoMultiplier, mainLogoMultiplier, mainLogoMultiplier);
-            Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID,
-                    Hashing.md5().hashString(this.screen.imageURL,
-                            StandardCharsets.UTF_8).toString() + ".png"));
-            drawTexturedModalRect((int) ((this.width / 2 - this.gameImgSize / 2 * mainLogoMultiplier) / mainLogoMultiplier),
-                    (int) ((20 - this.scrollPixel) / mainLogoMultiplier),
-                    0, 0, this.gameImgSize, this.gameImgSize);
-            GlStateManager.scale(1 / mainLogoMultiplier, 1 / mainLogoMultiplier, 1 / mainLogoMultiplier);
+            }
 
-        }
+            // Swap the static non-hover color and the hover color if the user has the setting enabled.
+            QuickplayColor staticColor = Quickplay.INSTANCE.settings.secondaryColor;
+            QuickplayColor hoverColor = Quickplay.INSTANCE.settings.primaryColor;
+            if(Quickplay.INSTANCE.settings.swapMainGuiColors) {
+                staticColor = Quickplay.INSTANCE.settings.primaryColor;
+                hoverColor = Quickplay.INSTANCE.settings.secondaryColor;
+            }
 
-        // Swap the static non-hover color and the hover color if the user has the setting enabled.
-        QuickplayColor staticColor = Quickplay.INSTANCE.settings.secondaryColor;
-        QuickplayColor hoverColor = Quickplay.INSTANCE.settings.primaryColor;
-        if(Quickplay.INSTANCE.settings.swapMainGuiColors) {
-            staticColor = Quickplay.INSTANCE.settings.primaryColor;
-            hoverColor = Quickplay.INSTANCE.settings.secondaryColor;
-        }
+            // Draw screen name if it's set
+            if(this.screen.translationKey != null && this.screen.translationKey.length() > 0) {
+                GlStateManager.scale(stringScale, stringScale, stringScale);
+                drawCenteredString(this.fontRendererObj, Quickplay.INSTANCE.translator.get(this.screen.translationKey),
+                        (int) ((this.width / 2) / stringScale),
+                        (int) ((30 + this.gameImgSize * mainLogoMultiplier  - this.scrollPixel) / stringScale),
+                        hoverColor.getColor().getRGB());
 
-        // Draw screen name if it's set
-        if(this.screen.translationKey != null && this.screen.translationKey.length() > 0) {
-            GlStateManager.scale(stringScale, stringScale, stringScale);
-            drawCenteredString(this.fontRendererObj, Quickplay.INSTANCE.translator.get(this.screen.translationKey),
-                    (int) ((this.width / 2) / stringScale),
-                    (int) ((30 + this.gameImgSize * mainLogoMultiplier  - this.scrollPixel) / stringScale),
-                    hoverColor.getColor().getRGB());
+                GlStateManager.scale(1 / stringScale, 1 / stringScale, 1 / stringScale);
+            }
 
-            GlStateManager.scale(1 / stringScale, 1 / stringScale, 1 / stringScale);
-        }
-
-        if(this.screen.screenType == ScreenType.IMAGES) {
-            this.drawImagesScreen(mouseX, mouseY, partialTicks, staticColor, hoverColor);
+            if(this.screen.screenType == ScreenType.IMAGES) {
+                this.drawImagesScreen(mouseX, mouseY, partialTicks, staticColor, hoverColor);
+            } else {
+                this.drawButtonsScreen(mouseX, mouseY, partialTicks);
+            }
         } else {
-            this.drawButtonsScreen(mouseX, mouseY, partialTicks);
+            // Quickplay is disabled, draw error message
+            this.drawCenteredString(this.fontRendererObj,
+                    Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.width / 2, this.height / 2, 0xffffff);
         }
+
+
 
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();

@@ -1,7 +1,12 @@
 package co.bugg.quickplay.actions.clientbound;
 
+import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.actions.Action;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 
 /**
@@ -36,6 +41,35 @@ public class OpenGuiAction extends Action {
 
     @Override
     public void run() {
-        // TODO
+        final String className = this.getPayloadObjectAsString(0);
+        String[] args = new String[this.payloadCount() - 1];
+        for(int i = 0; i < this.payloadCount() - 1; i++) {
+            args[i] = this.getPayloadObjectAsString(i);
+        }
+
+        final Class clazz;
+        try {
+            clazz = Class.forName(className);
+
+        if (clazz == null || (clazz != GuiScreen.class && !GuiScreen.class.isAssignableFrom(clazz))) {
+                throw new IllegalArgumentException("class corresponding to className could not be found or is not of type GuiScreen");
+            }
+
+            Class[] paramsClasses = new Class[args.length];
+            int i = 0;
+            for (Object param : args) {
+                paramsClasses[i++] = param.getClass();
+            }
+
+            final GuiScreen screen = (GuiScreen) clazz.getDeclaredConstructor(paramsClasses)
+                    .newInstance(args);
+            QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+                Minecraft.getMinecraft().displayGuiScreen(screen);
+            });
+        } catch (ClassNotFoundException | InstantiationException | InvocationTargetException | NoSuchMethodException |
+                IllegalAccessException e) {
+            e.printStackTrace();
+            Quickplay.INSTANCE.sendExceptionRequest(e);
+        }
     }
 }

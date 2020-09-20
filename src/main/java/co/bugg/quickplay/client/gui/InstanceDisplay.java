@@ -35,6 +35,10 @@ public class InstanceDisplay extends MoveableHudElement {
 
     @Override
     public void render(double x, double y, double opacity) {
+        if(!Quickplay.INSTANCE.isEnabled) {
+            return;
+        }
+
         super.render(x, y, opacity);
 
         final String instance = this.source.getCurrentServer();

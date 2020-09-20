@@ -102,25 +102,32 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
 
         drawDefaultBackground();
 
-        if(opacity > 0) {
-            final int headerY = (int) (height * 0.1);
-            drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.gui.stats.title"), width / 2, headerY,
-                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        if(Quickplay.INSTANCE.isEnabled) {
+            if (opacity > 0) {
+                final int headerY = (int) (height * 0.1);
+                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.gui.stats.title"), width / 2, headerY,
+                        Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
 
-            int lineHeight = headerY + fontRendererObj.FONT_HEIGHT + 5;
-            for (String line : descriptionLines) {
-                drawCenteredString(fontRendererObj, line, width / 2, lineHeight,
-                        Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                lineHeight += fontRendererObj.FONT_HEIGHT;
+                int lineHeight = headerY + fontRendererObj.FONT_HEIGHT + 5;
+                for (String line : descriptionLines) {
+                    drawCenteredString(fontRendererObj, line, width / 2, lineHeight,
+                            Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                    lineHeight += fontRendererObj.FONT_HEIGHT;
+                }
             }
-        }
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+            super.drawScreen(mouseX, mouseY, partialTicks);
 
-        // If hovering over the token button
-        Optional<QuickplayGuiComponent> filteredStream = componentList.stream().filter(component -> component.displayString.equals(tokenText)).findFirst();
-        if(tokenText != null && filteredStream.isPresent() && filteredStream.get().mouseHovering(this, mouseX, mouseY)) {
-            drawHoveringText(Collections.singletonList(Quickplay.INSTANCE.translator.get("quickplay.gui.stats.copy")), mouseX, mouseY);
+            // If hovering over the token button
+            Optional<QuickplayGuiComponent> filteredStream = componentList.stream().filter(component -> component.displayString.equals(tokenText)).findFirst();
+            if (tokenText != null && filteredStream.isPresent() && filteredStream.get().mouseHovering(this, mouseX, mouseY)) {
+                drawHoveringText(Collections.singletonList(Quickplay.INSTANCE.translator.get("quickplay.gui.stats.copy")), mouseX, mouseY);
+            }
+        } else {
+            // Quickplay is disabled, draw error message
+            this.drawCenteredString(this.fontRendererObj,
+                    Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.width / 2, this.height / 2, 0xffffff);
         }
 
         GlStateManager.disableBlend();

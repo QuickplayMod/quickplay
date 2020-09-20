@@ -1,8 +1,13 @@
 package co.bugg.quickplay.actions.clientbound;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
+import co.bugg.quickplay.client.render.PlayerGlyph;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -41,6 +46,19 @@ public class SetGlyphForUserAction extends Action {
 
     @Override
     public void run() {
-        // TODO
+        if(Quickplay.INSTANCE.glyphs == null) {
+            Quickplay.INSTANCE.glyphs = new ArrayList<>();
+        }
+        try {
+            final UUID uuid = UUID.fromString(this.getPayloadObjectAsString(0));
+            final URL url = new URL(this.getPayloadObjectAsString(1));
+            final int height = this.getPayloadObject(2).getInt();
+            final float yOffset = this.getPayloadObject(3).getFloat();
+            final boolean displayInGames = this.getPayloadObject(4).get() != (byte) 0;
+            Quickplay.INSTANCE.glyphs.add(new PlayerGlyph(uuid, url, height, yOffset, displayInGames));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            Quickplay.INSTANCE.sendExceptionRequest(e);
+        }
     }
 }

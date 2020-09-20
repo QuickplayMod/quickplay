@@ -3,9 +3,11 @@ package co.bugg.quickplay.actions.clientbound;
 import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.client.dailyreward.DailyRewardAppData;
 import co.bugg.quickplay.client.dailyreward.DailyRewardGui;
+import co.bugg.quickplay.client.dailyreward.DailyRewardGuiLoading;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreenBook;
 
 import java.nio.ByteBuffer;
 
@@ -45,6 +47,12 @@ public class SetDailyRewardDataAction extends Action {
 
     @Override
     public void run() {
+        // Screen should only be opened if the loading screen is open, or if the book screen is open (in case it
+        // failed to catch)
+        if(!(Minecraft.getMinecraft().currentScreen instanceof DailyRewardGuiLoading) &&
+            !(Minecraft.getMinecraft().currentScreen instanceof GuiScreenBook)) {
+            return;
+        }
         final Gson gson = new Gson();
         final DailyRewardAppData appData = gson.fromJson(this.getPayloadObjectAsString(0), DailyRewardAppData.class);
         final String securityToken = this.getPayloadObjectAsString(1);

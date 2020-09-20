@@ -74,7 +74,7 @@ public class ExceptionThrownAction extends Action {
 
         // Enabled state
         ByteBuffer enabledBuf = ByteBuffer.allocate(1);
-        enabledBuf.put((byte) (Quickplay.INSTANCE.enabled ? 1 : 0));
+        enabledBuf.put((byte) (Quickplay.INSTANCE.isEnabled ? 1 : 0));
         enabledBuf.rewind();
         this.addPayload(enabledBuf);
 

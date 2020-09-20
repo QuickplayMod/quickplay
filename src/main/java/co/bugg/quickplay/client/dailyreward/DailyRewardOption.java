@@ -20,7 +20,7 @@ public class DailyRewardOption {
     /**
      * Package information for things like Housing blocks
      *
-     * Original source has this as <code>package</code> but it is refactored in {@link DailyRewardParser}.
+     * Original source has this as <code>package</code> but it is refactored in {@link DailyRewardInitiator}.
      *
      * Housing packages need to be refactored before translating. Source appdata contains
      * <code>specialoccasion_reward_card_skull_</code> at the beginning of the translation key
