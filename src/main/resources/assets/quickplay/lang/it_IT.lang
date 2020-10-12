@@ -14,27 +14,27 @@ quickplay.commands.quickplay.discord.help=Entra nel server Discord di QuickPlay.
 quickplay.commands.quickplay.discord.message=Discord è il modo migliore per entrare in contatto con @bugfroggy. Entra nel server Discord QuickPlay se hai domande, vuoi segnalare bug o vuoi dare il tuo feedback.
 quickplay.commands.quickplay.party.help=Personalizza la tua modalità Party QuickPlay.
 quickplay.commands.quickplay.premium.help=Command for Quickplay Premium features.
-quickplay.commands.quickplay.premium.noCommands=No known commands!
-quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay couldn't gather the latest information about Quickplay Premium! Visit %s
-quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click to open %s
+quickplay.commands.quickplay.premium.noCommands=Nessun comando conosciuto!
+quickplay.commands.quickplay.premium.about.menuMissing=Siamo spiacenti, ma Quickplay non è riuscito a raccogliere le ultime informazioni su Quickplay Premium! Visita %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Clicca per aprire %s
 quickplay.commands.quickplay.history.help=View what instances you've last been on.
 quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
-quickplay.commands.quickplay.history.error=Something went wrong!
+quickplay.commands.quickplay.history.error=Qualcosa è andato storto!
 quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
 quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
-quickplay.commands.usage=Command syntax:
+quickplay.commands.usage=Sintassi dei comandi:
 
-quickplay.premium.permissions=You need Quickplay Premium for this feature!
+quickplay.premium.permissions=È necessario avere Quickplay Premium per questa funzionalità!
 
 quickplay.gui.copyright=Copyright © %s bugfroggy
-quickplay.gui.favorite=Bind to key...
-quickplay.gui.close=Close
-quickplay.gui.back=Back
+quickplay.gui.favorite=Associa al tasto...
+quickplay.gui.close=Chiudi
+quickplay.gui.back=Indietro
 
-quickplay.settings.category.general=General
+quickplay.settings.category.general=Generale
 
-quickplay.settings.category.colors=Colors
-quickplay.settings.primaryColor.name=Primary Color
+quickplay.settings.category.colors=Colori
+quickplay.settings.primaryColor.name=Colore Primario
 quickplay.settings.primaryColor.help=Cambia il colore primario di Quickplay
 quickplay.settings.secondaryColor.name=Colore Secondario
 quickplay.settings.secondaryColor.help=Cambia il colore secondario di Quickplay
@@ -67,9 +67,9 @@ quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display
 quickplay.settings.instanceDisplayScale.name=Scale
 quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
 
-quickplay.settings.sendUsageStatsButton.name=Usage Statistics...
+quickplay.settings.sendUsageStatsButton.name=Statistiche di utilizzo...
 quickplay.settings.sendUsageStatsButton.help=Send anonymous usage statistics to help me create better mods for you!
-quickplay.settings.editKeybinds.name=Edit Keybinds...
+quickplay.settings.editKeybinds.name=Modifica Scorciatoie...
 quickplay.settings.editKeybinds.help=Assign & remove keybinds previously created by right-clicking games or modes.
 quickplay.settings.lobbyOneSwap.name=Swap to Lobby One
 quickplay.settings.lobbyOneSwap.help=Swap to lobby one automatically whenever you join a new lobby.
@@ -78,13 +78,13 @@ quickplay.settings.updateNotifications.help=Whether you'd like to be notified wh
 quickplay.settings.redesignedLobbyCommand.name=Custom Lobby Command
 quickplay.settings.redesignedLobbyCommand.help=Whether the custom Quickplay lobby commands should be used when possible. Requires game restart.
 
-quickplay.settings.category.partyMode=Party Mode
-quickplay.settings.partyModeDelay.name=Launch Delay
+quickplay.settings.category.partyMode=Modalità Party
+quickplay.settings.partyModeDelay.name=Ritardo Lancio
 quickplay.settings.partyModeDelay.help=Number of seconds Launch randomization should take.
 quickplay.settings.partyModeGui.name=Launch Randomization GUI
 quickplay.settings.partyModeGui.help=Whether a special spinner GUI should be opened when the user launches party mode.
 
-quickplay.settings.category.premium=Premium Features
+quickplay.settings.category.premium=Funzionalità Premium
 quickplay.settings.ingameDailyReward.name=Ingame Daily Reward
 quickplay.settings.ingameDailyReward.help=Whether the handling of Daily Rewards should be in-game rather than in-browser, so you don't have to open a web page.
 quickplay.settings.displayOwnGlyph.name=Display Own Glyph
