@@ -17,10 +17,10 @@ quickplay.commands.quickplay.premium.help=Commande pour les fonctionnalités de 
 quickplay.commands.quickplay.premium.noCommands=Aucune commande connue !
 quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay couldn't gather the latest information about Quickplay Premium! Visit %s
 quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click to open %s
-quickplay.commands.quickplay.history.help=View what instances you've last been on.
-quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
-quickplay.commands.quickplay.history.error=Something went wrong!
-quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
+quickplay.commands.quickplay.history.help=Voir dans quelles instances vous avez été la dernière fois.
+quickplay.commands.quickplay.history.header=Voici les %s dernières instances sur lesquelles vous étiez, les plus récentes apparaissant en haut:
+quickplay.commands.quickplay.history.error=Quelque chose s'est mal passé !
+quickplay.commands.quickplay.wiki.help=Ouvrez le site Web d'aide QuickPlay.
 quickplay.commands.hub.numberexception=Numéro de lobby invalide ! Syntaxe : %s
 quickplay.commands.usage=Command syntax:
 
@@ -33,30 +33,30 @@ quickplay.gui.back=Back
 
 quickplay.settings.category.general=General
 
-quickplay.settings.category.colors=Colors
-quickplay.settings.primaryColor.name=Primary Color
-quickplay.settings.primaryColor.help=Change your Quickplay primary color
-quickplay.settings.secondaryColor.name=Secondary Color
-quickplay.settings.secondaryColor.help=Change your Quickplay secondary color
+quickplay.settings.category.colors=Couleurs
+quickplay.settings.primaryColor.name=Couleur primaire
+quickplay.settings.primaryColor.help=Changer la couleur primaire de votre Quickplay
+quickplay.settings.secondaryColor.name=Couleur secondaire
+quickplay.settings.secondaryColor.help=Changer la couleur secondaire de votre Quickplay
 
-quickplay.settings.category.gui=GUI
+quickplay.settings.category.gui=INTERFACE UTILISATEUR
 quickplay.settings.blurGuiBackgrounds.name=Blur GUI Backgrounds
 quickplay.settings.blurGuiBackgrounds.help=Whether the background of Quickplay GUIs should be slightly blurred.
 quickplay.settings.fadeInGuis.name=Fade GUIs In
 quickplay.settings.fadeInGuis.help=Whether GUIs should fade in when opening.
-quickplay.settings.transparentBackgrounds.name=Transparent Backgrounds
+quickplay.settings.transparentBackgrounds.name=Arrière-plans transparents
 quickplay.settings.transparentBackgrounds.help=Whether Quickplay GUI backgrounds should be 100%% transparent or just a translucent black.
-quickplay.settings.gameLogoScale.name=Main Menu Scale
-quickplay.settings.gameLogoScale.help=Scale of each item in the Quickplay main menu.
+quickplay.settings.gameLogoScale.name=Échelle du menu principal
+quickplay.settings.gameLogoScale.help=Échelle de chaque élément du menu principal Quickplay.
 quickplay.settings.reverseScrollingDirection.name=Reverse Scrolling Direction
 quickplay.settings.reverseScrollingDirection.help=Reverse the direction scrolling & dragging moves the screen.
 quickplay.settings.anyKeyClosesGui.name=Any Key Closes GUIs
 quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
-quickplay.settings.compactMainMenu.name=Compact Main Menu
+quickplay.settings.compactMainMenu.name=Menu principal compact
 quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should be compacted to hide games' strings unless you hover over them.
 
-quickplay.settings.category.instanceDisplay=Instance Display
-quickplay.settings.instanceDisplay.name=Instance Display
+quickplay.settings.category.instanceDisplay=Affichage d'instance
+quickplay.settings.instanceDisplay.name=Affichage d'instance
 quickplay.settings.instanceDisplay.help=Whether or not the current server instance should be displayed on-screen.
 quickplay.settings.moveInstanceDisplayButton.name=Move Instance Display...
 quickplay.settings.moveInstanceDisplayButton.help=Change the position of the Instance display on-screen.
