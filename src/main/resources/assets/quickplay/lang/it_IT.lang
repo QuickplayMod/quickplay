@@ -15,27 +15,27 @@ quickplay.commands.quickplay.discord.help=Entra nel server Discord di QuickPlay.
 quickplay.commands.quickplay.discord.message=Discord è il modo migliore per entrare in contatto con @bugfroggy. Entra nel server Discord QuickPlay se hai domande, vuoi segnalare bug o vuoi dare il tuo feedback.
 quickplay.commands.quickplay.party.help=Personalizza la tua modalità Party QuickPlay.
 quickplay.commands.quickplay.premium.help=Command for Quickplay Premium features.
-quickplay.commands.quickplay.premium.noCommands=No known commands!
-quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay couldn't gather the latest information about Quickplay Premium! Visit %s
-quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click to open %s
+quickplay.commands.quickplay.premium.noCommands=Nessun comando conosciuto!
+quickplay.commands.quickplay.premium.about.menuMissing=Siamo spiacenti, ma Quickplay non è riuscito a raccogliere le ultime informazioni su Quickplay Premium! Visita %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Clicca per aprire %s
 quickplay.commands.quickplay.history.help=View what instances you've last been on.
 quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
-quickplay.commands.quickplay.history.error=Something went wrong!
+quickplay.commands.quickplay.history.error=Qualcosa è andato storto!
 quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
 quickplay.commands.quickplay.version.help=View the current Quickplay version.
 quickplay.commands.quickplay.version.message=Quickplay v%s
 
 quickplay.commands.quickplay.premium.account.help=Retrieve information about your account.
 quickplay.commands.quickplay.premium.auth.help=Re-authenticate with the Quickplay Premium backend servers.
-quickplay.commands.quickplay.premium.auth.runningRequest=Thinking...
-quickplay.commands.quickplay.premium.auth.done=Authenticated!
+quickplay.commands.quickplay.premium.auth.runningRequest=Pensando...
+quickplay.commands.quickplay.premium.auth.done=Autenticato!
 quickplay.commands.quickplay.premium.auth.error=Something went wrong while doing that! Contact bugfroggy if this persists.
 quickplay.commands.quickplay.premium.auth.noSubscription=Seems like you don't have any Quickplay Premium subscription! Contact bugfroggy if you believe this is an error.
 quickplay.commands.quickplay.premium.transfer.help=Transfer your Quickplay Premium subscription to another account.
-quickplay.commands.quickplay.premium.transfer.todo=Sorry, but this command isn't implemented yet. In the mean time, contact bugfroggy on the Quickplay Discord! /qp discord
+quickplay.commands.quickplay.premium.transfer.todo=Siamo spiacenti, ma questo comando non è ancora implementato. Nel frattempo, contatta bugfroggy sul server Discord Quickplay! /qp discord
 quickplay.commands.quickplay.premium.glyph.help=Change your Quickplay Premium Glyph settings.
-quickplay.commands.quickplay.premium.glyph.runningRequest=Thinking...
-quickplay.commands.quickplay.premium.glyph.error=Something went wrong... Try contact bugfroggy if this doesn't resolve itself.
+quickplay.commands.quickplay.premium.glyph.runningRequest=Pensando...
+quickplay.commands.quickplay.premium.glyph.error=Qualcosa è andato storto... Prova a contattare bugfroggy se l'errore persiste.
 quickplay.commands.quickplay.premium.glyph.offset.help=Set the vertical offset for your Quickplay Glyph.
 quickplay.commands.quickplay.premium.glyph.offset.illegal=Illegal argument! Argument "number" must be a number between -3 and 2 (decimals are valid).
 quickplay.commands.quickplay.premium.glyph.set.help=Set the image URL of your Quickplay Glyph.
@@ -49,19 +49,19 @@ quickplay.commands.quickplay.premium.glyph.displayown.help=Whether your own Glyp
 quickplay.commands.quickplay.premium.glyph.displayown.set=Personal glyph visibility set to %s.
 
 quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
-quickplay.commands.usage=Command syntax:
+quickplay.commands.usage=Sintassi dei comandi:
 
-quickplay.premium.permissions=You need Quickplay Premium for this feature!
+quickplay.premium.permissions=È necessario avere Quickplay Premium per questa funzionalità!
 
 quickplay.gui.copyright=Copyright © %s bugfroggy
-quickplay.gui.favorite=Bind to key...
-quickplay.gui.close=Close
-quickplay.gui.back=Back
+quickplay.gui.favorite=Associa al tasto...
+quickplay.gui.close=Chiudi
+quickplay.gui.back=Indietro
 
-quickplay.settings.category.general=General
+quickplay.settings.category.general=Generale
 
-quickplay.settings.category.colors=Colors
-quickplay.settings.primaryColor.name=Primary Color
+quickplay.settings.category.colors=Colori
+quickplay.settings.primaryColor.name=Colore Primario
 quickplay.settings.primaryColor.help=Cambia il colore primario di Quickplay
 quickplay.settings.secondaryColor.name=Colore Secondario
 quickplay.settings.secondaryColor.help=Cambia il colore secondario di Quickplay
@@ -96,9 +96,9 @@ quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display
 quickplay.settings.instanceDisplayScale.name=Scale
 quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
 
-quickplay.settings.sendUsageStatsButton.name=Usage Statistics...
+quickplay.settings.sendUsageStatsButton.name=Statistiche di utilizzo...
 quickplay.settings.sendUsageStatsButton.help=Send anonymous usage statistics to help me create better mods for you!
-quickplay.settings.editKeybinds.name=Edit Keybinds...
+quickplay.settings.editKeybinds.name=Modifica Scorciatoie...
 quickplay.settings.editKeybinds.help=Assign & remove keybinds previously created by right-clicking games or modes.
 quickplay.settings.keybindPressTime.name=Keybind Press Duration
 quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
@@ -109,13 +109,13 @@ quickplay.settings.updateNotifications.help=Whether you'd like to be notified wh
 quickplay.settings.redesignedLobbyCommand.name=Custom Lobby Command
 quickplay.settings.redesignedLobbyCommand.help=Whether the custom Quickplay lobby commands should be used when possible. Requires game restart.
 
-quickplay.settings.category.partyMode=Party Mode
-quickplay.settings.partyModeDelay.name=Launch Delay
+quickplay.settings.category.partyMode=Modalità Party
+quickplay.settings.partyModeDelay.name=Ritardo Lancio
 quickplay.settings.partyModeDelay.help=Number of seconds Launch randomization should take.
 quickplay.settings.partyModeGui.name=Launch Randomization GUI
 quickplay.settings.partyModeGui.help=Whether a special spinner GUI should be opened when the user launches party mode.
 
-quickplay.settings.category.premium=Premium Features
+quickplay.settings.category.premium=Funzionalità Premium
 quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
 quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
 quickplay.settings.showGlyphsInF1.name=Show Glyphs in F1
