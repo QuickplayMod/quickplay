@@ -118,17 +118,17 @@ quickplay.gui.stats.title=Send anonymous Quickplay usage statistics?
 quickplay.gui.stats.description=Selecting "yes" sends me anonymous data about your game and how you use my Minecraft mod in order to help fix bugs & create better updates! This data includes but is not limited to your Minecraft version, Forge version, Java version, Operating System version, Minecraft mods installed, and your Quickplay settings. Refer to the downloads thread for a full list of data collected. This setting can be changed later in the config.
 quickplay.gui.stats.token=Your stats token is %s.
 quickplay.gui.stats.copied=Copied to clipboard!
-quickplay.gui.stats.copy=Click to copy
+quickplay.gui.stats.copy=Klicka för att kopiera
 quickplay.gui.stats.privacy=Privacy Policy
 quickplay.gui.stats.privacyerror=Something went wrong. %s
 
 quickplay.party.syntax=Invalid syntax! Type "%s" to take off!
-quickplay.party.sendingYou=Sending you to %s!
+quickplay.party.sendingYou=Skickar dig till %s!
 quickplay.party.commencing=Commencing Quickplay Party Mode Launch Sequence...
 quickplay.party.nogames=D'oh! Party mode does not have any games selected.
 quickplay.gui.party.randomizing=Picking a random gamemode...
-quickplay.gui.party.allon=Enable All
-quickplay.gui.party.alloff=Disable All
+quickplay.gui.party.allon=Aktivera alla
+quickplay.gui.party.alloff=Inaktivera alla
 quickplay.gui.party.launch=Launch!
 
 quickplay.keybinds.illegal=The keybind "%s" is invalid for some reason! Try recreating it.
