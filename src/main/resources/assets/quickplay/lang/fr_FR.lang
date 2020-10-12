@@ -4,8 +4,8 @@ quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Cliquez pour ouvrir.
 
 quickplay.commands.quickplay.help.help=Display the available commands.
-quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
-quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
+quickplay.commands.quickplay.config.help=Configurez votre mod Quickplay.
+quickplay.commands.quickplay.limbo.help=Envoyez-vous à Limbo.
 quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
 quickplay.commands.quickplay.delivery.help=Ouvrez le menu Delivery Man.
 quickplay.commands.quickplay.keybinds.help=Ouvrez l'éditeur de raccourcis clavier Quickplay.
@@ -22,12 +22,12 @@ quickplay.commands.quickplay.history.header=Voici les %s dernières instances su
 quickplay.commands.quickplay.history.error=Quelque chose s'est mal passé !
 quickplay.commands.quickplay.wiki.help=Ouvrez le site Web d'aide QuickPlay.
 quickplay.commands.hub.numberexception=Numéro de lobby invalide ! Syntaxe : %s
-quickplay.commands.usage=Command syntax:
+quickplay.commands.usage=Syntaxe de commande :
 
-quickplay.premium.permissions=You need Quickplay Premium for this feature!
+quickplay.premium.permissions=Vous avez besoin de Quickplay Premium pour cette fonctionnalité !
 
 quickplay.gui.copyright=Copyright © %s bugfroggy
-quickplay.gui.favorite=Bind to key...
+quickplay.gui.favorite=Affecter au bouton...
 quickplay.gui.close=Close
 quickplay.gui.back=Back
 
@@ -57,9 +57,9 @@ quickplay.settings.compactMainMenu.help=Whether the Quickplay Main Menu should b
 
 quickplay.settings.category.instanceDisplay=Affichage d'instance
 quickplay.settings.instanceDisplay.name=Affichage d'instance
-quickplay.settings.instanceDisplay.help=Whether or not the current server instance should be displayed on-screen.
-quickplay.settings.moveInstanceDisplayButton.name=Move Instance Display...
-quickplay.settings.moveInstanceDisplayButton.help=Change the position of the Instance display on-screen.
+quickplay.settings.instanceDisplay.help=Définissez si l'instance actuelle du serveur doit être affichée sur l'écran ou non.
+quickplay.settings.moveInstanceDisplayButton.name=Déplacer l'affichage d'instance...
+quickplay.settings.moveInstanceDisplayButton.help=Modifiez la position de l'affichage d'instance à l'écran.
 quickplay.settings.instanceOpacity.name=Opacité de l'affichage d'instance
 quickplay.settings.instanceOpacity.help=Opacity of the instance display.
 quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
