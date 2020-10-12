@@ -21,7 +21,7 @@ quickplay.commands.quickplay.history.help=View what instances you've last been o
 quickplay.commands.quickplay.history.header=Here's the last %s instances you were on, most recent appearing at the top:
 quickplay.commands.quickplay.history.error=Something went wrong!
 quickplay.commands.quickplay.wiki.help=Open the Quickplay Help website.
-quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
+quickplay.commands.hub.numberexception=Numéro de lobby invalide ! Syntaxe : %s
 quickplay.commands.usage=Command syntax:
 
 quickplay.premium.permissions=You need Quickplay Premium for this feature!
@@ -60,12 +60,12 @@ quickplay.settings.instanceDisplay.name=Instance Display
 quickplay.settings.instanceDisplay.help=Whether or not the current server instance should be displayed on-screen.
 quickplay.settings.moveInstanceDisplayButton.name=Move Instance Display...
 quickplay.settings.moveInstanceDisplayButton.help=Change the position of the Instance display on-screen.
-quickplay.settings.instanceOpacity.name=Instance Display Opacity
+quickplay.settings.instanceOpacity.name=Opacité de l'affichage d'instance
 quickplay.settings.instanceOpacity.help=Opacity of the instance display.
 quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
 quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display should be rendered even when chat is open.
 quickplay.settings.instanceDisplayScale.name=Scale
-quickplay.settings.instanceDisplayScale.help=Scale of the Instance Display.
+quickplay.settings.instanceDisplayScale.help=Échelle de l'affichage d'instance.
 
 quickplay.settings.sendUsageStatsButton.name=Usage Statistics...
 quickplay.settings.sendUsageStatsButton.help=Send anonymous usage statistics to help me create better mods for you!
