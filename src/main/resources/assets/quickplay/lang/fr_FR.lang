@@ -5,8 +5,8 @@ quickplay.chat.clickToOpen=Cliquez pour ouvrir.
 
 quickplay.commands.invalid=Commande invalide !
 quickplay.commands.quickplay.help.help=Display the available commands.
-quickplay.commands.quickplay.config.help=Configure your Quickplay mod.
-quickplay.commands.quickplay.limbo.help=Send yourself to Limbo.
+quickplay.commands.quickplay.config.help=Configurez votre mod Quickplay.
+quickplay.commands.quickplay.limbo.help=Envoyez-vous à Limbo.
 quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
 quickplay.commands.quickplay.delivery.help=Ouvrez le menu Delivery Man.
 quickplay.commands.quickplay.keybinds.help=Ouvrez l'éditeur de raccourcis clavier Quickplay.
@@ -27,14 +27,14 @@ quickplay.commands.quickplay.version.message=Quickplay v%s
 
 quickplay.commands.quickplay.premium.account.help=Récupérez les informations de votre compte.
 quickplay.commands.quickplay.premium.auth.help=Ré-authentifiez vous avec les serveurs Quickplay Premium.
-quickplay.commands.quickplay.premium.auth.runningRequest=Thinking...
+quickplay.commands.quickplay.premium.auth.runningRequest=Calcul...
 quickplay.commands.quickplay.premium.auth.done=Authentifié.e !
 quickplay.commands.quickplay.premium.auth.error=Une erreur s'est produite lors de cette opération ! Contactez bugfroggy si cela persiste.
 quickplay.commands.quickplay.premium.auth.noSubscription=Il semblerait que vous n'avez pas d'abonnement Quickplay Premium ! Contactez bugfroggy si vous pensez que ceci est une erreur.
 quickplay.commands.quickplay.premium.transfer.help=Transférez votre abonnement Quickplay Premium sur un autre compte.
 quickplay.commands.quickplay.premium.transfer.todo=Désolé, mais cette commande n'est pas encore implémentée. En attendant, contactez bugfroggy sur le Discord Quickplay ! /qp discord
 quickplay.commands.quickplay.premium.glyph.help=Modifiez vos paramètres Glyphe Quickplay Premium.
-quickplay.commands.quickplay.premium.glyph.runningRequest=Thinking...
+quickplay.commands.quickplay.premium.glyph.runningRequest=Calcul...
 quickplay.commands.quickplay.premium.glyph.error=Une erreur s'est produite... Essayez de contacter bugfroggy si elle ne se résout pas.
 quickplay.commands.quickplay.premium.glyph.offset.help=Définissez le décalage vertical pour votre Glyphe Quickplay.
 quickplay.commands.quickplay.premium.glyph.offset.illegal=Illegal argument! Argument "number" must be a number between -3 and 2 (decimals are valid).
@@ -49,12 +49,12 @@ quickplay.commands.quickplay.premium.glyph.displayown.help=Si votre Glyphe doit 
 quickplay.commands.quickplay.premium.glyph.displayown.set=Personal glyph visibility set to %s.
 
 quickplay.commands.hub.numberexception=Numéro de lobby invalide ! Syntaxe : %s
-quickplay.commands.usage=Command syntax:
+quickplay.commands.usage=Syntaxe de commande :
 
-quickplay.premium.permissions=You need Quickplay Premium for this feature!
+quickplay.premium.permissions=Vous avez besoin de Quickplay Premium pour cette fonctionnalité !
 
 quickplay.gui.copyright=Copyright © %s bugfroggy
-quickplay.gui.favorite=Bind to key...
+quickplay.gui.favorite=Affecter au bouton...
 quickplay.gui.close=Close
 quickplay.gui.back=Back
 
@@ -85,10 +85,10 @@ quickplay.settings.swapMainGuiColors.name=Swap Main Menu Colors
 quickplay.settings.swapMainGuiColors.help=Whether the primary and secondary colors should be swapped in the Quickplay Main Menu.
 
 quickplay.settings.category.instanceDisplay=Affichage d'instance
-quickplay.settings.instanceDisplay.name=Instance Display
-quickplay.settings.instanceDisplay.help=Whether or not the current server instance should be displayed on-screen.
-quickplay.settings.moveInstanceDisplayButton.name=Move Instance Display...
-quickplay.settings.moveInstanceDisplayButton.help=Change the position of the Instance display on-screen.
+quickplay.settings.instanceDisplay.name=Affichage d'instance
+quickplay.settings.instanceDisplay.help=Définissez si l'instance actuelle du serveur doit être affichée sur l'écran ou non.
+quickplay.settings.moveInstanceDisplayButton.name=Déplacer l'affichage d'instance...
+quickplay.settings.moveInstanceDisplayButton.help=Modifiez la position de l'affichage d'instance à l'écran.
 quickplay.settings.instanceOpacity.name=Opacité de l'affichage d'instance
 quickplay.settings.instanceOpacity.help=Opacity of the instance display.
 quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
@@ -194,8 +194,8 @@ quickplay.premium.ingameReward.adroll.clickToVisit=Click here to visit the store
 quickplay.premium.ingameReward.menu.header=Choose your reward
 quickplay.premium.ingameReward.menu.streak=Daily Streak - Current: %s - High Score: %s
 quickplay.premium.ingameReward.menu.claim.error=Something went wrong while claiming your reward. Try again, or perhaps the reward has expired.
-quickplay.premium.ingameReward.claimed.header=Reward Claimed!
-quickplay.premium.ingameReward.claimed.close=Press %s to close this menu.
-quickplay.premium.ingameReward.claimed.share=Share
-quickplay.premium.ingameReward.loading=Loading...
-quickplay.premium.ingameReward.loading.sub=Please allow up to 5 seconds...
+quickplay.premium.ingameReward.claimed.header=Récompense réclamée !
+quickplay.premium.ingameReward.claimed.close=Appuyez sur %s pour fermer ce menu.
+quickplay.premium.ingameReward.claimed.share=Partager
+quickplay.premium.ingameReward.loading=Chargement...
+quickplay.premium.ingameReward.loading.sub=Attendez 5 secondes...
