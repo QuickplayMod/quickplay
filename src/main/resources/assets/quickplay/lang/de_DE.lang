@@ -1,0 +1,201 @@
+quickplay.offline=Du bist derzeit nicht auf dem Hypixel Server!
+quickplay.disabled=Quickplay wurde erzwungenerweise deaktiviert! Grund: %s.
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=Klicke um zu öffnen.
+
+quickplay.commands.invalid=Ungültiger Befehl!
+quickplay.commands.quickplay.help.help=Zeigt verfügbare Befehle an.
+quickplay.commands.quickplay.config.help=Konfiguiere deinen Quickplay Mod.
+quickplay.commands.quickplay.limbo.help=Sende dich zu Limbo.
+quickplay.commands.quickplay.limbo.alreadythere=D'oh! Du bist schon in Limbo!
+quickplay.commands.quickplay.delivery.help=Öffne das Menü des Delivery-Manns.
+quickplay.commands.quickplay.keybinds.help=Öffne den Quickplay Tasteneinstellungs Editor.
+quickplay.commands.quickplay.moveinstance.deprecated=Dieser Befehl ist veraltet. Benutzte stattdessen "/qp config"!
+quickplay.commands.quickplay.discord.help=Tritt dem Quickplay Discord Server bei.
+quickplay.commands.quickplay.discord.message=Discord ist der #1 Weg um in Kontakt mit @bugfroggy zu kommen. Trette dem Quickplay Discord bei, falls du irgendwelche Frage, Feedback oder Fehlermeldungen hast.
+quickplay.commands.quickplay.party.help=Passe deinen Quickplay Party Modus an.
+quickplay.commands.quickplay.premium.help=Befehl für Quickplay Premium Funktionen.
+quickplay.commands.quickplay.premium.noCommands=Keine bekannten Befehle!
+quickplay.commands.quickplay.premium.about.menuMissing=Es tut uns leid, aber Quickplay konnte die letzten Informationen über Quickplay Premium nicht sammeln! Besuche %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Klicke um zu öffnen %s
+quickplay.commands.quickplay.history.help=Zeige dir an, auf welchen Instanzen du zuletzt warst.
+quickplay.commands.quickplay.history.header=Hier sind die letzten %s Instanzen, in denen du warst, die letzten erscheinen oben:
+quickplay.commands.quickplay.history.error=Etwas ist schief gelaufen!
+quickplay.commands.quickplay.wiki.help=Öffne die Quickplay-Hilfswebsite.
+quickplay.commands.quickplay.version.help=Zeigt die aktuelle Softwareversion an.
+quickplay.commands.quickplay.version.message=Quickplay v%s
+
+quickplay.commands.quickplay.premium.account.help=Rufe Informationen über dein Konto ab.
+quickplay.commands.quickplay.premium.auth.help=Authentifiziere dich erneut mit den Quickplay Premium Backend-Servern.
+quickplay.commands.quickplay.premium.auth.runningRequest=Denken...
+quickplay.commands.quickplay.premium.auth.done=Authentifiziert!
+quickplay.commands.quickplay.premium.auth.error=Etwas ist schiefgelaufen! Kontaktiere bugfroggy, falls dies weiterhin der Fall ist.
+quickplay.commands.quickplay.premium.auth.noSubscription=Sieht so aus, als hättest du kein Quickplay Premium-Abonnement! Kontaktiere bugfroggy, wenn du glaubst, dass dies ein Fehler ist.
+quickplay.commands.quickplay.premium.transfer.help=Übertrage dein Quickplay Premium-Abonnement auf ein anderes Konto.
+quickplay.commands.quickplay.premium.transfer.todo=Es tut uns leid, aber dieser Befehl wurde noch nicht hinzugefügt. In der Zwischenzeit kontaktiere bugfroggy auf dem Quickplay Discord! /qp Discord
+quickplay.commands.quickplay.premium.glyph.help=Ändere deine Quickplay Premium Glyph Einstellungen.
+quickplay.commands.quickplay.premium.glyph.runningRequest=Denken...
+quickplay.commands.quickplay.premium.glyph.error=Etwas ist schiefgelaufen... Versuche bugfroggy zu kontaktieren, falls dies sich nicht von selbst löst.
+quickplay.commands.quickplay.premium.glyph.offset.help=Stelle den vertikalen Versatz für deinen Quickplay-Glyph ein.
+quickplay.commands.quickplay.premium.glyph.offset.illegal=Ungültiges Argument! Das Argument "number" muss eine Zahl zwischen -3 und 2 sein (Dezimalzahlen sind gültig).
+quickplay.commands.quickplay.premium.glyph.set.help=Lege die Bild-URL deines Quickplay Glyphs fest.
+quickplay.commands.quickplay.premium.glyph.set.illegal=Die angegebene URL ist ungültig! Bitte gebe eine URL an, die zu einem Bild führt.
+quickplay.commands.quickplay.premium.glyph.height.help=Stelle die vertikale Höhe deines Quickplay Glyphs ein.
+quickplay.commands.quickplay.premium.glyph.height.illegal=Ungültiges Argument! Das Argument "number" muss eine Zahl zwischen 1 und 40 sein.
+quickplay.commands.quickplay.premium.glyph.reset.help=Entferne dein Quickplay Glyph damit nichts über deinem Kopf angezeigt wird.
+quickplay.commands.quickplay.premium.glyph.ingame.help=Lege fest, ob dein Glyph in Spielen sichtbar sein soll oder nur in Lobbies.
+quickplay.commands.quickplay.premium.glyph.ingame.illegal=Ungültiges Argument! Du musst es entweder auf "true" oder "false" setzen.
+quickplay.commands.quickplay.premium.glyph.displayown.help=Ob dein eigener Glyph über deinem Kopf erscheinen soll. Beeinflusst nicht, wie andere es sehen.
+quickplay.commands.quickplay.premium.glyph.displayown.set=Persönliche Glyph Sichtbarkeit auf %s gestellt.
+
+quickplay.commands.hub.numberexception=Ungültige Lobby-Nummer! Syntax: %s
+quickplay.commands.usage=Befehlssyntax:
+
+quickplay.premium.permissions=Du benötigst Quickplay Premium für diese Funktion!
+
+quickplay.gui.copyright=Copyright © %s Bugfroggy
+quickplay.gui.favorite=An Taste binden...
+quickplay.gui.close=Schließen
+quickplay.gui.back=Abbrechen
+
+quickplay.settings.category.general=Allgemein
+
+quickplay.settings.category.colors=Farben
+quickplay.settings.primaryColor.name=Primärfarbe
+quickplay.settings.primaryColor.help=Ändern Sie Ihre Quickplay-Primärfarbe
+quickplay.settings.secondaryColor.name=Sekundärfarbe
+quickplay.settings.secondaryColor.help=Ändere deine Quickplay-Sekundärfarbe
+
+quickplay.settings.category.gui=GUI
+quickplay.settings.blurGuiBackgrounds.name=Verschwommener GUI Hintergrund
+quickplay.settings.blurGuiBackgrounds.help=Ob der Hintergrund von den Quickplay GUIs leicht verschwommen sein soll.
+quickplay.settings.fadeInGuis.name=GUIs einblenden
+quickplay.settings.fadeInGuis.help=Ob GUIs beim Öffnen eingeblendet werden sollen.
+quickplay.settings.transparentBackgrounds.name=Durchsichtiger Hintergrund
+quickplay.settings.transparentBackgrounds.help=Ob die Quickplay GUI-Hintergründe zu 100%% transparent sein sollen oder nur ein durchsichtiges Schwarz.
+quickplay.settings.gameLogoScale.name=Hauptmenüskala
+quickplay.settings.gameLogoScale.help=Eine Skala von jedem Artikel im Quickplay Hauptmenü.
+quickplay.settings.reverseScrollingDirection.name=Scrollrichtung umkehren
+quickplay.settings.reverseScrollingDirection.help=Die Richtung des Scrollens & Ziehens wird umgekehrt.
+quickplay.settings.anyKeyClosesGui.name=Alle Tasten schließen GUIs
+quickplay.settings.anyKeyClosesGui.help=Quickplays Hauptmenü und Spiel GUIs werden geschlossen, sobald eine Taste gedrückt wird.
+quickplay.settings.compactMainMenu.name=Kompaktes Hauptmenü
+quickplay.settings.compactMainMenu.help=Ob das Quickplay Hauptmenü kompakt sein soll um die Spiel Strings zu verstecken, wenn du nicht den Mauszeiger über sie bewegst.
+quickplay.settings.swapMainGuiColors.name=Hauptmenüfarben wechseln
+quickplay.settings.swapMainGuiColors.help=Ob die primären und sekundären Farben im Quickplay-Hauptmenü getauscht werden sollen.
+
+quickplay.settings.category.instanceDisplay=Instanzanzeige
+quickplay.settings.instanceDisplay.name=Instanzanzeige
+quickplay.settings.instanceDisplay.help=Ob die aktuelle Serverinstanz auf dem Bildschirm angezeigt werden soll oder nicht.
+quickplay.settings.moveInstanceDisplayButton.name=Instanzanzeige verschieben...
+quickplay.settings.moveInstanceDisplayButton.help=Ändere die Position der Instanzanzeige auf dem Bildschirm.
+quickplay.settings.instanceOpacity.name=Instanzanzeige Deckkraft
+quickplay.settings.instanceOpacity.help=Deckkraft der Instanzanzeige.
+quickplay.settings.displayInstanceWithChatOpen.name=Über den Chat anzeigen
+quickplay.settings.displayInstanceWithChatOpen.help=Ob die Instanzanzeige auch bei geöffnetem Chat dargestellt werden soll.
+quickplay.settings.instanceDisplayScale.name=Skala
+quickplay.settings.instanceDisplayScale.help=Skalierung der Instanzanzeige.
+
+quickplay.settings.sendUsageStatsButton.name=Nutzungsstatistiken...
+quickplay.settings.sendUsageStatsButton.help=Sende anonyme Nutzungsstatistiken, damit wir bessere Mods für dich erstellen können!
+quickplay.settings.editKeybinds.name=Gebundene Tasten bearbeiten...
+quickplay.settings.editKeybinds.help=Weise zuvor erstellte Tastaturkürzeln zu und entferne sie, indem du mit der rechten Maustaste auf Spiele oder Modis klickst.
+quickplay.settings.keybindPressTime.name=Tastenkürzel Druckdauer
+quickplay.settings.keybindPressTime.help=Wie lange du Tastenkürzel, deren Halten aktiviert ist, halten musst, damit sie aktiviert werden können.
+quickplay.settings.lobbyOneSwap.name=Zur Lobby 1 wechseln
+quickplay.settings.lobbyOneSwap.help=Wechsel automatisch zur Lobby 1 sobald du einen neue Lobby betrittst.
+quickplay.settings.updateNotifications.name=Aktualisiere Benachrichtigungen
+quickplay.settings.updateNotifications.help=Ob du benachrichtigt werden möchtest, wenn eine neue Version von Quickplay veröffentlicht wird (deine Liste der Spiele wird automatisch aktualisiert, unabhängig von dieser Einstellung).
+quickplay.settings.redesignedLobbyCommand.name=Benutzerdefinierter Lobby-Befehl
+quickplay.settings.redesignedLobbyCommand.help=Ob die benutzerdefinierten Quickplay-Lobbybefehle nach Möglichkeit verwendet werden sollen. Erfordert einen Neustart des Spiels.
+
+quickplay.settings.category.partyMode=Party-Modus
+quickplay.settings.partyModeDelay.name=Startverzögerung
+quickplay.settings.partyModeDelay.help=Anzahl der Sekunden bis die zufällige Auswahl fertig ist.
+quickplay.settings.partyModeGui.name=Zufällig generiertes GUI starten
+quickplay.settings.partyModeGui.help=Ob eine spezielle Spinner-GUI geöffnet werden soll, wenn der Benutzer den Party-Modus startet.
+
+quickplay.settings.category.premium=Premiumfunktionen
+quickplay.settings.fadeGlyphs.name=Benutzer Glyphen verblassen lassen
+quickplay.settings.fadeGlyphs.help=Ob die Glyphen anderer Benutzer verschwinden sollen, wenn du näher an sie herankommst. Die verblassene Distanz ist weiter in Spielen im Vergleich zu Lobbies.
+quickplay.settings.showGlyphsInF1.name=Zeige Glyphen im F1
+quickplay.settings.showGlyphsInF1.help=Ob Glyphen sichtbar sein sollen, wenn du im F1-Modus bist.
+quickplay.settings.displayOwnGlyph.name=Eigenen Glyph anzeigen
+quickplay.settings.displayOwnGlyph.help=Ob dein eigener Glyph im F5-Modus über deinem Kopf angezeigt werden soll.
+quickplay.settings.ingameDailyReward.name=Tägliche Ingame-Belohnung
+quickplay.settings.ingameDailyReward.help=Ob die Handhabung der täglichen Belohnungen im Spiel sein sollte und nicht im Browser, so dass du keine Webseite öffnen musst.
+quickplay.config.keybinds.openmain=Haupt-GUI öffnen
+quickplay.config.saveerror=Beim Speichern deiner Konfiguration ist ein Fehler aufgetreten. Die Einstellungen können eventuell nicht gespeichert werden!
+quickplay.config.gui.title=Quickplay-Konfiguration
+quickplay.config.gui.version=Version
+quickplay.config.gui.true=WAHR
+quickplay.config.gui.false=FALSCH
+quickplay.config.openfolder=Ordner öffnen
+quickplay.config.color.gui.sampletext=Beispieltext
+quickplay.config.color.gui.red=Rot
+quickplay.config.color.gui.green=Grün
+quickplay.config.color.gui.blue=Blau
+quickplay.config.color.gui.chromaspeed=Chroma Geschwindigkeit
+quickplay.config.color.gui.chromaspeed.off=AUS
+quickplay.config.color.gui.chromaspeed.slow=LAMGSAM
+quickplay.config.color.gui.chromaspeed.medium=MITTEL
+quickplay.config.color.gui.chromaspeed.fast=SCHNELL
+quickplay.config.color.gui.chromaspeed.insane=WAHNSINNIG
+
+quickplay.gui.main.nogames.header=Uups!
+quickplay.gui.main.nogames.issue=Sieht so aus, als ob ich nicht herausfinden konnte, welche Spiele verfügbar sind.
+quickplay.gui.main.nogames.why=Dies passiert höchstwahrscheinlich, wenn du die Mod gerade installiert hast.
+quickplay.gui.main.nogames.contact=Versuche dein Spiel neu zu starten oder kontaktiere bugfroggy, falls dies das Problem nicht löst!
+
+quickplay.gui.stats.yes=Ja, sende Statistiken.
+quickplay.gui.stats.no=Nein, sende keine Statistiken.
+quickplay.gui.stats.title=Anonyme Quickplay-Nutzungsstatistiken senden?
+quickplay.gui.stats.description=Die Auswahl von "Ja" sendet mir anonyme Daten über dein Spiel und wie du meinen Minecraft-Mod verwendest, um Fehler zu beheben und bessere Updates zu erstellen! Diese Daten enthalten aber nicht nur deine Minecraft-Version, Forge-Version, Java-Version, Betriebssystemversion, installierte Minecraft-Mods und deine Quickplay-Einstellungen. Im Download-Bericht findest du eine vollständige Liste der gesammelten Daten. Diese Einstellung kann später in der Konfiguration geändert werden.
+quickplay.gui.stats.token=Dein Statistik-Token ist %s.
+quickplay.gui.stats.copied=In die Zwischenablage kopiert!
+quickplay.gui.stats.copy=Zum Kopieren klicken
+quickplay.gui.stats.privacy=Datenschutzerklärung
+quickplay.gui.stats.privacyerror=Etwas ist schief gelaufen. %s
+
+quickplay.party.syntax=Ungültige Syntax! Tippe "%s" zum Starten ein!
+quickplay.party.sendingYou=Sende dich zu %s!
+quickplay.party.commencing=Starte Quickplay Party Mode Start Sequenz...
+quickplay.party.nogames=Ups! Party-Modus hat keine Spiele ausgewählt.
+quickplay.gui.party.randomizing=Wähle einen zufälligen Spielmodus...
+quickplay.gui.party.allon=Aktiviere alles
+quickplay.gui.party.alloff=Deaktiviere alles
+quickplay.gui.party.launch=Starte!
+
+quickplay.keybinds.illegal=Die gebundene Taste "%s" ist aus irgendeinem Grund ungültig! Versuche es neu zu erstellen.
+quickplay.keybinds.title=Tastaturkürzel
+quickplay.keybinds.subtitle=Rechtsklicke einen Tastenkürzel für weitere Optionen.
+quickplay.keybinds.reset=Tastaturkürzel zurücksetzen
+quickplay.gui.keybinds.delete=Löschen
+quickplay.gui.keybinds.requireHolding=Halten erforderlich: %s
+quickplay.gui.keybinds.taken=Diese Taste wurde schon zu einer Quickplay-Funktion zugeteilt!
+
+quickplay.moveableHudElement.small=KLEIN
+quickplay.moveableHudElement.medium=MITTEL
+quickplay.moveableHudElement.large=GROß
+quickplay.moveableHudElement.xlarge=SEHR GROß
+
+quickplay.premium.expiresIn=Dein Quickplay Premium-Abonnement läuft in %s Tagen ab.
+quickplay.premium.purchasePage=Deine Quickplay-Premium-Kontoseite ist verfügbar unter:
+
+quickplay.premium.ingameReward.error=Komisch, irgendetwas ist, bei diesem Vorgang, schief gelaufen! Versuche dich mit "/qp premium auth" erneut zu autorisieren oder kontaktiere bugfroggy, falls das Problem weiterhin besteht.
+quickplay.premium.ingameReward.openLink=Öffne Web-Version
+quickplay.premium.ingameReward.hypixelProperty=Alle Güter sind Eigentum von Hypixel Inc. Quickplay ist nicht mit Hypixel Inc. https://hypixel.net/ verbunden
+quickplay.premium.ingameReward.error.header=(╯°□°)╯︵ ┻━┻
+quickplay.premium.ingameReward.adroll.header=Willkommen im Hypixel Zoo!
+quickplay.premium.ingamereward.remaining=Verbleibende Zeit: %ss
+quickplay.premium.ingameReward.adroll.text=Der Hypixel Store enthält viele coole Artikel, um dein Hypixel Spielererlebnis zu verbessern.
+quickplay.premium.ingameReward.adroll.skipAd=Kaufe einen Serverrang, um diese Werbung dauerhaft zu umgehen.
+quickplay.premium.ingameReward.adroll.clickToVisit=Klicke hier, um den Shop zu besuchen.
+quickplay.premium.ingameReward.menu.header=Wähle deine Belohnung
+quickplay.premium.ingameReward.menu.streak=Tägliche Streak - Aktuell: %s - High Score: %s
+quickplay.premium.ingameReward.menu.claim.error=Etwas ist schief gelaufen, während du deine Belohnung abgeholt hast. Versuche es erneut, oder vielleicht ist deine Belohnung bereits abgelaufen.
+quickplay.premium.ingameReward.claimed.header=Belohnung abgeholt!
+quickplay.premium.ingameReward.claimed.close=Drücke %s, um dieses Menü zu schließen.
+quickplay.premium.ingameReward.claimed.share=Teilen
+quickplay.premium.ingameReward.loading=Wird geladen...
+quickplay.premium.ingameReward.loading.sub=Bitte erlaube bis zu 5 Sekunden...

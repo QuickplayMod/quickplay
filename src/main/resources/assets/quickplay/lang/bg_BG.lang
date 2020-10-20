@@ -1,0 +1,201 @@
+quickplay.offline=В момента не сте на линия в Hypixel Network!
+quickplay.disabled=Quickplay беше затворен принудително! Причина: %s.
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=Натисни за да отвориш.
+
+quickplay.commands.invalid=Невалидна команда!
+quickplay.commands.quickplay.help.help=Покажи наличните команди.
+quickplay.commands.quickplay.config.help=Конфигурирай твоя Quickplay мод.
+quickplay.commands.quickplay.limbo.help=Изпрати себе си в Limbo.
+quickplay.commands.quickplay.limbo.alreadythere=Ох! Ти вече си в Limbo!
+quickplay.commands.quickplay.delivery.help=Open the Delivery Man menu.
+quickplay.commands.quickplay.keybinds.help=Отвори Quickplay редактора на клавиши.
+quickplay.commands.quickplay.moveinstance.deprecated=Тази команда е остаряла. Трябва да използваш "/qp config" вместо това!
+quickplay.commands.quickplay.discord.help=Присъедини се към Discord сървъра на Quickplay.
+quickplay.commands.quickplay.discord.message=Discord e #1 начин да се свържеш с @bugfroggy. Присъедини се към Discord-a на Quickplay ако имаш някакви въпроси,отзиви или бъг репортове.
+quickplay.commands.quickplay.party.help=Промени своя Quickplay парти Mode.
+quickplay.commands.quickplay.premium.help=Команда за Quickplay Premium функции.
+quickplay.commands.quickplay.premium.noCommands=Няма познати команди!
+quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay couldn't gather the latest information about Quickplay Premium! Visit %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Натисни за да отвориш %s
+quickplay.commands.quickplay.history.help=Виж в кои сървъри/лобита си бил последно.
+quickplay.commands.quickplay.history.header=Ето последните %s сървъри/лобита в които си бил, най-скорошните показани най-отгоре:
+quickplay.commands.quickplay.history.error=Нещо се обърка!
+quickplay.commands.quickplay.wiki.help=Отвори Quickplay помощният уебсайт.
+quickplay.commands.quickplay.version.help=View the current Quickplay version.
+quickplay.commands.quickplay.version.message=Quickplay v%s
+
+quickplay.commands.quickplay.premium.account.help=Retrieve information about your account.
+quickplay.commands.quickplay.premium.auth.help=Re-authenticate with the Quickplay Premium backend servers.
+quickplay.commands.quickplay.premium.auth.runningRequest=Thinking...
+quickplay.commands.quickplay.premium.auth.done=Authenticated!
+quickplay.commands.quickplay.premium.auth.error=Something went wrong while doing that! Contact bugfroggy if this persists.
+quickplay.commands.quickplay.premium.auth.noSubscription=Seems like you don't have any Quickplay Premium subscription! Contact bugfroggy if you believe this is an error.
+quickplay.commands.quickplay.premium.transfer.help=Transfer your Quickplay Premium subscription to another account.
+quickplay.commands.quickplay.premium.transfer.todo=Sorry, but this command isn't implemented yet. In the mean time, contact bugfroggy on the Quickplay Discord! /qp discord
+quickplay.commands.quickplay.premium.glyph.help=Change your Quickplay Premium Glyph settings.
+quickplay.commands.quickplay.premium.glyph.runningRequest=Мислене...
+quickplay.commands.quickplay.premium.glyph.error=Нещо се обърка.Свържете се с bugfroggy ако проблемът не се оправи от само себе си.
+quickplay.commands.quickplay.premium.glyph.offset.help=Set the vertical offset for your Quickplay Glyph.
+quickplay.commands.quickplay.premium.glyph.offset.illegal=Нелегален аргумент! Аргумент "number" трябва да е число между -3 и 2 (децималите са валидни).
+quickplay.commands.quickplay.premium.glyph.set.help=Промени URL-а на твоя Quickplay Глиф.
+quickplay.commands.quickplay.premium.glyph.set.illegal=URL-а посочен е инвалиден! Моля посочете URL, който води до някакво изображение.
+quickplay.commands.quickplay.premium.glyph.height.help=Промени вертикалната височина на твоя Quickplay Глиф.
+quickplay.commands.quickplay.premium.glyph.height.illegal=Нелегален аргумент! Аргумент "number" трябва да е число между 1 и 40.
+quickplay.commands.quickplay.premium.glyph.reset.help=Премахни своя Quickplay глиф така че нищо да не се показва над твоята глава.
+quickplay.commands.quickplay.premium.glyph.ingame.help=Дали твоя глиф трябва да се показва в игра за другите играчи,или само в лобитата.
+quickplay.commands.quickplay.premium.glyph.ingame.illegal=Illegal argument! You must set this to either "true" or "false".
+quickplay.commands.quickplay.premium.glyph.displayown.help=Дали Глифа ти трябва да се показва върху главатат ти или не.Това не ефектира как другите играчи го виждат.
+quickplay.commands.quickplay.premium.glyph.displayown.set=Видимоста на персоналния ти глиф е зададенa на %s.
+
+quickplay.commands.hub.numberexception=Инвалиден номер на Lobby! Синтаксис: %s
+quickplay.commands.usage=Синтаксис на командата:
+
+quickplay.premium.permissions=Трябва ти Quickplay Premium за тази функция!
+
+quickplay.gui.copyright=Copyright © %s bugfroggy
+quickplay.gui.favorite=Промени клавиша на...
+quickplay.gui.close=Затвори
+quickplay.gui.back=Назад
+
+quickplay.settings.category.general=Основни
+
+quickplay.settings.category.colors=Цветове
+quickplay.settings.primaryColor.name=Основен цвят
+quickplay.settings.primaryColor.help=Промени основния цвят на твоя Quickplay
+quickplay.settings.secondaryColor.name=Втори цвят
+quickplay.settings.secondaryColor.help=Промени втория цвят на твоя Quickplay
+
+quickplay.settings.category.gui=GUI
+quickplay.settings.blurGuiBackgrounds.name=Замъгляване на GUI фоновете.
+quickplay.settings.blurGuiBackgrounds.help=Дали трябва цвета на Quickplay GUIовете да е малко замъглен.
+quickplay.settings.fadeInGuis.name=Контрастни GUI-ове
+quickplay.settings.fadeInGuis.help=Дали GUI-овете трябва да станат по-констрастни когато се отваря.
+quickplay.settings.transparentBackgrounds.name=Прозрачни фонове
+quickplay.settings.transparentBackgrounds.help=Дали Quickplay GUI фоновете трябва да са 100%% прозрачни или само леко прозрачно черни.
+quickplay.settings.gameLogoScale.name=Мащаб на главното меню
+quickplay.settings.gameLogoScale.help=Мащаб на всеки бутон в главното меню на Quickplay.
+quickplay.settings.reverseScrollingDirection.name=Обърни посоката на скролване
+quickplay.settings.reverseScrollingDirection.help=Обърни посоката на която скролването и плъзгането движат екрана.
+quickplay.settings.anyKeyClosesGui.name=Някой клавиш затваря GUI-тата
+quickplay.settings.anyKeyClosesGui.help=Главното меню на Quickplay и GUI-a ще се затворят когато някой клавиш е натиснат.
+quickplay.settings.compactMainMenu.name=Компактно Главно Меню
+quickplay.settings.compactMainMenu.help=Дали Главното Меню на Quickplay трябва да прикрие имената на игрите освен ако не задържиш върху тях.
+quickplay.settings.swapMainGuiColors.name=Swap Main Menu Colors
+quickplay.settings.swapMainGuiColors.help=Whether the primary and secondary colors should be swapped in the Quickplay Main Menu.
+
+quickplay.settings.category.instanceDisplay=Сървър/лоби дисплей
+quickplay.settings.instanceDisplay.name=Сървър/лоби дисплей
+quickplay.settings.instanceDisplay.help=Дали трябва сървърът или лобито в което си да се показва върху екрана ти.
+quickplay.settings.moveInstanceDisplayButton.name=Преместете Сървър/лоби дисплея
+quickplay.settings.moveInstanceDisplayButton.help=Промени позицията на Сървър/лоби дисплея върху твоя екран.
+quickplay.settings.instanceOpacity.name=Прозрачност на сървър/лоби дисплеят
+quickplay.settings.instanceOpacity.help=Прозрачност на дисплея.
+quickplay.settings.displayInstanceWithChatOpen.name=Покажи върху чат
+quickplay.settings.displayInstanceWithChatOpen.help=Дали сървър/лоби дисплея трябва да се показва когато чата е отворен.
+quickplay.settings.instanceDisplayScale.name=Мащаб
+quickplay.settings.instanceDisplayScale.help=Мащаб на сървър/лоби дисплея.
+
+quickplay.settings.sendUsageStatsButton.name=Статистики на ползване...
+quickplay.settings.sendUsageStatsButton.help=Изпрати анонимни статистики които ми помагат да създам по-добри модове за теб!
+quickplay.settings.editKeybinds.name=Промени клавиши...
+quickplay.settings.editKeybinds.help=Възложи & премахни клавиши предишно създадени с десен клик върху игри или mode-ове.
+quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
+quickplay.settings.lobbyOneSwap.name=Отиди в Lobby едно
+quickplay.settings.lobbyOneSwap.help=Отиди в Lobby едно автоматично когато се присъединиш към ново лоби.
+quickplay.settings.updateNotifications.name=Известия за актуализации
+quickplay.settings.updateNotifications.help=Дали искаш да си информиран когато нова версия на Quickplay излезе (твоя лист с игри ще се актуализира автоматично,въпреки тази настройка).
+quickplay.settings.redesignedLobbyCommand.name=Команда по избор за лоби
+quickplay.settings.redesignedLobbyCommand.help=Дали комнадатите по избор за лоби трябва да се използват когато могат. Изисква рестарт на играта.
+
+quickplay.settings.category.partyMode=Парти Mode
+quickplay.settings.partyModeDelay.name=Забавяне на пускането
+quickplay.settings.partyModeDelay.help=Брой секунди Launch randomization-а трябва да отнеме.
+quickplay.settings.partyModeGui.name=Launch Randomatization GUI
+quickplay.settings.partyModeGui.help=Дали трябва специално "спинер" GUI да се отвори когато потребителят стартира парти mode.
+
+quickplay.settings.category.premium=Premium Функции
+quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
+quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
+quickplay.settings.showGlyphsInF1.name=Show Glyphs in F1
+quickplay.settings.showGlyphsInF1.help=Whether Glyphs should be visible when you're in F1 mode.
+quickplay.settings.displayOwnGlyph.name=Покажи собствения си Глиф
+quickplay.settings.displayOwnGlyph.help=Дали твоя Глиф трябва да бъде показван върху твоята глава във F5 режим.
+quickplay.settings.ingameDailyReward.name=Всекидневна награда
+quickplay.settings.ingameDailyReward.help=Дали даването на наградите трябва да бъде в игра а не в браузър,за да няма нужда да отваряш уеб страница.
+quickplay.config.keybinds.openmain=Отвори главното GUI
+quickplay.config.saveerror=Имаше грешка,докато запазвахме твоите конфигурации. Настройките може и да не са се запазили!
+quickplay.config.gui.title=Quickplay Конфигурация
+quickplay.config.gui.version=Версия
+quickplay.config.gui.true=ВКЛЮЧЕНО
+quickplay.config.gui.false=ИЗКЛЮЧЕНО
+quickplay.config.openfolder=Отвори папка
+quickplay.config.color.gui.sampletext=Примерен текст
+quickplay.config.color.gui.red=Червено
+quickplay.config.color.gui.green=Зелено
+quickplay.config.color.gui.blue=Синьо
+quickplay.config.color.gui.chromaspeed=Колко бързо да се променят цветовете
+quickplay.config.color.gui.chromaspeed.off=ИЗКЛЮЧЕНО
+quickplay.config.color.gui.chromaspeed.slow=БАВНО
+quickplay.config.color.gui.chromaspeed.medium=СРЕДНО
+quickplay.config.color.gui.chromaspeed.fast=БЪРЗО
+quickplay.config.color.gui.chromaspeed.insane=ЕКСТРЕМНО
+
+quickplay.gui.main.nogames.header=Упс!
+quickplay.gui.main.nogames.issue=Изглежда, че не можах да разбера кои игри са на разположение.
+quickplay.gui.main.nogames.why=Това сигурно се случва ако току-що си инсталирал мода.
+quickplay.gui.main.nogames.contact=Опитай да рестартираш своята игра или се свържи с bugfroggy ако това не отсранява проблема!
+
+quickplay.gui.stats.yes=Да,изпрати статистики.
+quickplay.gui.stats.no=Не,не изпращай статистики.
+quickplay.gui.stats.title=Изпрати анонимни статики за ползване на Quickplay?
+quickplay.gui.stats.description=Избирайки "да" ми изпраща анонимна дата за твоята игра и как ти използваш моя Minecraft мод за да помогнеш да оправя бъгове & да създам по-добри актуализации! \n Тази дата включва,но не е лимитирана до твоята Minecraft версия,Forge версия,Java версия,Операционна система,Minecraft mod-ове които си инсталирал и твоите Quickplay настройки. Отиди в инсталационния лист за пълен лист с датата събрана. Тази настройка може да бъде променена по-късно.
+quickplay.gui.stats.token=Твоя token за статистики е %s.
+quickplay.gui.stats.copied=Копирано в клипборда!
+quickplay.gui.stats.copy=Настисни за да копираш
+quickplay.gui.stats.privacy=Правила за поверителност
+quickplay.gui.stats.privacyerror=Нещо се обърка. %s
+
+quickplay.party.syntax=Инвалиден синтаксис! Напиши "%s" за да го махнеш!
+quickplay.party.sendingYou=Изпращаме те в %s!
+quickplay.party.commencing=Започни Quickplay Парти Mode Launch редица...
+quickplay.party.nogames=Oх! Парти Mode няма никакви игри избрани.
+quickplay.gui.party.randomizing=Избира се случаен gamemode...
+quickplay.gui.party.allon=Включи всички
+quickplay.gui.party.alloff=Изключи всички
+quickplay.gui.party.launch=Пуснете!
+
+quickplay.keybinds.illegal=Клавишът "%s" е инвалиден поради някаква причина! Опитайте да го редактирате.
+quickplay.keybinds.title=Клавиши
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
+quickplay.keybinds.reset=Върни клавишите към тяхните първоначални настройки
+quickplay.gui.keybinds.delete=Изтрий
+quickplay.gui.keybinds.requireHolding=Holding required: %s
+quickplay.gui.keybinds.taken=Този клавиш вече е приложен до функция на Quickplay!
+
+quickplay.moveableHudElement.small=МАЛКО
+quickplay.moveableHudElement.medium=СРЕДНО
+quickplay.moveableHudElement.large=ГОЛЯМО
+quickplay.moveableHudElement.xlarge=ЕКСТРЕМНО ГОЛЯМО
+
+quickplay.premium.expiresIn=Твоя Quickplay Premium абонамент изтича след %s дни.
+quickplay.premium.purchasePage=Страницата на твоя Quickplay Premium акаунт е налична на: 
+
+quickplay.premium.ingameReward.error=Странно,нещо се обърка докато се опита да направиш това! Опитай да преудостовериш с "/qp premium auth" или се свържи с bugfroggy ако този проблем продължи.
+quickplay.premium.ingameReward.openLink=Отвори Уеб Версия
+quickplay.premium.ingameReward.hypixelProperty=Всички елементи са собственост на Hypixel Inc. Quickplay не е свързан с Hypixel Inc. https://hypixel.net/
+quickplay.premium.ingameReward.error.header=(╯°□°)╯︵ ┻━┻
+quickplay.premium.ingameReward.adroll.header=Добре дошли в Hypixel зоопарка!
+quickplay.premium.ingamereward.remaining=Оставащо време: %ss
+quickplay.premium.ingameReward.adroll.text=Hypixel магазина има много яки предмети с които да подобриш своето изживяване в Hypixel.
+quickplay.premium.ingameReward.adroll.skipAd=Купи някой сървър ранк за да може перманентно да затвориш тази реклама.
+quickplay.premium.ingameReward.adroll.clickToVisit=Натисни тук,за да посетиш магазина.
+quickplay.premium.ingameReward.menu.header=Избери наградата си
+quickplay.premium.ingameReward.menu.streak=Daily Streak - Текущ: %s - Най-добър резултат: %s
+quickplay.premium.ingameReward.menu.claim.error=Something went wrong while claiming your reward. Try again, or perhaps the reward has expired.
+quickplay.premium.ingameReward.claimed.header=Награда получена!
+quickplay.premium.ingameReward.claimed.close=Натисни %s за да затвориш това меню.
+quickplay.premium.ingameReward.claimed.share=Споделяне
+quickplay.premium.ingameReward.loading=Зареждане…
+quickplay.premium.ingameReward.loading.sub=Моля позволи до 5 секунди...

@@ -1,0 +1,201 @@
+quickplay.offline=你目前不在Hypixel服务器中！
+quickplay.disabled=QuickPlay 已被强制禁用！原因：%s
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=点击打开
+
+quickplay.commands.invalid=Invalid command!
+quickplay.commands.quickplay.help.help=显示可用指令
+quickplay.commands.quickplay.config.help=配置Quickplay mod。
+quickplay.commands.quickplay.limbo.help=传送到闲置大厅
+quickplay.commands.quickplay.limbo.alreadythere=你已经在闲置大厅里了！
+quickplay.commands.quickplay.delivery.help=打开礼包使者菜单。
+quickplay.commands.quickplay.keybinds.help=打开Quickplay热键设置。
+quickplay.commands.quickplay.moveinstance.deprecated=该指令已被弃用。你应该先使用/qp config进行配置！
+quickplay.commands.quickplay.discord.help=加入Quickplay Discord服务器
+quickplay.commands.quickplay.discord.message=Discord是联系bugfroggy的第一途径。如果你有任何问题，反馈，漏洞报告，请加入Quickplay Discord服务器。
+quickplay.commands.quickplay.party.help=自定义你的Quickplay组队模式。
+quickplay.commands.quickplay.premium.help=Quickplay Premium功能的指令
+quickplay.commands.quickplay.premium.noCommands=没有已知指令！
+quickplay.commands.quickplay.premium.about.menuMissing=抱歉！Quickplay无法获取Quickplay Premium的最新信息！请浏览%s查看
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=点击打开%s
+quickplay.commands.quickplay.history.help=查看你最近前往的服务器。
+quickplay.commands.quickplay.history.header=此处为你最近前往的%s个服务器列表，顶部为最新记录：
+quickplay.commands.quickplay.history.error=出现某些错误！
+quickplay.commands.quickplay.wiki.help=打开Quickplay帮助网站。
+quickplay.commands.quickplay.version.help=View the current Quickplay version.
+quickplay.commands.quickplay.version.message=Quickplay v%s
+
+quickplay.commands.quickplay.premium.account.help=Retrieve information about your account.
+quickplay.commands.quickplay.premium.auth.help=Re-authenticate with the Quickplay Premium backend servers.
+quickplay.commands.quickplay.premium.auth.runningRequest=Thinking...
+quickplay.commands.quickplay.premium.auth.done=Authenticated!
+quickplay.commands.quickplay.premium.auth.error=Something went wrong while doing that! Contact bugfroggy if this persists.
+quickplay.commands.quickplay.premium.auth.noSubscription=Seems like you don't have any Quickplay Premium subscription! Contact bugfroggy if you believe this is an error.
+quickplay.commands.quickplay.premium.transfer.help=Transfer your Quickplay Premium subscription to another account.
+quickplay.commands.quickplay.premium.transfer.todo=Sorry, but this command isn't implemented yet. In the mean time, contact bugfroggy on the Quickplay Discord! /qp discord
+quickplay.commands.quickplay.premium.glyph.help=Change your Quickplay Premium Glyph settings.
+quickplay.commands.quickplay.premium.glyph.runningRequest=Thinking...
+quickplay.commands.quickplay.premium.glyph.error=Something went wrong... Try contact bugfroggy if this doesn't resolve itself.
+quickplay.commands.quickplay.premium.glyph.offset.help=Set the vertical offset for your Quickplay Glyph.
+quickplay.commands.quickplay.premium.glyph.offset.illegal=Illegal argument! Argument "number" must be a number between -3 and 2 (decimals are valid).
+quickplay.commands.quickplay.premium.glyph.set.help=Set the image URL of your Quickplay Glyph.
+quickplay.commands.quickplay.premium.glyph.set.illegal=The URL provided is invalid! Please provide a URL that directs to an image.
+quickplay.commands.quickplay.premium.glyph.height.help=Set the vertical height of your Quickplay Glyph.
+quickplay.commands.quickplay.premium.glyph.height.illegal=Illegal argument! Argument "number" must be a number between 1 and 40.
+quickplay.commands.quickplay.premium.glyph.reset.help=Remove your Quickplay Glyph so nothing displays above your head.
+quickplay.commands.quickplay.premium.glyph.ingame.help=Set whether or not your Glyph should display in-game for others, or only in lobbies.
+quickplay.commands.quickplay.premium.glyph.ingame.illegal=Illegal argument! You must set this to either "true" or "false".
+quickplay.commands.quickplay.premium.glyph.displayown.help=Whether your own Glyph should display over your head. Does not affect how others see it.
+quickplay.commands.quickplay.premium.glyph.displayown.set=Personal glyph visibility set to %s.
+
+quickplay.commands.hub.numberexception=无效大厅序号！语法：%s
+quickplay.commands.usage=指令语法：
+
+quickplay.premium.permissions=你必须拥有Quickplay Premium才能使用这个功能！
+
+quickplay.gui.copyright=© %s bugfroggy 版权所有
+quickplay.gui.favorite=绑定到按键...
+quickplay.gui.close=关闭
+quickplay.gui.back=返回
+
+quickplay.settings.category.general=常规
+
+quickplay.settings.category.colors=颜色
+quickplay.settings.primaryColor.name=主色调
+quickplay.settings.primaryColor.help=修改Quickplay主色调
+quickplay.settings.secondaryColor.name=辅助颜色
+quickplay.settings.secondaryColor.help=设置Quickplay辅助颜色
+
+quickplay.settings.category.gui=GUI
+quickplay.settings.blurGuiBackgrounds.name=GUI模糊背景
+quickplay.settings.blurGuiBackgrounds.help=切换Quickplay的GUI背景是否模糊。
+quickplay.settings.fadeInGuis.name=淡入GUI
+quickplay.settings.fadeInGuis.help=切换打开GUI时是否淡入。
+quickplay.settings.transparentBackgrounds.name=透明背景
+quickplay.settings.transparentBackgrounds.help=切换Quickplay GUI界面背景为100%%透明或黑色半透明。
+quickplay.settings.gameLogoScale.name=主菜单比例
+quickplay.settings.gameLogoScale.help=Quickplay主菜单各项目缩放比例
+quickplay.settings.reverseScrollingDirection.name=反转滚动方向
+quickplay.settings.reverseScrollingDirection.help=反转滚动和拖动屏幕的方向
+quickplay.settings.anyKeyClosesGui.name=任意键关闭界面
+quickplay.settings.anyKeyClosesGui.help=Quickplay的主菜单及游戏GUI将在按下任意键时关闭
+quickplay.settings.compactMainMenu.name=简洁主菜单
+quickplay.settings.compactMainMenu.help=切换Quickplay主菜单是否为简洁样式以在鼠标未悬停在游戏名上时自动将其隐藏
+quickplay.settings.swapMainGuiColors.name=Swap Main Menu Colors
+quickplay.settings.swapMainGuiColors.help=Whether the primary and secondary colors should be swapped in the Quickplay Main Menu.
+
+quickplay.settings.category.instanceDisplay=窗口显示
+quickplay.settings.instanceDisplay.name=窗口显示
+quickplay.settings.instanceDisplay.help=切换当前服务器窗口是否在屏幕上显示。
+quickplay.settings.moveInstanceDisplayButton.name=移动窗口...
+quickplay.settings.moveInstanceDisplayButton.help=更改窗口在屏幕上的位置。
+quickplay.settings.instanceOpacity.name=窗口不透明度
+quickplay.settings.instanceOpacity.help=设置窗口的不透明度
+quickplay.settings.displayInstanceWithChatOpen.name=在聊天信息上层显示
+quickplay.settings.displayInstanceWithChatOpen.help=切换是否在聊天栏开启时渲染窗口。
+quickplay.settings.instanceDisplayScale.name=缩放比例
+quickplay.settings.instanceDisplayScale.help=窗口大小
+
+quickplay.settings.sendUsageStatsButton.name=使用率统计...
+quickplay.settings.sendUsageStatsButton.help=发送匿名使用数据以帮助我更好地开发 mod！
+quickplay.settings.editKeybinds.name=编辑热键...
+quickplay.settings.editKeybinds.help=右键点击以分配并同时删除先前为游戏或模式绑定的按键。
+quickplay.settings.keybindPressTime.name=Keybind Press Duration
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
+quickplay.settings.lobbyOneSwap.name=传送到一号大厅
+quickplay.settings.lobbyOneSwap.help=当你加入新大厅时自动传送到 1 号大厅
+quickplay.settings.updateNotifications.name=更新通知
+quickplay.settings.updateNotifications.help=切换是否在Quickplay发布新版本时接收通知（你的游戏列表始终会自动更新）。
+quickplay.settings.redesignedLobbyCommand.name=自定义大厅命令
+quickplay.settings.redesignedLobbyCommand.help=切换是否在可用时激活Quickplay的自定义大厅命令。需要重启游戏。
+
+quickplay.settings.category.partyMode=组队模式
+quickplay.settings.partyModeDelay.name=启动延迟
+quickplay.settings.partyModeDelay.help=随机选择持续时长
+quickplay.settings.partyModeGui.name=启动随机GUI样式
+quickplay.settings.partyModeGui.help=切换是否在选择组队模式时显示随机GUI样式。
+
+quickplay.settings.category.premium=高级功能
+quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
+quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
+quickplay.settings.showGlyphsInF1.name=Show Glyphs in F1
+quickplay.settings.showGlyphsInF1.help=Whether Glyphs should be visible when you're in F1 mode.
+quickplay.settings.displayOwnGlyph.name=显示自身全息字幕
+quickplay.settings.displayOwnGlyph.help=是否在第三人称模式中在头上显示你自己的全息字幕。
+quickplay.settings.ingameDailyReward.name=游戏内每日奖励
+quickplay.settings.ingameDailyReward.help=切换是否在游戏内部浏览器中打开每日奖励页面，这样一来你就不需要另启动外部浏览器了。
+quickplay.config.keybinds.openmain=打开主界面
+quickplay.config.saveerror=保存配置时出错。设置可能并未被保存。
+quickplay.config.gui.title=Quickplay配置
+quickplay.config.gui.version=版本
+quickplay.config.gui.true=启用
+quickplay.config.gui.false=禁用
+quickplay.config.openfolder=打开文件夹
+quickplay.config.color.gui.sampletext=示例文本
+quickplay.config.color.gui.red=红色
+quickplay.config.color.gui.green=绿色
+quickplay.config.color.gui.blue=蓝色
+quickplay.config.color.gui.chromaspeed=变色速度
+quickplay.config.color.gui.chromaspeed.off=关闭
+quickplay.config.color.gui.chromaspeed.slow=慢速
+quickplay.config.color.gui.chromaspeed.medium=中速
+quickplay.config.color.gui.chromaspeed.fast=快速
+quickplay.config.color.gui.chromaspeed.insane=超快
+
+quickplay.gui.main.nogames.header=哎呀！
+quickplay.gui.main.nogames.issue=找不到可用的游戏。
+quickplay.gui.main.nogames.why=这种情况通常发生在你刚安装此mod时。
+quickplay.gui.main.nogames.contact=请尝试重启游戏，若问题仍未解决，请联系 bugfroggy。
+
+quickplay.gui.stats.yes=是，允许发送这些数据
+quickplay.gui.stats.no=否，拒绝发送使用数据
+quickplay.gui.stats.title=是否允许Quickplay发送已经匿名的用户使用数据？
+quickplay.gui.stats.description=选择“是”将会发送有关你的游戏以及你使用mod的情况以帮助我们修复漏洞及改善体验。数据包含但不仅限于你使用的 Minecraft 版本信息、Forge 版本信息、Java 版本信息、操作系统版本、安装的 mod 以及你的 Quickplay 设置。转到下载线程以获取收集的所有数据。此设置可稍后在配置中修改。
+quickplay.gui.stats.token=你的数据token为%s。
+quickplay.gui.stats.copied=复制到剪贴板！
+quickplay.gui.stats.copy=点击复制
+quickplay.gui.stats.privacy=隐私条款
+quickplay.gui.stats.privacyerror=发生错误。%s
+
+quickplay.party.syntax=无效语法！输入“%s”取消！
+quickplay.party.sendingYou=正在将你传送到%s！
+quickplay.party.commencing=以设置的Quickplay组队模式启动顺序开始游戏...
+quickplay.party.nogames=嘿！尚未选择组队模式所用游戏。
+quickplay.gui.party.randomizing=正在选择一个随机游戏模式...
+quickplay.gui.party.allon=全部启用
+quickplay.gui.party.alloff=全部禁用
+quickplay.gui.party.launch=启动！
+
+quickplay.keybinds.illegal=热键“%s”因某些原因无法使用！请重新设置。
+quickplay.keybinds.title=热键
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
+quickplay.keybinds.reset=重置热键
+quickplay.gui.keybinds.delete=删除
+quickplay.gui.keybinds.requireHolding=Holding required: %s
+quickplay.gui.keybinds.taken=此按键已经被分配到某个Quickplay功能了！
+
+quickplay.moveableHudElement.small=小
+quickplay.moveableHudElement.medium=中
+quickplay.moveableHudElement.large=大
+quickplay.moveableHudElement.xlarge=超大
+
+quickplay.premium.expiresIn=Your Quickplay Premium subscription expires in %s days.
+quickplay.premium.purchasePage=Your Quickplay Premium account page is available at:
+
+quickplay.premium.ingameReward.error=Weird, something went wrong while trying to do that! Try re-authorizing with "/qp premium auth", or contact bugfroggy if this issue persists.
+quickplay.premium.ingameReward.openLink=Open Web Version
+quickplay.premium.ingameReward.hypixelProperty=All assets are property of Hypixel Inc. Quickplay is not affiliated with Hypixel Inc. https://hypixel.net/
+quickplay.premium.ingameReward.error.header=(╯°□°)╯︵ ┻━┻
+quickplay.premium.ingameReward.adroll.header=Welcome to the Hypixel Zoo!
+quickplay.premium.ingamereward.remaining=Time remaining: %ss
+quickplay.premium.ingameReward.adroll.text=The Hypixel Store contains plenty of cool items to enhance your Hypixel player experience.
+quickplay.premium.ingameReward.adroll.skipAd=Purchase any server rank to permanently bypass this advertisement.
+quickplay.premium.ingameReward.adroll.clickToVisit=Click here to visit the store.
+quickplay.premium.ingameReward.menu.header=Choose your reward
+quickplay.premium.ingameReward.menu.streak=Daily Streak - Current: %s - High Score: %s
+quickplay.premium.ingameReward.menu.claim.error=Something went wrong while claiming your reward. Try again, or perhaps the reward has expired.
+quickplay.premium.ingameReward.claimed.header=Reward Claimed!
+quickplay.premium.ingameReward.claimed.close=Press %s to close this menu.
+quickplay.premium.ingameReward.claimed.share=Share
+quickplay.premium.ingameReward.loading=Loading...
+quickplay.premium.ingameReward.loading.sub=Please allow up to 5 seconds...

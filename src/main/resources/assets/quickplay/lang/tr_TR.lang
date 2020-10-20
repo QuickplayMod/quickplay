@@ -1,0 +1,201 @@
+quickplay.offline=Şu anda Hypixel Sunucusunda Aktif Değilsin!
+quickplay.disabled=Quickplay zorla devre dışı bırakıldı! Sebep: %s.
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=Açmak için tıkla.
+
+quickplay.commands.invalid=Hatalı komut!
+quickplay.commands.quickplay.help.help=Kullanılabilir tüm komutları görüntüle.
+quickplay.commands.quickplay.config.help=Quickplay modunu yapılandır.
+quickplay.commands.quickplay.limbo.help=Kendini Limbo'ya gönder.
+quickplay.commands.quickplay.limbo.alreadythere=D'oh! Sen zaten Limbodasın!
+quickplay.commands.quickplay.delivery.help=Teslimatçı menüsünü açın.
+quickplay.commands.quickplay.keybinds.help=Quickplay Tuş Düzenleyicisi'ni açın.
+quickplay.commands.quickplay.moveinstance.deprecated=Bu komut kullanımdan kaldırılmıştır. Bunun yerine "/qp config" kullanmalısın!
+quickplay.commands.quickplay.discord.help=Quickplay Discord sunucusuna katılın.
+quickplay.commands.quickplay.discord.message=Discord @bugfroggy ile temasa geçmek için # 1 yoludur. Herhangi bir sorunuz, geri bildiriminiz veya hata raporlarınız varsa Quickplay Discorduna katılın.
+quickplay.commands.quickplay.party.help=Quickplay Parti modunu özelleştirin.
+quickplay.commands.quickplay.premium.help=Quickplay Premium özellikleri için komut.
+quickplay.commands.quickplay.premium.noCommands=Bilinen komut yok!
+quickplay.commands.quickplay.premium.about.menuMissing=Üzgünüm, ancak Quickplay, Quickplay Premium hakkında en son bilgileri toplayamadı! Burayı ziyaret et %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=%s açmak için tıklayın
+quickplay.commands.quickplay.history.help=En son hangi örneklerde bulunduğunuzu görüntüleyin.
+quickplay.commands.quickplay.history.header=İşte en son en üstte görünen son %s örnekleri:
+quickplay.commands.quickplay.history.error=Bir şeyler ters gitti!
+quickplay.commands.quickplay.wiki.help=Quickplay Yardım Web sitesini açın.
+quickplay.commands.quickplay.version.help=Şuan ki Quickplay versiyonunu görüntüle.
+quickplay.commands.quickplay.version.message=Quickplay v%s
+
+quickplay.commands.quickplay.premium.account.help=Hesabın hakkında bilgi al.
+quickplay.commands.quickplay.premium.auth.help=Quickplay Premium arka uç sunucuları ile yeniden kimlik doğrula.
+quickplay.commands.quickplay.premium.auth.runningRequest=Düşünüyor...
+quickplay.commands.quickplay.premium.auth.done=Kimlik doğrulandı!
+quickplay.commands.quickplay.premium.auth.error=Bunu yaparken bir şeyler ters gitti! Sorun devam ederse bugfroggy ile iletişime geç.
+quickplay.commands.quickplay.premium.auth.noSubscription=Herhangi bir Quickplay Premium aboneliğiniz yok gibi görünüyor! Bunun bir hata olduğunu düşünüyorsanız bugfroggy ile iletişime geçin.
+quickplay.commands.quickplay.premium.transfer.help=Quickplay Premium aboneliğinizi başka bir hesaba aktarın.
+quickplay.commands.quickplay.premium.transfer.todo=Üzgünüm, ancak bu komut henüz tamamlanmadı. Bu arada, Quickplay Discord üzerinden bugfroggy ile iletişime geç! /qp discord
+quickplay.commands.quickplay.premium.glyph.help=Quickplay Premium Gylph ayarlarınızı değiştirin.
+quickplay.commands.quickplay.premium.glyph.runningRequest=Düşünüyor...
+quickplay.commands.quickplay.premium.glyph.error=Bir şeyler yanlış gitti... Kendini kendine düzelmezse, bugfroggy ile iletişime geçmeyi deneyin.
+quickplay.commands.quickplay.premium.glyph.offset.help=Quickplay Glifiniz için dikey ofseti ayarlayın.
+quickplay.commands.quickplay.premium.glyph.offset.illegal=Geçersiz argüman! Argüman "sayı" -3 ve 2 (ondalık geçerli) arasında bir sayı olmalıdır.
+quickplay.commands.quickplay.premium.glyph.set.help=Quickplay Glifinizin görüntü URL'sini ayarlayın.
+quickplay.commands.quickplay.premium.glyph.set.illegal=Sağlanan URL geçersiz! Lütfen bir resme yönlendiren bir URL sağlayın.
+quickplay.commands.quickplay.premium.glyph.height.help=Quickplay Glifiniz için dikey ofseti ayarlayın.
+quickplay.commands.quickplay.premium.glyph.height.illegal=Geçersiz argüman! Argüman "sayı" -3 ve 2 (ondalık geçerli) arasında bir sayı olmalıdır.
+quickplay.commands.quickplay.premium.glyph.reset.help=Quickplay Glifinizi çıkarın, böylece başınızın üstünde hiçbir şey görünmez.
+quickplay.commands.quickplay.premium.glyph.ingame.help=Glifinizin başkaları için oyun içi veya yalnızca lobilerde gösterilip gösterilmeyeceğini belirleyin.
+quickplay.commands.quickplay.premium.glyph.ingame.illegal=Geçersiz argüman! Bunu "doğru" veya "yanlış" olarak ayarlamalısın.
+quickplay.commands.quickplay.premium.glyph.displayown.help=Kendi Glifinizin başınızın üzerinde görünmesi gerekip gerekmediği. Başkalarının nasıl gördüğünü etkilemez.
+quickplay.commands.quickplay.premium.glyph.displayown.set=Kişisel glif görünürlüğü %s olarak ayarlandı.
+
+quickplay.commands.hub.numberexception=Geçersiz lobi numarası! Sözdizimi: %s
+quickplay.commands.usage=Komut sözdizimi:
+
+quickplay.premium.permissions=Bu özellik için Quickplay Premium'a ihtiyacınız var!
+
+quickplay.gui.copyright=Telif hakkı © %s bugfroggy
+quickplay.gui.favorite=Tuşa bağla...
+quickplay.gui.close=Kapat
+quickplay.gui.back=Geri
+
+quickplay.settings.category.general=Genel
+
+quickplay.settings.category.colors=Renkler
+quickplay.settings.primaryColor.name=Ana Renk
+quickplay.settings.primaryColor.help=Quickplay Ana rengini değiştirme
+quickplay.settings.secondaryColor.name=İkincil renk
+quickplay.settings.secondaryColor.help=Quickplay İkincil rengini değiştirme
+
+quickplay.settings.category.gui=Arayüz
+quickplay.settings.blurGuiBackgrounds.name=Bulanıklaştırılmış GUI Arkaplanı
+quickplay.settings.blurGuiBackgrounds.help=Quickplay Guı'lerinin arka planının biraz bulanık olup olmaması gerektiğini.
+quickplay.settings.fadeInGuis.name=Fade GUİs İçinde
+quickplay.settings.fadeInGuis.help=Açılırken Guı'lerin solması gerekip gerekmediği.
+quickplay.settings.transparentBackgrounds.name=Saydam arkaplan
+quickplay.settings.transparentBackgrounds.help=Quickplay GUI arka planlarının 100%% şeffaf veya sadece yarı saydam bir siyah olması gerekip gerekmediği.
+quickplay.settings.gameLogoScale.name=Ana Menü Stili
+quickplay.settings.gameLogoScale.help=Quickplay ana menüsünde her öğenin ölçeği.
+quickplay.settings.reverseScrollingDirection.name=Yuvarlanma yönünü ters çevir
+quickplay.settings.reverseScrollingDirection.help=Kaydırma ve sürükleme yönünü tersine çevir & ekranı hareket ettirir.
+quickplay.settings.anyKeyClosesGui.name=Herhangi Bir Anahtar Guı'leri Kapatır
+quickplay.settings.anyKeyClosesGui.help=Herhangi bir tuşa basıldığında Quickplay ana menü ve oyun Guı'leri kapanacaktır.
+quickplay.settings.compactMainMenu.name=Kompakt Ana Menü
+quickplay.settings.compactMainMenu.help=Quickplay ana menüsünün, üzerine gelmedikçe oyunların dizelerini gizlemek için sıkıştırılması gerekip gerekmediği.
+quickplay.settings.swapMainGuiColors.name=Ana Menü Renklerini Değiştir
+quickplay.settings.swapMainGuiColors.help=Quickplay ana menüsünde birincil ve ikincil renklerin değiştirilip değiştirilmeyeceğini seç.
+
+quickplay.settings.category.instanceDisplay=Örnek Görüntüleme
+quickplay.settings.instanceDisplay.name=Örnek Görüntüleme
+quickplay.settings.instanceDisplay.help=Geçerli sunucu örneğinin ekranda görüntülenip görüntülenmeyeceği.
+quickplay.settings.moveInstanceDisplayButton.name=Örnek Ekranı Taşıyın...
+quickplay.settings.moveInstanceDisplayButton.help=Örnek ekranın ekrandaki konumunu değiştirin.
+quickplay.settings.instanceOpacity.name=Örnek Ekran Opaklığı
+quickplay.settings.instanceOpacity.help=Örnek ekranın opaklığı.
+quickplay.settings.displayInstanceWithChatOpen.name=Sohbet Üzerinden Göster
+quickplay.settings.displayInstanceWithChatOpen.help=Sohbet açıkken bile örnek ekranının oluşturulması gerekip gerekmediği.
+quickplay.settings.instanceDisplayScale.name=Ölçek
+quickplay.settings.instanceDisplayScale.help=Örnek ekranın opaklığı.
+
+quickplay.settings.sendUsageStatsButton.name=Kullanım İstatistikleri...
+quickplay.settings.sendUsageStatsButton.help=Sizin için daha iyi modlar oluşturmama yardımcı olmak için anonim kullanım istatistikleri gönderin!
+quickplay.settings.editKeybinds.name=Kısayolları Düzenle...
+quickplay.settings.editKeybinds.help=Daha önce sağ tıklayarak oyunlar veya modları tarafından oluşturulan kısayolları düzenleyin veya kaldırın.
+quickplay.settings.keybindPressTime.name=Keybind Basım Süresi
+quickplay.settings.keybindPressTime.help=Onları etkinleştirmek için kısayola ne kadar uzun basman gerekiyor.
+quickplay.settings.lobbyOneSwap.name=Lobi Değiştir
+quickplay.settings.lobbyOneSwap.help=Yeni bir lobiye katıldığınızda otomatik olarak lobiye geçin.
+quickplay.settings.updateNotifications.name=Güncelleme bildirimleri
+quickplay.settings.updateNotifications.help=Quickplay'in yeni bir sürümü yayınlandığında haberdar olmak isteyip istemediğiniz (oyun listeniz bu ayardan bağımsız olarak otomatik olarak güncellenir).
+quickplay.settings.redesignedLobbyCommand.name=Özel Lobi komutu
+quickplay.settings.redesignedLobbyCommand.help=Özel Quickplay lobi komutlarının mümkün olduğunda kullanılması gerekip gerekmediği. Oyun yeniden başlatma gerektirir.
+
+quickplay.settings.category.partyMode=Parti Modu
+quickplay.settings.partyModeDelay.name=Başlatma Gecikmesi
+quickplay.settings.partyModeDelay.help=İkinci Başlatma sayısı randomizasyon almalıdır.
+quickplay.settings.partyModeGui.name=Randomizasyon GUI başlatın
+quickplay.settings.partyModeGui.help=Kullanıcı parti modunu başlattığında özel bir spinner GUI açılmalı mı.
+
+quickplay.settings.category.premium=Premium Özellikleri
+quickplay.settings.fadeGlyphs.name=Diğer Kullanıcıların Gliflerini Soldur
+quickplay.settings.fadeGlyphs.help=Diğer kullanıcıların Gliflerinin onlara yaklaştıkça solması gerekip gerekmediği.Solma mesafesi oyunlarda ve lobilerde daha da ileri gider.
+quickplay.settings.showGlyphsInF1.name=Glypleri F1 ile göster
+quickplay.settings.showGlyphsInF1.help=F1 modundayken Glyphlerin görünür olması gerekip gerekmediği.
+quickplay.settings.displayOwnGlyph.name=Kendi Glifini Göster
+quickplay.settings.displayOwnGlyph.help=Kendi Glifiniz F5 modunda başınızın üzerinde görüntülenmeli mi.
+quickplay.settings.ingameDailyReward.name=Oyun İçi Günlük Ödül
+quickplay.settings.ingameDailyReward.help=Günlük Ödüllerin işlenmesinin tarayıcıdan ziyade oyun içi olması gerekip gerekmediği konusunda bir web sayfası açmanız gerekmez.
+quickplay.config.keybinds.openmain=Ana GUI'Yİ aç
+quickplay.config.saveerror=Yapılandırmanızı kaydederken bir hata oluştu. Ayarlar kaydedilmeyebilir!
+quickplay.config.gui.title=Hızlı Yapılandırma
+quickplay.config.gui.version=Sürüm
+quickplay.config.gui.true=DOĞRU
+quickplay.config.gui.false=YANLIŞ
+quickplay.config.openfolder=Klasörü Aç
+quickplay.config.color.gui.sampletext=Örnek Metin
+quickplay.config.color.gui.red=Kırmızı
+quickplay.config.color.gui.green=Yeşil
+quickplay.config.color.gui.blue=Mavi
+quickplay.config.color.gui.chromaspeed=Renk Hızı
+quickplay.config.color.gui.chromaspeed.off=Kapalı
+quickplay.config.color.gui.chromaspeed.slow=YAVAŞ
+quickplay.config.color.gui.chromaspeed.medium=ORTA
+quickplay.config.color.gui.chromaspeed.fast=HIZLI
+quickplay.config.color.gui.chromaspeed.insane=AŞIRI
+
+quickplay.gui.main.nogames.header=Oops!
+quickplay.gui.main.nogames.issue=Hangi oyunların mevcut olduğunu anlayamadım gibi görünüyor.
+quickplay.gui.main.nogames.why=Mod'u yeni yüklediyseniz bu büyük olasılıkla ortaya çıkmıştır.
+quickplay.gui.main.nogames.contact=Oyununuzu yeniden başlatmayı deneyin, yeniden başlatma sorunu çözmezse bugfroggy ile iletişime geçin!
+
+quickplay.gui.stats.yes=Evet, istatistik gönderin.
+quickplay.gui.stats.no=Hayır, istatistik gönderme.
+quickplay.gui.stats.title=Anonim kullanım istatistiklerin gönder?
+quickplay.gui.stats.description="Evet" i seçmek bana oyununuzla ilgili anonim veriler gönderir ve hataları düzeltmeye ve daha iyi güncellemeler oluşturmaya yardımcı olmak için Minecraft modumu nasıl kullanırsınız! Bu veriler içerir ancak Minecraft sürümü, Forge sürümü, Java sürümü, işletim sistemi sürümü, yüklü Minecraft mods ve Quickplay ayarları ile sınırlı değildir. Toplanan verilerin tam listesi için indirilenler konusuna bakın. Bu ayar daha sonra yapılandırmada değiştirilebilir.
+quickplay.gui.stats.token=İstatistik tokeniniz%s.
+quickplay.gui.stats.copied=Panoya kopyalandı!
+quickplay.gui.stats.copy=Kopyalamak için tıklayın
+quickplay.gui.stats.privacy=Gizlilik Politikası
+quickplay.gui.stats.privacyerror=Bir şeyler yanlış gitti: %s
+
+quickplay.party.syntax=Geçersiz sözdizimi! Çıkarmak için "%s" yazın!
+quickplay.party.sendingYou=Seni %s'ye gönderiyorum!
+quickplay.party.commencing=Quickplay Parti Modu Başlatma Sırası Başlıyor...
+quickplay.party.nogames=D'oh! Parti modu için seçilen herhangi bir oyun yok.
+quickplay.gui.party.randomizing=Rastgele bir oyun modu seçiliyor...
+quickplay.gui.party.allon=Tümünü Etkinleştir
+quickplay.gui.party.alloff=Tümünü devre dışı bırak
+quickplay.gui.party.launch=Çalıştır!
+
+quickplay.keybinds.illegal=Keybind "%s " herhangi bir nedenle geçersiz! Yeniden oluşturmayı dene.
+quickplay.keybinds.title=Keybinds
+quickplay.keybinds.subtitle=Daha fazla seçenek için bir kısayola sağ tıkla.
+quickplay.keybinds.reset=Kısaltmaları Sıfırla
+quickplay.gui.keybinds.delete=Sil
+quickplay.gui.keybinds.requireHolding=Tutman gerekiyor %s
+quickplay.gui.keybinds.taken=Bu anahtar zaten bir Quickplay işlevine atanmış!
+
+quickplay.moveableHudElement.small=KÜÇÜK
+quickplay.moveableHudElement.medium=ORTA
+quickplay.moveableHudElement.large=BÜYÜK
+quickplay.moveableHudElement.xlarge=EKSTRA BÜYÜK
+
+quickplay.premium.expiresIn=Quickplay Premium aboneliğin %s gün içinde sona eriyor.
+quickplay.premium.purchasePage=Quickplay Premium hesap sayfana şu adresten erişebilirsin:
+
+quickplay.premium.ingameReward.error=Garip, bunu yapmaya çalışırken bir şeyler ters gitti! "/qp premium auth" ile yeniden yetkilendirmeyi deneyin veya bu sorun devam ederse bugfroggy ile iletişime geçin.
+quickplay.premium.ingameReward.openLink=Web Sürümünü Aç
+quickplay.premium.ingameReward.hypixelProperty=Tüm varlıklar Hypixel Inc.'e aittir. Quickplay Hypixel Inc.ile bağlı değildir. https://hypixel.net/
+quickplay.premium.ingameReward.error.header=(╯°□°)╯︵ ┻━┻
+quickplay.premium.ingameReward.adroll.header=Hypixel Hayvanat Bahçesine hoş geldiniz!
+quickplay.premium.ingamereward.remaining=Kalan Süre: %ss
+quickplay.premium.ingameReward.adroll.text=Hypixel mağazası Hypixel oyuncu deneyimini geliştirmek için bolca havalı öğe içerir.
+quickplay.premium.ingameReward.adroll.skipAd=Bu reklamı kalıcı olarak atlamak için herhangi bir sunucu rütbesi satın alın.
+quickplay.premium.ingameReward.adroll.clickToVisit=Mağazayı ziyaret etmek için buraya tıklayın.
+quickplay.premium.ingameReward.menu.header=Ödülünüzü seçin
+quickplay.premium.ingameReward.menu.streak=Günlük seri - Şuanki: %s - Yüksek Puan: %s
+quickplay.premium.ingameReward.menu.claim.error=Ödülünü alırken bir şeyler ters gitti. Tekrar dene, ya da ödülünün süresi bitmiş olabilir.
+quickplay.premium.ingameReward.claimed.header=Ödüller alındı!
+quickplay.premium.ingameReward.claimed.close=Bu menüyü kapatmak için %s tuşuna bas.
+quickplay.premium.ingameReward.claimed.share=Paylaş
+quickplay.premium.ingameReward.loading=Yükleniyor...
+quickplay.premium.ingameReward.loading.sub=Lütfen 5 saniye kadar bekleyin...

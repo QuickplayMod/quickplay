@@ -1,0 +1,201 @@
+quickplay.offline=U aren't on HYPICKLE!
+quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s.
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=Click 2 open.
+
+quickplay.commands.invalid=Invalid command!
+quickplay.commands.quickplay.help.help=Show tha commandz.
+quickplay.commands.quickplay.config.help=Configre ur Quickplay mod.
+quickplay.commands.quickplay.limbo.help=Send yourself 2 Limbo.
+quickplay.commands.quickplay.limbo.alreadythere=Doh! Ure already in Limbo!
+quickplay.commands.quickplay.delivery.help=Open teh Delivery Man menu.
+quickplay.commands.quickplay.keybinds.help=Open teh Quickplay Keybind editor.
+quickplay.commands.quickplay.moveinstance.deprecated=Dis command iz deprecatd. U shud use "/qp config" instead!
+quickplay.commands.quickplay.discord.help=Join teh Quickplay Discord servr.
+quickplay.commands.quickplay.discord.message=Discord is teh #1 wai 2 git in touch wif @bugfroggy. Join teh Quickplay Discord if u has any queshuns, feedback, or bug reports. 
+quickplay.commands.quickplay.party.help=Customize ur Quickplay Party Mode.
+quickplay.commands.quickplay.premium.help=Command 4 Quickplay Premium featurez.
+quickplay.commands.quickplay.premium.noCommands=No known commandz!
+quickplay.commands.quickplay.premium.about.menuMissing=Im sry, but Quickplay couldnt gathr teh latest informashun bout Quickplay Premium! Visit %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click 2 open %s
+quickplay.commands.quickplay.history.help=View wut instancez uve last been on.
+quickplay.commands.quickplay.history.header=Heers teh lost %s instancez u wuz on, most resent appearin at teh top:
+quickplay.commands.quickplay.history.error=Somethin went wrong!
+quickplay.commands.quickplay.wiki.help=Open teh Quickplay Halp websiet.
+quickplay.commands.quickplay.version.help=View teh current Quickplay vershun.
+quickplay.commands.quickplay.version.message=Quickplay v%s
+
+quickplay.commands.quickplay.premium.account.help=Retrieve informashun bout ur akownt.
+quickplay.commands.quickplay.premium.auth.help=Re-authenticate wif teh Quickplay Premium bakend servers.
+quickplay.commands.quickplay.premium.auth.runningRequest=Thinkin...
+quickplay.commands.quickplay.premium.auth.done=Authenticatd!
+quickplay.commands.quickplay.premium.auth.error=Somethin went wrong while doin dat! Contact bugfroggy if dis presists.
+quickplay.commands.quickplay.premium.auth.noSubscription=Seems liek u doan has any Quickplay Premium subcripshun! Contact bugfroggy if u bleev dis ar teh an error.
+quickplay.commands.quickplay.premium.transfer.help=Tranzfr ur Quickplay Premium subscripshun 2 anothr akownt. 
+quickplay.commands.quickplay.premium.transfer.todo=Sry, but dis command isn't implementd yet. In da meen tiem, contact bugfroggy on teh Quickplay Discord! /qp discord
+quickplay.commands.quickplay.premium.glyph.help=Chang ur Quickplay Premium Glyf settings.
+quickplay.commands.quickplay.premium.glyph.runningRequest=Thinkin...
+quickplay.commands.quickplay.premium.glyph.error=Somethin went wrong... Try contact bugfroggy if dis doesnt resolve itself.
+quickplay.commands.quickplay.premium.glyph.offset.help=Set teh vertical offset 4 ur Quickplay Glyf.
+quickplay.commands.quickplay.premium.glyph.offset.illegal=Illegal argument! Argument "numbr" must be numbr tween -3 an 2 (decimals r valid).
+quickplay.commands.quickplay.premium.glyph.set.help=Set teh image URL ov ur Quickplay Glyf.
+quickplay.commands.quickplay.premium.glyph.set.illegal=Teh URL providd iz invalid! Plz provide a URL dat directs 2 an image.
+quickplay.commands.quickplay.premium.glyph.height.help=Set teh vertical height ov ur Quickplay Glyf.
+quickplay.commands.quickplay.premium.glyph.height.illegal=Illegal argument! Argument "numbr" must be a numbr tween 1 an 40.
+quickplay.commands.quickplay.premium.glyph.reset.help=Remoov ur Quickplay Glyf so nothin displays aboov ur head.
+quickplay.commands.quickplay.premium.glyph.ingame.help=Set whethr or not ur Glyf shud display in-game 4 others, or only in lobbiez.
+quickplay.commands.quickplay.premium.glyph.ingame.illegal=Illegal argument! U must set dis 2 eithr "true" or false".
+quickplay.commands.quickplay.premium.glyph.displayown.help=Whethr ur own Glyf shud display ovar ur head. Doez not affect how others c it.
+quickplay.commands.quickplay.premium.glyph.displayown.set=Personal glyf visibility set 2 %s.
+
+quickplay.commands.hub.numberexception=Invalid lobby numbr! Syntax: %s
+quickplay.commands.usage=Command synax:
+
+quickplay.premium.permissions=U ned Quickplay Premium 4 dis feachur!
+
+quickplay.gui.copyright=Copyright © %s bugfroggy
+quickplay.gui.favorite=Bind 2 key...
+quickplay.gui.close=Close
+quickplay.gui.back=Bak
+
+quickplay.settings.category.general=General
+
+quickplay.settings.category.colors=Colors
+quickplay.settings.primaryColor.name=Primary Color
+quickplay.settings.primaryColor.help=Change ur Quickplay primary color
+quickplay.settings.secondaryColor.name=Secondary Color
+quickplay.settings.secondaryColor.help=Change ur Quickplay secondary color
+
+quickplay.settings.category.gui=GUI
+quickplay.settings.blurGuiBackgrounds.name=Blur GUI Bckgroundz
+quickplay.settings.blurGuiBackgrounds.help=Whethr the backgrond ov Quickplay GUIs shud be slightly burrd.
+quickplay.settings.fadeInGuis.name=Fade GUIs in
+quickplay.settings.fadeInGuis.help=Whethr GUIs shud fade in when openin.
+quickplay.settings.transparentBackgrounds.name=Tranzparent Bakgroundz
+quickplay.settings.transparentBackgrounds.help=Whethr Quickplay GUI backgroundz shud be 100%% tranzparent or jus a tranzlusent black. 
+quickplay.settings.gameLogoScale.name=Main Menu Scale
+quickplay.settings.gameLogoScale.help=Scale ov each item in teh Quickplay main menu.
+quickplay.settings.reverseScrollingDirection.name=Reverse Scrollin Direcshun
+quickplay.settings.reverseScrollingDirection.help=Reverse teh direcshun scrollin & draggin movez teh screen.
+quickplay.settings.anyKeyClosesGui.name=Any Key Closes GUIs
+quickplay.settings.anyKeyClosesGui.help=Quickplays main menu an game GUIs will close whenevr any key iz presd.
+quickplay.settings.compactMainMenu.name=Compact Main Menu
+quickplay.settings.compactMainMenu.help=Whethr teh Quickplay Main Menu shud be compactd 2 hide gamez strings unles u hovr ovar dem.
+quickplay.settings.swapMainGuiColors.name=Swap Main Menu Colors
+quickplay.settings.swapMainGuiColors.help=Whethr teh primary an secondary colors shud be swapped in teh Quickplay Main Menu.
+
+quickplay.settings.category.instanceDisplay=Instance Display
+quickplay.settings.instanceDisplay.name=Instance Display
+quickplay.settings.instanceDisplay.help=Whethr or not teh current servr instance shud be displayd on-screen.
+quickplay.settings.moveInstanceDisplayButton.name=Moov Instance Display...
+quickplay.settings.moveInstanceDisplayButton.help=Change teh posishun ov teh Instance Display on-screen.
+quickplay.settings.instanceOpacity.name=Instance Display Opacity
+quickplay.settings.instanceOpacity.help=Opacity ov teh instance display.
+quickplay.settings.displayInstanceWithChatOpen.name=Display Ovar Chat
+quickplay.settings.displayInstanceWithChatOpen.help=Whethr teh instance display shud be renderd even when chat iz open.
+quickplay.settings.instanceDisplayScale.name=Scale
+quickplay.settings.instanceDisplayScale.help=Scale ov teh Instance Display.
+
+quickplay.settings.sendUsageStatsButton.name=Usage Statistcs...
+quickplay.settings.sendUsageStatsButton.help=Send anonymous usage statistics to halp meh create bettr mods 4 u!
+quickplay.settings.editKeybinds.name=Edit Keybindz...
+quickplay.settings.editKeybinds.help=Assign & remoov keybindz previously creatd by rite-clickin gamez or modez.
+quickplay.settings.keybindPressTime.name=Keybind Pres Durashun
+quickplay.settings.keybindPressTime.help=How long u has 2 hold keybindz which has holdin enabld 4 them 2 activate.
+quickplay.settings.lobbyOneSwap.name=Swap 2 Lobby Wan
+quickplay.settings.lobbyOneSwap.help=Swap 2 lobby wan automatically whenevr u join new lobby.
+quickplay.settings.updateNotifications.name=Update Notificashuns
+quickplay.settings.updateNotifications.help=Whethr ud liek 2 be notifid when new vershun ov QuickPlay iz releasd (ur list ov gamez will uodate automatically, regardles ov dis settin).
+quickplay.settings.redesignedLobbyCommand.name=Custom Lobby Command
+quickplay.settings.redesignedLobbyCommand.help=Whethr teh custom Quickplay lobby commandz shud be usd when posible. Requirez game restart.
+
+quickplay.settings.category.partyMode=Party Mode
+quickplay.settings.partyModeDelay.name=Launch Delay
+quickplay.settings.partyModeDelay.help=Numbr ov secondz Launch randomizashun shud taek.
+quickplay.settings.partyModeGui.name=Launch Randomizashun GUI
+quickplay.settings.partyModeGui.help=Whethr a speshal spinnr GUI shud be opend when teh usr launchez party mode.
+
+quickplay.settings.category.premium=Premium Featurez
+quickplay.settings.fadeGlyphs.name=Fade Othr Users Glyfs
+quickplay.settings.fadeGlyphs.help=Whethr othr users Glyfs shud fade as u git closr 2 them. Teh fade distance iz furthr in gamez vs. in lobbiez.
+quickplay.settings.showGlyphsInF1.name=Show Glyfs in F1
+quickplay.settings.showGlyphsInF1.help=Whethr Glyfs shud be visible when ure in F1 mode.
+quickplay.settings.displayOwnGlyph.name=Display Own Glyf
+quickplay.settings.displayOwnGlyph.help=Whethr ur own Glyf shud be displayd ovar ur head in F5 mode.
+quickplay.settings.ingameDailyReward.name=Ingame Daily Reward
+quickplay.settings.ingameDailyReward.help=Whethr teh handlin ov Daily Rewardz shud be in-game rathr than in-browsr, so u doan has 2 open web paeg.
+quickplay.config.keybinds.openmain=Open Main GUI
+quickplay.config.saveerror=Thar wuz an error savin ur configurashun. Settings cud not be savd!
+quickplay.config.gui.title=Quickplay Config
+quickplay.config.gui.version=Vershun
+quickplay.config.gui.true=TRUE
+quickplay.config.gui.false=FALSE
+quickplay.config.openfolder=Open Foldr
+quickplay.config.color.gui.sampletext=Sample Text
+quickplay.config.color.gui.red=Red
+quickplay.config.color.gui.green=Green
+quickplay.config.color.gui.blue=Blu
+quickplay.config.color.gui.chromaspeed=Chroma Sped
+quickplay.config.color.gui.chromaspeed.off=OFF
+quickplay.config.color.gui.chromaspeed.slow=SLOW
+quickplay.config.color.gui.chromaspeed.medium=MEDIUM
+quickplay.config.color.gui.chromaspeed.fast=FAST
+quickplay.config.color.gui.chromaspeed.insane=INSANE
+
+quickplay.gui.main.nogames.header=Oops!
+quickplay.gui.main.nogames.issue=Lookz liek I couldnt figure out wut gamez r available.
+quickplay.gui.main.nogames.why=Dis most likely iz occurrin if u jus installd teh mod.
+quickplay.gui.main.nogames.contact=Try restartin ur game, or contact bugfroggy if dis doesnt resolve teh problem!
+
+quickplay.gui.stats.yes=Yez, send statistics.
+quickplay.gui.stats.no=No, doan send statistics.
+quickplay.gui.stats.title=Send anonymous Quickplay usag statistics?
+quickplay.gui.stats.description=Selectin "yez" sends meh anonymous data bout ur game an how u use mah Minecraft mod in ordr 2 halp fix bugs & create bettr updatez! Dis data includez but iz not limitd 2 ur Minecraft vershun, Forge vershun, Java vershun, Operatin Sistem vershun, Minecraft modz installd, and ur Quickplay settings. Refr 2 teh downloadz thread 4 full list ov data collectd. Dis settin can be changd latr in teh config.
+quickplay.gui.stats.token=Ur stats token iz %s.
+quickplay.gui.stats.copied=Copid 2 clipbord!
+quickplay.gui.stats.copy=Click 2 copy
+quickplay.gui.stats.privacy=Privacy Policy
+quickplay.gui.stats.privacyerror=Somethin went wrong. %s
+
+quickplay.party.syntax=Invalid syntax! Type "%s" 2 taek off!
+quickplay.party.sendingYou=Sendin u 2 %s!
+quickplay.party.commencing=Commencin Quickplay Party Mode Launch Sequence...
+quickplay.party.nogames=Doh! Party mode doez not has any gamez selectd.
+quickplay.gui.party.randomizing=Pickin random gamemode...
+quickplay.gui.party.allon=Enable All
+quickplay.gui.party.alloff=Disable All
+quickplay.gui.party.launch=Launch!
+
+quickplay.keybinds.illegal=Teh keybind "%s" iz invalid 4 sum reason! Try recreatin it.
+quickplay.keybinds.title=Keybindz
+quickplay.keybinds.subtitle=Rite-click keybind 4 moar opshuns.
+quickplay.keybinds.reset=Reset Keybindz
+quickplay.gui.keybinds.delete=Delete
+quickplay.gui.keybinds.requireHolding=Holdin requird: %s
+quickplay.gui.keybinds.taken=Dat key iz already assignd 2 a Quickplay funcshun!
+
+quickplay.moveableHudElement.small=SMALL
+quickplay.moveableHudElement.medium=MEDIUM
+quickplay.moveableHudElement.large=LARGE
+quickplay.moveableHudElement.xlarge=EXTRA LARGE
+
+quickplay.premium.expiresIn=Ur Quickplay Premium subscripshun expirez in %s dais.
+quickplay.premium.purchasePage=Ur Quickplay Premium akownt paeg iz available at:
+
+quickplay.premium.ingameReward.error=Weird, somethin went wrong while tryin 2 do dat! Try re-authorizin wif "/qp premium auth", or contact bugfroggy if dis issue persists.
+quickplay.premium.ingameReward.openLink=Open Web Vershun
+quickplay.premium.ingameReward.hypixelProperty=All assets r property ov Hypixel Inc. Quickplay iz not affiliatd wif Hypixel Inc.\nhttps://hypixel.net/
+quickplay.premium.ingameReward.error.header=(╯°□°)╯︵ ┻━┻
+quickplay.premium.ingameReward.adroll.header=Welcom 2 teh Hypickle Zoo!
+quickplay.premium.ingamereward.remaining=Tiem remainin: %ss
+quickplay.premium.ingameReward.adroll.text=Teh Hypickle Store contains plenty ov kewl items 2 enhance ur Hypickle playr experience.
+quickplay.premium.ingameReward.adroll.skipAd=Purchase any servr rank 2 permanently bypas dis advertisement.
+quickplay.premium.ingameReward.adroll.clickToVisit=Click her 2 visit teh store.
+quickplay.premium.ingameReward.menu.header=Choose ur reward
+quickplay.premium.ingameReward.menu.streak=Daily Streak - Current: %s - High Skor: %s
+quickplay.premium.ingameReward.menu.claim.error=Somethin went wrong while clamin ur reward... Try again, or perhaps teh reward has expird.
+quickplay.premium.ingameReward.claimed.header=Reward Claimd!
+quickplay.premium.ingameReward.claimed.close=Pres %s 2 close dis menu.
+quickplay.premium.ingameReward.claimed.share=Share
+quickplay.premium.ingameReward.loading=Loadin...
+quickplay.premium.ingameReward.loading.sub=Plz allow up 2 5 secondz...

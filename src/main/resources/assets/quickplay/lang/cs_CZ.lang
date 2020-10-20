@@ -1,0 +1,201 @@
+quickplay.offline=Nejsi momentálně online v Hypixel Network!
+quickplay.disabled=Quickplay byl vynuceně vypnutý! Důvod: %s.
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=Klikni pro otevření.
+
+quickplay.commands.invalid=Neplatný příkaz!
+quickplay.commands.quickplay.help.help=Zobrazit dostupné příkazy.
+quickplay.commands.quickplay.config.help=Nastav si Quickplay mód.
+quickplay.commands.quickplay.limbo.help=Poslat sám sebe do Limba.
+quickplay.commands.quickplay.limbo.alreadythere=Ale ne! Už jsi v Limbu!
+quickplay.commands.quickplay.delivery.help=Otevřít nabídku Poslíčka.
+quickplay.commands.quickplay.keybinds.help=Otevřít editor klávesových zkratek Quickplay módu.
+quickplay.commands.quickplay.moveinstance.deprecated=Tento příkaz je zastaralý. Místo toho bys mohl použít "/qp config"!
+quickplay.commands.quickplay.discord.help=Připoj se na Quickplay Discord server.
+quickplay.commands.quickplay.discord.message=Discord je #1 cesta, jak se spojit s @bugfroggy. Připoj se na Quickplay Discord, pokud máš nějaké otázky, zpětné vazby nebo chceš nahlásit chyby.
+quickplay.commands.quickplay.party.help=Upravit si Quickplay Párty režim.
+quickplay.commands.quickplay.premium.help=Příkaz pro Quickplay Prémiové funkce.
+quickplay.commands.quickplay.premium.noCommands=Žádné známé příkazy!
+quickplay.commands.quickplay.premium.about.menuMissing=Je mi líto, ale Quickplay nemůže shromáždit nejnovější informace o Quickplay Prémium! Navštiv %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Klikni pro otevření %s
+quickplay.commands.quickplay.history.help=Zobrazit poslední servery, ve kterých jsi byl.
+quickplay.commands.quickplay.history.header=Tady je posledních %s serverů, ve kterých jsi byl, poslední se objeví nahoře:
+quickplay.commands.quickplay.history.error=Něco se pokazilo!
+quickplay.commands.quickplay.wiki.help=Otevřít pomocnou stránku Quickplay módu.
+quickplay.commands.quickplay.version.help=Zobrazení aktuální verze Quickplay.
+quickplay.commands.quickplay.version.message=Quickplay v%s
+
+quickplay.commands.quickplay.premium.account.help=Získat informace o tvém účtu.
+quickplay.commands.quickplay.premium.auth.help=Znovu se autorizovat se záložnými servery Quickplay Premium.
+quickplay.commands.quickplay.premium.auth.runningRequest=Přemýšlím...
+quickplay.commands.quickplay.premium.auth.done=Autorizováno!
+quickplay.commands.quickplay.premium.auth.error=Něco se při tom pokazilo! Pokud problém přetrvává, tak kontaktuj bugfroggy.
+quickplay.commands.quickplay.premium.auth.noSubscription=Vypadá to, že nemáš předplacené žádné Quickplay Premium. Kontaktuj bufroggy, pokud si myslíš, že to je chyba.
+quickplay.commands.quickplay.premium.transfer.help=Převeď tvoje předplatné Quickplay Premium na jiný účet.
+quickplay.commands.quickplay.premium.transfer.todo=Omlouváme se, ale tento příkaz ještě není hotový. Během této doby kontaktujte bugfroggy na Quickplay Discordu! /qp discord
+quickplay.commands.quickplay.premium.glyph.help=Change your Quickplay Premium Glyph settings.
+quickplay.commands.quickplay.premium.glyph.runningRequest=Přemýšlím...
+quickplay.commands.quickplay.premium.glyph.error=Něco se pokazilo... Pokud se to nevyřeší samo, tak zkus kontaktovat bugfroggy.
+quickplay.commands.quickplay.premium.glyph.offset.help=Set the vertical offset for your Quickplay Glyph.
+quickplay.commands.quickplay.premium.glyph.offset.illegal=Neplatný argument! Argument "číslo" musí být číslo mezi -3 a 2 (desetinná čísla platí).
+quickplay.commands.quickplay.premium.glyph.set.help=Set the image URL of your Quickplay Glyph.
+quickplay.commands.quickplay.premium.glyph.set.illegal=Zadaná URL je neplatná! Prosím zadej URL, která patří k obrázku.
+quickplay.commands.quickplay.premium.glyph.height.help=Set the vertical height of your Quickplay Glyph.
+quickplay.commands.quickplay.premium.glyph.height.illegal=Neplatný argument! Argument "číslo" musí být číslo mezi 1 a 40.
+quickplay.commands.quickplay.premium.glyph.reset.help=Remove your Quickplay Glyph so nothing displays above your head.
+quickplay.commands.quickplay.premium.glyph.ingame.help=Set whether or not your Glyph should display in-game for others, or only in lobbies.
+quickplay.commands.quickplay.premium.glyph.ingame.illegal=Neplatný argument! Musíš nastavit buď na "true" nebo "false".
+quickplay.commands.quickplay.premium.glyph.displayown.help=Whether your own Glyph should display over your head. Does not affect how others see it.
+quickplay.commands.quickplay.premium.glyph.displayown.set=Personal glyph visibility set to %s.
+
+quickplay.commands.hub.numberexception=Neplatné číslo lobby! Syntax: %s
+quickplay.commands.usage=Syntax příkaz:
+
+quickplay.premium.permissions=Potřebuješ Quickplay Prémium pro tuto funkci!
+
+quickplay.gui.copyright=Autorská práva © %s bugfroggy
+quickplay.gui.favorite=Nastavit na tlačítko...
+quickplay.gui.close=Zavřít
+quickplay.gui.back=Zpět
+
+quickplay.settings.category.general=Obecné
+
+quickplay.settings.category.colors=Barvy
+quickplay.settings.primaryColor.name=Hlavní barva
+quickplay.settings.primaryColor.help=Změní tvoji hlavní barvu Quickplay módu
+quickplay.settings.secondaryColor.name=Sekundární barva
+quickplay.settings.secondaryColor.help=Změní tvoji sekundární barvu Quickplay módu
+
+quickplay.settings.category.gui=GUI
+quickplay.settings.blurGuiBackgrounds.name=Rozostření GUI pozadí
+quickplay.settings.blurGuiBackgrounds.help=Urči, zda by mělo být pozadí Quickplay GUI mírně rozmazané.
+quickplay.settings.fadeInGuis.name=Zeslábnutí GUI
+quickplay.settings.fadeInGuis.help=Urči, zda by mělo GUI při otevírání zeslábnout.
+quickplay.settings.transparentBackgrounds.name=Průhledné pozadí
+quickplay.settings.transparentBackgrounds.help=Urči, zda by mělo být Quickplay GUI pozadí 100%% průhledné nebo jenom černě průsvitné.
+quickplay.settings.gameLogoScale.name=Velikost hlavní nabídky
+quickplay.settings.gameLogoScale.help=Velikost každého předmětu v hlavní nabídce Quickplay.
+quickplay.settings.reverseScrollingDirection.name=Obrátit směr rolování
+quickplay.settings.reverseScrollingDirection.help=Obrátit směr rolování a směr tažení myši po obrazovce.
+quickplay.settings.anyKeyClosesGui.name=Všechny tlačítka zavírají GUI
+quickplay.settings.anyKeyClosesGui.help=Hlavní nabídka Quickplay módu a GUI se zavřou při každém stisknutí libovolné klávesy.
+quickplay.settings.compactMainMenu.name=Kompaktní hlavní menu
+quickplay.settings.compactMainMenu.help=Urči, zda má být hlavní nabídka Quickplay módu zjednodušena skrytím názvu her. Názvy budou viditelné, když namíříš kurzor myši na ikony.
+quickplay.settings.swapMainGuiColors.name=Změnit barvy hlavní nabídky
+quickplay.settings.swapMainGuiColors.help=Urči, zda se má v hlavní nabídce prohodit hlavní a sekundární barva.
+
+quickplay.settings.category.instanceDisplay=Zobrazení serveru
+quickplay.settings.instanceDisplay.name=Zobrazení serveru
+quickplay.settings.instanceDisplay.help=Urči, zda se má na obrazovce objevit tvůj aktuální server.
+quickplay.settings.moveInstanceDisplayButton.name=Přesunout zobrazení serveru...
+quickplay.settings.moveInstanceDisplayButton.help=Změň pozici zobrazení serveru na obrazovce.
+quickplay.settings.instanceOpacity.name=Průhlednost zobrazení serveru
+quickplay.settings.instanceOpacity.help=Průhlednost zobrazení serveru.
+quickplay.settings.displayInstanceWithChatOpen.name=Zobrazit přes chat
+quickplay.settings.displayInstanceWithChatOpen.help=Urči, zda má být server zobrazený i při otevření chatu.
+quickplay.settings.instanceDisplayScale.name=Velikost
+quickplay.settings.instanceDisplayScale.help=Velikost zobrazení serveru.
+
+quickplay.settings.sendUsageStatsButton.name=Statistiky používání...
+quickplay.settings.sendUsageStatsButton.help=Pošli anonymní statistiky používání, abys mi pomohl vytvořit lepší módy!
+quickplay.settings.editKeybinds.name=Upravit zkratky...
+quickplay.settings.editKeybinds.help=Kliknutím pravým tlačítkem na hry nebo módy přiřadíš nebo vymažeš klávesové zkratky, které jsi již vytvořil.
+quickplay.settings.keybindPressTime.name=Délka stisknutí klávesy
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
+quickplay.settings.lobbyOneSwap.name=Přepnout na Lobby jedna
+quickplay.settings.lobbyOneSwap.help=Přepojit na lobby jedna automaticky při každém připojení na lobby.
+quickplay.settings.updateNotifications.name=Oznámení o aktualizaci
+quickplay.settings.updateNotifications.help=Zaškrtni, zda chceš být upozorněn, když vyjde nová verze Quickplay (tvůj seznam her se aktualizuje automaticky, bez ohledu na toto nastavení).
+quickplay.settings.redesignedLobbyCommand.name=Vlastní Lobby příkaz
+quickplay.settings.redesignedLobbyCommand.help=Urči, zda se vlastní lobby příkaz má použít, když to je možný. Vyžaduje restart hry.
+
+quickplay.settings.category.partyMode=Párty režim
+quickplay.settings.partyModeDelay.name=Prodleva spuštění
+quickplay.settings.partyModeDelay.help=Číslo sekund, které by mělo zabrat Náhodné spuštění.
+quickplay.settings.partyModeGui.name=Náhodné spuštění GUI
+quickplay.settings.partyModeGui.help=Urči, zda by se mělo roztočit speciální GUI, čímž se vybere náhodný režim, když někdo zapne režim párty.
+
+quickplay.settings.category.premium=Prémiové funkce
+quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
+quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
+quickplay.settings.showGlyphsInF1.name=Show Glyphs in F1
+quickplay.settings.showGlyphsInF1.help=Whether Glyphs should be visible when you're in F1 mode.
+quickplay.settings.displayOwnGlyph.name=Zobrazit vlastní Glyph
+quickplay.settings.displayOwnGlyph.help=Urči, zda by se měl tvůj Glyph ukazovat nad hlavou v F5 perspektivě.
+quickplay.settings.ingameDailyReward.name=Denní odměna ve hře
+quickplay.settings.ingameDailyReward.help=Urči, zda by měly být Denní Odměny získávány radši ve hře než v prohlížeči, abys nemusel otevírat webovou stránku.
+quickplay.config.keybinds.openmain=Otevřít hlavní GUI
+quickplay.config.saveerror=Při ukládání konfigurace došlo k chybě. Nastavení nemusí být uloženo!
+quickplay.config.gui.title=Quickplay konfigurace
+quickplay.config.gui.version=Verze
+quickplay.config.gui.true=POVOLENO
+quickplay.config.gui.false=ZAKÁZÁNO
+quickplay.config.openfolder=Otevřít složku
+quickplay.config.color.gui.sampletext=Ukázkový text
+quickplay.config.color.gui.red=Červená
+quickplay.config.color.gui.green=Zelená
+quickplay.config.color.gui.blue=Modrá
+quickplay.config.color.gui.chromaspeed=Rychlost měnění barev
+quickplay.config.color.gui.chromaspeed.off=VYPNUTO
+quickplay.config.color.gui.chromaspeed.slow=POMALÝ
+quickplay.config.color.gui.chromaspeed.medium=STŘEDNÍ
+quickplay.config.color.gui.chromaspeed.fast=RYCHLÝ
+quickplay.config.color.gui.chromaspeed.insane=ŠÍLENÝ
+
+quickplay.gui.main.nogames.header=Jejda!
+quickplay.gui.main.nogames.issue=Vypadá to, že nemůžu vypočítat, jaké hry jsou k dispozici.
+quickplay.gui.main.nogames.why=Je pravděpodobné, že se tohle stane, když jsi právě nainstaloval mód.
+quickplay.gui.main.nogames.contact=Zkus restartovat hru, pokud to nepomůže, tak kontaktuj bugfroggy!
+
+quickplay.gui.stats.yes=Ano, poslat statistiky.
+quickplay.gui.stats.no=Ne, neposílat statistiky.
+quickplay.gui.stats.title=Posílat anonymní statistiky využití Quickplay?
+quickplay.gui.stats.description=Vybráním "ano" pošleš anonymní data o tvoji hře a jak požíváš můj Minecraftový mód, což mi pomůže opravit chyby a vytvořit lepší aktualizace! Tyto data zahrnují Minecraft verzi, Forge verzi, Java verzi, verzi operačního systému, nainstalované Minecraft módy a tvoje nastavení Quickplay módu. Celý seznam shromážděných dat můžeš najít ve vláknech stažení. Toto nastavení můžeš změnit v configu.
+quickplay.gui.stats.token=Tvůj token statistik je %s.
+quickplay.gui.stats.copied=Zkopírováno do schránky!
+quickplay.gui.stats.copy=Klikni pro kopírování
+quickplay.gui.stats.privacy=Zásady ochrany osobních údajů
+quickplay.gui.stats.privacyerror=Něco se pokazilo. %s
+
+quickplay.party.syntax=Neplatná syntaxe! Pro vypnutí napiš "%s"!
+quickplay.party.sendingYou=Posíláme tě na %s!
+quickplay.party.commencing=Zahájení spuštění Párty režimu v Quickplay módu...
+quickplay.party.nogames=Ale ne! Párty režim nemá vybrané žádné hry.
+quickplay.gui.party.randomizing=Výběr náhodného herního režimu...
+quickplay.gui.party.allon=Povolit vše
+quickplay.gui.party.alloff=Zakázat vše
+quickplay.gui.party.launch=Spustit!
+
+quickplay.keybinds.illegal=Klávesová zkratka "%s" je z nějakého důvodu neplatná! Zkus jí znovu vytvořit.
+quickplay.keybinds.title=Klávesové zkratky
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
+quickplay.keybinds.reset=Resetovat klávesové zkratky
+quickplay.gui.keybinds.delete=Smazat
+quickplay.gui.keybinds.requireHolding=Požadované držení: %s
+quickplay.gui.keybinds.taken=Tato zkratka je již přiřazena v Quickplay módu!
+
+quickplay.moveableHudElement.small=MALÁ
+quickplay.moveableHudElement.medium=STŘEDNÍ
+quickplay.moveableHudElement.large=VELKÁ
+quickplay.moveableHudElement.xlarge=EXTRÉMNĚ VELKÁ
+
+quickplay.premium.expiresIn=Tvoje Quickplay Premium předplatné vyprší za %s dní.
+quickplay.premium.purchasePage=Tvoje stránka k Quickplay Premium účtu je k dispozici na:
+
+quickplay.premium.ingameReward.error=Divný, něco se při tom pokazilo! Zkus se znovu autorizovat pomoci "/qp premium auth", nebo kontaktuj bugfroggy, pokud se problém nevyřešil.
+quickplay.premium.ingameReward.openLink=Otevřít webovou verzi
+quickplay.premium.ingameReward.hypixelProperty=Všechno je majetkem společnosti Hypixel Inc. Quickplay není spojeno se společností Hypixel Inc.\nhttps://hypixel.net/
+quickplay.premium.ingameReward.error.header=(╯°□°)╯︵ ┻━┻
+quickplay.premium.ingameReward.adroll.header=Vítej v Hypixel Zoo!
+quickplay.premium.ingamereward.remaining=Zbývající čas: %ss
+quickplay.premium.ingameReward.adroll.text=Hypixel obchod obsahuje spoustu skvělých předmětů, které ti zlepší hráčský zážitek na Hypixelu.
+quickplay.premium.ingameReward.adroll.skipAd=Kup si jakýkoliv rank na serveru pro trvalé vynechání této reklamy.
+quickplay.premium.ingameReward.adroll.clickToVisit=Kliknutím navštívíš obchod.
+quickplay.premium.ingameReward.menu.header=Vyber si odměnu
+quickplay.premium.ingameReward.menu.streak=Denní streak - Aktuální: %s - Nejvyšší skóre: %s
+quickplay.premium.ingameReward.menu.claim.error=Something went wrong while claiming your reward. Try again, or perhaps the reward has expired.
+quickplay.premium.ingameReward.claimed.header=Odměna vyzvednuta!
+quickplay.premium.ingameReward.claimed.close=Stisknutím %s zavřeš tuto nabídku.
+quickplay.premium.ingameReward.claimed.share=Sdílet
+quickplay.premium.ingameReward.loading=Načítání...
+quickplay.premium.ingameReward.loading.sub=Prosím počkej 5 sekund...

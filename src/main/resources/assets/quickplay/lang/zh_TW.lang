@@ -1,0 +1,201 @@
+quickplay.offline=你目前不在 Hypixel 上！
+quickplay.disabled=Quickplay 已被強制禁用！原因：%s。
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=點擊開啟。
+
+quickplay.commands.invalid=無效的指令！
+quickplay.commands.quickplay.help.help=顯示可用指令。
+quickplay.commands.quickplay.config.help=設定 Quickplay 模組。
+quickplay.commands.quickplay.limbo.help=傳送到閒置大廳。
+quickplay.commands.quickplay.limbo.alreadythere=你已經在閒置大廳了！
+quickplay.commands.quickplay.delivery.help=打開禮包使者選單。
+quickplay.commands.quickplay.keybinds.help=打開 Quickplay 快速鍵設定。
+quickplay.commands.quickplay.moveinstance.deprecated=該指令已被棄用。你應該使用 "/qp config" 進行設定！
+quickplay.commands.quickplay.discord.help=加入 Quickplay Discord 伺服器。
+quickplay.commands.quickplay.discord.message=Discord 是連繫 @bugfroggy 最好的方法。如果你有任何問題、反映、漏洞回報，請加入 Quickplay Discord 伺服器。
+quickplay.commands.quickplay.party.help=自訂你的 Quickplay 組隊模式。
+quickplay.commands.quickplay.premium.help=Quickplay Premium 功能的指令。
+quickplay.commands.quickplay.premium.noCommands=沒有已知指令！
+quickplay.commands.quickplay.premium.about.menuMissing=抱歉！Quickplay 無法獲取 Quickplay Premium 的最新訊息！請瀏覽 %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=點擊以開啟 %s
+quickplay.commands.quickplay.history.help=查看你最近曾經到過的伺服器。
+quickplay.commands.quickplay.history.header=這裡列出了你最近 %s 個曾經到過的伺服器，頂部為最新記錄：
+quickplay.commands.quickplay.history.error=發生了某些錯誤！
+quickplay.commands.quickplay.wiki.help=打開 Quickplay 說明網站。
+quickplay.commands.quickplay.version.help=查看目前的 Quickplay 版本。
+quickplay.commands.quickplay.version.message=Quickplay v%s
+
+quickplay.commands.quickplay.premium.account.help=取得你的帳戶資訊。
+quickplay.commands.quickplay.premium.auth.help=通過 Quickplay Premium 後端伺服器重新驗證。
+quickplay.commands.quickplay.premium.auth.runningRequest=驗證中...
+quickplay.commands.quickplay.premium.auth.done=驗證成功！
+quickplay.commands.quickplay.premium.auth.error=發生錯誤！如果這個情況一直存在，請聯絡 bugfroggy。
+quickplay.commands.quickplay.premium.auth.noSubscription=你好像沒有任何 Quickplay Premium 訂閱！如果你認為這是錯誤，請聯絡 bugfroggy。
+quickplay.commands.quickplay.premium.transfer.help=把你的 Quickplay Premium 訂閱轉送給另一個帳戶。
+quickplay.commands.quickplay.premium.transfer.todo=不好意思，這個指令還沒有完成。你可以在 Quickplay Discord 伺服器聯繫 bugfroggy！/qp discord
+quickplay.commands.quickplay.premium.glyph.help=修改 Quickplay Premium 全息圖案設定。
+quickplay.commands.quickplay.premium.glyph.runningRequest=載入中...
+quickplay.commands.quickplay.premium.glyph.error=發生錯誤... 如果這個問題一直存在，請聯絡 bugfroggy。
+quickplay.commands.quickplay.premium.glyph.offset.help=設定 Quickplay 全息圖案的垂直偏移。
+quickplay.commands.quickplay.premium.glyph.offset.illegal=無效的參數！參數必須是 -3 到 2 之間的數字（可以是小數）。
+quickplay.commands.quickplay.premium.glyph.set.help=為 Quickplay 全息圖案設定 URL 圖片連結。
+quickplay.commands.quickplay.premium.glyph.set.illegal=無效的網址！ 請提供連結到照片檔案的網址。
+quickplay.commands.quickplay.premium.glyph.height.help=設定 Quickplay 全息圖案的垂直高度。
+quickplay.commands.quickplay.premium.glyph.height.illegal=無效的參數！參數必須是介於 1 到 40 的數字。
+quickplay.commands.quickplay.premium.glyph.reset.help=移除 Quickplay 全息圖案，這樣它不會再顯示在你的頭上。
+quickplay.commands.quickplay.premium.glyph.ingame.help=設定你的全息圖案是否顯示在遊戲中或只在大廳內顯示。
+quickplay.commands.quickplay.premium.glyph.ingame.illegal=無效的參數！參數必須是 "true" 或 "false"。
+quickplay.commands.quickplay.premium.glyph.displayown.help=設定是否在你的頭上顯示全息圖案。這設定不會影響其他玩家。
+quickplay.commands.quickplay.premium.glyph.displayown.set=個人全息圖案可見度設定為%s。
+
+quickplay.commands.hub.numberexception=無效大廳編號！用法：%s
+quickplay.commands.usage=指令用法：
+
+quickplay.premium.permissions=你需要 Quickplay Premium 才能使用這個功能！
+
+quickplay.gui.copyright=© %s bugfroggy 版權所有
+quickplay.gui.favorite=綁定到按鍵...
+quickplay.gui.close=關閉
+quickplay.gui.back=返回
+
+quickplay.settings.category.general=一般設定
+
+quickplay.settings.category.colors=顏色
+quickplay.settings.primaryColor.name=主要色彩
+quickplay.settings.primaryColor.help=修改 Quickplay 主要色彩
+quickplay.settings.secondaryColor.name=補助色彩
+quickplay.settings.secondaryColor.help=修改 Quickplay 補助色彩
+
+quickplay.settings.category.gui=GUI
+quickplay.settings.blurGuiBackgrounds.name=GUI 模糊背景
+quickplay.settings.blurGuiBackgrounds.help=是否讓 Quickplay GUI 背景有模糊效果。
+quickplay.settings.fadeInGuis.name=淡入 GUI
+quickplay.settings.fadeInGuis.help=是否讓 Quickplay GUI 有淡化效果。
+quickplay.settings.transparentBackgrounds.name=透明背景
+quickplay.settings.transparentBackgrounds.help=設定 Quickplay GUI 背景要 100%% 透明或黑色半透明。
+quickplay.settings.gameLogoScale.name=主選單比例
+quickplay.settings.gameLogoScale.help=Quickplay 主選單中每個項目的縮放比例。
+quickplay.settings.reverseScrollingDirection.name=反轉滾動方向
+quickplay.settings.reverseScrollingDirection.help=反轉滾動和拖動屏幕時的方向。
+quickplay.settings.anyKeyClosesGui.name=按下任意按鍵關閉 GUI
+quickplay.settings.anyKeyClosesGui.help=Quickplay 的主選單及選擇遊戲 GUI 將在按下任何按鍵時關閉。
+quickplay.settings.compactMainMenu.name=簡化主選單
+quickplay.settings.compactMainMenu.help=將 Quickplay 主選單設定為簡化模式並隱藏遊戲名稱，直到鼠標停在遊戲圖示內。
+quickplay.settings.swapMainGuiColors.name=調換主選單色彩
+quickplay.settings.swapMainGuiColors.help=設定是否調換 Quickplay 主選單的主要和補助色彩。
+
+quickplay.settings.category.instanceDisplay=伺服器視窗顯示
+quickplay.settings.instanceDisplay.name=顯示視窗
+quickplay.settings.instanceDisplay.help=設定是否在屏幕上顯示目前連接中的伺服器。
+quickplay.settings.moveInstanceDisplayButton.name=移動視窗...
+quickplay.settings.moveInstanceDisplayButton.help=改變視窗在螢幕上的位置。
+quickplay.settings.instanceOpacity.name=視窗不透明度
+quickplay.settings.instanceOpacity.help=設定視窗的不透明度。
+quickplay.settings.displayInstanceWithChatOpen.name=在聊天欄中顯示
+quickplay.settings.displayInstanceWithChatOpen.help=設定是否在聊天欄開啟時保持視窗開啟。
+quickplay.settings.instanceDisplayScale.name=縮放比例
+quickplay.settings.instanceDisplayScale.help=設定視窗的縮放大小。
+
+quickplay.settings.sendUsageStatsButton.name=發送使用數據...
+quickplay.settings.sendUsageStatsButton.help=發送匿名的使用數據以幫助我們開發更好的模組！
+quickplay.settings.editKeybinds.name=編輯快速鍵...
+quickplay.settings.editKeybinds.help=右鍵點擊遊戲或模式以分配或刪除快速鍵。
+quickplay.settings.keybindPressTime.name=快速鍵按鍵持續時間
+quickplay.settings.keybindPressTime.help=How long you have to hold keybinds which have holding enabled for them to activate.
+quickplay.settings.lobbyOneSwap.name=傳送到一號大廳
+quickplay.settings.lobbyOneSwap.help=當你進入大廳時自動傳送到一號大廳。
+quickplay.settings.updateNotifications.name=更新通知
+quickplay.settings.updateNotifications.help=設定是否在 Quickplay 發佈新版本時接收通知（你的遊戲列表會自動更新）。
+quickplay.settings.redesignedLobbyCommand.name=自訂大廳指令
+quickplay.settings.redesignedLobbyCommand.help=設定是否在可用時使用 Quickplay 的自訂大廳指令。這需要重新啟動遊戲。
+
+quickplay.settings.category.partyMode=組隊模式
+quickplay.settings.partyModeDelay.name=啟動延遲
+quickplay.settings.partyModeDelay.help=設定隨機選擇持續時間。
+quickplay.settings.partyModeGui.name=啟用隨機選擇遊戲 GUI
+quickplay.settings.partyModeGui.help=設定是否在啟動組隊模式時顯示轉盤 GUI。
+
+quickplay.settings.category.premium=Premium 功能
+quickplay.settings.fadeGlyphs.name=Fade Other Users' Glyphs
+quickplay.settings.fadeGlyphs.help=Whether other users' Glyphs should fade as you get closer to them. The fade distance is further in games vs. in lobbies.
+quickplay.settings.showGlyphsInF1.name=於 F1 模式下顯示全息圖案
+quickplay.settings.showGlyphsInF1.help=設定你的全息圖案是否在 F1 模式下顯示。
+quickplay.settings.displayOwnGlyph.name=顯示你的全息字幕
+quickplay.settings.displayOwnGlyph.help=Whether your own Glyph should be displayed over your head in F5 mode.
+quickplay.settings.ingameDailyReward.name=遊戲內領取每日獎勵
+quickplay.settings.ingameDailyReward.help=設定是否直接在遊戲内中打開每日獎勵頁面，這樣你就不需要再開啟瀏覽器了。
+quickplay.config.keybinds.openmain=開啟主畫面
+quickplay.config.saveerror=保存設定時發生錯誤。設定可能尚未儲存！
+quickplay.config.gui.title=Quickplay 設定
+quickplay.config.gui.version=版本
+quickplay.config.gui.true=啟用
+quickplay.config.gui.false=禁用
+quickplay.config.openfolder=打開資料夾
+quickplay.config.color.gui.sampletext=範例文字
+quickplay.config.color.gui.red=紅色
+quickplay.config.color.gui.green=綠色
+quickplay.config.color.gui.blue=藍色
+quickplay.config.color.gui.chromaspeed=變色速度
+quickplay.config.color.gui.chromaspeed.off=關閉
+quickplay.config.color.gui.chromaspeed.slow=慢
+quickplay.config.color.gui.chromaspeed.medium=中
+quickplay.config.color.gui.chromaspeed.fast=快
+quickplay.config.color.gui.chromaspeed.insane=超快
+
+quickplay.gui.main.nogames.header=糟糕！
+quickplay.gui.main.nogames.issue=找不到可用的遊戲。
+quickplay.gui.main.nogames.why=這種情況通常只會發生在你剛剛安裝此模組時。
+quickplay.gui.main.nogames.contact=請嘗試重新啟動遊戲，若問題未解決，請聯繫 bugfroggy。
+
+quickplay.gui.stats.yes=是，允許發送數據。
+quickplay.gui.stats.no=否，拒絕發送數據。
+quickplay.gui.stats.title=是否允許 Quickplay 發送匿名的使用數據？
+quickplay.gui.stats.description=選擇「是」將會發送你的遊戲及你使用模組的情况相關的匿名數據給我們，以幫助我們修復漏洞及改善你的使用體驗。這些數據包括但不限於你使用的 Minecraft 版本、Forge 版本、Java 版本、操作系统版本、已安裝的模組及你的 Quickplay 設定。請到下載頁面以了解我們會收集的數據。這個選項可在稍後於設定中修改。
+quickplay.gui.stats.token=你的數據權杖是 %s。
+quickplay.gui.stats.copied=已複製到剪貼簿！
+quickplay.gui.stats.copy=點擊複製
+quickplay.gui.stats.privacy=隱私權政策
+quickplay.gui.stats.privacyerror=發生錯誤。%s
+
+quickplay.party.syntax=無效的指令！輸入 "%s" 來啟動！
+quickplay.party.sendingYou=正在將你傳送到 %s！
+quickplay.party.commencing=正在啟動 Quickplay 組隊模式...
+quickplay.party.nogames=糟糕！組隊模式沒有選擇任何遊戲。
+quickplay.gui.party.randomizing=正在隨機選擇遊戲...
+quickplay.gui.party.allon=啟用全部
+quickplay.gui.party.alloff=禁用全部
+quickplay.gui.party.launch=啟動！
+
+quickplay.keybinds.illegal=快速鍵 "%s" 因為某些原因無法使用！請重新設定。
+quickplay.keybinds.title=快速鍵
+quickplay.keybinds.subtitle=Right-click a keybind for more options.
+quickplay.keybinds.reset=重設快速鍵
+quickplay.gui.keybinds.delete=刪除
+quickplay.gui.keybinds.requireHolding=Holding required: %s
+quickplay.gui.keybinds.taken=此按鍵已被分配到某個 Quickplay 功能！
+
+quickplay.moveableHudElement.small=小
+quickplay.moveableHudElement.medium=中
+quickplay.moveableHudElement.large=大
+quickplay.moveableHudElement.xlarge=超大
+
+quickplay.premium.expiresIn=你的 Quickplay Premium 訂閱會在 %s 日後失效。
+quickplay.premium.purchasePage=Your Quickplay Premium account page is available at:
+
+quickplay.premium.ingameReward.error=奇怪了，嘗試進行此操作時發生錯誤！請使用 "/qp premium auth" 重新驗證身份。如這個問題仍然存在，請與 bugfroggy 聯繫。
+quickplay.premium.ingameReward.openLink=開啟網頁版本
+quickplay.premium.ingameReward.hypixelProperty=所有資源都屬於 Hypixel Inc. 所有。Quickplay 不隸屬於 Hypixel Inc. https://hypixel.net/
+quickplay.premium.ingameReward.error.header=(╯°□°)╯︵ ┻━┻
+quickplay.premium.ingameReward.adroll.header=歡迎來到 Hypixel 動物園！
+quickplay.premium.ingamereward.remaining=剩餘時間︰ %s秒
+quickplay.premium.ingameReward.adroll.text=Hypixel 商店包含很多很酷的物品來增強你的 Hypixel 遊玩體驗。
+quickplay.premium.ingameReward.adroll.skipAd=購買 Rank 以永久跳過這個廣告。
+quickplay.premium.ingameReward.adroll.clickToVisit=點擊這裡開啟商店網頁。
+quickplay.premium.ingameReward.menu.header=選擇你的獎勵
+quickplay.premium.ingameReward.menu.streak=每日獎勵連續領取次數 - 目前： %s - 最高： %s
+quickplay.premium.ingameReward.menu.claim.error=領取獎勵時發生錯誤。這可能是該獎勵已經失效，否則請稍後再試。
+quickplay.premium.ingameReward.claimed.header=獎勵已領取！
+quickplay.premium.ingameReward.claimed.close=按 %s 關閉這個選單。
+quickplay.premium.ingameReward.claimed.share=分享
+quickplay.premium.ingameReward.loading=載入中...
+quickplay.premium.ingameReward.loading.sub=請等候大概五秒...
