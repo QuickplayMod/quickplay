@@ -1,0 +1,143 @@
+quickplay.offline=Vous n'êtes actuellement pas en ligne sur le Hypixel Network!
+quickplay.disabled=Quickplay a été désactivé de force ! Raison : %s.
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=Cliquez pour ouvrir.
+
+quickplay.commands.quickplay.help.help=Display the available commands.
+quickplay.commands.quickplay.config.help=Configurez votre mod Quickplay.
+quickplay.commands.quickplay.limbo.help=Envoyez-vous à Limbo.
+quickplay.commands.quickplay.limbo.alreadythere=D'oh! You're aleady in Limbo!
+quickplay.commands.quickplay.delivery.help=Ouvrez le menu Delivery Man.
+quickplay.commands.quickplay.keybinds.help=Ouvrez l'éditeur de raccourcis clavier Quickplay.
+quickplay.commands.quickplay.moveinstance.deprecated=Cette commande est obsolète. Vous devriez utiliser "/qp config" à la place !
+quickplay.commands.quickplay.discord.help=Join the Quickplay Discord server.
+quickplay.commands.quickplay.discord.message=Discord is the #1 way to get in touch with @bugfroggy. Join the Quickplay Discord if you have any questions, feedback, or bug reports.
+quickplay.commands.quickplay.party.help=Customize your Quickplay Party Mode.
+quickplay.commands.quickplay.premium.help=Commande pour les fonctionnalités de QuickPlay Premium.
+quickplay.commands.quickplay.premium.noCommands=Aucune commande connue !
+quickplay.commands.quickplay.premium.about.menuMissing=I'm sorry, but Quickplay couldn't gather the latest information about Quickplay Premium! Visit %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Click to open %s
+quickplay.commands.quickplay.history.help=Voir dans quelles instances vous avez été la dernière fois.
+quickplay.commands.quickplay.history.header=Voici les %s dernières instances sur lesquelles vous étiez, les plus récentes apparaissant en haut:
+quickplay.commands.quickplay.history.error=Quelque chose s'est mal passé !
+quickplay.commands.quickplay.wiki.help=Ouvrez le site Web d'aide QuickPlay.
+quickplay.commands.hub.numberexception=Numéro de lobby invalide ! Syntaxe : %s
+quickplay.commands.usage=Syntaxe de commande :
+
+quickplay.premium.permissions=Vous avez besoin de Quickplay Premium pour cette fonctionnalité !
+
+quickplay.gui.copyright=Copyright © %s bugfroggy
+quickplay.gui.favorite=Affecter au bouton...
+quickplay.gui.close=Close
+quickplay.gui.back=Back
+
+quickplay.settings.category.general=Général
+
+quickplay.settings.category.colors=Couleurs
+quickplay.settings.primaryColor.name=Couleur primaire
+quickplay.settings.primaryColor.help=Changer la couleur primaire de votre Quickplay
+quickplay.settings.secondaryColor.name=Couleur secondaire
+quickplay.settings.secondaryColor.help=Changer la couleur secondaire de votre Quickplay
+
+quickplay.settings.category.gui=INTERFACE UTILISATEUR
+quickplay.settings.blurGuiBackgrounds.name=Blur GUI Backgrounds
+quickplay.settings.blurGuiBackgrounds.help=Whether the background of Quickplay GUIs should be slightly blurred.
+quickplay.settings.fadeInGuis.name=Fade GUIs In
+quickplay.settings.fadeInGuis.help=Whether GUIs should fade in when opening.
+quickplay.settings.transparentBackgrounds.name=Arrière-plans transparents
+quickplay.settings.transparentBackgrounds.help=Whether Quickplay GUI backgrounds should be 100%% transparent or just a translucent black.
+quickplay.settings.gameLogoScale.name=Échelle du menu principal
+quickplay.settings.gameLogoScale.help=Échelle de chaque élément du menu principal Quickplay.
+quickplay.settings.reverseScrollingDirection.name=Reverse Scrolling Direction
+quickplay.settings.reverseScrollingDirection.help=Reverse the direction scrolling & dragging moves the screen.
+quickplay.settings.anyKeyClosesGui.name=Any Key Closes GUIs
+quickplay.settings.anyKeyClosesGui.help=Quickplay's main menu and game GUIs will close whenever any key is pressed.
+quickplay.settings.compactMainMenu.name=Menu principal compact
+quickplay.settings.compactMainMenu.help=Définissez si le menu principal Quickplay devrait être compact pour camoufler les noms des jeux, à moins que vous ne les survoliez à la souris.
+
+quickplay.settings.category.instanceDisplay=Affichage d'instance
+quickplay.settings.instanceDisplay.name=Affichage d'instance
+quickplay.settings.instanceDisplay.help=Définissez si l'instance actuelle du serveur doit être affichée sur l'écran ou non.
+quickplay.settings.moveInstanceDisplayButton.name=Déplacer l'affichage d'instance...
+quickplay.settings.moveInstanceDisplayButton.help=Modifiez la position de l'affichage d'instance à l'écran.
+quickplay.settings.instanceOpacity.name=Opacité de l'affichage d'instance
+quickplay.settings.instanceOpacity.help=Opacity of the instance display.
+quickplay.settings.displayInstanceWithChatOpen.name=Display Over Chat
+quickplay.settings.displayInstanceWithChatOpen.help=Whether the instance display should be rendered even when chat is open.
+quickplay.settings.instanceDisplayScale.name=Échelle
+quickplay.settings.instanceDisplayScale.help=Échelle de l'affichage d'instance.
+
+quickplay.settings.sendUsageStatsButton.name=Statistiques d'utilisation...
+quickplay.settings.sendUsageStatsButton.help=Envoyez des statistiques d'utilisation anonymes pour m'aider à créer des mods toujours meilleurs !
+quickplay.settings.editKeybinds.name=Edit Keybinds...
+quickplay.settings.editKeybinds.help=Assign & remove keybinds previously created by right-clicking games or modes.
+quickplay.settings.lobbyOneSwap.name=Swap to Lobby One
+quickplay.settings.lobbyOneSwap.help=Swap to lobby one automatically whenever you join a new lobby.
+quickplay.settings.updateNotifications.name=Update Notifications
+quickplay.settings.updateNotifications.help=Whether you'd like to be notified when a new version of Quickplay is released (your list of games will update automatically, regardless of this setting).
+quickplay.settings.redesignedLobbyCommand.name=Custom Lobby Command
+quickplay.settings.redesignedLobbyCommand.help=Whether the custom Quickplay lobby commands should be used when possible. Requires game restart.
+
+quickplay.settings.category.partyMode=Party Mode
+quickplay.settings.partyModeDelay.name=Launch Delay
+quickplay.settings.partyModeDelay.help=Number of seconds Launch randomization should take.
+quickplay.settings.partyModeGui.name=Launch Randomization GUI
+quickplay.settings.partyModeGui.help=Whether a special spinner GUI should be opened when the user launches party mode.
+
+quickplay.settings.category.premium=Fonctionnalités premium
+quickplay.settings.ingameDailyReward.name=Récompense journalière en jeu
+quickplay.settings.ingameDailyReward.help=Définissez si vous devez recevoir vos récompenses journalières en jeu plutôt que dans votre navigateur, pour vous éviter d'ouvrir une page web.
+quickplay.settings.displayOwnGlyph.name=Display Own Glyph
+quickplay.settings.displayOwnGlyph.help=Whether your own Glyph should be displayed over your head in F5 mode.
+quickplay.config.keybinds.openmain=Open Main GUI
+quickplay.config.saveerror=Une erreur s'est produite lors de la sauvegarde de votre configuration. Vos paramètres n'ont peut-être pas été sauvegardés !
+quickplay.config.gui.title=Configuration Quickplay
+quickplay.config.gui.version=Version
+quickplay.config.gui.true=VRAI
+quickplay.config.gui.false=FAUX
+quickplay.config.openfolder=Open Folder
+quickplay.config.color.gui.sampletext=Exemple de texte
+quickplay.config.color.gui.red=Rouge
+quickplay.config.color.gui.green=Vert
+quickplay.config.color.gui.blue=Bleu
+quickplay.config.color.gui.chromaspeed=Chroma Speed
+quickplay.config.color.gui.chromaspeed.off=OFF
+quickplay.config.color.gui.chromaspeed.slow=LENT
+quickplay.config.color.gui.chromaspeed.medium=MOYEN
+quickplay.config.color.gui.chromaspeed.fast=RAPIDE
+quickplay.config.color.gui.chromaspeed.insane=FOU
+
+quickplay.gui.main.nogames.header=Oups!
+quickplay.gui.main.nogames.issue=On dirait que je n'ai pas pu détecter quels jeux étaient disponibles.
+quickplay.gui.main.nogames.why=Le plus souvent, cette erreur survient parce que vous venez d'installer le mod.
+quickplay.gui.main.nogames.contact=Essayez de redémarrer le jeu, ou contactez bugfroggy si cela ne résout pas votre problème !
+
+quickplay.gui.stats.yes=Oui, envoyer des statistiques.
+quickplay.gui.stats.no=Non, ne pas envoyer de statistiques.
+quickplay.gui.stats.title=Envoyer mes statistiques d’utilisation de Quickplay anonymes ?
+quickplay.gui.stats.description=Sélectionner "oui" m'enverra des données anonymes sur votre jeu, m'expliquant comment vous utilisez mon mod Minecraft pour me permettre de corriger les bugs & concevoir de meilleures mises-à-jour ! Ces données incluent (entre autres) votre version de Minecraft, votre version de Forge, votre version de Java, votre OS, les mods Minecraft que vous avez installés, et vos paramètres Quickplay. Référez-vous au sujet contenant les liens de téléchargement pour avoir la liste complète des données récoltées. Ce paramètre pourra être modifié plus tard dans votre configuration.
+quickplay.gui.stats.token=Votre jeton de statistiques est %s.
+quickplay.gui.stats.copied=Copied to clipboard!
+quickplay.gui.stats.copy=Cliquez pour copier
+quickplay.gui.stats.privacy=Privacy Policy
+quickplay.gui.stats.privacyerror=Quelque chose a mal tourné %s
+
+quickplay.party.syntax=Syntaxe invalide ! Tapez "%s" pour la retirer !
+quickplay.party.sendingYou=Sending you to %s!
+quickplay.party.commencing=Commencing Quickplay Party Mode Launch Sequence...
+quickplay.party.nogames=D'oh! Party mode does not have any games selected.
+quickplay.gui.party.randomizing=Choix d'un mode de jeu aléatoire...
+quickplay.gui.party.allon=Activer tout
+quickplay.gui.party.alloff=Désactiver tout
+quickplay.gui.party.launch=Launch!
+
+quickplay.keybinds.illegal=La touche "%s" est invalide pour une raison inconnue ! Essayez de la réinitialiser.
+quickplay.keybinds.title=Keybinds
+quickplay.keybinds.reset=Reset Keybinds
+quickplay.gui.keybinds.delete=Supprimer
+quickplay.gui.keybinds.taken=Cette touche est déjà assignée à une fonction Quickplay !
+
+quickplay.moveableHudElement.small=PETIT
+quickplay.moveableHudElement.medium=MOYEN
+quickplay.moveableHudElement.large=GRAND
+quickplay.moveableHudElement.xlarge=TRÉS GRAND
