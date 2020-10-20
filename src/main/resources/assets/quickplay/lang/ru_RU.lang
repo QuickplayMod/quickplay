@@ -1,0 +1,143 @@
+quickplay.offline=Вы сейчас не в сети на Hypixel Network!
+quickplay.disabled=Quickplay был принудительно отключен! Причина: %s.
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=Нажмите, чтобы открыть.
+
+quickplay.commands.quickplay.help.help=Список всех доступных команд.
+quickplay.commands.quickplay.config.help=Настройте ваш Quickplay мод.
+quickplay.commands.quickplay.limbo.help=Отправьтесь в Limbo.
+quickplay.commands.quickplay.limbo.alreadythere=Упс! Ты уже в Limbo!
+quickplay.commands.quickplay.delivery.help=Откройся меню "Delivery Man".
+quickplay.commands.quickplay.keybinds.help=Открыть редактор клавиш Quickplay.
+quickplay.commands.quickplay.moveinstance.deprecated=Эта команда устарела. Вместо неё следует использовать "/qp config"!
+quickplay.commands.quickplay.discord.help=Присоединяйтесь к серверу Quickplay Discord.
+quickplay.commands.quickplay.discord.message=Discord - это способ #1 для связи с @bugfroggy. Если у вас есть какие-либо вопросы, отзывы или отчёты об ошибках, присоединяйтесь к серверу Quickplay Discord.
+quickplay.commands.quickplay.party.help=Настройте ваш режим компании Quickplay.
+quickplay.commands.quickplay.premium.help=Команды для особых возможностей с QuickPlay Премиум.
+quickplay.commands.quickplay.premium.noCommands=Нет известных команд!
+quickplay.commands.quickplay.premium.about.menuMissing=К сожалению Quickplay не смог собрать последнюю информацию о Quickplay Премиум! Посетите %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Нажмите, чтобы открыть %s
+quickplay.commands.quickplay.history.help=Посмотрите, что вы делали последний раз.
+quickplay.commands.quickplay.history.header=Вот последние %s действий, самые последние появляются сверху:
+quickplay.commands.quickplay.history.error=Что-то пошло не так!
+quickplay.commands.quickplay.wiki.help=Откройте страницу Поддержки Quickplay.
+quickplay.commands.hub.numberexception=Неверный номер лобби! Синтаксис: %s
+quickplay.commands.usage=Синтаксис команды:
+
+quickplay.premium.permissions=Вам нужен Quickplay Премиум, чтобы использовать эту функцию!
+
+quickplay.gui.copyright=Авторское право © %s bugfroggy
+quickplay.gui.favorite=Привязка к клавише...
+quickplay.gui.close=Закрыть
+quickplay.gui.back=Вернуться
+
+quickplay.settings.category.general=Основное
+
+quickplay.settings.category.colors=Цвета
+quickplay.settings.primaryColor.name=Основной цвет
+quickplay.settings.primaryColor.help=Изменить ваш основной цвет Quickplay
+quickplay.settings.secondaryColor.name=Дополнительный цвет
+quickplay.settings.secondaryColor.help=Изменить ваш дополнительный цвет Quickplay
+
+quickplay.settings.category.gui=Интерфейс
+quickplay.settings.blurGuiBackgrounds.name=Размытие фона 
+quickplay.settings.blurGuiBackgrounds.help=Должен ли фон интерфейса Quickplay быть слегка размытым.
+quickplay.settings.fadeInGuis.name=Исчезание интерфейса в
+quickplay.settings.fadeInGuis.help=Должен ли интерфейс исчезать при открытии.
+quickplay.settings.transparentBackgrounds.name=Прозрачный фон
+quickplay.settings.transparentBackgrounds.help=Будет ли фон интерфейса Quickplay 100%% прозрачный или просто полупрозрачный черный.
+quickplay.settings.gameLogoScale.name=Масштаб главного меню
+quickplay.settings.gameLogoScale.help=Масштаб каждого элемента в главном меню Quickplay.
+quickplay.settings.reverseScrollingDirection.name=Реверсировать направление прокрутки
+quickplay.settings.reverseScrollingDirection.help=Направление прокрутки и перемещение экрана.
+quickplay.settings.anyKeyClosesGui.name=Любая клавиша закрывает интерфейс
+quickplay.settings.anyKeyClosesGui.help=Главное меню Quickplay и интерфейс будут закрываться всякий раз, когда нажата любая клавиша.
+quickplay.settings.compactMainMenu.name=Уменьшить в масштабе главное меню
+quickplay.settings.compactMainMenu.help=Должно ли Главное Меню Quickplay быть компактным, чтобы скрыть игровые строки, если вы не нажимаете на них.
+
+quickplay.settings.category.instanceDisplay=Отображение экрана 
+quickplay.settings.instanceDisplay.name=Отображение экрана
+quickplay.settings.instanceDisplay.help=Должен ли текущий сервер отображаться на экране.
+quickplay.settings.moveInstanceDisplayButton.name=Переместить отображение экрана...
+quickplay.settings.moveInstanceDisplayButton.help=Изменить положение отображения экрана.
+quickplay.settings.instanceOpacity.name=Прозрачность Экрана
+quickplay.settings.instanceOpacity.help=Полупрозрачность отображения экрана.
+quickplay.settings.displayInstanceWithChatOpen.name=Показать поверх чата
+quickplay.settings.displayInstanceWithChatOpen.help=Должен ли экран отображаться даже при открытии чата.
+quickplay.settings.instanceDisplayScale.name=Масштаб
+quickplay.settings.instanceDisplayScale.help=Масштаб отображения экрана.
+
+quickplay.settings.sendUsageStatsButton.name=Статистика использования...
+quickplay.settings.sendUsageStatsButton.help=Отправьте анонимную статистику использования, чтобы помочь нам сделать моды лучше!
+quickplay.settings.editKeybinds.name=Изменить сочетания клавиш...
+quickplay.settings.editKeybinds.help=Назначить и удалить клавиши, ранее созданные нажатием правой кнопкой мыши.
+quickplay.settings.lobbyOneSwap.name=Перейти в Лобби 1
+quickplay.settings.lobbyOneSwap.help=Переходить в лобби 1 автоматически всякий раз, когда вы присоединяетесь к новому лобби.
+quickplay.settings.updateNotifications.name=Уведомления об обновлении
+quickplay.settings.updateNotifications.help=Будете ли вы получать уведомления о выходе новой версии Quickplay (список ваших игр будет обновляться автоматически, независимо от этой настройки).
+quickplay.settings.redesignedLobbyCommand.name=Пользовательские Команды для Лобби
+quickplay.settings.redesignedLobbyCommand.help=Будут ли пользовательские команды лобби Quickplay использоваться, когда необходимо. Требуется перезапуск игры.
+
+quickplay.settings.category.partyMode=Режим Компании
+quickplay.settings.partyModeDelay.name=Задержка запуска
+quickplay.settings.partyModeDelay.help=Количество секунд, которые займет Запуск случайности.
+quickplay.settings.partyModeGui.name=Запустить интерфейс случайности
+quickplay.settings.partyModeGui.help=Будет ли специальный вращатель интерфейса открываться, когда запускается режим компании.
+
+quickplay.settings.category.premium=Премиум возможности
+quickplay.settings.ingameDailyReward.name=Ежедневная внутриигровая награда
+quickplay.settings.ingameDailyReward.help=Будет ли отображение Ежедневных Наград в игре, вместо браузера. Вам не придется открывать веб-страницу.
+quickplay.settings.displayOwnGlyph.name=Показать свой символ
+quickplay.settings.displayOwnGlyph.help=Будет ли ваш Символ отображаться выше головы в режиме F5.
+quickplay.config.keybinds.openmain=Открыть основной интерфейс
+quickplay.config.saveerror=Произошла ошибка при сохранении конфигурации. Настройки не могут быть сохранены!
+quickplay.config.gui.title=Настройки Quickplay
+quickplay.config.gui.version=Версия
+quickplay.config.gui.true=ВКЛ
+quickplay.config.gui.false=ВЫКЛ
+quickplay.config.openfolder=Открыть папку
+quickplay.config.color.gui.sampletext=Пример Текста 
+quickplay.config.color.gui.red=Красный
+quickplay.config.color.gui.green=Зелёный
+quickplay.config.color.gui.blue=Синий
+quickplay.config.color.gui.chromaspeed=Скорость изменения цвета
+quickplay.config.color.gui.chromaspeed.off=ВЫКЛ
+quickplay.config.color.gui.chromaspeed.slow=МЕДЛЕННЫЙ
+quickplay.config.color.gui.chromaspeed.medium=СРЕДНИЙ
+quickplay.config.color.gui.chromaspeed.fast=БЫСТРЫЙ
+quickplay.config.color.gui.chromaspeed.insane=БЕЗУМНЫЙ
+
+quickplay.gui.main.nogames.header=Упс!
+quickplay.gui.main.nogames.issue=Похоже, что я не смог выяснить, какие игры сейчас доступны.
+quickplay.gui.main.nogames.why=Скорее всего, это может случиться, если вы только что установили мод.
+quickplay.gui.main.nogames.contact=Попробуйте перезапустить игру, или свяжитесь с bugfroggy, если это не решит проблему!
+
+quickplay.gui.stats.yes=Да, отправлять статистику.
+quickplay.gui.stats.no=Нет, не отправлять статистику.
+quickplay.gui.stats.title=Отправить анонимную статистику использования мода Quickplay?
+quickplay.gui.stats.description=Выбор "да" посылает анонимные данные о вашей игре и о том, как вы используете данный мод для того, чтобы помочь исправить ошибки и делать хорошие обновления! Полный список собранных данных см. в разделе "Загрузка". Этот параметр можно изменить в конфигурации.
+quickplay.gui.stats.token=Ваш токен статистики - %s.
+quickplay.gui.stats.copied=Скопировано в буфер обмена!
+quickplay.gui.stats.copy=Нажмите, чтобы скопировать
+quickplay.gui.stats.privacy=Политика Конфиденциальности
+quickplay.gui.stats.privacyerror=Что-то пошло не так. %s
+
+quickplay.party.syntax=Неверный синтаксис! Введите "%s", чтобы использовать!
+quickplay.party.sendingYou=Перемещение в %s!
+quickplay.party.commencing=Начало запуска Quickplay Режим Компании...
+quickplay.party.nogames=Упс! Ни одна мини-игра не выбрана.
+quickplay.gui.party.randomizing=Выбор случайной мини-игры...
+quickplay.gui.party.allon=Включить всё
+quickplay.gui.party.alloff=Отключить всё
+quickplay.gui.party.launch=Запустить!
+
+quickplay.keybinds.illegal=Клавиша "%s" некорректна по какой-то причине! Попробуйте переназначить её.
+quickplay.keybinds.title=Сочетания клавиш
+quickplay.keybinds.reset=Сбросить сочетания клавиш
+quickplay.gui.keybinds.delete=Удалить
+quickplay.gui.keybinds.taken=Эта клавиша уже назначена для функции Quickplay!
+
+quickplay.moveableHudElement.small=МАЛЕНЬКИЙ
+quickplay.moveableHudElement.medium=СРЕДНИЙ
+quickplay.moveableHudElement.large=БОЛЬШОЙ
+quickplay.moveableHudElement.xlarge=ОЧЕНЬ БОЛЬШОЙ
