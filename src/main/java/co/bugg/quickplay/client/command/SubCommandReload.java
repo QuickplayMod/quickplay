@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.serverbound.InitializeClientAction;
+import co.bugg.quickplay.actions.serverbound.SetClientSettingsAction;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerUnavailableException;
@@ -45,6 +46,7 @@ public class SubCommandReload extends ACommand {
                                 .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW))
                 ));
                 Quickplay.INSTANCE.socket.sendAction(new InitializeClientAction());
+                Quickplay.INSTANCE.socket.sendAction(new SetClientSettingsAction(Quickplay.INSTANCE.settings));
             } catch (ServerUnavailableException e) {
                 e.printStackTrace();
                 Quickplay.INSTANCE.messageBuffer.push(new Message(

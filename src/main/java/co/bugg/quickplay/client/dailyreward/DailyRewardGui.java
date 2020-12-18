@@ -135,7 +135,7 @@ public class DailyRewardGui extends QuickplayGui {
         this.securityToken = securityToken;
         this.appData = appData;
         this.i18n = i18n;
-        this.hypixelAnalytics = gaToken != null ? GoogleAnalyticsFactory.create(gaToken, Minecraft.getMinecraft().getSession().getPlayerID(), Reference.MOD_NAME, Reference.VERSION) : null;
+        this.hypixelAnalytics = gaToken != null && gaToken.length() > 0 ? GoogleAnalyticsFactory.create(gaToken, Minecraft.getMinecraft().getSession().getPlayerID(), Reference.MOD_NAME, Reference.VERSION) : null;
 
         if(appData != null && appData.rewards == null) {
             appData.error = "Something went wrong... Perhaps your Quickplay is outdated. Contact bugfroggy on Discord. (0x02)";

@@ -3,6 +3,7 @@ package co.bugg.quickplay.http;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.actions.serverbound.InitializeClientAction;
+import co.bugg.quickplay.actions.serverbound.SetClientSettingsAction;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerUnavailableException;
@@ -61,6 +62,7 @@ public class SocketClient extends WebSocketClient {
 
         try {
             this.sendAction(new InitializeClientAction());
+            this.sendAction(new SetClientSettingsAction(Quickplay.INSTANCE.settings));
         } catch (ServerUnavailableException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.messageBuffer.push(new Message(
