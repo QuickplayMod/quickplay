@@ -1,8 +1,8 @@
 package co.bugg.quickplay.actions.serverbound;
 
 import co.bugg.quickplay.actions.Action;
+import co.bugg.quickplay.util.Location;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 import java.nio.ByteBuffer;
 
@@ -19,11 +19,11 @@ public class HypixelLocationChangedAction extends Action {
 
     /**
      * Create a new HypixelLocationChangedAction.
-     * @param locationJson JSON about this player's location
+     * @param location JSON about this player's location
      */
-    public HypixelLocationChangedAction(JsonElement locationJson) {
+    public HypixelLocationChangedAction(Location location) {
         super();
         this.id = 20;
-        this.addPayload(ByteBuffer.wrap(new Gson().toJson(locationJson).getBytes()));
+        this.addPayload(ByteBuffer.wrap(new Gson().toJson(location).getBytes()));
     }
 }

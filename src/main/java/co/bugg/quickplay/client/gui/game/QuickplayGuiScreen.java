@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.gui.game;
 
 import co.bugg.quickplay.*;
+import co.bugg.quickplay.actions.serverbound.ButtonPressedAction;
 import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.QuickplayKeybind;
 import co.bugg.quickplay.client.gui.QuickplayGui;
@@ -9,6 +10,7 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiContextMenu;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.games.Game;
+import co.bugg.quickplay.util.ServerUnavailableException;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -445,6 +447,14 @@ public class QuickplayGuiScreen extends QuickplayGui {
         super.componentClicked(component);
         if(component.origin instanceof Button && contextMenu == null) {
             final Button button = (Button) component.origin;
+            Quickplay.INSTANCE.threadPool.submit(() -> {
+                try {
+                    Quickplay.INSTANCE.socket.sendAction(new ButtonPressedAction(button.key));
+                } catch (ServerUnavailableException e) {
+                    e.printStackTrace();
+                }
+            });
+
             for(final String actionKey : button.actionKeys) {
                 final AliasedAction aa = Quickplay.INSTANCE.aliasedActionMap.get(actionKey);
                 if(aa == null) {

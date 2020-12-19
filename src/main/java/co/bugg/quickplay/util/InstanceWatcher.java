@@ -1,6 +1,7 @@
 package co.bugg.quickplay.util;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.actions.serverbound.HypixelLocationChangedAction;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -135,6 +136,13 @@ public class InstanceWatcher {
     public void logLocationChange(Location location) {
         if (location != null && (instanceHistory.size() <= 0 || !instanceHistory.get(0).equals(location))) {
             instanceHistory.add(0, location);
+            Quickplay.INSTANCE.threadPool.submit(() -> {
+                try {
+                    Quickplay.INSTANCE.socket.sendAction(new HypixelLocationChangedAction(location));
+                } catch (ServerUnavailableException e) {
+                    e.printStackTrace();
+                }
+            });
 
             // Send analytical data to Google
             if (Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&

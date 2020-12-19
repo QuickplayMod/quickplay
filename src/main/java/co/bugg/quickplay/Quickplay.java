@@ -1,6 +1,7 @@
 package co.bugg.quickplay;
 
 import co.bugg.quickplay.actions.Action;
+import co.bugg.quickplay.actions.serverbound.ExceptionThrownAction;
 import co.bugg.quickplay.actions.serverbound.MigrateKeybindsAction;
 import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandMain;
@@ -451,6 +452,8 @@ public class Quickplay {
                 this.sendExceptionRequest(e);
             }
 
+            // TODO listen for language changes and fire LanguageChangedActions
+
             this.threadPool.submit(() -> {
                 final Request request = this.requestFactory.newEnableRequest();
                 if(request != null) {
@@ -582,18 +585,21 @@ public class Quickplay {
      */
     public void sendExceptionRequest(Exception e) {
         if(this.usageStats != null && this.usageStats.sendUsageStats) {
-            final WebResponse response = this.requestFactory.newExceptionRequest(e).execute();
-            if(response != null) {
-                for (ResponseAction action : response.actions)
-                    action.run();
-            }
-            if(this.ga != null) {
+            this.threadPool.submit(() -> {
                 try {
-                    this.ga.createException().setExceptionDescription(e.getMessage()).send();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                    this.socket.sendAction(new ExceptionThrownAction(e));
+                } catch (ServerUnavailableException serverUnavailableException) {
+                    serverUnavailableException.printStackTrace();
                 }
-            }
+                if(this.ga != null) {
+                    try {
+                        this.ga.createException().setExceptionDescription(e.getMessage()).send();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
+
         }
     }
 

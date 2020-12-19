@@ -18,6 +18,8 @@ import java.nio.ByteBuffer;
  */
 public class ClaimDailyRewardAction extends Action {
 
+    public ClaimDailyRewardAction() {}
+
     /**
      * Create a new GetDailyRewardAction.
      * @param option The option the client has requested be claimed. This is an index.

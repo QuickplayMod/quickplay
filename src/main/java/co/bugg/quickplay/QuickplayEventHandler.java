@@ -1,9 +1,11 @@
 package co.bugg.quickplay;
 
+import co.bugg.quickplay.actions.serverbound.ServerLeftAction;
 import co.bugg.quickplay.client.dailyreward.DailyRewardInitiator;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
 import co.bugg.quickplay.util.ServerChecker;
+import co.bugg.quickplay.util.ServerUnavailableException;
 import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
@@ -37,12 +39,21 @@ public class QuickplayEventHandler {
             Quickplay.INSTANCE.onHypixel = onHypixel;
             Quickplay.INSTANCE.verificationMethod = method;
         });
+        // TODO send server joined notif
+//        Quickplay.INSTANCE.socket.sendAction(new ServerJoinedAction());
     }
 
     @SubscribeEvent
     public void onLeave(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         Quickplay.INSTANCE.onHypixel = false;
         Quickplay.INSTANCE.verificationMethod = null;
+        Quickplay.INSTANCE.threadPool.submit(() -> {
+            try {
+                Quickplay.INSTANCE.socket.sendAction(new ServerLeftAction());
+            } catch (ServerUnavailableException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @SubscribeEvent

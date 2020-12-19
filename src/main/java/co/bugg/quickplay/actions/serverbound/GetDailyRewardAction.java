@@ -14,6 +14,8 @@ import java.nio.ByteBuffer;
  */
 public class GetDailyRewardAction extends Action {
 
+    public GetDailyRewardAction() {}
+
     /**
      * Create a new GetDailyRewardAction.
      * @param code The Daily Reward code found in the daily reward URL.
