@@ -1,10 +1,9 @@
-package co.bugg.quickplay.client.gui.game;
+package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.*;
 import co.bugg.quickplay.actions.serverbound.ButtonPressedAction;
 import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.QuickplayKeybind;
-import co.bugg.quickplay.client.gui.QuickplayGui;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiContextMenu;

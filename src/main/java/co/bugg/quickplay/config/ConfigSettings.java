@@ -3,6 +3,7 @@ package co.bugg.quickplay.config;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.MoveableHudElement;
+import co.bugg.quickplay.client.gui.QuickplayGuiScreen;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
 import co.bugg.quickplay.games.PartyMode;
@@ -317,7 +318,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
 
     /**
      * Allows users to change how much padding is on the
-     * top & bottom of {@link co.bugg.quickplay.client.gui.game.QuickplayGuiMainMenu}
+     * top & bottom of {@link QuickplayGuiScreen}
      *
      * Cannot be changed in the GUI as that might be confusing but
      * is there for the users who need it.

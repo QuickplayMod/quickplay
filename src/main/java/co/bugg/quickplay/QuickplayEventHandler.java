@@ -1,5 +1,6 @@
 package co.bugg.quickplay;
 
+import co.bugg.quickplay.actions.serverbound.ServerJoinedAction;
 import co.bugg.quickplay.actions.serverbound.ServerLeftAction;
 import co.bugg.quickplay.client.dailyreward.DailyRewardInitiator;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
@@ -39,8 +40,14 @@ public class QuickplayEventHandler {
             Quickplay.INSTANCE.onHypixel = onHypixel;
             Quickplay.INSTANCE.verificationMethod = method;
         });
-        // TODO send server joined notif
-//        Quickplay.INSTANCE.socket.sendAction(new ServerJoinedAction());
+        Quickplay.INSTANCE.threadPool.submit(() -> {
+            try {
+                // Metadata is currently unused, however it's available in the spec for the future.
+                Quickplay.INSTANCE.socket.sendAction(new ServerJoinedAction(ServerChecker.getCurrentIP(), null));
+            } catch (ServerUnavailableException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @SubscribeEvent

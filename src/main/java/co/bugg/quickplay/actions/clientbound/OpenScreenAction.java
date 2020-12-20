@@ -4,7 +4,7 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Screen;
 import co.bugg.quickplay.actions.Action;
-import co.bugg.quickplay.client.gui.game.QuickplayGuiScreen;
+import co.bugg.quickplay.client.gui.QuickplayGuiScreen;
 import net.minecraft.client.Minecraft;
 
 import java.nio.ByteBuffer;
