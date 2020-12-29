@@ -9,7 +9,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.nio.ByteBuffer;
 import java.util.Date;
 
 /**
@@ -43,47 +42,32 @@ public class AuthCompleteAction extends Action {
      * @param premiumExpiration Datetime of when this user's Premium expires, or null if the user has no subscription.
      */
     public AuthCompleteAction(String sessionToken, Date sessionExpiration, String mcUuid, String discordId,
-                              String googleId, boolean isAdmin, boolean isPremium, Date premiumExpiration) {
+                              String googleId, boolean isAdmin, boolean isPremium, Date premiumExpiration,
+                              String hypixelRank, String hypixelPackageRank, boolean isHypixelBuildTeam,
+                              boolean isHypixelBuildTeamAdmin) {
         super();
         this.id = 28;
-        this.addPayload(ByteBuffer.wrap(sessionToken.getBytes()));
 
-        ByteBuffer sessionExpirationBuf = ByteBuffer.allocate(4);
-        sessionExpirationBuf.putInt((int) (sessionExpiration.getTime() / 1000));
-        sessionExpirationBuf.rewind();
-        this.addPayload(sessionExpirationBuf);
-
-        this.addPayload(ByteBuffer.wrap(mcUuid.getBytes()));
-
-        if(discordId != null) {
-            this.addPayload(ByteBuffer.wrap(discordId.getBytes()));
-        } else {
-            this.addPayload(ByteBuffer.wrap(new byte[]{}));
-        }
-        if(googleId != null) {
-            this.addPayload(ByteBuffer.wrap(googleId.getBytes()));
-        } else {
-            this.addPayload(ByteBuffer.wrap(new byte[]{}));
+        if(sessionToken == null || sessionExpiration == null) {
+            return;
         }
 
-        ByteBuffer isAdminBuf = ByteBuffer.allocate(1);
-        isAdminBuf.put(isAdmin ? (byte) 1 : (byte) 0);
-        isAdminBuf.rewind();
-        this.addPayload(isAdminBuf);
-
-        ByteBuffer isPremiumBuf = ByteBuffer.allocate(1);
-        isPremiumBuf.put(isPremium ? (byte) 1 : (byte) 0);
-        isAdminBuf.rewind();
-        this.addPayload(isPremiumBuf);
-
-        ByteBuffer premiumExpirationBuf = ByteBuffer.allocate(4);
-        if(premiumExpiration != null) {
-            premiumExpirationBuf.putInt((int) (premiumExpiration.getTime() / 1000));
+        this.addPayloadString(sessionToken, "");
+        this.addPayloadInteger((int) (sessionExpiration.getTime() / 1000));
+        this.addPayloadString(mcUuid, "");
+        this.addPayloadString(discordId, "");
+        this.addPayloadString(googleId, "");
+        this.addPayloadBoolean(isAdmin);
+        this.addPayloadBoolean(isPremium);
+        if(premiumExpiration == null) {
+            this.addPayloadInteger(0);
         } else {
-            premiumExpirationBuf.putInt(0);
+            this.addPayloadInteger((int) (premiumExpiration.getTime() / 1000));
         }
-        premiumExpirationBuf.rewind();
-        this.addPayload(premiumExpirationBuf);
+        this.addPayloadString(hypixelRank, "NONE");
+        this.addPayloadString(hypixelPackageRank, "NONE");
+        this.addPayloadBoolean(isHypixelBuildTeam);
+        this.addPayloadBoolean(isHypixelBuildTeamAdmin);
     }
 
     @Override
@@ -111,7 +95,11 @@ public class AuthCompleteAction extends Action {
         });
         Quickplay.INSTANCE.isAdminClient = this.getPayloadObject(5).get(0) != 0;
         Quickplay.INSTANCE.isPremiumClient = this.getPayloadObject(6).get(0) != 0;
-        Quickplay.INSTANCE.premiumExpirationDate = new Date(this.getPayloadObject(7).getInt() * 1000);
+        Quickplay.INSTANCE.premiumExpirationDate = new Date(this.getPayloadObject(7).getInt() * 1000L);
+        Quickplay.INSTANCE.hypixelRank = this.getPayloadObjectAsString(8);
+        Quickplay.INSTANCE.hypixelPackageRank = this.getPayloadObjectAsString(9);
+        Quickplay.INSTANCE.isHypixelBuildTeamMember = this.getPayloadObject(10).get(0) != 0;
+        Quickplay.INSTANCE.isHypixelBuildTeamAdmin = this.getPayloadObject(11).get(0) != 0;
         System.out.println("Authenticated with Quickplay backend.");
     }
 }

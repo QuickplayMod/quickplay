@@ -215,4 +215,40 @@ public class Action {
     public void addPayload(ByteBuffer payload) {
         this.payloadObjs.add(payload);
     }
+
+    /**
+     * Add a String to the payload.
+     * @param str String to add to the payload
+     * @param defaultValue If str is null, this value will be added instead.
+     */
+    public void addPayloadString(String str, String defaultValue) {
+        if(str == null) {
+            this.addPayload(ByteBuffer.wrap(defaultValue.getBytes()));
+        } else {
+            this.addPayload(ByteBuffer.wrap(str.getBytes()));
+        }
+    }
+
+    /**
+     * Add a boolean value to the payload. Boolean values take up 1 byte instead of 1 bit,
+     * as that's the atomic value of the Quickplay protocol.
+     * @param b Boolean to add.
+     */
+    public void addPayloadBoolean(boolean b) {
+        ByteBuffer boolBuf = ByteBuffer.allocate(1);
+        boolBuf.put(b ? (byte) 1 : (byte) 0);
+        boolBuf.rewind();
+        this.addPayload(boolBuf);
+    }
+
+    /**
+     * Add an integer value to the payload. Integers take up 4 bytes.
+     * @param i Integer to add.
+     */
+    public void addPayloadInteger(int i) {
+        ByteBuffer buf = ByteBuffer.allocate(4);
+        buf.putInt(i);
+        buf.rewind();
+        this.addPayload(buf);
+    }
 }

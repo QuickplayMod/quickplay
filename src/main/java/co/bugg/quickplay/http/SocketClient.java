@@ -3,9 +3,11 @@ package co.bugg.quickplay.http;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.actions.serverbound.InitializeClientAction;
+import co.bugg.quickplay.actions.serverbound.ServerJoinedAction;
 import co.bugg.quickplay.actions.serverbound.SetClientSettingsAction;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.util.ServerChecker;
 import co.bugg.quickplay.util.ServerUnavailableException;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
@@ -32,6 +34,10 @@ public class SocketClient extends WebSocketClient {
         // Loop for a Quickplay server disconnection
         Quickplay.INSTANCE.threadPool.submit(() -> {
             while(Quickplay.INSTANCE.socket == this) {
+                // Only try to re-connect if not disabled.
+                if(!Quickplay.INSTANCE.isEnabled) {
+                    return;
+                }
                 try {
                     Thread.sleep(SocketClient.pingTime);
                 } catch (InterruptedException e) {
@@ -59,16 +65,19 @@ public class SocketClient extends WebSocketClient {
         System.out.println("Connected to Quickplay backend.");
         this.connected = true;
         this.lastPing = new Date();
-
         try {
             this.sendAction(new InitializeClientAction());
             this.sendAction(new SetClientSettingsAction(Quickplay.INSTANCE.settings));
+
+            final String currentIp = ServerChecker.getCurrentIP();
+            if(currentIp != null && !currentIp.equals("unknown/null")) {
+                Quickplay.INSTANCE.socket.sendAction(new ServerJoinedAction(currentIp, null));
+            }
         } catch (ServerUnavailableException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.messageBuffer.push(new Message(
                     new QuickplayChatComponentTranslation("quickplay.failedToConnect")
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)),
-                    true
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
             ));
         }
     }

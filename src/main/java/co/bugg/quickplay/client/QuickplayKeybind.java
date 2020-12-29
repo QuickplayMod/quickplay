@@ -4,7 +4,11 @@ import co.bugg.quickplay.AliasedAction;
 import co.bugg.quickplay.Button;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.GsonPostProcessorFactory;
+import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
@@ -155,12 +159,28 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
         if(button == null || button.actionKeys == null || button.actionKeys.length <= 0) {
             return;
         }
+        if(!button.passesPermissionChecks()) {
+            Quickplay.INSTANCE.messageBuffer.push(new Message(
+                    new QuickplayChatComponentTranslation("quickplay.keybindPressFail")
+                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
+                    , false, false));
+            return;
+        }
+
         for(int i = 0; i < button.actionKeys.length; i++) {
             if(button.actionKeys[i] == null || button.actionKeys[i].length() <= 0) {
                 continue;
             }
             AliasedAction aliasedAction = Quickplay.INSTANCE.aliasedActionMap.get(button.actionKeys[i]);
-            if(aliasedAction != null && aliasedAction.action != null) {
+            if(aliasedAction == null) {
+                System.out.println("WARN: Aliased action " + button.actionKeys[i] + " is not found.");
+                continue;
+            }
+            if(!aliasedAction.passesPermissionChecks()) {
+                System.out.println("WARN: Aliased action " + button.actionKeys[i] + " does not pass permission checks.");
+                continue;
+            }
+            if(aliasedAction.action != null) {
                 aliasedAction.action.run();
             }
         }

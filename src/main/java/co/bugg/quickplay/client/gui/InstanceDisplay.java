@@ -1,7 +1,7 @@
 package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
-import co.bugg.quickplay.util.InstanceWatcher;
+import co.bugg.quickplay.util.HypixelInstanceWatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 
@@ -23,12 +23,12 @@ public class InstanceDisplay extends MoveableHudElement {
     /**
      * InstanceWatcher, source of the current instance.
      */
-    InstanceWatcher source;
+    HypixelInstanceWatcher source;
 
     /**
      * Constructor
      */
-    public InstanceDisplay(InstanceWatcher watcher) {
+    public InstanceDisplay(HypixelInstanceWatcher watcher) {
         super();
         this.source = watcher;
     }

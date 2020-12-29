@@ -1,20 +1,37 @@
 package co.bugg.quickplay.config;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.actions.serverbound.SetClientSettingsAction;
 import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.MoveableHudElement;
 import co.bugg.quickplay.client.gui.QuickplayGuiScreen;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
 import co.bugg.quickplay.games.PartyMode;
+import co.bugg.quickplay.util.ServerUnavailableException;
 import net.minecraft.client.Minecraft;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ConfigSettings extends AConfiguration implements Serializable {
+
+    @Override
+    public AConfiguration save() throws IOException {
+        // Notify server of mod settings change
+        Quickplay.INSTANCE.threadPool.submit(() -> {
+            try {
+                Quickplay.INSTANCE.socket.sendAction(new SetClientSettingsAction(this));
+            } catch (ServerUnavailableException serverUnavailableException) {
+                serverUnavailableException.printStackTrace();
+            }
+        });
+
+        return super.save();
+    }
 
     // TODO make runnables into methods
     public ConfigSettings() {

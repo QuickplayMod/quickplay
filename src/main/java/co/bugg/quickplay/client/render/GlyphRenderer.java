@@ -57,7 +57,7 @@ public class GlyphRenderer {
     public void onPlayerRender(RenderPlayerEvent.Post e) {
         // Don't render at all if F1 is hit and the user has showing in F1 disabled
         if(!Minecraft.getMinecraft().gameSettings.hideGUI || Quickplay.INSTANCE.settings.showGlyphsInF1) {
-            final String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
+            final String currentServer = Quickplay.INSTANCE.hypixelInstanceWatcher.getCurrentServer();
             final EntityPlayer self = Minecraft.getMinecraft().thePlayer;
             final EntityPlayer player = e.entityPlayer;
 

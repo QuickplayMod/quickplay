@@ -4,6 +4,7 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.Screen;
 import co.bugg.quickplay.ScreenType;
 import co.bugg.quickplay.actions.Action;
+import co.bugg.quickplay.util.Location;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -48,22 +49,34 @@ public class SetScreenAction extends Action {
     public void run() {
         try {
 
+            final Gson gson = new Gson();
             final String availableOnJson = this.getPayloadObjectAsString(2);
-            final String[] availableOnArr = new Gson().fromJson(availableOnJson, String[].class);
+            final String[] availableOnArr = gson.fromJson(availableOnJson, String[].class);
             final String buttonsJson = this.getPayloadObjectAsString(3);
-            final String[] buttonsArr = new Gson().fromJson(buttonsJson, String[].class);
+            final String[] buttonsArr = gson.fromJson(buttonsJson, String[].class);
             final String backButtonActionsJson = this.getPayloadObjectAsString(4);
-            final String[] backButtonActionsArr = new Gson().fromJson(backButtonActionsJson, String[].class);
+            final String[] backButtonActionsArr = gson.fromJson(backButtonActionsJson, String[].class);
 
             final ScreenType screenType = ScreenType.valueOf(this.getPayloadObjectAsString(1));
             final String key = this.getPayloadObjectAsString(0);
             final String translationKey = this.getPayloadObjectAsString(5);
             final String imageURL = this.getPayloadObjectAsString(6);
-            final ByteBuffer adminOnlyBuf = this.getPayloadObject(7);
+            final ByteBuffer visibleBuf = this.getPayloadObject(7);
+            final boolean visible = visibleBuf.get() != (byte) 0;
+            final ByteBuffer adminOnlyBuf = this.getPayloadObject(8);
             final boolean adminOnly = adminOnlyBuf.get() != (byte) 0;
+            final String hypixelLocrawRegexJson = this.getPayloadObjectAsString(9);
+            final Location hypixelLocrawRegex = gson.fromJson(hypixelLocrawRegexJson, Location.class);
+            final String hypixelRankRegex = this.getPayloadObjectAsString(10);
+            final String hypixelPackageRankRegex = this.getPayloadObjectAsString(11);
+            final ByteBuffer hypixelBuildTeamOnlyBuf = this.getPayloadObject(12);
+            final boolean hypixelBuildTeamOnly = hypixelBuildTeamOnlyBuf.get() != (byte) 0;
+            final ByteBuffer hypixelBuildTeamAdminOnlyBuf = this.getPayloadObject(13);
+            final boolean hypixelBuildTeamAdminOnly = hypixelBuildTeamAdminOnlyBuf.get() != (byte) 0;
 
             final Screen screen = new Screen(key, screenType, availableOnArr, buttonsArr, backButtonActionsArr,
-                    translationKey, imageURL, adminOnly);
+                    translationKey, imageURL, visible, adminOnly, hypixelLocrawRegex, hypixelRankRegex,
+                    hypixelPackageRankRegex, hypixelBuildTeamOnly, hypixelBuildTeamAdminOnly);
 
             // Download the image URL, if it is set
             if(screen.imageURL != null && screen.imageURL.length() > 0) {

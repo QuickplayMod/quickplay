@@ -36,7 +36,7 @@ public class SubCommandDelivery extends ACommand {
     @Override
     public void run(String[] args) {
         if(Quickplay.INSTANCE.onHypixel) {
-            String currentServer = Quickplay.INSTANCE.instanceWatcher.getCurrentServer();
+            String currentServer = Quickplay.INSTANCE.hypixelInstanceWatcher.getCurrentServer();
             if(currentServer == null) currentServer = "null";
 
             if((currentServer.contains("mini") || currentServer.contains("mega") || currentServer.contains("limbo")) &&

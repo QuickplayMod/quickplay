@@ -77,13 +77,6 @@ public class Quickplay {
     @Deprecated
     public boolean onHypixel = false;
     /**
-     * The recognized server that the user is currently on, according to the Quickplay backend.
-     * This is used for determining whether certain buttons/actions/screens should be visible/executable at any
-     * given moment or not, under the "availableOn" array. If this is within the "availableOn" array of an item, then
-     * that item should be "usable". If the "availableOn" array is empty, then this value isn't checked for that item.
-     */
-    public String currentServer = null;
-    /**
      * Whether the mod is currently enabled
      */
     public boolean isEnabled = false;
@@ -91,6 +84,35 @@ public class Quickplay {
      * The reason the mod has been disabled, if it is disabled
      */
     public String disabledReason = null;
+    /**
+     * The recognized server that the user is currently on, according to the Quickplay backend.
+     * This is used for determining whether certain buttons/actions/screens should be visible/executable at any
+     * given moment or not, under the "availableOn" array. If this is within the "availableOn" array of an item, then
+     * that item should be "usable". If the "availableOn" array is empty, then this value isn't checked for that item.
+     */
+    public String currentServer = null;
+    /**
+     * Hypixel staff rank in the form of e.g. HELPER, ADMIN, YOUTUBER, etc. Used for determining whether some
+     * commands which require a rank should be displayed or not. This is modified when
+     * {@link co.bugg.quickplay.actions.clientbound.AuthCompleteAction} is received.
+     */
+    public String hypixelRank = null;
+    /**
+     * Hypixel package rank in the form of e.g. NONE, VIP_PLUS, SUPERSTAR, etc. Used for determining whether some
+     * commands which require a rank should be displayed or not. This is modified when
+     * {@link co.bugg.quickplay.actions.clientbound.AuthCompleteAction} is received.
+     */
+    public String hypixelPackageRank = null;
+    /**
+     * Flag signifying whether the user is a Hypixel build team member or not. This is modified when
+     * {@link co.bugg.quickplay.actions.clientbound.AuthCompleteAction} is received.
+     */
+    public boolean isHypixelBuildTeamMember = false;
+    /**
+     * Flag signifying whether the user is a Hypixel build team admin or not. This is modified when
+     * {@link co.bugg.quickplay.actions.clientbound.AuthCompleteAction} is received.
+     */
+    public boolean isHypixelBuildTeamAdmin = false;
     /**
      * Verification method used to verify the client is online Hypixel, or null if not on Hypixel.
      * @deprecated Verification is done server-side as of 2.1.0.
@@ -154,14 +176,13 @@ public class Quickplay {
     /**
      * InstanceWatcher that constantly watches for what Hypixel server instance the client is on
      */
-    public InstanceWatcher instanceWatcher;
+    public HypixelInstanceWatcher hypixelInstanceWatcher;
     /**
      * Display of the current Hypixel instance
      */
     public InstanceDisplay instanceDisplay;
     /**
      * Mods settings
-     * TODO send this data to the backend on start, as well as whenever it's changed
      */
     public ConfigSettings settings;
     /**
@@ -491,8 +512,8 @@ public class Quickplay {
             this.registerEventHandler(new QuickplayEventHandler());
 
             this.chatBuffer = (ChatBuffer) new ChatBuffer(200, 8, 5000, 1000).start();
-            this.instanceWatcher = new InstanceWatcher().start();
-            this.instanceDisplay = new InstanceDisplay(this.instanceWatcher);
+            this.hypixelInstanceWatcher = new HypixelInstanceWatcher().start();
+            this.instanceDisplay = new InstanceDisplay(this.hypixelInstanceWatcher);
 
             this.commands.add(new CommandQuickplay());
 
@@ -542,13 +563,24 @@ public class Quickplay {
             }
             this.disabledReason = reason;
 
-            if(this.chatBuffer != null) {
-                this.chatBuffer.stop();
+            if(this.socket != null) {
+                this.socket.close();
+                this.socket = null;
             }
 
-            if(this.instanceWatcher != null) {
-                this.instanceWatcher.stop();
+            if(this.chatBuffer != null) {
+                this.chatBuffer.stop();
+                this.chatBuffer = null;
             }
+
+            if(this.hypixelInstanceWatcher != null) {
+                this.hypixelInstanceWatcher.stop();
+                this.hypixelInstanceWatcher = null;
+            }
+
+            this.isPremiumClient = false;
+            this.isAdminClient = false;
+            this.sessionKey = null;
         }
     }
 

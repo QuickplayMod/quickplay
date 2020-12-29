@@ -8,6 +8,10 @@ quickplay.failedToConnect=Sorry, Quickplay wasn't able to connect to the Quickpl
 quickplay.failedToEnable=Sorry, something went wrong and Quickplay couldn't enable! Try restarting or checking for updates.
 quickplay.failedToAuth=Sorry, Quickplay wasn't able to authenticate with the Quickplay backend! Some features may be unavailable.
 
+quickplay.screenOpenFail=ERROR: Attempt to open Quickplay screen failed because that screen either couldn't be found or it can't be opened in the current context/location.
+quickplay.buttonPressFail=ERROR: Attempt to press Quickplay button failed because you are no longer in the context/location in which that button is valid.
+quickplay.keybindPressFail=ERROR: Attempt to use Quickplay keybind failed because you are not in the correct context/location for that keybind.
+
 quickplay.commands.invalid=Invalid command!
 quickplay.commands.quickplay.help.help=Display the available commands.
 quickplay.commands.quickplay.config.help=Configure your Quickplay mod.

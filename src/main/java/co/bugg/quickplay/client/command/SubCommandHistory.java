@@ -38,7 +38,7 @@ public class SubCommandHistory extends ACommand {
     @Override
     public void run(String[] args) {
         if(Quickplay.INSTANCE.onHypixel) {
-            if(Quickplay.INSTANCE.instanceWatcher != null && Quickplay.INSTANCE.instanceWatcher.instanceHistory != null) {
+            if(Quickplay.INSTANCE.hypixelInstanceWatcher != null && Quickplay.INSTANCE.hypixelInstanceWatcher.instanceHistory != null) {
 
                 // Get how many isntances to display
                 // Default # of instances to display
@@ -55,12 +55,12 @@ public class SubCommandHistory extends ACommand {
                 }
 
                 // If the number provided by the user is too large, use the max
-                instanceCount = Math.min(Quickplay.INSTANCE.instanceWatcher.instanceHistory.size(), instanceCount);
+                instanceCount = Math.min(Quickplay.INSTANCE.hypixelInstanceWatcher.instanceHistory.size(), instanceCount);
 
                 final IChatComponent instanceList = new ChatComponentText("");
 
                 for(int i = 0; i < instanceCount; i++) {
-                    instanceList.appendText(Quickplay.INSTANCE.instanceWatcher.instanceHistory.get(i) + "\n");
+                    instanceList.appendText(Quickplay.INSTANCE.hypixelInstanceWatcher.instanceHistory.get(i) + "\n");
                 }
 
                 instanceList.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW));

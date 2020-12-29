@@ -9,10 +9,14 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiContextMenu;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.games.Game;
+import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerUnavailableException;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
@@ -158,7 +162,10 @@ public class QuickplayGuiScreen extends QuickplayGui {
                 // Calculate the average width of all strings & what the longest one is
                 for (final String buttonKey : this.screen.buttonKeys) {
                     final Button button = Quickplay.INSTANCE.buttonMap.get(buttonKey);
-                    // TODO check restrictions
+                    // Skip buttons which won't be rendered in this context.
+                    if(button == null || !button.passesPermissionChecks()) {
+                        continue;
+                    }
                     final int stringWidth = this.fontRendererObj.getStringWidth(Quickplay.INSTANCE.translator.get(button.translationKey));
                     if (stringWidth > this.longestStringWidth) {
                         this.longestStringWidth = stringWidth;
@@ -224,8 +231,8 @@ public class QuickplayGuiScreen extends QuickplayGui {
         int nextButtonId = 0;
         for(String buttonKey : this.screen.buttonKeys) {
             final Button button = Quickplay.INSTANCE.buttonMap.get(buttonKey);
-            // TODO check restrictions on button
-            if(button == null) {
+            // Skip buttons which won't be rendered in this context.
+            if(button == null || !button.passesPermissionChecks()) {
                 continue;
             }
 
@@ -446,6 +453,13 @@ public class QuickplayGuiScreen extends QuickplayGui {
         super.componentClicked(component);
         if(component.origin instanceof Button && contextMenu == null) {
             final Button button = (Button) component.origin;
+            if(!button.passesPermissionChecks()) {
+                Quickplay.INSTANCE.messageBuffer.push(new Message(
+                        new QuickplayChatComponentTranslation("quickplay.buttonPressFail")
+                                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
+                        , false, false));
+                return;
+            }
             Quickplay.INSTANCE.threadPool.submit(() -> {
                 try {
                     Quickplay.INSTANCE.socket.sendAction(new ButtonPressedAction(button.key));
@@ -457,13 +471,13 @@ public class QuickplayGuiScreen extends QuickplayGui {
             for(final String actionKey : button.actionKeys) {
                 final AliasedAction aa = Quickplay.INSTANCE.aliasedActionMap.get(actionKey);
                 if(aa == null) {
-                    // TODO handle error
-                    System.out.println("aa == null");
-                    return;
+                    System.out.println("WARN: Aliased action " + actionKey + " is not found.");
+                    continue;
                 }
-                // TODO check protocol
-                // TODO check availableOn
-                // TODO check admin state
+                if(!aa.passesPermissionChecks()) {
+                    System.out.println("WARN: Aliased action " + actionKey + " does not pass permission checks.");
+                    continue;
+                }
                 if(aa.action != null) {
                     aa.action.run();
                 }
@@ -488,9 +502,13 @@ public class QuickplayGuiScreen extends QuickplayGui {
                 final String actionKey = this.screen.backButtonActions[i];
                 final AliasedAction action = Quickplay.INSTANCE.aliasedActionMap.get(actionKey);
                 if(action == null) {
+                    System.out.println("WARN: Aliased action " + actionKey + " is not found.");
                     continue;
                 }
-                // TODO perform permission checks
+                if(!action.passesPermissionChecks()) {
+                    System.out.println("WARN: Aliased action " + actionKey + " does not pass permission checks.");
+                    continue;
+                }
                 action.action.run();
             }
         }

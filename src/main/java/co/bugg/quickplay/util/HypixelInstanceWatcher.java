@@ -17,7 +17,7 @@ import java.util.TimerTask;
  * client is on by executing /locraw whenever the
  * client changes worlds.
  */
-public class InstanceWatcher {
+public class HypixelInstanceWatcher {
     /**
      * List of all locations in this game session
      * Index 0 is the latest
@@ -42,7 +42,7 @@ public class InstanceWatcher {
      * Start the event handler & listen for chat messages
      * @return this
      */
-    public InstanceWatcher start() {
+    public HypixelInstanceWatcher start() {
         Quickplay.INSTANCE.registerEventHandler(this);
         started = true;
         detectLocation();
@@ -53,7 +53,7 @@ public class InstanceWatcher {
      * Stop the event handler. This does not stop any ongoing polls, only prevents new ones from being created.
      * @return this
      */
-    public InstanceWatcher stop() {
+    public HypixelInstanceWatcher stop() {
         Quickplay.INSTANCE.unregisterEventHandler(this);
         started = false;
         return this;
@@ -88,6 +88,19 @@ public class InstanceWatcher {
                                 location.server != null && !location.server.equals("limbo")) {
                             timer.cancel();
                             polling = false;
+
+                            // Null values are replaced with empty strings to avoid null pointers and having to check
+                            // that things are non-null down stream.
+                            if(location.map == null) {
+                                location.map = "";
+                            }
+                            if(location.mode == null) {
+                                location.mode = "";
+                            }
+                            if(location.gametype == null) {
+                                location.gametype = "";
+                            }
+
                             handleLobbySwap(location);
                             logLocationChange(location);
                         }

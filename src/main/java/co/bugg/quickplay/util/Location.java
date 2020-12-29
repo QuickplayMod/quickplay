@@ -6,10 +6,10 @@ import com.google.gson.Gson;
  * Class matching the response of the /locraw message.
  */
 public class Location {
-    String server = null;
-    String gametype = null;
-    String mode = null;
-    String map = null;
+    public String server = null;
+    public String gametype = null;
+    public String mode = null;
+    public String map = null;
 
     @Override
     public String toString() {

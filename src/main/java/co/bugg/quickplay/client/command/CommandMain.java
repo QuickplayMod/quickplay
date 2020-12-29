@@ -70,7 +70,7 @@ public class CommandMain extends BaseCommand {
                             final int lobbyNumber = Integer.parseInt(args[0]);
 
                             // If not in main lobby, go to main lobby first
-                            if(!Quickplay.INSTANCE.instanceWatcher.getCurrentServer().startsWith("lobby")) {
+                            if(!Quickplay.INSTANCE.hypixelInstanceWatcher.getCurrentServer().startsWith("lobby")) {
                                 Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand);
 
                                 try {

@@ -5,7 +5,11 @@ import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Screen;
 import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.client.gui.QuickplayGuiScreen;
+import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 
 import java.nio.ByteBuffer;
 
@@ -33,11 +37,15 @@ public class OpenScreenAction extends Action {
     @Override
     public void run() {
         final Screen screen = Quickplay.INSTANCE.screenMap.get(this.getPayloadObjectAsString(0));
-        // TODO check restrictions on Screen
-        if(screen == null) {
+        if(screen == null || !screen.passesPermissionChecks()) {
+            Quickplay.INSTANCE.messageBuffer.push(new Message(
+                    new QuickplayChatComponentTranslation("quickplay.screenOpenFail")
+                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
+                    , false, false));
             return;
-            // TODO handle error
         }
+
+
         QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
             Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiScreen(screen));
         });
