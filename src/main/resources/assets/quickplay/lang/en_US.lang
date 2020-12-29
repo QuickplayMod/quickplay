@@ -114,6 +114,8 @@ quickplay.settings.updateNotifications.name=Update Notifications
 quickplay.settings.updateNotifications.help=Whether you'd like to be notified when a new version of Quickplay is released (your list of games will update automatically, regardless of this setting).
 quickplay.settings.redesignedLobbyCommand.name=Custom Lobby Command
 quickplay.settings.redesignedLobbyCommand.help=Whether the custom Quickplay lobby commands should be used when possible. Requires game restart.
+quickplay.settings.mainMenuHypixelCompass.name=Open GUI with Hypixel Compass
+quickplay.settings.mainMenuHypixelCompass.help=Whether right-clicking with the Hypixel compass should open the Quickplay main menu or not.
 
 quickplay.settings.category.partyMode=Party Mode
 quickplay.settings.partyModeDelay.name=Launch Delay

@@ -4,20 +4,26 @@ import co.bugg.quickplay.actions.serverbound.ServerJoinedAction;
 import co.bugg.quickplay.actions.serverbound.ServerLeftAction;
 import co.bugg.quickplay.client.dailyreward.DailyRewardInitiator;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
+import co.bugg.quickplay.client.gui.QuickplayGuiScreen;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
 import co.bugg.quickplay.util.ServerChecker;
 import co.bugg.quickplay.util.ServerUnavailableException;
 import co.bugg.quickplay.util.TickDelay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.inventory.GuiChest;
+import net.minecraft.inventory.IInventory;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -136,6 +142,56 @@ public class QuickplayEventHandler {
                         }
                     }
                 });
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        // If the user's in a Hypixel lobby and interacts with their compass, open the Quickplay main menu GUI if
+        // they have that setting enabled.
+        if(Quickplay.INSTANCE.settings.mainMenuHypixelCompass &&
+                Quickplay.INSTANCE.currentServer != null && Quickplay.INSTANCE.currentServer.toLowerCase().contains("hypixel") &&
+                Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem() != null &&
+                Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getUnlocalizedName().equals("item.compass") &&
+                Quickplay.INSTANCE.hypixelInstanceWatcher.getCurrentLocation() != null &&
+                Quickplay.INSTANCE.hypixelInstanceWatcher.getCurrentLocation().server.contains("lobby")
+        ) {
+            Screen mainScreen = Quickplay.INSTANCE.screenMap.get("MAIN");
+            if(mainScreen == null) {
+                return;
+            }
+            event.setCanceled(true);
+            Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiScreen(mainScreen));
+        }
+    }
+
+    @SubscribeEvent
+    public void onGuiRenderEvent(GuiOpenEvent event) {
+        // If the user's on Hypixel and they open a GUI which has the title "Game Menu", open the Quickplay main menu
+        // GUI if they have that setting enabled. This is a fallback for onPlayerInteract, as there are other ways to
+        // open the GUI, however onPlayerInteract looks and behaves much cleaner.
+        if(Quickplay.INSTANCE.settings.mainMenuHypixelCompass &&
+                Quickplay.INSTANCE.currentServer != null && Quickplay.INSTANCE.currentServer.toLowerCase().contains("hypixel")
+                && event.gui instanceof GuiChest) {
+            try {
+                // lowerChestInventory needs to be made available through reflection in order to get the display name.
+                GuiChest chest = ((GuiChest) event.gui);
+                Class<? extends GuiChest> chestClass = chest.getClass();
+                Field lowerChestInventoryField = chestClass.getDeclaredField("lowerChestInventory");
+                lowerChestInventoryField.setAccessible(true);
+                IInventory inventory = (IInventory) lowerChestInventoryField.get(chest);
+
+                if(inventory.getDisplayName().getUnformattedText().equals("Game Menu")) {
+                    new TickDelay(() -> {
+                        Minecraft.getMinecraft().thePlayer.closeScreen();
+                        Minecraft.getMinecraft().displayGuiScreen(
+                                new QuickplayGuiScreen(Quickplay.INSTANCE.screenMap.get("MAIN")));
+                    }, 1);
+                }
+
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
     }

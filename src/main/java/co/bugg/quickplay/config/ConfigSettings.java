@@ -248,6 +248,14 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             helpText = "quickplay.settings.lobbyOneSwap.help"
     )
     public boolean lobbyOneSwap = false;
+    /**
+     * Whether the client should swap to lobby one when it joins a new lobby
+     */
+    @GuiOption(
+            name="quickplay.settings.mainMenuHypixelCompass.name",
+            helpText = "quickplay.settings.mainMenuHypixelCompass.help"
+    )
+    public boolean mainMenuHypixelCompass = false;
 
     /**
      * Whether the client should receive notifications for updates
