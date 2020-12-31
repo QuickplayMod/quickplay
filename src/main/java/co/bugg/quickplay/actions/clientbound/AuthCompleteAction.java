@@ -73,7 +73,7 @@ public class AuthCompleteAction extends Action {
     @Override
     public void run() {
         Quickplay.INSTANCE.sessionKey = this.getPayloadObjectAsString(0);
-        Date expires = new Date(this.getPayloadObject(1).getInt() * 1000);
+        Date expires = new Date(this.getPayloadObject(1).getInt() * 1000L);
         long sleepTime = expires.getTime() - new Date().getTime();
         Quickplay.INSTANCE.threadPool.submit(() -> {
             try {
@@ -100,6 +100,11 @@ public class AuthCompleteAction extends Action {
         Quickplay.INSTANCE.hypixelPackageRank = this.getPayloadObjectAsString(9);
         Quickplay.INSTANCE.isHypixelBuildTeamMember = this.getPayloadObject(10).get(0) != 0;
         Quickplay.INSTANCE.isHypixelBuildTeamAdmin = this.getPayloadObject(11).get(0) != 0;
+
+        System.out.println(Quickplay.INSTANCE.hypixelRank);
+        System.out.println(Quickplay.INSTANCE.hypixelPackageRank);
+        System.out.println(Quickplay.INSTANCE.isHypixelBuildTeamAdmin);
+        System.out.println(Quickplay.INSTANCE.isHypixelBuildTeamMember);
         System.out.println("Authenticated with Quickplay backend.");
     }
 }

@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -178,7 +179,8 @@ public class QuickplayEventHandler {
                 // lowerChestInventory needs to be made available through reflection in order to get the display name.
                 GuiChest chest = ((GuiChest) event.gui);
                 Class<? extends GuiChest> chestClass = chest.getClass();
-                Field lowerChestInventoryField = chestClass.getDeclaredField("lowerChestInventory");
+                String fieldName = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment") ? "lowerChestInventory" : "ayr";
+                Field lowerChestInventoryField = chestClass.getDeclaredField(fieldName);
                 lowerChestInventoryField.setAccessible(true);
                 IInventory inventory = (IInventory) lowerChestInventoryField.get(chest);
 
