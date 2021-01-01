@@ -44,8 +44,8 @@ public class HypixelInstanceWatcher {
      */
     public HypixelInstanceWatcher start() {
         Quickplay.INSTANCE.registerEventHandler(this);
-        started = true;
-        detectLocation();
+        this.started = true;
+        this.detectLocation();
         return this;
     }
 
@@ -55,7 +55,7 @@ public class HypixelInstanceWatcher {
      */
     public HypixelInstanceWatcher stop() {
         Quickplay.INSTANCE.unregisterEventHandler(this);
-        started = false;
+        this.started = false;
         return this;
     }
 
@@ -69,7 +69,7 @@ public class HypixelInstanceWatcher {
                 @Override
                 public void run() {
                     // Stop polling if not on Hypixel or client is not enabled
-                    if(!Quickplay.INSTANCE.onHypixel || !Quickplay.INSTANCE.isEnabled) {
+                    if(!Quickplay.INSTANCE.isOnHypixel() || !Quickplay.INSTANCE.isEnabled) {
                         polling = false;
                         timer.cancel();
                         return;

@@ -68,18 +68,15 @@ public class Quickplay {
 
     @Mod.Instance
     public static Quickplay INSTANCE = new Quickplay();
-
-    /**
-     * Whether the client is currently connected to the Hypixel network
-     * @deprecated in favor of {@link #currentServer}
-     * TODO remove
-     */
-    @Deprecated
-    public boolean onHypixel = false;
     /**
      * Whether the mod is currently enabled
      */
     public boolean isEnabled = false;
+    /**
+     * Whether the client is currently in debug mode. Extra data is printed to the console in debug mode.
+     * @see co.bugg.quickplay.client.command.SubCommandDebug
+     */
+    public boolean isInDebugMode = false;
     /**
      * The reason the mod has been disabled, if it is disabled
      */
@@ -113,13 +110,6 @@ public class Quickplay {
      * {@link co.bugg.quickplay.actions.clientbound.AuthCompleteAction} is received.
      */
     public boolean isHypixelBuildTeamAdmin = false;
-    /**
-     * Verification method used to verify the client is online Hypixel, or null if not on Hypixel.
-     * @deprecated Verification is done server-side as of 2.1.0.
-     * TODO remove
-     */
-    @Deprecated
-    public ServerChecker.VerificationMethod verificationMethod;
     /**
      * Thread pool for blocking code
      */
@@ -707,5 +697,18 @@ public class Quickplay {
             ITextureObject object = new ThreadDownloadImageData(file, null, resourceLocation, null);
             texturemanager.loadTexture(resourceLocation, object);
         }
+    }
+
+    /**
+     * Get whether the user is currently on the Hypixel network. Also returns true if the client is connected to a
+     * Minecraft server and the currentServer is null and not connected to the backend and/or not authed.
+     * This is so Hypixel is the default network if the Quickplay backend is offline.
+     * @return True if this.currentServer is null or contains "hypixel" (case insensitive)
+     */
+    public boolean isOnHypixel() {
+        if(this.currentServer == null) {
+            return ServerChecker.getCurrentIP() != null && this.socket == null || this.socket.isClosed() || this.sessionKey == null;
+        }
+        return this.currentServer.toLowerCase().contains("hypixel");
     }
 }

@@ -60,7 +60,7 @@ public class CommandHub extends BaseCommand {
             if(Quickplay.INSTANCE.checkEnabledStatus()) {
                 // sendChatMessage is used here instead of chatBuffer.push, as chatBuffer.push would try
                 // to execute as a client command which would loop infinitely
-                if(Quickplay.INSTANCE.onHypixel) {
+                if(Quickplay.INSTANCE.isOnHypixel()) {
                     if(args.length == 0) {
                         Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand);
                     } else if(args.length == 1) {

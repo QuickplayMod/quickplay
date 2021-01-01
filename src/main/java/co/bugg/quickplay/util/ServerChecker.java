@@ -8,10 +8,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -41,22 +38,21 @@ public class ServerChecker {
         this.callback = callback;
 
         final String ip = getCurrentIP();
-        if(!ip.equals("singleplayer")) {
+        if(ip != null && !ip.equals("singleplayer")) {
             Pattern hypixelPattern = Pattern.compile("^(?:(?:(?:.*\\.)?hypixel\\.net)|(?:209\\.222\\.115\\.\\d{1,3}))(?::\\d{1,5})?$", Pattern.CASE_INSENSITIVE);
             Matcher matcher = hypixelPattern.matcher(ip);
 
             // If the current IP matches the regex above
             if (matcher.find()) {
-                Quickplay.INSTANCE.onHypixel = true;
                 this.ip = ip;
-                runCallback(true, this.ip, VerificationMethod.IP);
+                runCallback(this.ip);
             } else {
                 // Not on a recognized IP, let's check server metadata, which
                 // occurs on world load
                 Quickplay.INSTANCE.registerEventHandler(this);
             }
         } else {
-            runCallback(false, this.ip = "singleplayer", null);
+            runCallback(this.ip = "singleplayer");
         }
     }
 
@@ -71,75 +67,8 @@ public class ServerChecker {
         Quickplay.INSTANCE.unregisterEventHandler(this);
         // Wait one second for everything to load properly
         new TickDelay(() -> {
-            // Check the server's metadata
-            final VerificationMethod metadataVerification = checkServerMetadataForHypixel();
-            if(metadataVerification != null) {
-                runCallback(true, this.ip, metadataVerification);
-            } else {
-                callback.run(false, this.ip, null);
-            }
+            runCallback(this.ip);
         }, 20);
-    }
-
-    /**
-     * Check if any of the server's metadata contains anything that might point to this server being Hypixel.
-     * If the tablist header contains "hypixel.net" then the server is verified.
-     * If the tablist fooder contains "hypixel.net" then the server is verified.
-     * If the server MOTD contains "hypixel network" then the server is verified.
-     * If the server favicon base64 matches Hypixel's logo then the server is verified.
-     * @return Which of the above checks were true, or null otherwise.
-     */
-    public VerificationMethod checkServerMetadataForHypixel() {
-
-        // First check tab list, if it contains any references to Hypixel in the header & footer.
-        final GuiPlayerTabOverlay tab = Minecraft.getMinecraft().ingameGUI.getTabList();
-        try {
-            if(checkTabField(tab, "header", "field_175256_i")) {
-                return VerificationMethod.HEADER;
-            }
-        } catch (NoSuchFieldException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException
-                | InvocationTargetException e) {
-            e.printStackTrace();
-            Quickplay.INSTANCE.sendExceptionRequest(e);
-        }
-
-        try {
-            if(checkTabField(tab, "footer", "field_175255_h")) {
-                return VerificationMethod.FOOTER;
-            }
-        } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException | NoSuchMethodException
-                | InvocationTargetException e) {
-            e.printStackTrace();
-            Quickplay.INSTANCE.sendExceptionRequest(e);
-        }
-
-        // Next check server MOTD
-        final ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();
-        if(serverData != null) {
-            final String motd = serverData.serverMOTD;
-            if (motd != null && motd.toLowerCase().contains("hypixel network")) {
-                return VerificationMethod.MOTD;
-            }
-
-
-            try {
-                // Next check server favicon
-                final String faviconBase64 = serverData.getBase64EncodedIconData();
-                if (faviconBase64 != null) {
-                    final String hypixelBase64 = Base64.encodeBase64String(IOUtils
-                            .toByteArray(getClass().getClassLoader().getResourceAsStream("HypixelMCLogo.png")));
-                    if (faviconBase64.equals(hypixelBase64)) {
-                        return VerificationMethod.FAVICON;
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                Quickplay.INSTANCE.sendExceptionRequest(e);
-            }
-        }
-
-        // Return null if none of these conditions matched
-        return null;
     }
 
     /**
@@ -194,11 +123,10 @@ public class ServerChecker {
 
     /**
      * Run the callback & unregister this as an event listener
-     * @param onHypixel whether online Hypixel
      * @param ip IP the user is connected to
      */
-    public void runCallback(boolean onHypixel, String ip, VerificationMethod method) {
-        callback.run(onHypixel, ip, method);
+    public void runCallback(String ip) {
+        callback.run(ip);
         Quickplay.INSTANCE.unregisterEventHandler(this);
     }
 
@@ -212,20 +140,9 @@ public class ServerChecker {
             ip = "singleplayer";
         } else {
             ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();
-            ip = (serverData == null) ? "unknown/null" : serverData.serverIP;
+            ip = (serverData == null) ? null : serverData.serverIP;
         }
 
         return ip;
-    }
-
-    /**
-     * Enum for possible ways that the client was verified to be on Hypixel
-     */
-    public enum VerificationMethod {
-        IP,
-        HEADER,
-        FOOTER,
-        MOTD,
-        FAVICON
     }
 }

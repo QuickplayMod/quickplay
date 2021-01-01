@@ -76,7 +76,7 @@ public class LocationDetector {
 
         if(
                 Quickplay.INSTANCE.isEnabled &&
-                Quickplay.INSTANCE.onHypixel &&
+                Quickplay.INSTANCE.isOnHypixel() &&
                 !event.isCanceled() &&
                 matcher.find() &&
                 this.listening

@@ -36,6 +36,7 @@ public class CommandQuickplay extends BaseCommand {
         addSubCommand(new SubCommandVersion(this));
         addSubCommand(new SubCommandDebugScreen(this));
         addSubCommand(new SubCommandReload(this));
+        addSubCommand(new SubCommandDebug(this));
     }
 
     @Override

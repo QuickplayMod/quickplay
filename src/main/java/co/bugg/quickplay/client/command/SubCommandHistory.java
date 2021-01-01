@@ -37,7 +37,7 @@ public class SubCommandHistory extends ACommand {
 
     @Override
     public void run(String[] args) {
-        if(Quickplay.INSTANCE.onHypixel) {
+        if(Quickplay.INSTANCE.isOnHypixel()) {
             if(Quickplay.INSTANCE.hypixelInstanceWatcher != null && Quickplay.INSTANCE.hypixelInstanceWatcher.instanceHistory != null) {
 
                 // Get how many isntances to display

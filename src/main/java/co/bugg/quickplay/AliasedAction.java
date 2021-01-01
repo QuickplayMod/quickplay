@@ -72,7 +72,7 @@ public class AliasedAction {
         // Check to make sure all the location-specific requirements on Hypixel match.
         // Only perform these checks if the user is currently on Hypixel and the regular expression object to verify
         // against is not null.
-        if(this.hypixelLocrawRegex != null && Quickplay.INSTANCE.currentServer.toLowerCase().contains("hypixel") &&
+        if(this.hypixelLocrawRegex != null && Quickplay.INSTANCE.isOnHypixel() &&
                 Quickplay.INSTANCE.hypixelInstanceWatcher != null &&
                 Quickplay.INSTANCE.hypixelInstanceWatcher.getCurrentLocation() != null) {
             // If there is a regular expression for the "server" field, the current "server" must match.

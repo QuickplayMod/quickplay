@@ -35,7 +35,7 @@ public class SubCommandDelivery extends ACommand {
 
     @Override
     public void run(String[] args) {
-        if(Quickplay.INSTANCE.onHypixel) {
+        if(Quickplay.INSTANCE.isOnHypixel()) {
             String currentServer = Quickplay.INSTANCE.hypixelInstanceWatcher.getCurrentServer();
             if(currentServer == null) currentServer = "null";
 

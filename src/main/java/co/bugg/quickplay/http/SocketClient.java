@@ -70,7 +70,7 @@ public class SocketClient extends WebSocketClient {
             this.sendAction(new SetClientSettingsAction(Quickplay.INSTANCE.settings));
 
             final String currentIp = ServerChecker.getCurrentIP();
-            if(currentIp != null && !currentIp.equals("unknown/null")) {
+            if(currentIp != null) {
                 Quickplay.INSTANCE.socket.sendAction(new ServerJoinedAction(currentIp, null));
             }
         } catch (ServerUnavailableException e) {
@@ -91,6 +91,9 @@ public class SocketClient extends WebSocketClient {
     public void onMessage(ByteBuffer bytes) {
         try {
             final Action action = Action.from(bytes);
+            if(Quickplay.INSTANCE.isInDebugMode) {
+                System.out.println("DEBUG > " + action.getClass().getName() + " received.");
+            }
             action.run();
         } catch (BufferUnderflowException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
@@ -106,6 +109,9 @@ public class SocketClient extends WebSocketClient {
     public void sendAction(Action action) throws ServerUnavailableException {
         if(action == null) {
             return;
+        }
+        if(Quickplay.INSTANCE.isInDebugMode) {
+            System.out.println("DEBUG > " + action.getClass().getName() + " sent.");
         }
         try {
             this.send(action.build());

@@ -45,9 +45,19 @@ public class SubCommandReload extends ACommand {
                         new QuickplayChatComponentTranslation("quickplay.commands.quickplay.reload.reloading")
                                 .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW))
                 ));
-                Quickplay.INSTANCE.socket.sendAction(new InitializeClientAction());
-                Quickplay.INSTANCE.socket.sendAction(new SetClientSettingsAction(Quickplay.INSTANCE.settings));
-            } catch (ServerUnavailableException e) {
+                // Attempt to connect to server if not already connected.
+                if(!Quickplay.INSTANCE.socket.isOpen()) {
+                    Quickplay.INSTANCE.socket.connectBlocking();
+                } else { // If already connected, instead re-initialize the client.
+                    Quickplay.INSTANCE.socket.sendAction(new InitializeClientAction());
+                    Quickplay.INSTANCE.socket.sendAction(new SetClientSettingsAction(Quickplay.INSTANCE.settings));
+                }
+
+                Quickplay.INSTANCE.messageBuffer.push(new Message(
+                        new QuickplayChatComponentTranslation("quickplay.commands.quickplay.reload.success")
+                                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))
+                ));
+            } catch (ServerUnavailableException | InterruptedException e) {
                 e.printStackTrace();
                 Quickplay.INSTANCE.messageBuffer.push(new Message(
                         new QuickplayChatComponentTranslation("quickplay.failedToConnect")

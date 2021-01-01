@@ -79,7 +79,8 @@ public class ExceptionThrownAction extends Action {
         this.addPayload(enabledBuf);
 
         // Current IP
-        this.addPayload(ByteBuffer.wrap(ServerChecker.getCurrentIP().getBytes()));
+        String currentIp = ServerChecker.getCurrentIP();
+        this.addPayload(ByteBuffer.wrap(currentIp == null ? new byte[0] : currentIp.getBytes()));
         // Mod list - Send empty item or empty JSON array if not applicable to client.
         final List<String> modList = new ArrayList<>();
         for(final ModContainer mod : Loader.instance().getModList()) {
