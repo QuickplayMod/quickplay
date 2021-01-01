@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Mouse;
 
 /**
  * Component that extends off of Quickplay GUI buttons to add a number slider
@@ -145,7 +146,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     @Override
     public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY)
     {
-        if (super.mouseHovering(gui, mouseX, mouseY)) {
+        if (Mouse.isButtonDown(0) && super.mouseHovering(gui, mouseX, mouseY)) {
             sliderPercentage = (float)(mouseX - (x / scale + 4)) / (float)(width / scale - 8);
             // Slider percentage must be between 0 and 1
             sliderPercentage = Math.min(Math.max(sliderPercentage, 0.0f), 1.0f);
@@ -155,14 +156,14 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
             isMouseDown = true;
             return true;
         } else {
-            return false;
+            return super.mouseHovering(gui, mouseX, mouseY);
         }
     }
 
     @Override
     public void mouseReleased(QuickplayGui gui, int mouseX, int mouseY)
     {
-        isMouseDown = false;
+        this.isMouseDown = false;
     }
 
     @SideOnly(Side.CLIENT)
