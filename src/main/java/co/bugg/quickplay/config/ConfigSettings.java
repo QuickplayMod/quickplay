@@ -7,15 +7,14 @@ import co.bugg.quickplay.client.gui.MoveableHudElement;
 import co.bugg.quickplay.client.gui.QuickplayGuiScreen;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
-import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.ServerUnavailableException;
 import net.minecraft.client.Minecraft;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ConfigSettings extends AConfiguration implements Serializable {
 
@@ -360,5 +359,5 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * When the client receives a response from the gamelist endpoint,
      * it will verify all modes in this list and make sure they're all valid
      */
-    public List<PartyMode> partyModes = new ArrayList<>();
+    public Set<String> enabledButtonsForPartyMode = new HashSet<>();
 }

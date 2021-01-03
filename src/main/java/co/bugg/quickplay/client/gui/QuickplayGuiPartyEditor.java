@@ -1,34 +1,30 @@
 package co.bugg.quickplay.client.gui;
 
+import co.bugg.quickplay.Button;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
-import co.bugg.quickplay.games.Game;
-import co.bugg.quickplay.games.Mode;
-import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * GUI screen for editing the modes in party mode
  */
 public class QuickplayGuiPartyEditor extends QuickplayGui {
     /**
-     * A list of every single mode the client is aware of
-     */
-    List<PartyMode> modes = new ArrayList<>();
-    /**
      * A list of all the modes toggled on
      * CURRENTLY A REFERENCE to the Quickplay settings, not a value
      */
-    List<PartyMode> toggledModes = new ArrayList<>();
+    Set<String> enabledButtons = new HashSet<>();
+    Set<String> allButtons = new HashSet<>();
 
     /**
      * The width of buttons
@@ -62,68 +58,81 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
     @Override
     public void initGui() {
         super.initGui();
+        this.topOfButtons = (int) (height * 0.2);
 
-        topOfButtons = (int) (height * 0.2);
+        // TODO add loading screen -- Lots of sorting within this function which may cause delays.
 
-        // Copy over reference to the toggled mode
-        toggledModes = Quickplay.INSTANCE.settings.partyModes;
-
-        // Create a list of all applicable modes
-        for(Game game : Quickplay.INSTANCE.gameList) {
-            if(game.unlocalizedName.equals("partyMode")) {
-                continue;
-            }
-            for(Mode mode : game.modes) {
-                modes.add(new PartyMode(game.name + " - " + mode.name, mode.command,
-                        game.unlocalizedName.replace("/", "") + "/" +
-                                mode.command.replace("/", "")));
-            }
+        if(Quickplay.INSTANCE.buttonMap == null || Quickplay.INSTANCE.buttonMap.size() <= 0) {
+            // TODO handle error
+            return;
         }
 
+        this.allButtons = new HashSet<>(Quickplay.INSTANCE.buttonMap.keySet());
+        // If no buttons are specifically "enabled", then the default assumption is that all buttons are enabled.
+        if(Quickplay.INSTANCE.settings.enabledButtonsForPartyMode == null ||
+                Quickplay.INSTANCE.settings.enabledButtonsForPartyMode.size() <= 0) {
+            this.enabledButtons = new HashSet<>(this.allButtons);
+        } else {
+            // If some buttons are explicitly enabled, copy them into a new hashset. The original set is not
+            // modified until the GUI closes, at which point it's replaced.
+            this.enabledButtons = new HashSet<>(Quickplay.INSTANCE.settings.enabledButtonsForPartyMode);
+        }
+
+        this.addButtons();
+        this.setScrollingValues();
+    }
+
+    /**
+     * Add all the button components to this GUI. This is called on GUI initialization and whenever the list needs
+     * to be refreshed, i.e. when all buttons are enabled/disabled.
+     */
+    public void addButtons() {
         int buttonId = 0;
         // Add all the buttons for each mode
-        for(PartyMode mode : modes) {
-            // Display string for whether this mode is currently enabled or not
-            final String trueOrFalse = checkIfModeToggled(mode) != null ?
+        for(String buttonKey : this.allButtons) {
+            Button button = Quickplay.INSTANCE.buttonMap.get(buttonKey);
+            if(button == null || !button.visibleInPartyMode) {
+                continue;
+            }
+            // Buttons are visible in this editor regardless of current Hypixel location, but not ranks or current server.
+            if(!button.visible || !button.passesRankChecks() || !button.passesServerCheck()) {
+                continue;
+            }
+
+            // Display-string for whether this mode is currently enabled or not
+            final String trueOrFalse = this.enabledButtons.contains(buttonKey) ?
                     EnumChatFormatting.GREEN + Quickplay.INSTANCE.translator.get("quickplay.config.gui.true") :
                     EnumChatFormatting.RED + Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
-            this.componentList.add(new QuickplayGuiButton(mode, buttonId, width / 2 - buttonWidth / 2,
-                    topOfButtons + (buttonHeight + buttonYMargins) * buttonId, buttonWidth, buttonHeight,
-                    mode.name + ": " + trueOrFalse, true));
+
+            this.componentList.add(new QuickplayGuiButton(buttonKey, buttonId, this.width / 2 - this.buttonWidth / 2,
+                    this.topOfButtons + (this.buttonHeight + this.buttonYMargins) * buttonId, this.buttonWidth, this.buttonHeight,
+                    Quickplay.INSTANCE.translator.get(button.translationKey) + ": " + trueOrFalse, true));
             buttonId++;
         }
 
         // Add launch, "All On" and "All Off" buttons
-        this.componentList.add(new QuickplayGuiButton(null, buttonId++, width / 2  - topButtonWidth / 2, 10,
-                topButtonWidth, buttonHeight, Quickplay.INSTANCE.translator.get("quickplay.gui.party.launch"), false)); // Launch
-        this.componentList.add(new QuickplayGuiButton(null, buttonId++,
-                width / 2 - topButtonWidth / 2 - topButtonWidth - topButtonMargins,
-                10, topButtonWidth, 20, Quickplay.INSTANCE.translator.get("quickplay.gui.party.allon"), false)); // All on
-        this.componentList.add(new QuickplayGuiButton(null, buttonId++,
-                width / 2 + topButtonWidth / 2 + topButtonMargins, 10, topButtonWidth, 20,
+        this.componentList.add(new QuickplayGuiButton(null, -1, this.width / 2  - this.topButtonWidth / 2, 10,
+                this.topButtonWidth, this.buttonHeight, Quickplay.INSTANCE.translator.get("quickplay.gui.party.launch"),
+                false)); // Launch
+        this.componentList.add(new QuickplayGuiButton(null, -2,
+                this.width / 2 - this.topButtonWidth / 2 - this.topButtonWidth - this.topButtonMargins,
+                10, this.topButtonWidth, 20, Quickplay.INSTANCE.translator.get("quickplay.gui.party.allon"),
+                false)); // All on
+        this.componentList.add(new QuickplayGuiButton(null, -3,
+                this.width / 2 + this.topButtonWidth / 2 + this.topButtonMargins, 10, this.topButtonWidth, 20,
                 Quickplay.INSTANCE.translator.get("quickplay.gui.party.alloff"), false)); // All off
 
-        setScrollingValues();
-    }
-
-    /**
-     * Checks if the given mode is currently toggled on or not according to {@link #toggledModes}
-     * @param mode Mode to check
-     * @return The reference to the mode in {@link #toggledModes}, or null if not in the list.
-     */
-    public PartyMode checkIfModeToggled(PartyMode mode) {
-        return toggledModes.stream().filter(settingMode -> settingMode.namespace.equals(mode.namespace)).findFirst().orElse(null);
     }
 
     @Override
     public void setScrollingValues() {
         super.setScrollingValues();
-        scrollFrameTop = topOfButtons;
+        this.scrollFrameTop = this.topOfButtons;
 
         // Increase scroll speed & amount
-        scrollMultiplier = 3;
-        scrollDelay = 2;
-        scrollbarYMargins = 0;
+        this.scrollMultiplier = 3;
+        this.scrollDelay = 2;
+        this.scrollbarYMargins = 0;
     }
 
     @Override
@@ -131,19 +140,19 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
 
-        drawDefaultBackground();
-        updateOpacity();
+        this.drawDefaultBackground();
+        this.updateOpacity();
 
         if(Quickplay.INSTANCE.isEnabled) {
-            drawScrollbar(width / 2 + buttonWidth / 2 + 3);
+            drawScrollbar(this.width / 2 + this.buttonWidth / 2 + 3);
 
             //Override super.drawScreen(mouseX, mouseY, partialTicks);
-            for (QuickplayGuiComponent component : componentList) {
-                double scrollOpacity = component.scrollable ? ((component.y - scrollPixel) > topOfButtons ? 1 :
-                        (component.y - scrollPixel) + scrollFadeDistance < topOfButtons ? 0 :
-                                (scrollFadeDistance - ((double) topOfButtons - (double) (component.y - scrollPixel))) /
-                                        (double) scrollFadeDistance) : 1;
-                component.draw(this, mouseX, mouseY, opacity * scrollOpacity);
+            for (QuickplayGuiComponent component : this.componentList) {
+                double scrollOpacity = component.scrollable ? ((component.y - this.scrollPixel) > this.topOfButtons ? 1 :
+                        (component.y - this.scrollPixel) + this.scrollFadeDistance < this.topOfButtons ? 0 :
+                                (this.scrollFadeDistance - ((double) this.topOfButtons - (double) (component.y - this.scrollPixel))) /
+                                        (double) this.scrollFadeDistance) : 1;
+                component.draw(this, mouseX, mouseY, this.opacity * scrollOpacity);
             }
         } else {
             // Quickplay is disabled, draw error message
@@ -160,33 +169,35 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
-        if(component.origin instanceof PartyMode) {
-            if(component.y - scrollPixel > topOfButtons - scrollFadeDistance && component.scrollable) {
-                final PartyMode mode = (PartyMode) component.origin;
+        if(component.origin instanceof String) {
+            if(component.y - this.scrollPixel > this.topOfButtons - this.scrollFadeDistance && component.scrollable) {
                 // Display name of this component, split at the colon, to separate the name from the current toggle status
                 final String nameWithoutToggleStatus = component.displayString.split(":")[0];
 
-                // Reference to this mode's twin in the toggled modes list (or null if doesn't exist)
-                final PartyMode toggledModeReference = checkIfModeToggled(mode);
+                final boolean isEnabled = this.enabledButtons.contains(component.origin);
+
                 // If the mode is toggled on remove it, otherwise add it
-                if(toggledModeReference != null) {
-                    toggledModes.remove(toggledModeReference);
-                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.RED + Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
+                if(isEnabled) {
+                    this.enabledButtons.remove(component.origin);
+                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.RED +
+                            Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
                 } else {
-                    toggledModes.add(mode);
-                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.GREEN + Quickplay.INSTANCE.translator.get("quickplay.config.gui.true");
+                    this.enabledButtons.add((String) component.origin);
+                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.GREEN +
+                            Quickplay.INSTANCE.translator.get("quickplay.config.gui.true");
                 }
             }
-        } else if(component.displayString.equals(Quickplay.INSTANCE.translator.get("quickplay.gui.party.alloff"))) {
+        } else if(component.id == -3) {
             // Disable all
-            toggledModes.clear();
-            initGui();
-        } else if(component.displayString.equals(Quickplay.INSTANCE.translator.get("quickplay.gui.party.allon"))) {
+            this.enabledButtons.clear();
+            this.componentList.clear();
+            this.addButtons();
+        } else if(component.id == -2) {
             // Enable all
-            toggledModes.clear();
-            toggledModes.addAll(modes);
-            initGui();
-        } else if(component.displayString.equals(Quickplay.INSTANCE.translator.get("quickplay.gui.party.launch"))) {
+            this.enabledButtons.addAll(this.allButtons);
+            this.componentList.clear();
+            this.addButtons();
+        } else if(component.id == -1) {
             // Launch!
             Minecraft.getMinecraft().displayGuiScreen(null);
             Quickplay.INSTANCE.threadPool.submit(Quickplay.INSTANCE::launchPartyMode);
@@ -196,6 +207,20 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
     @Override
     public void onGuiClosed() {
         super.onGuiClosed();
+
+        // If everything is enabled, assume the default is wanted. We set enabledButtonsForPartyMode to null so future
+        // buttons added are enabled by default.
+        if(this.enabledButtons == null || this.enabledButtons.containsAll(this.allButtons)) {
+            Quickplay.INSTANCE.settings.enabledButtonsForPartyMode = null;
+        }
+        // You cannot disable all buttons, one button must always be enabled.
+        else if(this.enabledButtons.size() < 1) {
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.mustSelectOneGame")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD))));
+            return;
+        } else {
+            Quickplay.INSTANCE.settings.enabledButtonsForPartyMode = this.enabledButtons;
+        }
         try {
             Quickplay.INSTANCE.settings.save();
         } catch (IOException e) {

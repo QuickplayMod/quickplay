@@ -18,11 +18,12 @@ public class Button {
     public final String hypixelPackageRankRegex;
     public final boolean hypixelBuildTeamOnly;
     public final boolean hypixelBuildTeamAdminOnly;
+    public final boolean visibleInPartyMode;
 
     public Button(final String key, final String[] availableOn, final String[] actionKeys, final String imageURL,
                   final String translationKey, final boolean visible, final boolean adminOnly,
                   final Location hypixelLocrawRegex, final String hypixelRankRegex, final String hypixelPackageRankRegex,
-                  final boolean hypixelBuildTeamOnly, final boolean hypixelBuildTeamAdminOnly) {
+                  final boolean hypixelBuildTeamOnly, final boolean hypixelBuildTeamAdminOnly, final boolean visibleInPartyMode) {
         this.key = key;
         this.availableOn = availableOn;
         this.actionKeys = actionKeys;
@@ -35,6 +36,64 @@ public class Button {
         this.hypixelPackageRankRegex = hypixelPackageRankRegex;
         this.hypixelBuildTeamOnly = hypixelBuildTeamOnly;
         this.hypixelBuildTeamAdminOnly = hypixelBuildTeamAdminOnly;
+        this.visibleInPartyMode = visibleInPartyMode;
+    }
+
+    /**
+     * Verify that this button passes specifically checks against the user's rank, and can be displayed to users with
+     * the current rank. Doesn't check Hypixel rank requirements if the user isn't currently on Hypixel.
+     * @return true if the users rank passes all the checks, false otherwise.
+     */
+    public boolean passesRankChecks() {
+        // admin-only actions require admin permission.
+        if(this.adminOnly && !Quickplay.INSTANCE.isAdminClient) {
+            return false;
+        }
+        if(Quickplay.INSTANCE.isOnHypixel()) {
+            // Hypixel build team-only requires that the user is a build team member.
+            if(this.hypixelBuildTeamOnly && !Quickplay.INSTANCE.isHypixelBuildTeamMember) {
+                return false;
+            }
+            // Hypixel build team admin-only requires that the user is a build team admin.
+            if(this.hypixelBuildTeamAdminOnly && !Quickplay.INSTANCE.isHypixelBuildTeamAdmin) {
+                return false;
+            }
+
+            // If there is a regular expression against Hypixel rank (and the user's rank is known), make sure it matches.
+            if(this.hypixelRankRegex != null && Quickplay.INSTANCE.hypixelRank != null &&
+                    !Pattern.compile(this.hypixelRankRegex).matcher(Quickplay.INSTANCE.hypixelRank).find()) {
+                return false;
+            }
+            // If there is a regular expression against Hypixel package rank (and the user's package rank is known),
+            // make sure it matches.
+            if(this.hypixelPackageRankRegex != null && Quickplay.INSTANCE.hypixelPackageRank != null &&
+                    !Pattern.compile(this.hypixelPackageRankRegex).matcher(Quickplay.INSTANCE.hypixelPackageRank).find()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Verify that this button passes checks for what Minecraft server the user is currently on.
+     * @return true if this button is available on the user's current server, false otherwise.
+     */
+    public boolean passesServerCheck() {
+        // Server checks rely on the socket connection being open at the moment.
+        if(Quickplay.INSTANCE.socket == null || Quickplay.INSTANCE.socket.isClosed() || Quickplay.INSTANCE.socket.isClosing()) {
+            return true;
+        }
+
+        // Actions must be available on the current server.
+        if(this.availableOn != null) {
+            synchronized (this.availableOn) {
+                if (Arrays.stream(this.availableOn)
+                        .noneMatch(str -> str.equals(Quickplay.INSTANCE.currentServer) || str.equals("ALL"))) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -47,29 +106,13 @@ public class Button {
             return false;
         }
 
-        // admin-only actions require admin permission.
-        if(this.adminOnly && !Quickplay.INSTANCE.isAdminClient) {
-            return false;
-        }
-        // Hypixel build team-only requires that the user is a build team member.
-        if(this.hypixelBuildTeamOnly && !Quickplay.INSTANCE.isHypixelBuildTeamMember) {
-            return false;
-        }
-        // Hypixel build team admin-only requires that the user is a build team admin.
-        if(this.hypixelBuildTeamAdminOnly && !Quickplay.INSTANCE.isHypixelBuildTeamAdmin) {
+        if(!this.passesRankChecks()) {
             return false;
         }
 
-        // If there is a regular expression against Hypixel rank (and the user's rank is known), make sure it matches.
-        if(this.hypixelRankRegex != null && Quickplay.INSTANCE.hypixelRank != null &&
-                !Pattern.compile(this.hypixelRankRegex).matcher(Quickplay.INSTANCE.hypixelRank).find()) {
-            return false;
-        }
-        // If there is a regular expression against Hypixel package rank (and the user's package rank is known),
-        // make sure it matches.
-        if(this.hypixelPackageRankRegex != null && Quickplay.INSTANCE.hypixelPackageRank != null &&
-                !Pattern.compile(this.hypixelPackageRankRegex).matcher(Quickplay.INSTANCE.hypixelPackageRank).find()) {
-            return false;
+        // The checks following this statement rely on the Quickplay backend in order to operate properly.
+        if(Quickplay.INSTANCE.socket.isClosed() || Quickplay.INSTANCE.socket.isClosing()) {
+            return true;
         }
 
         // Check to make sure all the location-specific requirements on Hypixel match.
@@ -108,17 +151,35 @@ public class Button {
             }
         }
 
-        // Actions must be available on the current server.
-        if(this.availableOn != null) {
-            synchronized (this.availableOn) {
-                if (Arrays.stream(this.availableOn)
-                        .noneMatch(str -> str.equals(Quickplay.INSTANCE.currentServer) || str.equals("ALL"))) {
-                    return false;
-                }
-            }
+        if(!this.passesServerCheck()) {
+            return false;
         }
 
         return true;
+    }
+
+    public void run() {
+        if(this.actionKeys == null) {
+            System.out.println("WARN: Action keys are null for button " + this.key);
+            return;
+        }
+        for (String actionKey : this.actionKeys) {
+            if (actionKey == null || actionKey.length() <= 0) {
+                continue;
+            }
+            AliasedAction aliasedAction = Quickplay.INSTANCE.aliasedActionMap.get(actionKey);
+            if (aliasedAction == null) {
+                System.out.println("WARN: Aliased action " + actionKey + " is not found.");
+                continue;
+            }
+            if (!aliasedAction.passesPermissionChecks()) {
+                System.out.println("WARN: Aliased action " + actionKey + " does not pass permission checks.");
+                continue;
+            }
+            if (aliasedAction.action != null) {
+                aliasedAction.action.run();
+            }
+        }
     }
 
 }

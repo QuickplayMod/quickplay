@@ -1,8 +1,6 @@
 package co.bugg.quickplay;
 
-import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.actions.serverbound.ExceptionThrownAction;
-import co.bugg.quickplay.actions.serverbound.MigrateKeybindsAction;
 import co.bugg.quickplay.client.command.CommandHub;
 import co.bugg.quickplay.client.command.CommandMain;
 import co.bugg.quickplay.client.command.CommandQuickplay;
@@ -12,7 +10,6 @@ import co.bugg.quickplay.client.render.GlyphRenderer;
 import co.bugg.quickplay.client.render.PlayerGlyph;
 import co.bugg.quickplay.config.*;
 import co.bugg.quickplay.games.Game;
-import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.http.HttpRequestFactory;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.SocketClient;
@@ -25,8 +22,6 @@ import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
@@ -358,52 +353,57 @@ public class Quickplay {
      * If not present, creates new config.
      */
     private void loadKeybinds() {
-        boolean conversionNeeded = ConfigKeybinds.checkForConversionNeeded("keybinds.json");
-
-        if(conversionNeeded) {
+        // If migration to the latest keybinds system is necessary, we only notify the user that migration will happen here
+        // and create a backup. The actual migration process is postponed until the socket successfully connects.
+        if(ConfigKeybinds.checkForConversionNeeded("keybinds.json")) {
+            // Create backup
+            long now = new Date().getTime();
             try {
-                final String fileName = "keybinds.json";
-                long now = new Date().getTime();
-                AConfiguration.createBackup(fileName, "keybinds-backup-" + now + ".json");
-                final String contents = AConfiguration.getConfigContents(fileName);
-                final JsonElement base = new Gson().fromJson(contents, JsonElement.class);
-                // checkForConversionNeeded asserts that none of the items on the following line return null.
-                final JsonArray arr = base.getAsJsonObject().get("keybinds").getAsJsonArray();
-                final Action action = new MigrateKeybindsAction(arr);
-                this.messageBuffer.push(new Message(
-                        new QuickplayChatComponentTranslation("quickplay.keybinds.migrating")
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY))));
-                try {
-                    this.socket.sendAction(action);
-                } catch(ServerUnavailableException e) {
-                    e.printStackTrace();
-                    this.messageBuffer.push(new Message(
-                            new QuickplayChatComponentTranslation("quickplay.keybinds.migratingFailed")
-                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
-                            , true));
-
-                }
-                this.keybinds = new ConfigKeybinds(true);
-            } catch (JsonSyntaxException | IOException e) {
+                AConfiguration.createBackup("keybinds.json", "keybinds-backup-" + now + ".json");
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            try {
-                this.keybinds = (ConfigKeybinds) AConfiguration.load("keybinds.json", ConfigKeybinds.class);
-            } catch (IOException | JsonSyntaxException e) {
-                e.printStackTrace();
-                this.assetFactory.createDirectories();
-                this.keybinds = new ConfigKeybinds(true);
+            // Tell user about migration
+            this.messageBuffer.push(new Message(
+                    new QuickplayChatComponentTranslation("quickplay.keybinds.migrating")
+                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY))));
+            // Keybinds are set to default temporarily. The user's instructed not to modify their keybinds until
+            // migration is complete, as that would trigger a save.
+            Quickplay.INSTANCE.keybinds = new ConfigKeybinds(true);
+
+            // If migration isn't complete after 30 seconds, it's assumed the migration failed.
+            this.threadPool.submit(() -> {
                 try {
-                    // Write the default config that we just made to save it
-                    this.keybinds.save();
-                } catch (IOException e1) {
-                    // File couldn't be saved
-                    e1.printStackTrace();
-                    this.sendExceptionRequest(e1); // TODO replace
-                    this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
-                            "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                    Thread.sleep(30000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                if(ConfigKeybinds.checkForConversionNeeded("keybinds.json")) {
+                    Quickplay.INSTANCE.messageBuffer.push(new Message(
+                            new QuickplayChatComponentTranslation("quickplay.keybinds.migratingFailedServerOffline")
+                                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
+                            , true));
+                }
+            });
+            return;
+        }
+
+        // At this point, migration must not be necessary, so keybinds are loaded as normal.
+        try {
+            this.keybinds = (ConfigKeybinds) AConfiguration.load("keybinds.json", ConfigKeybinds.class);
+        } catch (IOException | JsonSyntaxException e) {
+            e.printStackTrace();
+            this.assetFactory.createDirectories();
+            this.keybinds = new ConfigKeybinds(true);
+            try {
+                // Write the default config that we just made to save it
+                this.keybinds.save();
+            } catch (IOException e1) {
+                // File couldn't be saved
+                e1.printStackTrace();
+                this.sendExceptionRequest(e1); // TODO replace
+                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
+                        "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             }
         }
     }
@@ -425,13 +425,9 @@ public class Quickplay {
             this.loadSettings();
             this.loadTranslations();
             this.loadUsageStats();
-            this.socket = new SocketClient(new URI(Reference.BACKEND_SOCKET_URI));
-            try {
-                this.socket.connectBlocking();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             this.loadKeybinds();
+            this.socket = new SocketClient(new URI(Reference.BACKEND_SOCKET_URI));
+            this.socket.connect();
 
             // Create new Google Analytics instance if possible
             if(this.usageStats != null && this.usageStats.statsToken != null) {
@@ -629,26 +625,55 @@ public class Quickplay {
      * Start a party mode session by randomizing selected games & then executing the command
      */
     public void launchPartyMode() {
-        if(this.settings.partyModes.size() > 0) {
+        // If there are no buttons known to Quickplay, then just tell the user he has no games selected.
+        if(this.buttonMap == null || this.buttonMap.size() <= 0) {
+            this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+        }
+
+        Set<String> enabledButtons;
+        // If the user has no games enabled in their config, then we assume they have all games enabled. This means
+        // that when more games are added in the future, they'll automatically be enabled.
+        if(this.settings.enabledButtonsForPartyMode == null || this.settings.enabledButtonsForPartyMode.size() <= 0) {
+            enabledButtons = new HashSet<>(this.buttonMap.keySet());
+        } else {
+            enabledButtons = new HashSet<>(this.settings.enabledButtonsForPartyMode);
+        }
+
+        if(enabledButtons.size() > 0) {
             if(this.settings.partyModeGui) {
                 Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiPartySpinner());
             } else {
                 // No GUI, handle randomization in chat
-
-                // Send commencement message if delay is greater than 0 seconds
+                // If there is a delay greater than 0 seconds, we send a message so the user knows something happened.
                 if(this.settings.partyModeDelay > 0) {
                     this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.commencing")
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE))));
                 }
 
-                // Calculate mode
-                PartyMode mode;
-                // Don't need to randomize on size 1
-                if(this.settings.partyModes.size() == 1) {
-                    mode = this.settings.partyModes.get(0);
-                } else {
-                    final Random random = new Random();
-                    mode = this.settings.partyModes.get(random.nextInt(this.settings.partyModes.size()));
+                // Pick a random button from our list of enabled buttons that exists and is visible to party mode.
+                Button button = null;
+                while(button == null || !button.visibleInPartyMode || !button.passesPermissionChecks()) {
+                    String buttonKey;
+                    if(enabledButtons.size() == 1) {
+                        buttonKey = enabledButtons.stream().findFirst().orElse(null);
+                    } else {
+                        final Random random = new Random();
+                        buttonKey = enabledButtons.stream().skip(random.nextInt(enabledButtons.size()))
+                                .findFirst().orElse(null);
+                    }
+                    button = this.buttonMap.get(buttonKey);
+
+                    // If the randomly selected button can't be used in party mode, remove it from our list and try again.
+                    // If there are no more buttons to pick, then stop and send an error to the user.
+                    if(button == null || !button.visibleInPartyMode || !button.passesPermissionChecks()) {
+                        enabledButtons.remove(buttonKey);
+                        if(enabledButtons.size() == 0) {
+                            this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
+                                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                            return;
+                        }
+                    }
                 }
 
                 try {
@@ -657,9 +682,10 @@ public class Quickplay {
                     e.printStackTrace();
                 }
 
-                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.sendingYou", mode.name)
+                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.sendingYou",
+                        Quickplay.INSTANCE.translator.get(button.translationKey))
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
-                this.chatBuffer.push(mode.command);
+                button.run();
             }
         } else {
             this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")

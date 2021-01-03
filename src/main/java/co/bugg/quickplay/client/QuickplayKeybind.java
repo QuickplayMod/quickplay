@@ -1,6 +1,5 @@
 package co.bugg.quickplay.client;
 
-import co.bugg.quickplay.AliasedAction;
 import co.bugg.quickplay.Button;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.GsonPostProcessorFactory;
@@ -166,24 +165,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
                     , false, false));
             return;
         }
-
-        for(int i = 0; i < button.actionKeys.length; i++) {
-            if(button.actionKeys[i] == null || button.actionKeys[i].length() <= 0) {
-                continue;
-            }
-            AliasedAction aliasedAction = Quickplay.INSTANCE.aliasedActionMap.get(button.actionKeys[i]);
-            if(aliasedAction == null) {
-                System.out.println("WARN: Aliased action " + button.actionKeys[i] + " is not found.");
-                continue;
-            }
-            if(!aliasedAction.passesPermissionChecks()) {
-                System.out.println("WARN: Aliased action " + button.actionKeys[i] + " does not pass permission checks.");
-                continue;
-            }
-            if(aliasedAction.action != null) {
-                aliasedAction.action.run();
-            }
-        }
+        button.run();
     }
 
     @Override

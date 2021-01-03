@@ -70,7 +70,7 @@ public class SetButtonAction extends Action {
 
             final Button button = new Button(key, availableOnArr, actionsArr, imageURL, translationKey, visible,
                     adminOnly, hypixelLocrawRegex, hypixelRankRegex, hypixelPackageRankRegex, hypixelBuildTeamOnly,
-                    hypixelBuildTeamAdminOnly);
+                    hypixelBuildTeamAdminOnly, true); // TODO update protocol
 
             // Download the image URL, if it is set
             if(button.imageURL != null && button.imageURL.length() > 0) {

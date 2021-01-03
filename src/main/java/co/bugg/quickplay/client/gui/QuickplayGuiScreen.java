@@ -468,20 +468,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
                 }
             });
 
-            for(final String actionKey : button.actionKeys) {
-                final AliasedAction aa = Quickplay.INSTANCE.aliasedActionMap.get(actionKey);
-                if(aa == null) {
-                    System.out.println("WARN: Aliased action " + actionKey + " is not found.");
-                    continue;
-                }
-                if(!aa.passesPermissionChecks()) {
-                    System.out.println("WARN: Aliased action " + actionKey + " does not pass permission checks.");
-                    continue;
-                }
-                if(aa.action != null) {
-                    aa.action.run();
-                }
-            }
+            button.run();
 
             // Send analytical data to Google
             if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&

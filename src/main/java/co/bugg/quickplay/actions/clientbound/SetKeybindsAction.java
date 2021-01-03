@@ -53,6 +53,10 @@ public class SetKeybindsAction extends Action {
         Quickplay.INSTANCE.keybinds.keybinds = gson.fromJson(json, listType);
         try {
             Quickplay.INSTANCE.keybinds.save();
+            Quickplay.INSTANCE.messageBuffer.push(new Message(
+                    new QuickplayChatComponentTranslation("quickplay.keybinds.migratingComplete")
+                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))
+                    , false));
         } catch (IOException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.messageBuffer.push(new Message(
