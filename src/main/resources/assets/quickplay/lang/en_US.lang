@@ -172,6 +172,7 @@ quickplay.party.sendingYou=Sending you to %s!
 quickplay.party.commencing=Commencing Quickplay Party Mode Launch Sequence...
 quickplay.party.noGames=D'oh! Party mode does not have any valid games selected at the moment.
 quickplay.party.mustSelectOneGame=WARNING: You must enable at least one game in Party Mode. Your settings weren't saved.
+quickplay.party.thisModeNotAvailable=This Quickplay button can only be used in certain locations on Hypixel, and it will not work in your current location.
 quickplay.gui.party.randomizing=Picking a random gamemode...
 quickplay.gui.party.allon=Enable All
 quickplay.gui.party.alloff=Disable All

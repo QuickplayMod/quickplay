@@ -12,8 +12,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * GUI screen for editing the modes in party mode
@@ -88,8 +87,24 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
      */
     public void addButtons() {
         int buttonId = 0;
-        // Add all the buttons for each mode
-        for(String buttonKey : this.allButtons) {
+        // Convert the set of button keys into an alphabetically sorted list of button display titles
+        final List<String> allButtonsAsSortedList = new ArrayList<>(this.allButtons);
+        allButtonsAsSortedList.sort((a,b) -> {
+            Button buttonA = Quickplay.INSTANCE.buttonMap.get(a);
+            Button buttonB = Quickplay.INSTANCE.buttonMap.get(b);
+
+            if(buttonA == null) {
+                return 1;
+            } else if(buttonB == null) {
+                return -1;
+            }
+
+            String buttonATitle = Quickplay.INSTANCE.translator.get(buttonA.translationKey);
+            String buttonBTitle = Quickplay.INSTANCE.translator.get(buttonB.translationKey);
+            return buttonATitle.compareTo(buttonBTitle);
+        });
+
+        for(String buttonKey : allButtonsAsSortedList) {
             Button button = Quickplay.INSTANCE.buttonMap.get(buttonKey);
             if(button == null || !button.visibleInPartyMode) {
                 continue;
@@ -103,10 +118,16 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             final String trueOrFalse = this.enabledButtons.contains(buttonKey) ?
                     EnumChatFormatting.GREEN + Quickplay.INSTANCE.translator.get("quickplay.config.gui.true") :
                     EnumChatFormatting.RED + Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
+            String buttonText = Quickplay.INSTANCE.translator.get(button.translationKey) + ": " + trueOrFalse;
+            // If a button doesn't pass the Hypixel location checks (all other permission checks passed), then
+            // the button still displays, but it's made clear to the user that the button won't work in the current location.
+            if(!button.passesPermissionChecks()) {
+                buttonText = EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + buttonText;
+            }
 
             this.componentList.add(new QuickplayGuiButton(buttonKey, buttonId, this.width / 2 - this.buttonWidth / 2,
                     this.topOfButtons + (this.buttonHeight + this.buttonYMargins) * buttonId, this.buttonWidth, this.buttonHeight,
-                    Quickplay.INSTANCE.translator.get(button.translationKey) + ": " + trueOrFalse, true));
+                    buttonText, true));
             buttonId++;
         }
 
@@ -159,6 +180,18 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             this.drawCenteredString(this.fontRendererObj,
                     Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
                     this.width / 2, this.height / 2, 0xffffff);
+        }
+
+        // Draw hovering text if the user's hovering over a button which is not usable in the current location
+        for(QuickplayGuiComponent component : this.componentList) {
+            // For the sake of simplicity we can just check if a string begins with the gray & italic formatting codes
+            // to determine if a button is "disabled" in the users current location.
+            if(component instanceof QuickplayGuiButton && component.mouseHovering(this, mouseX, mouseY) &&
+                    component.displayString.startsWith(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC)) {
+                this.drawHoveringText(Collections.singletonList(
+                        Quickplay.INSTANCE.translator.get("quickplay.party.thisModeNotAvailable")), mouseX, mouseY);
+                break;
+            }
         }
 
 
