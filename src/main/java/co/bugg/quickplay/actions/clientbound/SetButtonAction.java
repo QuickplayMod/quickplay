@@ -39,13 +39,19 @@ public class SetButtonAction extends Action {
         this.addPayload(ByteBuffer.wrap(new Gson().toJson(button.actionKeys).getBytes()));
         this.addPayload(ByteBuffer.wrap(button.imageURL.getBytes()));
         this.addPayload(ByteBuffer.wrap(button.translationKey.getBytes()));
-
+        this.addPayloadBoolean(button.visible);
+        this.addPayloadBoolean(button.adminOnly);
+        this.addPayloadString(new Gson().toJson(button.hypixelLocrawRegex), "");
+        this.addPayloadString(button.hypixelRankRegex, "");
+        this.addPayloadString(button.hypixelPackageRankRegex, "");
+        this.addPayloadBoolean(button.hypixelBuildTeamOnly);
+        this.addPayloadBoolean(button.hypixelBuildTeamAdminOnly);
+        this.addPayloadBoolean(button.visibleInPartyMode);
     }
 
     @Override
     public void run() {
         try {
-
             final Gson gson = new Gson();
             final String availableOnJson = this.getPayloadObjectAsString(1);
             final String[] availableOnArr = gson.fromJson(availableOnJson, String[].class);
@@ -67,10 +73,12 @@ public class SetButtonAction extends Action {
             final boolean hypixelBuildTeamOnly = hypixelBuildTeamOnlyBuf.get() != (byte) 0;
             final ByteBuffer hypixelBuildTeamAdminOnlyBuf = this.getPayloadObject(11);
             final boolean hypixelBuildTeamAdminOnly = hypixelBuildTeamAdminOnlyBuf.get() != (byte) 0;
+            final ByteBuffer visibleInPartyModeBuf = this.getPayloadObject(12);
+            final boolean visibleInPartyMode = visibleInPartyModeBuf.get() != (byte) 0;
 
             final Button button = new Button(key, availableOnArr, actionsArr, imageURL, translationKey, visible,
                     adminOnly, hypixelLocrawRegex, hypixelRankRegex, hypixelPackageRankRegex, hypixelBuildTeamOnly,
-                    hypixelBuildTeamAdminOnly, true); // TODO update protocol
+                    hypixelBuildTeamAdminOnly, visibleInPartyMode);
 
             // Download the image URL, if it is set
             if(button.imageURL != null && button.imageURL.length() > 0) {
