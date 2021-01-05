@@ -123,8 +123,14 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                         if(Minecraft.getMinecraft().currentScreen == this) {
                             final int nextSelectedModeIndex = random.nextInt(this.buttonSet.size());
                             this.currentButton = this.buttonSet.stream().skip(nextSelectedModeIndex).findFirst().orElse(null);
+                            Button button = Quickplay.INSTANCE.buttonMap.get(this.currentButton);
                             this.currentButtonDisplayText = Quickplay.INSTANCE.translator
-                                    .get(Quickplay.INSTANCE.buttonMap.get(this.currentButton).translationKey);
+                                    .get(button.translationKey);
+                            // If this button has a specific scope then we prepend that scope to the button's text, and separate with dash.
+                            if(button.partyModeScopeTranslationKey != null && button.partyModeScopeTranslationKey.length() > 0) {
+                                this.currentButtonDisplayText = Quickplay.INSTANCE.translator.
+                                        get(button.partyModeScopeTranslationKey) + " - " + this.currentButtonDisplayText;
+                            }
 
                             // Play sound
                             this.mc.thePlayer.playSound("liquid.lavapop", 1.0f, 2.0f);
@@ -144,8 +150,14 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                 } else {
                     final int nextSelectedModeIndex = random.nextInt(this.buttonSet.size());
                     this.currentButton = this.buttonSet.stream().skip(nextSelectedModeIndex).findFirst().orElse(null);
+                    Button button = Quickplay.INSTANCE.buttonMap.get(this.currentButton);
                     this.currentButtonDisplayText = Quickplay.INSTANCE.translator
-                            .get(Quickplay.INSTANCE.buttonMap.get(this.currentButton).translationKey);
+                            .get(button.translationKey);
+                    // If this button has a specific scope then we prepend that scope to the button's text, and separate with dash.
+                    if(button.partyModeScopeTranslationKey != null && button.partyModeScopeTranslationKey.length() > 0) {
+                        this.currentButtonDisplayText = Quickplay.INSTANCE.translator.
+                                get(button.partyModeScopeTranslationKey) + " - " + this.currentButtonDisplayText;
+                    }
                 }
 
                 // After spinning complete, start finalization

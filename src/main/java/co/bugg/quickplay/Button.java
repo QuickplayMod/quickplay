@@ -19,11 +19,13 @@ public class Button {
     public final boolean hypixelBuildTeamOnly;
     public final boolean hypixelBuildTeamAdminOnly;
     public final boolean visibleInPartyMode;
+    public final String partyModeScopeTranslationKey;
 
     public Button(final String key, final String[] availableOn, final String[] actionKeys, final String imageURL,
                   final String translationKey, final boolean visible, final boolean adminOnly,
                   final Location hypixelLocrawRegex, final String hypixelRankRegex, final String hypixelPackageRankRegex,
-                  final boolean hypixelBuildTeamOnly, final boolean hypixelBuildTeamAdminOnly, final boolean visibleInPartyMode) {
+                  final boolean hypixelBuildTeamOnly, final boolean hypixelBuildTeamAdminOnly, final boolean visibleInPartyMode,
+                  final String partyModeScopeTranslationKey) {
         this.key = key;
         this.availableOn = availableOn;
         this.actionKeys = actionKeys;
@@ -37,6 +39,7 @@ public class Button {
         this.hypixelBuildTeamOnly = hypixelBuildTeamOnly;
         this.hypixelBuildTeamAdminOnly = hypixelBuildTeamAdminOnly;
         this.visibleInPartyMode = visibleInPartyMode;
+        this.partyModeScopeTranslationKey = partyModeScopeTranslationKey;
     }
 
     /**

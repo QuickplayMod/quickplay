@@ -100,7 +100,17 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             }
 
             String buttonATitle = Quickplay.INSTANCE.translator.get(buttonA.translationKey);
+            // Prepend party mode scope translations if they're present
+            if(buttonA.partyModeScopeTranslationKey != null && buttonA.partyModeScopeTranslationKey.length() > 0) {
+                buttonATitle = Quickplay.INSTANCE.translator.get(buttonA.partyModeScopeTranslationKey) + " - " +
+                        buttonATitle;
+            }
             String buttonBTitle = Quickplay.INSTANCE.translator.get(buttonB.translationKey);
+            // Prepend party mode scope translations if they're present
+            if(buttonB.partyModeScopeTranslationKey != null && buttonB.partyModeScopeTranslationKey.length() > 0) {
+                buttonBTitle = Quickplay.INSTANCE.translator.get(buttonB.partyModeScopeTranslationKey) + " - " +
+                        buttonBTitle;
+            }
             return buttonATitle.compareTo(buttonBTitle);
         });
 
@@ -119,6 +129,11 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
                     EnumChatFormatting.GREEN + Quickplay.INSTANCE.translator.get("quickplay.config.gui.true") :
                     EnumChatFormatting.RED + Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
             String buttonText = Quickplay.INSTANCE.translator.get(button.translationKey) + ": " + trueOrFalse;
+            // If this button has a specific scope then we prepend that scope to the button's text, and separate with dash.
+            if(button.partyModeScopeTranslationKey != null && button.partyModeScopeTranslationKey.length() > 0) {
+                buttonText = Quickplay.INSTANCE.translator.get(button.partyModeScopeTranslationKey) + " - " +
+                        buttonText;
+            }
             // If a button doesn't pass the Hypixel location checks (all other permission checks passed), then
             // the button still displays, but it's made clear to the user that the button won't work in the current location.
             if(!button.passesPermissionChecks()) {

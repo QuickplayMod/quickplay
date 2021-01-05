@@ -47,6 +47,7 @@ public class SetButtonAction extends Action {
         this.addPayloadBoolean(button.hypixelBuildTeamOnly);
         this.addPayloadBoolean(button.hypixelBuildTeamAdminOnly);
         this.addPayloadBoolean(button.visibleInPartyMode);
+        this.addPayloadString(button.partyModeScopeTranslationKey, "");
     }
 
     @Override
@@ -75,10 +76,11 @@ public class SetButtonAction extends Action {
             final boolean hypixelBuildTeamAdminOnly = hypixelBuildTeamAdminOnlyBuf.get() != (byte) 0;
             final ByteBuffer visibleInPartyModeBuf = this.getPayloadObject(12);
             final boolean visibleInPartyMode = visibleInPartyModeBuf.get() != (byte) 0;
+            final String partyModeScopeTranslationKey = this.getPayloadObjectAsString(13);
 
             final Button button = new Button(key, availableOnArr, actionsArr, imageURL, translationKey, visible,
                     adminOnly, hypixelLocrawRegex, hypixelRankRegex, hypixelPackageRankRegex, hypixelBuildTeamOnly,
-                    hypixelBuildTeamAdminOnly, visibleInPartyMode);
+                    hypixelBuildTeamAdminOnly, visibleInPartyMode, partyModeScopeTranslationKey);
 
             // Download the image URL, if it is set
             if(button.imageURL != null && button.imageURL.length() > 0) {

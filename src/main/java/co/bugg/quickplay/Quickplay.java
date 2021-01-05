@@ -682,9 +682,13 @@ public class Quickplay {
                     e.printStackTrace();
                 }
 
+                String translatedGame = Quickplay.INSTANCE.translator.get(button.translationKey);
+                if(button.partyModeScopeTranslationKey != null && button.partyModeScopeTranslationKey.length() > 0) {
+                    translatedGame = Quickplay.INSTANCE.translator.get(button.partyModeScopeTranslationKey) + " - " +
+                            translatedGame;
+                }
                 this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.sendingYou",
-                        Quickplay.INSTANCE.translator.get(button.translationKey))
-                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
+                        translatedGame).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
                 button.run();
             }
         } else {
