@@ -73,7 +73,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
     @Override
     public void initGui() {
         super.initGui();
-        this.topOfButtons = (int) (height * 0.2);
+        this.topOfButtons = Math.min((int) (height * 0.2), 80);
 
         if(Quickplay.INSTANCE.buttonMap == null || Quickplay.INSTANCE.buttonMap.size() <= 0) {
             Minecraft.getMinecraft().displayGuiScreen(null);
