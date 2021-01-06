@@ -177,6 +177,9 @@ quickplay.gui.party.randomizing=Picking a random gamemode...
 quickplay.gui.party.allon=Enable All
 quickplay.gui.party.alloff=Disable All
 quickplay.gui.party.launch=Launch!
+quickplay.gui.party.showAll=Show All
+quickplay.gui.party.showEnabled=Show Enabled Only
+quickplay.gui.party.showDisabled=Show Disabled Only
 
 quickplay.keybinds.migrating=Quickplay is attempting to migrate your keybinds to the latest Quickplay version. A backup has been created in your Minecraft installation folder. Please don't modify your keybinds until migration completes.
 quickplay.keybinds.migratingFailed=Quickplay keybind migration failed! Your keybinds have been reset to default values.

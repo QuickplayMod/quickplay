@@ -68,6 +68,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
             Minecraft.getMinecraft().displayGuiScreen(null);
             Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            return;
         }
 
         // Get the list of enabled games, unfiltered at the moment. If the user doesn't have an explicit list of
@@ -93,6 +94,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
             Minecraft.getMinecraft().displayGuiScreen(null);
             Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            return;
         }
 
         this.randomizingTextHeight = (int) (this.height * (this.height > 350 ? 0.4 : 0.3));

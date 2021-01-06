@@ -18,13 +18,29 @@ import java.util.*;
  * GUI screen for editing the modes in party mode
  */
 public class QuickplayGuiPartyEditor extends QuickplayGui {
+
+    public enum ShownButtonsMode {
+        ALL,
+        ENABLED_ONLY,
+        DISABLED_ONLY
+    }
+
     /**
-     * A list of all the modes toggled on
-     * CURRENTLY A REFERENCE to the Quickplay settings, not a value
+     * Set of enabled buttons in the list.
+     * May include buttons which may not be drawn for reasons such as the user not having permission.
      */
     Set<String> enabledButtons = new HashSet<>();
+    /**
+     * Set of all buttons in the list, i.e. copy of Quickplay#buttonMap.keySet()
+     * Includes buttons which may not be drawn for reasons such as the user not having permission.
+     */
     Set<String> allButtons = new HashSet<>();
-
+    /**
+     * Mode for which buttons are shown in the buttons list. I.e., users can show only enabled buttons, disabled buttons,
+     * or all buttons. If this isn't set to ALL, then buttons aren't hidden when they're toggled. It's only decided when
+     * buttons should be shown/hidden whenever the buttons list is reinitialized.
+     */
+    ShownButtonsMode shownButtons = ShownButtonsMode.ALL;
     /**
      * The width of buttons
      */
@@ -59,10 +75,10 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         super.initGui();
         this.topOfButtons = (int) (height * 0.2);
 
-        // TODO add loading screen -- Lots of sorting within this function which may cause delays.
-
         if(Quickplay.INSTANCE.buttonMap == null || Quickplay.INSTANCE.buttonMap.size() <= 0) {
-            // TODO handle error
+            Minecraft.getMinecraft().displayGuiScreen(null);
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             return;
         }
 
@@ -124,8 +140,15 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
                 continue;
             }
 
+            boolean isButtonEnabled = this.enabledButtons.contains(buttonKey);
+            // If the user's selected a visibility category which this button doesn't fall in, skip this button.
+            if((isButtonEnabled && this.shownButtons == ShownButtonsMode.DISABLED_ONLY) ||
+                    (!isButtonEnabled && this.shownButtons == ShownButtonsMode.ENABLED_ONLY)) {
+                continue;
+            }
+
             // Display-string for whether this mode is currently enabled or not
-            final String trueOrFalse = this.enabledButtons.contains(buttonKey) ?
+            final String trueOrFalse = isButtonEnabled ?
                     EnumChatFormatting.GREEN + Quickplay.INSTANCE.translator.get("quickplay.config.gui.true") :
                     EnumChatFormatting.RED + Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
             String buttonText = Quickplay.INSTANCE.translator.get(button.translationKey) + ": " + trueOrFalse;
@@ -147,16 +170,26 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         }
 
         // Add launch, "All On" and "All Off" buttons
-        this.componentList.add(new QuickplayGuiButton(null, -1, this.width / 2  - this.topButtonWidth / 2, 10,
+        this.componentList.add(new QuickplayGuiButton(null, -1, this.width / 2  - (this.topButtonWidth + this.topButtonMargins) * 2 + this.topButtonMargins / 2, 10,
                 this.topButtonWidth, this.buttonHeight, Quickplay.INSTANCE.translator.get("quickplay.gui.party.launch"),
                 false)); // Launch
         this.componentList.add(new QuickplayGuiButton(null, -2,
-                this.width / 2 - this.topButtonWidth / 2 - this.topButtonWidth - this.topButtonMargins,
+                this.width / 2 - this.topButtonWidth - this.topButtonMargins / 2,
                 10, this.topButtonWidth, 20, Quickplay.INSTANCE.translator.get("quickplay.gui.party.allon"),
                 false)); // All on
         this.componentList.add(new QuickplayGuiButton(null, -3,
-                this.width / 2 + this.topButtonWidth / 2 + this.topButtonMargins, 10, this.topButtonWidth, 20,
+                this.width / 2 + this.topButtonMargins / 2, 10, this.topButtonWidth, 20,
                 Quickplay.INSTANCE.translator.get("quickplay.gui.party.alloff"), false)); // All off
+
+        String visibilityToggleText = Quickplay.INSTANCE.translator.get("quickplay.gui.party.showAll");
+        if(this.shownButtons == ShownButtonsMode.ENABLED_ONLY) {
+            visibilityToggleText = Quickplay.INSTANCE.translator.get("quickplay.gui.party.showEnabled");
+        } else if(this.shownButtons == ShownButtonsMode.DISABLED_ONLY) {
+            visibilityToggleText = Quickplay.INSTANCE.translator.get("quickplay.gui.party.showDisabled");
+        }
+        this.componentList.add(new QuickplayGuiButton(null, -4,
+                this.width / 2 + this.topButtonWidth + this.topButtonMargins * 3 / 2, 10, this.topButtonWidth, 20,
+                visibilityToggleText, false)); // Visibility toggle
 
     }
 
@@ -218,14 +251,14 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
         if(component.origin instanceof String) {
-            if(component.y - this.scrollPixel > this.topOfButtons - this.scrollFadeDistance && component.scrollable) {
+            if (component.y - this.scrollPixel > this.topOfButtons - this.scrollFadeDistance && component.scrollable) {
                 // Display name of this component, split at the colon, to separate the name from the current toggle status
                 final String nameWithoutToggleStatus = component.displayString.split(":")[0];
 
                 final boolean isEnabled = this.enabledButtons.contains(component.origin);
 
                 // If the mode is toggled on remove it, otherwise add it
-                if(isEnabled) {
+                if (isEnabled) {
                     this.enabledButtons.remove(component.origin);
                     component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.RED +
                             Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
@@ -235,6 +268,17 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
                             Quickplay.INSTANCE.translator.get("quickplay.config.gui.true");
                 }
             }
+        } else if(component.id == -4) {
+            // Toggle the shown buttons mode
+            if(this.shownButtons == ShownButtonsMode.ALL) {
+                this.shownButtons = ShownButtonsMode.ENABLED_ONLY;
+            } else if(this.shownButtons == ShownButtonsMode.ENABLED_ONLY) {
+                this.shownButtons = ShownButtonsMode.DISABLED_ONLY;
+            } else {
+                this.shownButtons = ShownButtonsMode.ALL;
+            }
+            this.componentList.clear();
+            this.addButtons();
         } else if(component.id == -3) {
             // Disable all
             this.enabledButtons.clear();
