@@ -38,15 +38,15 @@ public class PlayerGlyph {
     /**
      * Height of the glyph
      */
-    public Double height = 20.0;
+    public Integer height = 20;
     /**
      * Vertical offset from the default position that the glyph should be rendered at
      */
-    public Double yOffset = 0.0;
+    public Float yOffset = 0.0f;
     /**
      * Whether this glyph should be displayed in-game
      */
-    public boolean displayInGames = false;
+    public Boolean displayInGames = false;
     /**
      * Whether this Glyph is currently being downloaded or not
      */
@@ -74,7 +74,7 @@ public class PlayerGlyph {
      * @param yOffset The offset of the glyph from the original position in meters
      * @param displayInGames Whether or not this Glyph should be displayed in-game
      */
-    public PlayerGlyph(UUID uuid, URL resource, double height, double yOffset, boolean displayInGames) {
+    public PlayerGlyph(UUID uuid, URL resource, Integer height, Float yOffset, Boolean displayInGames) {
         this.uuid = uuid;
         this.path = resource;
         this.height = height;
@@ -102,7 +102,7 @@ public class PlayerGlyph {
                         contentType.equals("image/jpg") || contentType.equals("image/jpeg"))) {
 
                     final File file = new File(AssetFactory.glyphsDirectory +
-                            Hashing.md5().hashString(path.toString(), StandardCharsets.UTF_8).toString() + ".png");
+                            Hashing.sha1().hashString(path.toString(), StandardCharsets.UTF_8).toString() + ".png");
                     // Try to create file if necessary
                     if(!file.exists() && !file.createNewFile()) {
                         throw new IllegalStateException("Glyph file could not be created.");

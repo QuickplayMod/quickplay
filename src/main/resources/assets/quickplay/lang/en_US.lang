@@ -1,7 +1,7 @@
 #PARSE_ESCAPES
 quickplay.offline=You are not currently online the Hypixel Network!
 quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
-quickplay.bannedFromOfficialApi=You are banned from using the official Quickplay API! Please contact bugfroggy if you believe this is a mistake.
+quickplay.bannedFromOfficialApi=You are banned from using the official Quickplay API! Please contact a developer if you believe this is a mistake.
 quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Click to open.
 
@@ -43,7 +43,7 @@ quickplay.commands.quickplay.premium.transfer.help=Transfer your Quickplay Premi
 quickplay.commands.quickplay.premium.transfer.todo=Sorry, but this command isn't implemented yet. In the mean time, contact bugfroggy on the Quickplay Discord! /qp discord
 quickplay.commands.quickplay.premium.glyph.help=Change your Quickplay Premium Glyph settings.
 quickplay.commands.quickplay.premium.glyph.runningRequest=Thinking...
-quickplay.commands.quickplay.premium.glyph.error=Something went wrong... Try contact bugfroggy if this doesn't resolve itself.
+quickplay.commands.quickplay.premium.glyph.error=Something went wrong... Try contact a developer if this doesn't resolve itself.
 quickplay.commands.quickplay.premium.glyph.offset.help=Set the vertical offset for your Quickplay Glyph.
 quickplay.commands.quickplay.premium.glyph.offset.illegal=Illegal argument! Argument "number" must be a number between -3 and 2 (decimals are valid).
 quickplay.commands.quickplay.premium.glyph.set.help=Set the image URL of your Quickplay Glyph.
@@ -55,6 +55,7 @@ quickplay.commands.quickplay.premium.glyph.ingame.help=Set whether or not your G
 quickplay.commands.quickplay.premium.glyph.ingame.illegal=Illegal argument! You must set this to either "true" or "false".
 quickplay.commands.quickplay.premium.glyph.displayown.help=Whether your own Glyph should display over your head. Does not affect how others see it.
 quickplay.commands.quickplay.premium.glyph.displayown.set=Personal glyph visibility set to %s.
+quickplay.commands.quickplay.premium.glyph.complete=Glyph updated.
 
 quickplay.commands.hub.numberexception=Invalid lobby number! Syntax: %s
 quickplay.commands.usage=Command syntax:
@@ -155,7 +156,7 @@ quickplay.config.color.gui.chromaspeed.insane=INSANE
 quickplay.gui.main.noGames.header=Oops!
 quickplay.gui.main.noGames.issue=Looks like I couldn't figure out what games are available.
 quickplay.gui.main.noGames.why=This most likely is occurring if you just installed the mod.
-quickplay.gui.main.noGames.contact=Try restarting your game, or contact bugfroggy if this doesn't resolve the problem!
+quickplay.gui.main.noGames.contact=Try restarting your game, or contact a developer if this doesn't resolve the problem!
 
 quickplay.gui.stats.yes=Yes, send statistics.
 quickplay.gui.stats.no=No, don't send statistics.
@@ -202,7 +203,7 @@ quickplay.premium.expiresIn=Your Quickplay Premium subscription expires in %s da
 quickplay.premium.purchasePage=Your Quickplay Premium account page is available at:
 
 quickplay.premium.ingameReward.freeToken=You got a free Daily Reward Token because of your Daily Reward Streak. Visit the Delivery Man to claim it.
-quickplay.premium.ingameReward.error=Weird, something went wrong while trying to do that! Try re-authorizing with "/qp premium auth", or contact bugfroggy if this issue persists.
+quickplay.premium.ingameReward.error=Weird, something went wrong while trying to do that! Try re-authorizing with "/qp premium auth", or contact a developer if this issue persists.
 quickplay.premium.ingameReward.openLink=Open Web Version
 quickplay.premium.ingameReward.hypixelProperty=All assets are property of Hypixel Inc. Quickplay is not affiliated with Hypixel Inc. https://hypixel.net/
 quickplay.premium.ingameReward.error.header=(╯°□°)╯︵ ┻━┻

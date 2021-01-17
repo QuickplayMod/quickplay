@@ -80,7 +80,7 @@ public class GlyphRenderer {
                 return;
             }
             // Stop if the client user has disabled rendering their own glyph, and we're rendering the client user.
-            if (player.getUniqueID().toString().equals(self.getUniqueID().toString()) && !Quickplay.INSTANCE.settings.displayOwnGlyph) {
+            if (!Quickplay.INSTANCE.settings.displayOwnGlyph && player.getUniqueID().toString().equals(self.getUniqueID().toString())) {
                 return;
             }
 
@@ -158,11 +158,11 @@ public class GlyphRenderer {
     public synchronized void renderGlyph(RenderPlayer renderer, PlayerGlyph glyph, double x, double y, double z, float opacity, boolean isInGame) {
 
         final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" +
-                Hashing.md5().hashString(glyph.path.toString(), StandardCharsets.UTF_8).toString() + ".png");
+                Hashing.sha1().hashString(glyph.path.toString(), StandardCharsets.UTF_8).toString() + ".png");
         if(Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {
             // Glyph height and offset are forced to 20 and 0 respectively if the user is in-game
             final float glyphHeight = isInGame ? 20 : (float) glyph.height.doubleValue();
-            final float glyphOffset = isInGame ? 0 : (float) glyph.yOffset.doubleValue();
+            final float glyphOffset = isInGame ? 0 :  glyph.yOffset;
             float scale = (float) (glyphHeight * 0.0015);
 
             // Apply GL properties

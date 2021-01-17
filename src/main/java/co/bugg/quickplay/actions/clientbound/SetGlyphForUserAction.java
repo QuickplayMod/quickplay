@@ -49,14 +49,36 @@ public class SetGlyphForUserAction extends Action {
         if(Quickplay.INSTANCE.glyphs == null) {
             Quickplay.INSTANCE.glyphs = new ArrayList<>();
         }
+
         try {
-            final UUID uuid = UUID.fromString(this.getPayloadObjectAsString(0));
+            String uuidStr = this.getPayloadObjectAsString(0);
+            // Add dashes to the UUID if they are not present
+            if(uuidStr.charAt(8) != '-') {
+                StringBuilder uuidStringBuilder = new StringBuilder(uuidStr);
+                uuidStringBuilder.insert(20, '-');
+                uuidStringBuilder.insert(16, '-');
+                uuidStringBuilder.insert(12, '-');
+                uuidStringBuilder.insert(8, '-');
+                uuidStr = uuidStringBuilder.toString();
+            }
+
+            final UUID uuid = UUID.fromString(uuidStr);
             final URL url = new URL(this.getPayloadObjectAsString(1));
             final int height = this.getPayloadObject(2).getInt();
             final float yOffset = this.getPayloadObject(3).getFloat();
             final boolean displayInGames = this.getPayloadObject(4).get() != (byte) 0;
-            Quickplay.INSTANCE.glyphs.add(new PlayerGlyph(uuid, url, height, yOffset, displayInGames));
-        } catch (MalformedURLException e) {
+
+            // Copy of glyph list is created to avoid concurrent modification exceptions.
+            ArrayList<PlayerGlyph> newGlyphList = new ArrayList<>(Quickplay.INSTANCE.glyphs);
+            // Remove glyphs from the list if the glyph belongs to the same user we're adding a glyph for
+            for(PlayerGlyph glyph : Quickplay.INSTANCE.glyphs) {
+                if(glyph.uuid.equals(uuid)) {
+                    newGlyphList.remove(glyph);
+                }
+            }
+            newGlyphList.add(new PlayerGlyph(uuid, url, height, yOffset, displayInGames));
+            Quickplay.INSTANCE.glyphs = newGlyphList;
+        } catch (MalformedURLException | IndexOutOfBoundsException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }

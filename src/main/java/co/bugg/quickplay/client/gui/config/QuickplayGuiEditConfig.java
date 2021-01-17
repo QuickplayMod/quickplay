@@ -225,10 +225,12 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
 
             // Figure out what button type needs to be rendered & give it the appropriate text
             if(element.element instanceof Boolean) {
+                EnumChatFormatting valueColor = (boolean) element.element ? EnumChatFormatting.GREEN  : EnumChatFormatting.RED;
                 this.componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth,
-                        ConfigElement.ELEMENT_HEIGHT,
-                        Quickplay.INSTANCE.translator.get(element.optionInfo.name()) + ": " + Quickplay.INSTANCE.translator.get((boolean) element.element ?
-                                "quickplay.config.gui.true" : "quickplay.config.gui.false"), true));
+                ConfigElement.ELEMENT_HEIGHT,
+                Quickplay.INSTANCE.translator.get(element.optionInfo.name()) + ": " + valueColor +
+                        Quickplay.INSTANCE.translator.get((boolean) element.element ?
+                        "quickplay.config.gui.true" : "quickplay.config.gui.false"), true));
             } else if(element.element instanceof QuickplayColor || element.element instanceof Runnable) {
                 this.componentList.add(new QuickplayGuiButton(element, nextButtonId, buttonX, buttonY, buttonWidth,
                         ConfigElement.ELEMENT_HEIGHT, Quickplay.INSTANCE.translator.get(element.optionInfo.name()), true));
@@ -394,8 +396,11 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                 if(element != null) {
                     if(element.element instanceof Boolean) {
                         element.element = !(boolean) element.element;
+                        EnumChatFormatting valueColor = (boolean) element.element ? EnumChatFormatting.GREEN  : EnumChatFormatting.RED;
                         component.displayString = Quickplay.INSTANCE.translator.get(element.optionInfo.name()) + ": " +
-                                Quickplay.INSTANCE.translator.get((boolean) element.element ? "quickplay.config.gui.true" : "quickplay.config.gui.false");
+                                valueColor + Quickplay.INSTANCE.translator.get((boolean) element.element ?
+                                "quickplay.config.gui.true" :
+                                "quickplay.config.gui.false");
 
                         // Send analytical data to Google
                         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&

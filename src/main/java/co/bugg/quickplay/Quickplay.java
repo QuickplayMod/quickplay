@@ -21,7 +21,6 @@ import co.bugg.quickplay.util.analytics.GoogleAnalytics;
 import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
@@ -39,6 +38,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.awt.*;
 import java.io.File;
@@ -248,6 +248,14 @@ public class Quickplay {
      * Translation handler for Quickplay.
      */
     public ConfigTranslations translator;
+
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        if(Objects.equals(System.getenv("QUICKPLAY_DEBUG"), "1")) {
+            System.out.println("DEBUG > Quickplay debug mode enabled via environment variable.");
+            this.isInDebugMode = true;
+        }
+    }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -479,12 +487,12 @@ public class Quickplay {
                                             .jsonToComponent(response.content.getAsJsonObject().get("premiumInfo").toString());
                                 }
                                 // Add all glyphs
-                                if(response.content.getAsJsonObject().get("glyphs") != null) {
-                                    QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-                                        glyphs.addAll(Arrays.asList(new Gson().fromJson(response.content
-                                                .getAsJsonObject().get("glyphs"), PlayerGlyph[].class)));
-                                    });
-                                }
+//                                if(response.content.getAsJsonObject().get("glyphs") != null) {
+//                                    QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
+//                                        glyphs.addAll(Arrays.asList(new Gson().fromJson(response.content
+//                                                .getAsJsonObject().get("glyphs"), PlayerGlyph[].class)));
+//                                    });
+//                                }
                             }
                         } catch (IllegalStateException e) {
                             e.printStackTrace();

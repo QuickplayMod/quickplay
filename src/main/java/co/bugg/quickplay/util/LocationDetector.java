@@ -69,14 +69,15 @@ public class LocationDetector {
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
+        if(!Quickplay.INSTANCE.isEnabled || !Quickplay.INSTANCE.isOnHypixel()) {
+            return;
+        }
         final String message = event.message.getUnformattedText();
         // Regex to detect /locraw messages. All locraw messages are JSON starting with {"server":...
         final Pattern pattern = Pattern.compile("^\\{\"server\":");
         final Matcher matcher = pattern.matcher(message);
 
         if(
-                Quickplay.INSTANCE.isEnabled &&
-                Quickplay.INSTANCE.isOnHypixel() &&
                 !event.isCanceled() &&
                 matcher.find() &&
                 this.listening
