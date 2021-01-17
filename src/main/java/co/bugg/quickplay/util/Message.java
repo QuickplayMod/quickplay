@@ -1,6 +1,5 @@
 package co.bugg.quickplay.util;
 
-import co.bugg.quickplay.Quickplay;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
@@ -87,7 +86,7 @@ public class Message {
      * @return Separator
      */
     public static IChatComponent getMessageSeparator() {
-        char separatorChar = "-";
+        char separatorChar = '-';
         final int chatWidth = Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatWidth();
         final int separatorWidth = Minecraft.getMinecraft().fontRendererObj.getCharWidth(separatorChar);
 
