@@ -206,7 +206,6 @@ quickplay.premium.ingameReward.freeToken=You got a free Daily Reward Token becau
 quickplay.premium.ingameReward.error=Weird, something went wrong while trying to do that! Try re-authorizing with "/qp premium auth", or contact a developer if this issue persists.
 quickplay.premium.ingameReward.openLink=Open Web Version
 quickplay.premium.ingameReward.hypixelProperty=All assets are property of Hypixel Inc. Quickplay is not affiliated with Hypixel Inc. https://hypixel.net/
-quickplay.premium.ingameReward.error.header=(╯°□°)╯︵ ┻━┻
 quickplay.premium.ingameReward.adroll.header=Welcome to the Hypixel Zoo!
 quickplay.premium.ingamereward.remaining=Time remaining: %ss
 quickplay.premium.ingameReward.adroll.text=The Hypixel Store contains plenty of cool items to enhance your Hypixel player experience.

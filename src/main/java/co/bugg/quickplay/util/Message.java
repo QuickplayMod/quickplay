@@ -87,7 +87,7 @@ public class Message {
      * @return Separator
      */
     public static IChatComponent getMessageSeparator() {
-        char separatorChar = Quickplay.INSTANCE.translator.get("quickplay.chat.separator").charAt(0);
+        char separatorChar = "-";
         final int chatWidth = Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatWidth();
         final int separatorWidth = Minecraft.getMinecraft().fontRendererObj.getCharWidth(separatorChar);
 
