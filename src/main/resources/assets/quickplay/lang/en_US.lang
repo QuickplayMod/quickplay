@@ -2,7 +2,6 @@
 quickplay.offline=You are not currently online the Hypixel Network!
 quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
 quickplay.bannedFromOfficialApi=You are banned from using the official Quickplay API! Please contact bugfroggy if you believe this is a mistake.
-quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Click to open.
 
 quickplay.failedToConnect=Sorry, Quickplay wasn't able to connect to the Quickplay servers! Some features may be unavailable.
@@ -205,7 +204,6 @@ quickplay.premium.ingameReward.freeToken=You got a free Daily Reward Token becau
 quickplay.premium.ingameReward.error=Weird, something went wrong while trying to do that! Try re-authorizing with "/qp premium auth", or contact bugfroggy if this issue persists.
 quickplay.premium.ingameReward.openLink=Open Web Version
 quickplay.premium.ingameReward.hypixelProperty=All assets are property of Hypixel Inc. Quickplay is not affiliated with Hypixel Inc. https://hypixel.net/
-quickplay.premium.ingameReward.error.header=(╯°□°)╯︵ ┻━┻
 quickplay.premium.ingameReward.adroll.header=Welcome to the Hypixel Zoo!
 quickplay.premium.ingamereward.remaining=Time remaining: %ss
 quickplay.premium.ingameReward.adroll.text=The Hypixel Store contains plenty of cool items to enhance your Hypixel player experience.

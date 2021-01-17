@@ -286,7 +286,7 @@ public class DailyRewardGui extends QuickplayGui {
 
                 // Draw header
                 GL11.glScaled(headerScale, headerScale, headerScale);
-                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.error.header"), (int) (width / 2 / headerScale), (int) (height * 0.2 / headerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                drawCenteredString(fontRendererObj, "(╯°□°)╯︵ ┻━┻", (int) (width / 2 / headerScale), (int) (height * 0.2 / headerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
                 GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
 
                 // Draw error text
