@@ -51,6 +51,9 @@ public class GlyphCommandHeight extends GlyphCommand {
                     Quickplay.INSTANCE.socket.sendAction(new AlterGlyphAction(glyph));
                 } catch (ServerUnavailableException e) {
                     e.printStackTrace();
+                    Quickplay.INSTANCE.messageBuffer.push(new Message(
+                            new QuickplayChatComponentTranslation("quickplay.failedToConnect")
+                                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
                 }
             });
 

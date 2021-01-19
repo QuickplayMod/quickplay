@@ -91,6 +91,7 @@ public class Action {
         actionIdToActionClass.put((short) 49, ClaimDailyRewardAction.class);
         actionIdToActionClass.put((short) 50, PushEditHistoryEventAction.class);
         actionIdToActionClass.put((short) 51, SetClientSettingsAction.class);
+        actionIdToActionClass.put((short) 52, DeleteGlyphAction.class);
     }
 
     /**

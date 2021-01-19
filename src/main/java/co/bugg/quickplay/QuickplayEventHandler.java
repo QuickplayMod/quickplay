@@ -6,14 +6,14 @@ import co.bugg.quickplay.client.dailyreward.DailyRewardInitiator;
 import co.bugg.quickplay.client.gui.InstanceDisplay;
 import co.bugg.quickplay.client.gui.QuickplayGuiScreen;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
-import co.bugg.quickplay.util.ServerChecker;
-import co.bugg.quickplay.util.ServerUnavailableException;
-import co.bugg.quickplay.util.TickDelay;
+import co.bugg.quickplay.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -49,6 +49,9 @@ public class QuickplayEventHandler {
                 Quickplay.INSTANCE.socket.sendAction(new ServerJoinedAction(ServerChecker.getCurrentIP(), null));
             } catch (ServerUnavailableException e) {
                 e.printStackTrace();
+                Quickplay.INSTANCE.messageBuffer.push(new Message(
+                        new QuickplayChatComponentTranslation("quickplay.failedToConnect")
+                                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             }
         });
     }

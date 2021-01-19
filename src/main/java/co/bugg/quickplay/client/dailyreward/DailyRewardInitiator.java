@@ -42,18 +42,16 @@ public class DailyRewardInitiator {
 
         this.overrideBookGui = new DailyRewardGuiLoading();
         Quickplay.INSTANCE.registerEventHandler(this);
-        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-            Minecraft.getMinecraft().displayGuiScreen(this.overrideBookGui);
-        });
+        QuickplayEventHandler.mainThreadScheduledTasks.add(() ->
+                Minecraft.getMinecraft().displayGuiScreen(this.overrideBookGui));
 
         try {
             Quickplay.INSTANCE.socket.sendAction(new GetDailyRewardAction(code));
         } catch (ServerUnavailableException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.messageBuffer.push(new Message(
-                    new QuickplayChatComponentTranslation("quickplay.premium.ingameReward.error")
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)), true
-            ));
+                    new QuickplayChatComponentTranslation("quickplay.failedToConnect")
+                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
     }
 }

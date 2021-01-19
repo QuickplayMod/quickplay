@@ -761,7 +761,7 @@ public class DailyRewardGui extends QuickplayGui {
             } catch (ServerUnavailableException e) {
                 e.printStackTrace();
                 IChatComponent msg = new QuickplayChatComponentTranslation(
-                        "quickplay.premium.ingameReward.menu.claim.error");
+                        "quickplay.premium.ingameReward.menu.claim.serverOffline");
                 msg.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
                 Quickplay.INSTANCE.messageBuffer.push(new Message(msg, true));
             }
