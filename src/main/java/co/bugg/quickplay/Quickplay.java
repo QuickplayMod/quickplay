@@ -745,7 +745,7 @@ public class Quickplay {
      */
     public boolean isOnHypixel() {
         if(this.currentServer == null) {
-            return ServerChecker.getCurrentIP() != null && this.socket == null || this.socket.isClosed() || this.sessionKey == null;
+            return ServerChecker.getCurrentIP() != null && (this.socket == null || this.socket.isClosed() || this.sessionKey == null);
         }
         return this.currentServer.toLowerCase().contains("hypixel");
     }
