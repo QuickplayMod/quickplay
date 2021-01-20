@@ -6,10 +6,7 @@ import co.bugg.quickplay.actions.serverbound.*;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Actions are the core mechanism behind how Quickplay operates. Whenever the client/user
@@ -92,6 +89,7 @@ public class Action {
         actionIdToActionClass.put((short) 50, PushEditHistoryEventAction.class);
         actionIdToActionClass.put((short) 51, SetClientSettingsAction.class);
         actionIdToActionClass.put((short) 52, DeleteGlyphAction.class);
+        actionIdToActionClass.put((short) 53, RemoveGlyphAction.class);
     }
 
     /**
@@ -177,6 +175,21 @@ public class Action {
     protected String getPayloadObjectAsString(int index) {
 
         return StandardCharsets.UTF_8.decode(this.getPayloadObject(index)).toString();
+    }
+
+    protected UUID getPayloadObjectAsUUID(int index) {
+        String uuidStr = this.getPayloadObjectAsString(index);
+        // Add dashes to the UUID if they are not present
+        if(uuidStr.charAt(8) != '-') {
+            StringBuilder uuidStringBuilder = new StringBuilder(uuidStr);
+            uuidStringBuilder.insert(20, '-');
+            uuidStringBuilder.insert(16, '-');
+            uuidStringBuilder.insert(12, '-');
+            uuidStringBuilder.insert(8, '-');
+            uuidStr = uuidStringBuilder.toString();
+        }
+
+        return UUID.fromString(uuidStr);
     }
 
     /**

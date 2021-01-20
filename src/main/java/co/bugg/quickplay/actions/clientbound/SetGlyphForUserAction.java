@@ -51,18 +51,7 @@ public class SetGlyphForUserAction extends Action {
         }
 
         try {
-            String uuidStr = this.getPayloadObjectAsString(0);
-            // Add dashes to the UUID if they are not present
-            if(uuidStr.charAt(8) != '-') {
-                StringBuilder uuidStringBuilder = new StringBuilder(uuidStr);
-                uuidStringBuilder.insert(20, '-');
-                uuidStringBuilder.insert(16, '-');
-                uuidStringBuilder.insert(12, '-');
-                uuidStringBuilder.insert(8, '-');
-                uuidStr = uuidStringBuilder.toString();
-            }
-
-            final UUID uuid = UUID.fromString(uuidStr);
+            final UUID uuid = this.getPayloadObjectAsUUID(0);
             final URL url = new URL(this.getPayloadObjectAsString(1));
             final int height = this.getPayloadObject(2).getInt();
             final float yOffset = this.getPayloadObject(3).getFloat();
