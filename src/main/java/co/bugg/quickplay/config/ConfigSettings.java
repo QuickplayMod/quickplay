@@ -50,7 +50,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Quickplay's primary color
      */
     @GuiOption(
-            name = "quickplay.settings.primaryColor.name",
+            name = "quickplay.settings.primaryColor",
             helpText = "quickplay.settings.primaryColor.help",
             category = "quickplay.settings.category.colors"
     )
@@ -60,7 +60,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Quickplay's secondary color
      */
     @GuiOption(
-            name = "quickplay.settings.secondaryColor.name",
+            name = "quickplay.settings.secondaryColor",
             helpText = "quickplay.settings.secondaryColor.help",
             category = "quickplay.settings.category.colors"
     )
@@ -70,7 +70,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether Quickplay GUIs should be blurred
      */
     @GuiOption(
-            name = "quickplay.settings.blurGuiBackgrounds.name",
+            name = "quickplay.settings.blurGuiBackgrounds",
             helpText = "quickplay.settings.blurGuiBackgrounds.help",
             category = "quickplay.settings.category.gui"
     )
@@ -80,7 +80,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether Quickplay GUIs should fade in
      */
     @GuiOption(
-            name = "quickplay.settings.fadeInGuis.name",
+            name = "quickplay.settings.fadeInGuis",
             helpText = "quickplay.settings.fadeInGuis.help",
             category = "quickplay.settings.category.gui"
     )
@@ -90,7 +90,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether Quickplay GUI backgrounds should be 100% transparent
      */
     @GuiOption(
-            name="quickplay.settings.transparentBackgrounds.name",
+            name="quickplay.settings.transparentBackgrounds",
             helpText = "quickplay.settings.transparentBackgrounds.help",
             category = "quickplay.settings.category.gui"
     )
@@ -100,7 +100,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * The scale of items in the Quickplay main menu
      */
     @GuiOption(
-            name = "quickplay.settings.gameLogoScale.name",
+            name = "quickplay.settings.gameLogoScale",
             helpText = "quickplay.settings.gameLogoScale.help",
             category = "quickplay.settings.category.gui",
             minValue = 0.05f,
@@ -112,7 +112,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether scrolling in GUIs should be reversed from the default
      */
     @GuiOption(
-            name = "quickplay.settings.reverseScrollingDirection.name",
+            name = "quickplay.settings.reverseScrollingDirection",
             helpText = "quickplay.settings.reverseScrollingDirection.help",
             category = "quickplay.settings.category.gui"
     )
@@ -123,7 +123,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * This does not affect any other GUI on Quickplay or otherwise
      */
     @GuiOption(
-            name="quickplay.settings.anyKeyClosesGui.name",
+            name="quickplay.settings.anyKeyClosesGui",
             helpText="quickplay.settings.anyKeyClosesGui.help",
             category = "quickplay.settings.category.gui"
     )
@@ -134,7 +134,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * names when you hover over the game's icon
      */
     @GuiOption(
-            name="quickplay.settings.compactMainMenu.name",
+            name="quickplay.settings.compactMainMenu",
             helpText = "quickplay.settings.compactMainMenu.help",
             category = "quickplay.settings.category.gui"
     )
@@ -144,7 +144,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * colors are non-hover and primary colors are hover.
      */
     @GuiOption(
-            name="quickplay.settings.swapMainGuiColors.name",
+            name="quickplay.settings.swapMainGuiColors",
             helpText = "quickplay.settings.swapMainGuiColors.help",
             category = "quickplay.settings.category.gui"
     )
@@ -154,7 +154,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether Quickplay's instance displayer should be displayed
      */
     @GuiOption(
-            name = "quickplay.settings.instanceDisplay.name",
+            name = "quickplay.settings.instanceDisplay",
             helpText = "quickplay.settings.instanceDisplay.help",
             category = "quickplay.settings.category.instanceDisplay"
     )
@@ -164,7 +164,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Runnable to move the instance display to a different location
      */
     @GuiOption(
-            name = "quickplay.settings.moveInstanceDisplayButton.name",
+            name = "quickplay.settings.moveInstanceDisplayButton",
             helpText = "quickplay.settings.moveInstanceDisplayButton.help",
             category = "quickplay.settings.category.instanceDisplay"
     )
@@ -174,7 +174,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Opacity of the instance display
      */
     @GuiOption(
-            name = "quickplay.settings.instanceOpacity.name",
+            name = "quickplay.settings.instanceOpacity",
             helpText = "quickplay.settings.instanceOpacity.help",
             category = "quickplay.settings.category.instanceDisplay",
             minValue = 0.0f,
@@ -186,7 +186,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether the instance display should be visible even when chat is open
      */
     @GuiOption(
-            name = "quickplay.settings.displayInstanceWithChatOpen.name",
+            name = "quickplay.settings.displayInstanceWithChatOpen",
             helpText = "quickplay.settings.displayInstanceWithChatOpen.help",
             category = "quickplay.settings.category.instanceDisplay"
     )
@@ -196,7 +196,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * The scale of the Quickplay Instance Display
      */
     @GuiOption(
-            name = "quickplay.settings.instanceDisplayScale.name",
+            name = "quickplay.settings.instanceDisplayScale",
             helpText = "quickplay.settings.instanceDisplayScale.help",
             category = "quickplay.settings.category.instanceDisplay"
     )
@@ -214,7 +214,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Runnable to change the privacy settings
      */
     @GuiOption(
-            name = "quickplay.settings.sendUsageStatsButton.name",
+            name = "quickplay.settings.sendUsageStatsButton",
             helpText = "quickplay.settings.sendUsageStatsButton.help"
     )
     public transient final Runnable sendUsageStatsButton = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiUsageStats());
@@ -223,7 +223,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Runnable to edit the keybinds
      */
     @GuiOption(
-            name = "quickplay.settings.editKeybinds.name",
+            name = "quickplay.settings.editKeybinds",
             helpText = "quickplay.settings.editKeybinds.help"
     )
     public transient final Runnable editKeybinds = () -> Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
@@ -232,7 +232,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Opacity of the instance display
      */
     @GuiOption(
-            name = "quickplay.settings.keybindPressTime.name",
+            name = "quickplay.settings.keybindPressTime",
             helpText = "quickplay.settings.keybindPressTime.help",
             minValue = 0.0f,
             maxValue = 3.0f
@@ -243,7 +243,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether the client should swap to lobby one when it joins a new lobby
      */
     @GuiOption(
-            name="quickplay.settings.lobbyOneSwap.name",
+            name="quickplay.settings.lobbyOneSwap",
             helpText = "quickplay.settings.lobbyOneSwap.help"
     )
     public boolean lobbyOneSwap = false;
@@ -251,7 +251,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether the client should swap to lobby one when it joins a new lobby
      */
     @GuiOption(
-            name="quickplay.settings.mainMenuHypixelCompass.name",
+            name="quickplay.settings.mainMenuHypixelCompass",
             helpText = "quickplay.settings.mainMenuHypixelCompass.help"
     )
     public boolean mainMenuHypixelCompass = false;
@@ -260,7 +260,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether the client should receive notifications for updates
      */
     @GuiOption(
-            name = "quickplay.settings.updateNotifications.name",
+            name = "quickplay.settings.updateNotifications",
             helpText = "quickplay.settings.updateNotifications.help"
     )
     public boolean updateNotifications = true;
@@ -269,7 +269,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether the client should use Quickplay's redesigned /hub command
      */
     @GuiOption(
-            name = "quickplay.settings.redesignedLobbyCommand.name",
+            name = "quickplay.settings.redesignedLobbyCommand",
             helpText = "quickplay.settings.redesignedLobbyCommand.help"
     )
     public boolean redesignedLobbyCommand = true;
@@ -279,10 +279,9 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Cosmetic, used for suspense & for the spinner
      */
     @GuiOption(
-            name = "quickplay.settings.partyModeDelay.name",
+            name = "quickplay.settings.partyModeDelay",
             helpText = "quickplay.settings.partyModeDelay.help",
             category = "quickplay.settings.category.partyMode",
-            minValue = 0,
             maxValue = 10,
             decimalFormat = "0.0"
     )
@@ -292,7 +291,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether the client should use the party mode spinner GUI or not
      */
     @GuiOption(
-            name = "quickplay.settings.partyModeGui.name",
+            name = "quickplay.settings.partyModeGui",
             helpText = "quickplay.settings.partyModeGui.help",
             category = "quickplay.settings.category.partyMode"
     )
@@ -302,7 +301,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether a user's glyph should fade as you get closer to them.
      */
     @GuiOption(
-            name = "quickplay.settings.fadeGlyphs.name",
+            name = "quickplay.settings.fadeGlyphs",
             helpText = "quickplay.settings.fadeGlyphs.help",
             category = "quickplay.settings.category.premium"
     )
@@ -312,7 +311,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether a glyphs should be visible when in F1 mode.
      */
     @GuiOption(
-            name = "quickplay.settings.showGlyphsInF1.name",
+            name = "quickplay.settings.showGlyphsInF1",
             helpText = "quickplay.settings.showGlyphsInF1.help",
             category = "quickplay.settings.category.premium"
     )
@@ -323,7 +322,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Should be set via QuickplayPremium jar.
      */
     @GuiOption(
-            name = "quickplay.settings.displayOwnGlyph.name",
+            name = "quickplay.settings.displayOwnGlyph",
             helpText = "quickplay.settings.displayOwnGlyph.help",
             category = "quickplay.settings.category.premium"
     )
@@ -333,7 +332,7 @@ public class ConfigSettings extends AConfiguration implements Serializable {
      * Whether the user's daily reward should be displayed in-game rather than in-browser
      */
     @GuiOption(
-            name = "quickplay.settings.ingameDailyReward.name",
+            name = "quickplay.settings.ingameDailyReward",
             helpText = "quickplay.settings.ingameDailyReward.help",
             category = "quickplay.settings.category.premium"
     )
