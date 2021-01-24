@@ -2,7 +2,6 @@
 quickplay.offline=You are not currently online the Hypixel Network!
 quickplay.disabled=Quickplay has forcefully been disabled! Reason: %s
 quickplay.bannedFromOfficialApi=You are banned from using the official Quickplay API! Please contact a developer if you believe this is a mistake.
-quickplay.chat.separator=-
 quickplay.chat.clickToOpen=Click to open.
 quickplay.noPermission=Sorry, you don't have permission to do this! Contact a developer if you believe this is a mistake.
 quickplay.alterAliasedActionFailed=Hmm, something went wrong while altering that Aliased Action! Try again.
@@ -209,7 +208,6 @@ quickplay.premium.expiresIn=Your Quickplay Premium subscription expires in %s da
 quickplay.premium.purchasePage=Your Quickplay Premium account page is available at:
 
 quickplay.premium.ingameReward.freeToken=You got a free Daily Reward Token because of your Daily Reward Streak. Visit the Delivery Man to claim it.
-quickplay.premium.ingameReward.error=Weird, something went wrong while trying to do that! Try re-authorizing with "/qp premium auth", or contact a developer if this issue persists.
 quickplay.premium.ingameReward.openLink=Open Web Version
 quickplay.premium.ingameReward.hypixelProperty=All assets are property of Hypixel Inc. Quickplay is not affiliated with Hypixel Inc. https://hypixel.net/
 quickplay.premium.ingameReward.adroll.header=Welcome to the Hypixel Zoo!
