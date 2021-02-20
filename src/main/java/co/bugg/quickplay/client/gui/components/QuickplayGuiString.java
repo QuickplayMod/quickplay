@@ -2,7 +2,7 @@ package co.bugg.quickplay.client.gui.components;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.QuickplayGui;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
 
 /**
  * A simple, static string that is built into a component
@@ -26,7 +26,8 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
      * @param centered Whether this string should be centered
      * @param scrollable Whether this string is scrollable
      */
-    public QuickplayGuiString(Object origin, int id, int x, int y, int width, int height, String displayString, boolean centered, boolean scrollable) {
+    public QuickplayGuiString(Object origin, int id, int x, int y, int width, int height, String displayString,
+                              boolean centered, boolean scrollable) {
         super(origin, id, x, y, width, height, displayString, scrollable);
         this.centered = centered;
     }
@@ -36,13 +37,17 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
         if(opacity > 0) {
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
 
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
-            if (centered)
-                drawCenteredString(gui.mc.fontRenderer, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-            else
-                drawString(gui.mc.fontRenderer, displayString, x, scrollAdjustedY, (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
-            GL11.glPopMatrix();
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
+            if (centered) {
+                drawCenteredString(gui.mc.fontRenderer, displayString, x, scrollAdjustedY,
+                        (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+            } else {
+                drawString(gui.mc.fontRenderer, displayString, x, scrollAdjustedY,
+                        (Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
+            }
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 

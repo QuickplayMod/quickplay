@@ -36,7 +36,8 @@ public class PremiumCommandAbout implements IPremiumCommand {
     @Override
     public void run(String[] args) {
         if (Quickplay.INSTANCE.premiumAbout != null) {
-            Quickplay.INSTANCE.messageBuffer.push(new Message(Quickplay.INSTANCE.premiumAbout, true, false));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(Quickplay.INSTANCE.premiumAbout, true,
+                    false));
         } else {
             final String premiumLink = "https://bugg.co/quickplay/premium";
 

@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Component that extends off of Quickplay GUI buttons to add a number slider
@@ -14,7 +13,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     /**
      * Percentage of the way down the slider, from the left, that the handle is currently at
      */
-    private float sliderPercentage = 1.0F;
+    private float sliderPercentage;
     /**
      * Whether the mouse is currently pressed down or not
      */
@@ -22,7 +21,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     /**
      * Display name of this slider
      */
-    private String name;
+    private final String name;
     /**
      * Minimum value of this slider
      */
@@ -39,7 +38,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     /**
      * {@link FormatHelper} for formatting the slider's display string, depending on the value
      */
-    private QuickplayGuiSlider.FormatHelper formatHelper;
+    private final QuickplayGuiSlider.FormatHelper formatHelper;
 
     /**
      * Constructor
@@ -58,7 +57,9 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
      * @param formatter Display name formatter depending on the slider's value
      * @param scrollable Whether this slider is scrollable
      */
-    public QuickplayGuiSlider(GuiPageButtonList.GuiResponder guiResponder, Object origin, int idIn, int x, int y, int widthIn, int heightIn, String name, float min, float max, float defaultValue, QuickplayGuiSlider.FormatHelper formatter, boolean scrollable)
+    public QuickplayGuiSlider(GuiPageButtonList.GuiResponder guiResponder, Object origin, int idIn, int x, int y,
+                              int widthIn, int heightIn, String name, float min, float max, float defaultValue,
+                              QuickplayGuiSlider.FormatHelper formatter, boolean scrollable)
     {
         super(origin, idIn, x, y, widthIn, heightIn, "", scrollable);
         this.name = name;
@@ -101,10 +102,9 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
             super.draw(gui, mouseX, mouseY, opacity);
 
             final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
-            ;
 
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
 
             if (isMouseDown) {
                 // Calculate the new slider position
@@ -117,14 +117,18 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
             gui.mc.getTextureManager().bindTexture(buttonTextures);
-            GL11.glScaled(scale, scale, scale);
-            drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)), scrollAdjustedY, 0, 66, 4, 20);
-            drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)) + 4, scrollAdjustedY, 196, 66, 4, 20);
-            drawDisplayString(gui, opacity, scrollAdjustedY);
-            GL11.glScaled(1 / scale, 1 / scale, 1 / scale);
+            GlStateManager.scale(scale, scale, scale);
+            drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)), scrollAdjustedY,
+                    0, 66, 4, 20);
+            drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)) + 4, scrollAdjustedY,
+                    196, 66, 4, 20);
+            if (opacity > 0) {
+                drawDisplayString(gui, opacity, scrollAdjustedY);
+            }
+            GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 
@@ -135,33 +139,22 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
     private void calculateSliderPos(int mouseX) {
         sliderPercentage = (float)(mouseX - (x + 4)) / (float)(width - 8);
         // Keep the slider percentage between 0 and 1
-        sliderPercentage = sliderPercentage < 0.0f ? 0.0f : sliderPercentage > 1.0f ? 1.0f : sliderPercentage;
+        sliderPercentage = sliderPercentage < 0.0f ? 0.0f : Math.min(sliderPercentage, 1.0f);
     }
 
     @Override
     public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY)
     {
-        if (super.mouseHovering(gui, mouseX, mouseY))
-        {
+        if (super.mouseHovering(gui, mouseX, mouseY)) {
             sliderPercentage = (float)(mouseX - (x / scale + 4)) / (float)(width / scale - 8);
-
-            if (sliderPercentage < 0.0F)
-            {
-                sliderPercentage = 0.0F;
-            }
-
-            if (sliderPercentage > 1.0F)
-            {
-                sliderPercentage = 1.0F;
-            }
+            // Slider percentage must be between 0 and 1
+            sliderPercentage = Math.min(Math.max(sliderPercentage, 0.0f), 1.0f);
 
             displayString = getDisplayString();
             responder.setEntryValue(id, getValue());
             isMouseDown = true;
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

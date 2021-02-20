@@ -52,7 +52,8 @@ public class SubCommandDiscord extends ASubCommand {
                 )
         );
 
-        final ITextComponent finalComponent = new TextComponentString("").appendSibling(chatComponent).appendText("\n").appendSibling(linkComponent);
+        final ITextComponent finalComponent = new TextComponentString("")
+                .appendSibling(chatComponent).appendText("\n").appendSibling(linkComponent);
         Quickplay.INSTANCE.messageBuffer.push(new Message(finalComponent, true));
     }
 

@@ -9,11 +9,11 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiSlider;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.gui.GuiPageButtonList;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.opengl.GL11;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.*;
@@ -102,8 +102,8 @@ public class QuickplayGuiEditColor extends QuickplayGui {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         /*
          * Draw background
@@ -113,18 +113,22 @@ public class QuickplayGuiEditColor extends QuickplayGui {
 
         // Draw text
         if(opacity > 0) {
-            GL11.glScaled(nameTextScale, nameTextScale, nameTextScale);
-            drawCenteredString(mc.fontRenderer, colorName, (int) (width / 2 / nameTextScale), (int) (nameTextY / nameTextScale), 0xFFFFFF);
-            GL11.glScaled(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
-            GL11.glScaled(sampleTextScale, sampleTextScale, sampleTextScale);
-            drawCenteredString(mc.fontRenderer, I18n.format("quickplay.config.color.gui.sampletext"), (int) (width / 2 / sampleTextScale), (int) (sampleTextY / sampleTextScale), color.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-            GL11.glScaled(1 / sampleTextScale, 1 / sampleTextScale, 1 / sampleTextScale);
+            GlStateManager.scale(nameTextScale, nameTextScale, nameTextScale);
+            drawCenteredString(mc.fontRenderer, colorName, (int) (width / 2 / nameTextScale),
+                    (int) (nameTextY / nameTextScale), 0xFFFFFF);
+            GlStateManager.scale(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
+
+            GlStateManager.scale(sampleTextScale, sampleTextScale, sampleTextScale);
+            drawCenteredString(mc.fontRenderer, I18n.format("quickplay.config.color.gui.sampletext"),
+                    (int) (width / 2 / sampleTextScale), (int) (sampleTextY / sampleTextScale),
+                    color.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            GlStateManager.scale(1 / sampleTextScale, 1 / sampleTextScale, 1 / sampleTextScale);
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
 
     }
 
@@ -145,15 +149,33 @@ public class QuickplayGuiEditColor extends QuickplayGui {
         ColorFormatHelper formatHelper = new ColorFormatHelper();
 
         final int sampleTextBottom = (int) (sampleTextY + mc.fontRenderer.FONT_HEIGHT * sampleTextScale);
-        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "RED", nextComponentId, width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.red"), 0, 255, color.getColor().getRed(), formatHelper, true));
+
+        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "RED", nextComponentId,
+                width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
+                * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.red"),
+                0, 255, color.getColor().getRed(), formatHelper, true));
         nextComponentId++;
-        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "GREEN", nextComponentId, width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.green"), 0, 255, color.getColor().getGreen(), formatHelper, true));
+        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "GREEN", nextComponentId,
+                width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
+                * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.green"),
+                0, 255, color.getColor().getGreen(), formatHelper, true));
+
         nextComponentId++;
-        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "BLUE", nextComponentId, width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.blue"), 0, 255, color.getColor().getBlue(), formatHelper, true));
+        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "BLUE", nextComponentId,
+                width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
+                * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.blue"),
+                0, 255, color.getColor().getBlue(), formatHelper, true));
+
         nextComponentId++;
-        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "CHROMA", nextComponentId, width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.chromaspeed"), 0, chromaMaxSpeed, color.getChromaSpeed(), formatHelper, true));
+        componentList.add(new QuickplayGuiSlider(colorGuiResponder, "CHROMA", nextComponentId,
+                width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
+                * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.config.color.gui.chromaspeed"),
+                0, chromaMaxSpeed, color.getChromaSpeed(), formatHelper, true));
+
         nextComponentId++;
-        componentList.add(new QuickplayGuiButton("EXIT", nextComponentId, width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth, elementHeight, I18n.format("quickplay.gui." + (previousGui == null ? "close" : "back")), true));
+        componentList.add(new QuickplayGuiButton("EXIT", nextComponentId, width / 2 - elementWidth / 2,
+                sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth,
+                elementHeight, I18n.format("quickplay.gui." + (previousGui == null ? "close" : "back")), true));
     }
 
     @Override
@@ -163,8 +185,9 @@ public class QuickplayGuiEditColor extends QuickplayGui {
 
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
-        if(component.origin.equals("EXIT"))
+        if(component.origin.equals("EXIT")) {
             mc.displayGuiScreen(previousGui);
+        }
     }
 
     @Override
@@ -174,7 +197,8 @@ public class QuickplayGuiEditColor extends QuickplayGui {
             config.save();
         } catch (IOException e) {
             System.out.println("Failed to save color " + colorName + ".");
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.config.saveerror").setStyle(new Style().setColor(TextFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.config.saveerror")
+                    .setStyle(new Style().setColor(TextFormatting.RED))));
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
@@ -186,23 +210,23 @@ public class QuickplayGuiEditColor extends QuickplayGui {
     public class ColorFormatHelper implements QuickplayGuiSlider.FormatHelper {
         @Override
         public String getText(int id, String name, float value) {
-            switch(id) {
-                default: // 0-2 = R, G, and B
-                    return name + ": " + ((Number) value).intValue();
-                case 3: // 3 = Chroma
-                    String speedLang;
-                    if(value <= 0)
-                        speedLang = "off";
-                    else if(value < 0.008)
-                        speedLang = "slow";
-                    else if(value < 0.02)
-                        speedLang = "medium";
-                    else if(value < 0.035)
-                        speedLang = "fast";
-                    else
-                        speedLang = "insane";
-                    return name + ": " + I18n.format("quickplay.config.color.gui.chromaspeed." + speedLang);
+            // 0-2 = R, G, and B
+            if (id == 3) { // 3 = Chroma
+                String speedLang;
+                if (value <= 0) {
+                    speedLang = "off";
+                } else if (value < 0.008) {
+                    speedLang = "slow";
+                } else if (value < 0.02) {
+                    speedLang = "medium";
+                } else if (value < 0.035) {
+                    speedLang = "fast";
+                } else {
+                    speedLang = "insane";
+                }
+                return name + ": " + I18n.format("quickplay.config.color.gui.chromaspeed." + speedLang);
             }
+            return name + ": " + ((Number) value).intValue();
         }
     }
 
@@ -226,14 +250,13 @@ public class QuickplayGuiEditColor extends QuickplayGui {
          * @param value Value
          */
         @Override
-        public void setEntryValue(int id, float value) {
-            switch((String) componentList.get(id).origin) {
-                default:
-                    color.setColor(new Color(((int) ((QuickplayGuiSlider) componentList.get(0)).getValue()), (int) ((QuickplayGuiSlider) componentList.get(1)).getValue(), (int) ((QuickplayGuiSlider) componentList.get(2)).getValue()));
-                    break;
-                case "CHROMA":
-                    color.setChromaSpeed(value);
-                    break;
+        public void onTick(int id, float value) {
+            if ("CHROMA".equals(componentList.get(id).origin)) {
+                color.setChromaSpeed(value);
+            } else {
+                color.setColor(new Color(((int) ((QuickplayGuiSlider) componentList.get(0)).getValue()),
+                        (int) ((QuickplayGuiSlider) componentList.get(1)).getValue(),
+                        (int) ((QuickplayGuiSlider) componentList.get(2)).getValue()));
             }
         }
 

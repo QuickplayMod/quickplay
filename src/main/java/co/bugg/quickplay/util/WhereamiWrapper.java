@@ -71,7 +71,8 @@ public class WhereamiWrapper {
         final String message = event.getMessage().getUnformattedText();
         // Regex for the /whereami response
         // §bYou are currently connected to server §r§6lobby5§r
-        final Pattern pattern = Pattern.compile("^You are currently (?:(?:in |connected to server )(limbo|(?:(?:[A-Za-z]+)?lobby(?:\\d{1,3})|(?:mega|mini)\\d{1,3}[A-Z])))$");
+        final Pattern pattern = Pattern.compile("^You are currently (?:(?:in |connected to server )" +
+                "(limbo|(?:(?:[A-Za-z]+)?lobby(?:\\d{1,3})|(?:mega|mini)\\d{1,5}[A-Z])))$");
         final Matcher matcher = pattern.matcher(message);
 
         if(
@@ -82,8 +83,9 @@ public class WhereamiWrapper {
                 listening
         ) {
 
-            if(this.cancel)
+            if(this.cancel) {
                 event.setCanceled(true);
+            }
 
             // Get the regex group containing the current instance
             final String instance = matcher.group(1);

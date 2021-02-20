@@ -20,12 +20,15 @@ public class TimingRequest extends AnalyticsRequest {
     TimingRequest(GoogleAnalytics analytics, String timingCategory, String timingVariableName, int time) throws MalformedURLException {
         super(RequestType.TIMING, analytics);
 
-        if(timingCategory == null || timingCategory.length() == 0)
+        if(timingCategory == null || timingCategory.length() == 0) {
             throw new IllegalArgumentException("timingCategory cannot be null and must be at least 1 character in length.");
-        if(timingVariableName == null || timingVariableName.length() == 0)
+        }
+        if(timingVariableName == null || timingVariableName.length() == 0) {
             throw new IllegalArgumentException("timingVariableName cannot be null and must be at least 1 character in length.");
-        if(time < 0)
+        }
+        if(time < 0) {
             throw new IllegalArgumentException("time must be greater than or equal to 0.");
+        }
 
         parameters.put("utc", timingCategory);
         parameters.put("utv", timingVariableName);
@@ -38,10 +41,11 @@ public class TimingRequest extends AnalyticsRequest {
      * @return This
      */
     public TimingRequest setTimingLabel(String label) {
-        if(label == null || label.length() == 0)
+        if(label == null || label.length() == 0) {
             parameters.remove("utl");
-        else
+        } else {
             parameters.put("utl", label);
+        }
         return this;
     }
 

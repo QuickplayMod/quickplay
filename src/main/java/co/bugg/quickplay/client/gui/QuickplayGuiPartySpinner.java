@@ -5,36 +5,15 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.games.PartyMode;
 import co.bugg.quickplay.util.Message;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
 import java.util.concurrent.Future;
@@ -93,14 +72,18 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
             int buttonId = 0;
 
             final String randomizingString = I18n.format("quickplay.gui.party.randomizing");
-            componentList.add(new QuickplayGuiString(null, buttonId++, width / 2, randomizingTextHeight, fontRenderer.getStringWidth(randomizingString), fontRenderer.FONT_HEIGHT, randomizingString, true, false));
+            componentList.add(new QuickplayGuiString(null, buttonId++, width / 2, randomizingTextHeight,
+                    fontRenderer.getStringWidth(randomizingString), fontRenderer.FONT_HEIGHT, randomizingString,
+                    true, false));
 
-            if (spinningThreadFuture == null)
+            if (spinningThreadFuture == null) {
                 startSpinner();
+            }
         } else {
             // close the GUI and send an error
             Minecraft.getMinecraft().displayGuiScreen(null);
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.party.nogames").setStyle(new Style().setColor(TextFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.party.nogames")
+                    .setStyle(new Style().setColor(TextFormatting.RED))));
         }
     }
 
@@ -132,8 +115,9 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                             if (sleepTime > 1000) sleepTime = 1000;
 
                             Thread.sleep(sleepTime);
-                        } else
+                        } else {
                             return;
+                        }
                     }
                 } else {
                     final int nextSelectedModeIndex = random.nextInt(Quickplay.INSTANCE.settings.partyModes.size());
@@ -150,12 +134,14 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                     if(Minecraft.getMinecraft().currentScreen == this) {
                         if (spinnerText.equals(textToFlash)) {
                             spinnerText = "";
-                        } else
+                        } else {
                             spinnerText = textToFlash;
+                        }
 
                         Thread.sleep((long) (flashFrequency * 1000));
-                    } else
+                    } else {
                         return;
+                    }
                 }
 
                 // Finally, if this GUI is still open, send the mode command & close GUI
@@ -171,24 +157,28 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         drawDefaultBackground();
 
         // draw background box
-        drawRect(0, randomizingTextHeight - boxPadding, width, (int) (randomizingTextHeight + fontRenderer.FONT_HEIGHT * spinnerScale * 3 + boxPadding), (int) (opacity * 255 * 0.5) << 24);
+        drawRect(0, randomizingTextHeight - boxPadding, width,
+                (int) (randomizingTextHeight + fontRenderer.FONT_HEIGHT * spinnerScale * 3 + boxPadding),
+                (int) (opacity * 255 * 0.5) << 24);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         // Draw spinner
         if(opacity > 0) {
-            GL11.glScaled(spinnerScale, spinnerScale, spinnerScale);
-            drawCenteredString(fontRenderer, spinnerText, (int) (width / 2 / spinnerScale), (int) ((randomizingTextHeight + fontRenderer.FONT_HEIGHT * spinnerScale * 2) / spinnerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-            GL11.glScaled(1 / spinnerScale, 1 / spinnerScale, 1 / spinnerScale);
+            GlStateManager.scale(spinnerScale, spinnerScale, spinnerScale);
+            drawCenteredString(fontRenderer, spinnerText, (int) (width / 2 / spinnerScale),
+                    (int) ((randomizingTextHeight + fontRenderer.FONT_HEIGHT * spinnerScale * 2) / spinnerScale),
+                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            GlStateManager.scale(1 / spinnerScale, 1 / spinnerScale, 1 / spinnerScale);
         }
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 }

@@ -58,12 +58,12 @@ public class Request {
                 return WebResponse.fromJson(writer.toString());
             }
 
-            httpResponse.close();
         } catch (IOException e) {
             e.printStackTrace();
             // Don't send error report if the issue arose from an /exception request. Otherwise it'll probably create an infinite loop.
-            if(!apacheRequestObj.getURI().toString().endsWith("/exception"))
+            if(!apacheRequestObj.getURI().toString().endsWith("/exception")) {
                 Quickplay.INSTANCE.sendExceptionRequest(e);
+            }
         }
 
         // Probably response code is unsuccessful

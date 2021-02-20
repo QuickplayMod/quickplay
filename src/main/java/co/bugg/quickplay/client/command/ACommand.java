@@ -68,7 +68,8 @@ public abstract class ACommand implements ICommand {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 
         // Send analytical data to Google
-        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
             Quickplay.INSTANCE.threadPool.submit(() -> {
                 try {
                     Quickplay.INSTANCE.ga.createEvent("commands", "Execute Command")
@@ -139,7 +140,7 @@ public abstract class ACommand implements ICommand {
     public String[] removeFirstArgument(String[] args) {
         ArrayList<String> argsList = new ArrayList<>(Arrays.asList(args));
         argsList.remove(0);
-        return argsList.toArray(new String[argsList.size()]);
+        return argsList.toArray(new String[0]);
     }
 
     /**

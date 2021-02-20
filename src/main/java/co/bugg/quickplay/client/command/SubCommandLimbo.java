@@ -53,12 +53,16 @@ public class SubCommandLimbo extends ASubCommand {
                 }
             }
 
-            if(!currentServer.equals("limbo"))
+            if(!currentServer.equals("limbo")) {
                 Quickplay.INSTANCE.chatBuffer.push("/achat §");
-            else
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.commands.quickplay.limbo.alreadythere").setStyle(new Style().setColor(TextFormatting.RED))));
+            } else {
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation(
+                        "quickplay.commands.quickplay.limbo.alreadythere")
+                        .setStyle(new Style().setColor(TextFormatting.RED))));
+            }
         } else {
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.offline").setStyle(new Style().setColor(TextFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation(
+                    "quickplay.offline").setStyle(new Style().setColor(TextFormatting.RED))));
         }
     }
 

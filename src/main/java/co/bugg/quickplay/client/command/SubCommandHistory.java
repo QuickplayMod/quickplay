@@ -59,15 +59,21 @@ public class SubCommandHistory extends ASubCommand {
 
                 instanceList.setStyle(new Style().setColor(TextFormatting.YELLOW));
 
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.commands.quickplay.history.header", instanceCount).setStyle(new Style().setColor(TextFormatting.GOLD))));
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation(
+                        "quickplay.commands.quickplay.history.header", instanceCount)
+                        .setStyle(new Style().setColor(TextFormatting.GOLD))));
                 Quickplay.INSTANCE.messageBuffer.push(new Message(instanceList));
             } else {
                 // Something went wrong
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.commands.quickplay.history.error").setStyle(new Style().setColor(TextFormatting.RED))));
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation(
+                        "quickplay.commands.quickplay.history.error")
+                        .setStyle(new Style().setColor(TextFormatting.RED))));
             }
         } else {
             // Not online hypixel
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation("quickplay.offline").setStyle(new Style().setColor(TextFormatting.RED))));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentTranslation(
+                    "quickplay.offline")
+                    .setStyle(new Style().setColor(TextFormatting.RED))));
         }
     }
 

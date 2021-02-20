@@ -45,8 +45,9 @@ public abstract class ABuffer implements Runnable {
      */
     public Object pull() {
         Object returnValue = peek();
-        if(returnValue != null)
+        if(returnValue != null) {
             buffer.remove(0);
+        }
 
         return returnValue;
     }

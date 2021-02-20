@@ -12,9 +12,9 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -130,7 +130,8 @@ public class QuickplayGui extends GuiScreen {
         super.onGuiClosed();
 
         // Send analytical data to Google
-        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
             Quickplay.INSTANCE.threadPool.submit(() -> {
                 try {
                     Quickplay.INSTANCE.ga.createEvent("GUIs", "GUI Closed")
@@ -156,7 +157,8 @@ public class QuickplayGui extends GuiScreen {
     @Override
     public void initGui() {
         // Send analytical data to Google
-        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
             Quickplay.INSTANCE.threadPool.submit(() -> {
                 try {
                     Quickplay.INSTANCE.ga.createEvent("GUIs", "GUI Initialized")
@@ -175,9 +177,11 @@ public class QuickplayGui extends GuiScreen {
 
         super.initGui();
         Quickplay.INSTANCE.threadPool.submit(() -> {
-            if(Quickplay.INSTANCE.settings.fadeInGuis && opacity < 1)
+            if(Quickplay.INSTANCE.settings.fadeInGuis && opacity < 1) {
                 fadeAnimation.start();
-            else opacity = 1;
+            } else {
+                opacity = 1;
+            }
         });
 
         // Hide HUD (health & scoreboard & such)
@@ -204,7 +208,8 @@ public class QuickplayGui extends GuiScreen {
                 if (loadShaderMethod != null) {
                     loadShaderMethod.setAccessible(true);
                     try {
-                        loadShaderMethod.invoke(Minecraft.getMinecraft().entityRenderer, new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
+                        loadShaderMethod.invoke(Minecraft.getMinecraft().entityRenderer,
+                                new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_gui.json"));
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         e.printStackTrace();
                         Quickplay.INSTANCE.sendExceptionRequest(e);
@@ -231,21 +236,21 @@ public class QuickplayGui extends GuiScreen {
     @Override
     public void drawDefaultBackground() {
         if(!Quickplay.INSTANCE.settings.transparentBackgrounds) {
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
             // Prepend opacity to 24-bit color
             drawRect(0, 0, width, height, 0x000000 | ((int) (opacity * 0.5 * 255) << 24));
             // drawRect disables blend (Grr!)
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.enableBlend();
+            GlStateManager.popMatrix();
         }
     }
 
     @Override
     protected void drawHoveringText(List<String> textLines, int x, int y, FontRenderer font) {
         if(textLines.size() > 0 && opacity > 0) {
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
 
             int textXMargins = 6;
             int boxMargins = 10;
@@ -254,8 +259,9 @@ public class QuickplayGui extends GuiScreen {
 
             // Calculate the max width of the text
             for(String line : textLines) {
-                if(font.getStringWidth(line) > textWidth)
+                if(font.getStringWidth(line) > textWidth) {
                     textWidth = font.getStringWidth(line);
+                }
             }
 
             boolean sidesSwapped = false;
@@ -282,8 +288,9 @@ public class QuickplayGui extends GuiScreen {
 
                     for(String wrappedFragment : wrappedLine) {
                         final int wrappedFragmentWidth = font.getStringWidth(wrappedFragment);
-                        if(wrappedFragmentWidth > wrappedTextWidth)
+                        if(wrappedFragmentWidth > wrappedTextWidth) {
                             wrappedTextWidth = wrappedFragmentWidth;
+                        }
 
                         allWrappedLines.add(wrappedFragment);
                     }
@@ -301,22 +308,24 @@ public class QuickplayGui extends GuiScreen {
             int tooltipHeight = textLines.size() * (font.FONT_HEIGHT + textYMargins) + textYMargins;
 
             // Move up if falling off bottom of screen
-            if(y + tooltipHeight > height)
+            if(y + tooltipHeight > height) {
                 y -= tooltipHeight;
+            }
 
             // Draw background
             drawRect(x, y, x + textWidth + textXMargins, y + tooltipHeight, (int) (opacity * 0.5 * 255) << 24);
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.enableBlend();
 
             // Draw text
             int currentLineY = y + textYMargins;
             for(String line : textLines) {
-                drawString(font, line, x + textXMargins / 2, currentLineY, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                drawString(font, line, x + textXMargins / 2, currentLineY,
+                        Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
                 currentLineY += font.FONT_HEIGHT + textYMargins;
             }
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
     }
 
@@ -325,8 +334,7 @@ public class QuickplayGui extends GuiScreen {
      */
     public void closeContextMenu() {
         if(contextMenu != null) {
-            if(componentList.contains(contextMenu))
-                componentList.remove(contextMenu);
+            componentList.remove(contextMenu);
             contextMenu = null;
         }
     }
@@ -355,17 +363,17 @@ public class QuickplayGui extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        if(mouseButton == 0)
-            // Go through components in reverse order in order to process top elements first
+        if(mouseButton == 0) {    // Go through components in reverse order in order to process top elements first
             // Creates new copy of arraylist to avoid a ConcurrentModificationException caused by mouseClicked or componentClicked
-            for(QuickplayGuiComponent component : new ArrayList<>(Lists.reverse(componentList))) {
-                if(component.mouseHovering(this, mouseX, mouseY)) {
-                    if(component.mouseClicked(this, mouseX, mouseY, mouseButton))
+            for (QuickplayGuiComponent component : new ArrayList<>(Lists.reverse(componentList))) {
+                if (component.mouseHovering(this, mouseX, mouseY)) {
+                    if (component.mouseClicked(this, mouseX, mouseY, mouseButton)) {
                         break;
+                    }
                     componentClicked(component);
                 }
             }
-
+        }
         closeContextMenu();
         // lastMouseY is used for dragging scrolling
         lastMouseY = mouseY;
@@ -385,8 +393,9 @@ public class QuickplayGui extends GuiScreen {
         super.keyTyped(typedChar, keyCode);
 
         for(QuickplayGuiComponent component : componentList) {
-            if(component.keyTyped(typedChar, keyCode))
+            if(component.keyTyped(typedChar, keyCode)) {
                 return;
+            }
         }
 
         if(keyCode == 1 || keyCode == mc.gameSettings.keyBindInventory.getKeyCode()) {
@@ -402,7 +411,8 @@ public class QuickplayGui extends GuiScreen {
         if(trisTribute.toUpperCase().endsWith(magicWord.toUpperCase())) {
             // Abra kadabra! Open sesame!
             // Load the fancy shader
-            Minecraft.getMinecraft().entityRenderer.loadShader(new ResourceLocation(Reference.MOD_ID, "shaders/quickplay_rainbow_gui.json"));
+            Minecraft.getMinecraft().entityRenderer.loadShader(new ResourceLocation(Reference.MOD_ID,
+                    "shaders/quickplay_rainbow_gui.json"));
             // Make it so the shader goes bye bye when the GUI closes
             disableShaderOnGuiClose = true;
             // Make a bunch of dumb noises
@@ -448,16 +458,18 @@ public class QuickplayGui extends GuiScreen {
             // component with has the lowest Y value
             QuickplayGuiComponent highestComponent = null;
             for (QuickplayGuiComponent component : componentList) {
-                if (component.scrollable && (highestComponent == null || highestComponent.y > component.y))
+                if (component.scrollable && (highestComponent == null || highestComponent.y > component.y)) {
                     highestComponent = component;
-                else if (component.scrollable && (lowestComponent == null || lowestComponent.y < component.y))
+                } else if (component.scrollable && (lowestComponent == null || lowestComponent.y < component.y)) {
                     lowestComponent = component;
+                }
             }
 
-            if(highestComponent != null && lowestComponent != null)
+            if(highestComponent != null && lowestComponent != null) {
                 return lowestComponent.y - highestComponent.y + lowestComponent.height + scrollContentMargins;
-            else
+            } else {
                 return 0;
+            }
         } else {
             return 0;
         }
@@ -497,10 +509,11 @@ public class QuickplayGui extends GuiScreen {
                         // OR if scrolling up & the content is back to it's original position
                         (scrollingUp && 0 < scrollPixel)) {
 
-                        if(scrollingUp)
+                        if(scrollingUp) {
                             scrollPixel--;
-                        else
+                        } else {
                             scrollPixel++;
+                        }
 
                         try {
                             Thread.sleep(Math.abs(scrollDelay));

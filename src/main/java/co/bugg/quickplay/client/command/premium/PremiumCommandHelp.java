@@ -42,7 +42,12 @@ public class PremiumCommandHelp implements IPremiumCommand {
         if(args.length < 2) {
             sendBaseHelpMessage();
         } else {
-            List<IPremiumCommand> filteredList = parent.premiumCommands.stream().filter(cmd -> cmd.getName().equals(args[1])).collect(Collectors.toList());
+            // Filter subcommands for commands which match the argument from the user - Should only be one item.
+            final List<IPremiumCommand> filteredList = parent.premiumCommands
+                    .stream()
+                    .filter(cmd -> cmd.getName().equals(args[1]))
+                    .collect(Collectors.toList());
+
             if(filteredList.size() > 0) {
                 final ITextComponent chatComponent = new TextComponentString(filteredList.get(0).getHelpText() + "\n")
                         .appendSibling(new TextComponentTranslation("quickplay.commands.usage").appendText("\n"))
@@ -61,6 +66,7 @@ public class PremiumCommandHelp implements IPremiumCommand {
     public void sendBaseHelpMessage() {
         final ITextComponent message = new TextComponentString("");
         if(parent.premiumCommands.size() > 0) {
+            // For each item, add its command and help text. Append line break if not the last item.
             for(ListIterator<IPremiumCommand> iter = parent.premiumCommands.listIterator(); iter.hasNext();) {
                 final IPremiumCommand premiumCommand = iter.next();
                 message.appendSibling(new TextComponentString("/" + parent.getParent().getName() + " " + parent.getName() + " " + premiumCommand.getName()))
@@ -81,7 +87,11 @@ public class PremiumCommandHelp implements IPremiumCommand {
         final List<String> list = new ArrayList<>();
         if(args.length == 2)  {
             // Add all commands that begin with what's already been typed out
-            list.addAll(parent.premiumCommands.stream().filter(cmd -> cmd.getName().startsWith(args[1])).map(IPremiumCommand::getName).collect(Collectors.toList()));
+            list.addAll(parent.premiumCommands
+                    .stream()
+                    .filter(cmd -> cmd.getName().startsWith(args[1]))
+                    .map(IPremiumCommand::getName)
+                    .collect(Collectors.toList()));
         }
 
         return list;

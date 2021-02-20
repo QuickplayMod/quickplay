@@ -55,8 +55,9 @@ public class GoogleAnalytics {
      * @return This
      */
     GoogleAnalytics setTrackingId(String id) {
-        if(!id.matches(trackingIdPattern))
+        if(!id.matches(trackingIdPattern)) {
             throw new IllegalArgumentException("Tracking ID invalid format! Regex: " + trackingIdPattern);
+        }
 
         this.trackingId = id;
         return this;
@@ -68,8 +69,9 @@ public class GoogleAnalytics {
      * @return This
      */
     public GoogleAnalytics setClientId(String id) {
-        if(id == null)
+        if(id == null) {
             throw new IllegalArgumentException("Invalid client ID! Client ID cannot be null.");
+        }
         this.clientId = id;
         return this;
     }

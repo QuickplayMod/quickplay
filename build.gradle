@@ -28,8 +28,7 @@ jar {
 
 targetCompatibility = sourceCompatibility = 1.8
 
-version = "2.0.1-beta"
-version = "2.0.3"
+version = "2.0.4"
 group= "co.bugg.quickplay" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Quickplay-1.12"
 
@@ -95,3 +94,13 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+// Fix asset loading
+task moveResources {
+    doLast {
+        ant.move file: "${buildDir}/resources/main",
+                todir: "${buildDir}/classes/java"
+    }
+}
+moveResources.dependsOn processResources
+classes.dependsOn moveResources

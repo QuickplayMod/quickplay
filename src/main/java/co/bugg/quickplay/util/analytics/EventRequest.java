@@ -18,8 +18,9 @@ public class EventRequest extends AnalyticsRequest {
     EventRequest(GoogleAnalytics analytics, String eventCategory, String eventAction) throws MalformedURLException {
         super(RequestType.EVENT, analytics);
 
-        if(eventAction == null || eventAction.length() == 0 || eventCategory == null || eventCategory.length() == 0)
+        if(eventAction == null || eventAction.length() == 0 || eventCategory == null || eventCategory.length() == 0) {
             throw new IllegalArgumentException("eventCategory and eventAction cannot be null and must be at least 1 character in length.");
+        }
 
         parameters.put("ec", eventCategory);
         parameters.put("ea", eventAction);
@@ -33,10 +34,11 @@ public class EventRequest extends AnalyticsRequest {
      * @return This
      */
     public EventRequest setEventLabel(String label) {
-        if(label == null || label.length() == 0)
+        if(label == null || label.length() == 0) {
             parameters.remove("el");
-        else
+        } else {
             parameters.put("el", label);
+        }
 
         return this;
     }

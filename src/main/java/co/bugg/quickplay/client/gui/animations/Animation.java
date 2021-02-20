@@ -92,8 +92,9 @@ public class Animation {
 
         } else throw new IllegalStateException("This animation has not been started yet. You must call start() first.");
 
-        if(progress >= 1)
+        if(progress >= 1) {
             notify();
+        }
 
         return this;
     }

@@ -8,10 +8,10 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiContextMenu;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.config.ConfigKeybinds;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -87,16 +87,21 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         int buttonId = 0;
 
         // Header
-        componentList.add(new QuickplayGuiString(null, buttonId, width / 2, topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight, I18n.format("quickplay.keybinds.title"), true, true));
+        componentList.add(new QuickplayGuiString(null, buttonId, width / 2,
+                topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
+                I18n.format("quickplay.keybinds.title"), true, true));
 
         for(QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds) {
-            final QuickplayGuiComponent component = new QuickplayGuiButton(keybind, buttonId, width / 2 - buttonWidth / 2, topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight, keybind.name, true);
+            final QuickplayGuiComponent component = new QuickplayGuiButton(keybind, buttonId, width / 2 - buttonWidth / 2,
+                    topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
+                    keybind.name, true);
             formatComponentString(component, false);
             componentList.add(component);
         }
 
         // Reset button
-        componentList.add(new QuickplayGuiButton(null, buttonId, width - buttonMargins - resetButtonWidth, height - buttonMargins - buttonHeight, resetButtonWidth, buttonHeight, resetButtonText, false));
+        componentList.add(new QuickplayGuiButton(null, buttonId, width - buttonMargins - resetButtonWidth,
+                height - buttonMargins - buttonHeight, resetButtonWidth, buttonHeight, resetButtonText, false));
 
         setScrollingValues();
     }
@@ -104,7 +109,8 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     @Override
     public void setScrollingValues() {
         super.setScrollingValues();
-        // TODO there's a weird bug here that causes items to fall off the screen on large screens. Resolved it temporarily by increasing scrollContentMargins but that can make things look silly depending on screen size
+        // TODO there's a weird bug here that causes items to fall off the screen on large screens. Resolved it
+        //  temporarily by increasing scrollContentMargins but that can make things look silly depending on screen size
         scrollContentMargins = (int) (height * 0.15);
         // Apply this change by recalculating scroll height
         scrollContentHeight = calcScrollHeight();
@@ -112,8 +118,8 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
 
         drawDefaultBackground();
 
@@ -127,8 +133,8 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
 
         drawScrollbar(width / 2 + buttonWidth / 2 + 3);
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     @Override
@@ -138,7 +144,8 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         for(QuickplayGuiComponent component : componentList) {
             if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(this, mouseX, mouseY)) {
                 //noinspection ArraysAsListWithZeroOrOneArgument
-                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(I18n.format("quickplay.gui.keybinds.delete")), component, -1, mouseX, mouseY) {
+                contextMenu = new QuickplayGuiContextMenu(Arrays.asList(I18n.format("quickplay.gui.keybinds.delete")),
+                        component, -1, mouseX, mouseY) {
                     @Override
                     public void optionSelected(int index) {
                         switch(index) {
@@ -167,8 +174,9 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
         if(component.origin instanceof QuickplayKeybind) {
-            if(selectedComponent != null)
+            if(selectedComponent != null) {
                 formatComponentString(selectedComponent, false);
+            }
             selectedComponent = component;
             formatComponentString(component, true);
         } else if(component.displayString.equals(resetButtonText)) {
@@ -211,7 +219,8 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                     default:
                         keybind.key = keyCode;
                         // Send analytical data to Google
-                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null && Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
+                        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null &&
+                                Quickplay.INSTANCE.usageStats.sendUsageStats && Quickplay.INSTANCE.ga != null) {
                             Quickplay.INSTANCE.threadPool.submit(() -> {
                                 try {
                                     Quickplay.INSTANCE.ga.createEvent("Keybinds", "Keybind Changed")
@@ -248,11 +257,16 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     public void formatComponentString(QuickplayGuiComponent component, boolean selected) {
         if(component.origin instanceof QuickplayKeybind) {
             final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
-            if(selected)
-                component.displayString = keybindPrependedEditingText + keybind.name + keybindNameSeparator + keybindEditingColor + Keyboard.getKeyName(keybind.key) + TextFormatting.RESET + keybindAppendedEditingText;
-            else
-                component.displayString = keybind.name + keybindNameSeparator + keybindColor + Keyboard.getKeyName(keybind.key) + TextFormatting.RESET;
-        } else
+            if(selected) {
+                component.displayString = keybindPrependedEditingText + keybind.name + keybindNameSeparator +
+                        keybindEditingColor + Keyboard.getKeyName(keybind.key) + TextFormatting.RESET +
+                        keybindAppendedEditingText;
+            } else {
+                component.displayString = keybind.name + keybindNameSeparator + keybindColor +
+                        Keyboard.getKeyName(keybind.key) + TextFormatting.RESET;
+            }
+        } else {
             throw new IllegalArgumentException("The GUI component provided does not have a QuickplayKeybind as it's origin!");
+        }
     }
 }
