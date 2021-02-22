@@ -1,0 +1,143 @@
+quickplay.offline=Al momento non sei online su Hypixel!
+quickplay.disabled=Quickplay è stato disabilitato forzatamente! Motivo: %s.
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=Clicca per aprire.
+
+quickplay.commands.quickplay.help.help=Mostra i comandi disponibili.
+quickplay.commands.quickplay.config.help=Configura la tua mod Quickplay.
+quickplay.commands.quickplay.limbo.help=Mandati da solo al Limbo.
+quickplay.commands.quickplay.limbo.alreadythere=D'oh! Sei già nel Limbo!
+quickplay.commands.quickplay.delivery.help=Apri il menu del Delivery Man.
+quickplay.commands.quickplay.keybinds.help=Apri l'editor per le scorciatoie QuickPlay.
+quickplay.commands.quickplay.moveinstance.deprecated=Questo comando è deprecato. Dovresti invece usare "/qp config"!
+quickplay.commands.quickplay.discord.help=Entra nel server Discord di QuickPlay.
+quickplay.commands.quickplay.discord.message=Discord è il modo migliore per entrare in contatto con @bugfroggy. Entra nel server Discord QuickPlay se hai domande, vuoi segnalare bug o vuoi dare il tuo feedback.
+quickplay.commands.quickplay.party.help=Personalizza la tua modalità Party QuickPlay.
+quickplay.commands.quickplay.premium.help=Comando per le funzionalità Premium QuickPlay.
+quickplay.commands.quickplay.premium.noCommands=Nessun comando conosciuto!
+quickplay.commands.quickplay.premium.about.menuMissing=Siamo spiacenti, ma Quickplay non è riuscito a raccogliere le ultime informazioni su Quickplay Premium! Visita %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Clicca per aprire %s
+quickplay.commands.quickplay.history.help=Vedi su quali instanze sei stato online le ultime volte.
+quickplay.commands.quickplay.history.header=Ecco le ultime %s instanze su cui sei stato online, con le più recenti in alto:
+quickplay.commands.quickplay.history.error=Qualcosa è andato storto!
+quickplay.commands.quickplay.wiki.help=Apri il sito di supporto QuickPlay.
+quickplay.commands.hub.numberexception=Numero lobby invalido! Sintassi: %s
+quickplay.commands.usage=Sintassi dei comandi:
+
+quickplay.premium.permissions=È necessario avere Quickplay Premium per questa funzionalità!
+
+quickplay.gui.copyright=Copyright © %s bugfroggy
+quickplay.gui.favorite=Associa al tasto...
+quickplay.gui.close=Chiudi
+quickplay.gui.back=Indietro
+
+quickplay.settings.category.general=Generale
+
+quickplay.settings.category.colors=Colori
+quickplay.settings.primaryColor.name=Colore Primario
+quickplay.settings.primaryColor.help=Cambia il colore primario di Quickplay
+quickplay.settings.secondaryColor.name=Colore Secondario
+quickplay.settings.secondaryColor.help=Cambia il colore secondario di Quickplay
+
+quickplay.settings.category.gui=GUI
+quickplay.settings.blurGuiBackgrounds.name=Sfoca sfondi GUI
+quickplay.settings.blurGuiBackgrounds.help=Sfoca leggermente gli sfondi delle GUI QuickPlay.
+quickplay.settings.fadeInGuis.name=Dissolvenza GUI
+quickplay.settings.fadeInGuis.help=Imposta se le GUI dovrebbero avere un effetto di dissolvenza quando aperte.
+quickplay.settings.transparentBackgrounds.name=Sfondi Trasparenti
+quickplay.settings.transparentBackgrounds.help=Imposta se gli sfondi delle GUI Quickplay dovrebbero essere 100%% trasparenti oppure solamente transulenti neri.
+quickplay.settings.gameLogoScale.name=Dimensione Menu Principale
+quickplay.settings.gameLogoScale.help=La grandezza di ogni oggetto nel menu principale Quickplay.
+quickplay.settings.reverseScrollingDirection.name=Direzione Scorrimento Inversa
+quickplay.settings.reverseScrollingDirection.help=Inverte la direzione dello scorrimento e il trascinamento che muove lo schermo.
+quickplay.settings.anyKeyClosesGui.name=Qualsiaso tasto chiude le GUI
+quickplay.settings.anyKeyClosesGui.help=Il menu principale e le GUI di gioco si chiuderanno quando qualsiasi tasto viene premuto.
+quickplay.settings.compactMainMenu.name=Menu Principale Compatto
+quickplay.settings.compactMainMenu.help=Compatta il Menu Principale QuickPlay per nascondere le stringhe dei giochi a meno che non ci passi sopra.
+
+quickplay.settings.category.instanceDisplay=Visualizza Istanza
+quickplay.settings.instanceDisplay.name=Visualizza Istanza
+quickplay.settings.instanceDisplay.help=Visualizza l'istanza corrente sullo schermo.
+quickplay.settings.moveInstanceDisplayButton.name=Sposta Visualizzazione Istanza...
+quickplay.settings.moveInstanceDisplayButton.help=Cambia la posizione dell'istanza sullo schermo.
+quickplay.settings.instanceOpacity.name=Opacità Visualizzazione Istanza
+quickplay.settings.instanceOpacity.help=L'opacità della visualizzazione istanza.
+quickplay.settings.displayInstanceWithChatOpen.name=Mostra sopra la Chat
+quickplay.settings.displayInstanceWithChatOpen.help=Visualizza l'istanza sullo schermo anche quando la chat è aperta.
+quickplay.settings.instanceDisplayScale.name=Dimensione
+quickplay.settings.instanceDisplayScale.help=Grandezza della Visualizzazione Istanza.
+
+quickplay.settings.sendUsageStatsButton.name=Statistiche di utilizzo...
+quickplay.settings.sendUsageStatsButton.help=Invia statistiche anonime di utilizzo per aiutarmi a creare delle mod migliori!
+quickplay.settings.editKeybinds.name=Modifica Scorciatoie...
+quickplay.settings.editKeybinds.help=Assegna & rimuovi scorciatoie create precedentemente cliccando con il tasto destro sui giochi o modalità.
+quickplay.settings.lobbyOneSwap.name=Vai alla Lobby Uno
+quickplay.settings.lobbyOneSwap.help=Vai alla lobby uno automaticamente quando entri in una nuova lobby.
+quickplay.settings.updateNotifications.name=Notifiche Aggiornamenti
+quickplay.settings.updateNotifications.help=Ricevi una notifica quando una nuova versione di QuickPlay viene rilasciata (la lista dei tuoi giochi verrà aggiornata automaticamente indipendentamente da questa impostazione).
+quickplay.settings.redesignedLobbyCommand.name=Comando Lobby Personalizzato
+quickplay.settings.redesignedLobbyCommand.help=Usa i comandi personalizzati QuickPlay quando possibile. Richiede un riavvio del gioco.
+
+quickplay.settings.category.partyMode=Modalità Party
+quickplay.settings.partyModeDelay.name=Ritardo Lancio
+quickplay.settings.partyModeDelay.help=Il numero di secondi che la randomizzazione del lancio dovrebbe durare.
+quickplay.settings.partyModeGui.name=Apri GUI Randomizzazione
+quickplay.settings.partyModeGui.help=Apri una GUI speciale con uno spinner quando viene lanciata la modalità party.
+
+quickplay.settings.category.premium=Funzionalità Premium
+quickplay.settings.ingameDailyReward.name=Premo Giornaliero Ingame
+quickplay.settings.ingameDailyReward.help=Gestisci le Ricompense Giornaliere nel gioco invece che usando il browser, cosicché non è più necessario aprire una pagina web.
+quickplay.settings.displayOwnGlyph.name=Visualizza proprio Glifo
+quickplay.settings.displayOwnGlyph.help=Vedi il Glifo sopra la tua testa in modalità F5.
+quickplay.config.keybinds.openmain=Apri GUI Principale
+quickplay.config.saveerror=Si è verificato un errore durante il salvataggio della tua configurazione. Le impostazioni potrebbero non essere salvate!
+quickplay.config.gui.title=Configurazione QuickPlay
+quickplay.config.gui.version=Versione
+quickplay.config.gui.true=VERO
+quickplay.config.gui.false=FALSO
+quickplay.config.openfolder=Apri Cartella
+quickplay.config.color.gui.sampletext=Testo d'esempio
+quickplay.config.color.gui.red=Rosso
+quickplay.config.color.gui.green=Verde
+quickplay.config.color.gui.blue=Blu
+quickplay.config.color.gui.chromaspeed=Velocità Cambio Colore
+quickplay.config.color.gui.chromaspeed.off=SPENTO
+quickplay.config.color.gui.chromaspeed.slow=LENTO
+quickplay.config.color.gui.chromaspeed.medium=MEDIO
+quickplay.config.color.gui.chromaspeed.fast=VELOCE
+quickplay.config.color.gui.chromaspeed.insane=FOLLE
+
+quickplay.gui.main.nogames.header=Ops!
+quickplay.gui.main.nogames.issue=Non sono riuscito a capire quali giochi sono disponibili.
+quickplay.gui.main.nogames.why=Si è verificato molto probabilmente se hai appena installato la mod.
+quickplay.gui.main.nogames.contact=Prova a riavviare il gioco o contatta bugfroggy se questo non risolve il problema!
+
+quickplay.gui.stats.yes=Sì, invia statistiche.
+quickplay.gui.stats.no=No, non inviare statistiche.
+quickplay.gui.stats.title=Inviare statistiche anonime di utilizzo Quickplay?
+quickplay.gui.stats.description=Selezionando "sì" mi vengono inviati dati anonimi sul tuo gioco e come usi la mia mod Minecraft per aiutare a correggere i bug e creare aggiornamenti migliori! Questi dati includono, ma non si limitano, alla tua versione di Minecraft, alla versione di Forge, alla versione di Java, alla versione del sistema operativo, alle mod di Minecraft installate e alle impostazioni di Quickplay. Fare riferimento al thread della mod per avere una lista di tutti i dati raccolti. Questa impostazione può essere modificata in seguito nella configurazione.
+quickplay.gui.stats.token=Il tuo token delle statistiche è %s.
+quickplay.gui.stats.copied=Copiato negli Appunti!
+quickplay.gui.stats.copy=Clicca per copiare
+quickplay.gui.stats.privacy=Politica sulla privacy
+quickplay.gui.stats.privacyerror=Qualcosa è andato storto. %s
+
+quickplay.party.syntax=Sintassi non valida! Digita "%s" per partire!
+quickplay.party.sendingYou=Inviandoti a %s!
+quickplay.party.commencing=Iniziando la sequenza di lancio della Modalità Party QuickPlay...
+quickplay.party.nogames=D'oh! La modalità Party non ha nessun gioco selezionato.
+quickplay.gui.party.randomizing=Scegliendo una modalità di gioco casuale...
+quickplay.gui.party.allon=Attiva Tutto
+quickplay.gui.party.alloff=Disattiva Tutto
+quickplay.gui.party.launch=Avvia!
+
+quickplay.keybinds.illegal=La scorciatoia "%s" non è valida per qualche motivo! Prova a ricrearla.
+quickplay.keybinds.title=Scorciatoie
+quickplay.keybinds.reset=Reimposta Scorciatoie
+quickplay.gui.keybinds.delete=Elimina
+quickplay.gui.keybinds.taken=Questo tasto è già assegnato a una funzione Quickplay!
+
+quickplay.moveableHudElement.small=PICCOLO
+quickplay.moveableHudElement.medium=MEDIO
+quickplay.moveableHudElement.large=GRANDE
+quickplay.moveableHudElement.xlarge=ENORME

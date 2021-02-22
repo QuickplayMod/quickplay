@@ -1,0 +1,143 @@
+quickplay.offline=Je bent momenteel niet online op het Hypixel-netwerk!
+quickplay.disabled=Quickplay is gedwongen uitgezet! Reden: %s.
+quickplay.chat.separator=-
+quickplay.chat.clickToOpen=Klik om te openen.
+
+quickplay.commands.quickplay.help.help=Toon de beschikbare commando’s.
+quickplay.commands.quickplay.config.help=Configureer je Quickplay mod.
+quickplay.commands.quickplay.limbo.help=Stuur jezelf naar Limbo.
+quickplay.commands.quickplay.limbo.alreadythere=Oei! Je bent al in Limbo!
+quickplay.commands.quickplay.delivery.help=Open het Bezorgersmenu.
+quickplay.commands.quickplay.keybinds.help=Open de Quickplay-keybindbewerker.
+quickplay.commands.quickplay.moveinstance.deprecated=Dit commando is verouderd. Gebruik in plaats daarvan “/qp config”!
+quickplay.commands.quickplay.discord.help=Sluit je aan bij de Quickplay Discord server.
+quickplay.commands.quickplay.discord.message=Discord is de #1 manier om contact op te nemen met @bugfroggy. Sluit je aan bij de Quickplay Discord als je vragen, feedback, of problemen hebt.
+quickplay.commands.quickplay.party.help=Pas je Quickplay-feestmodus aan.
+quickplay.commands.quickplay.premium.help=Commando voor Quickplay Premium-functies.
+quickplay.commands.quickplay.premium.noCommands=Geen bekende commando’s!
+quickplay.commands.quickplay.premium.about.menuMissing=Sorry, maar Quickplay kon de laatste informatie over Quickplay Premium niet verkrijgen! Bezoek %s
+quickplay.commands.quickplay.premium.about.menuMissing.clickToOpen=Klik om %s te openen
+quickplay.commands.quickplay.history.help=Bekijk welke keren je voor het laatst online was.
+quickplay.commands.quickplay.history.header=Dit zijn de laatste %s keren dat je online was, meest recent bovenaan:
+quickplay.commands.quickplay.history.error=Er is iets misgegaan!
+quickplay.commands.quickplay.wiki.help=Open de Quickplay Help-website.
+quickplay.commands.hub.numberexception=Ongeldig lobbynummer! Syntaxis: %s
+quickplay.commands.usage=Commandosyntaxis:
+
+quickplay.premium.permissions=Je hebt Quickplay Premium nodig voor deze functie!
+
+quickplay.gui.copyright=Auteursrecht © %s bugfroggy
+quickplay.gui.favorite=Koppelen aan toets...
+quickplay.gui.close=Sluiten
+quickplay.gui.back=Terug
+
+quickplay.settings.category.general=Algemeen
+
+quickplay.settings.category.colors=Kleuren
+quickplay.settings.primaryColor.name=Primaire kleur
+quickplay.settings.primaryColor.help=Verander je primaire Quickplay-kleur
+quickplay.settings.secondaryColor.name=Secundaire kleur
+quickplay.settings.secondaryColor.help=Verander je secundaire Quickplay-kleur
+
+quickplay.settings.category.gui=Interface
+quickplay.settings.blurGuiBackgrounds.name=Interface-achtergronden vervagen
+quickplay.settings.blurGuiBackgrounds.help=Of de achtergrond van Quickplay interfaces lichtelijk vervaagd moet zijn.
+quickplay.settings.fadeInGuis.name=Interfaces invervagen
+quickplay.settings.fadeInGuis.help=Of interfaces in moeten vervagen wanneer geopend.
+quickplay.settings.transparentBackgrounds.name=Transparante achtergronden
+quickplay.settings.transparentBackgrounds.help=Of Quickplay-interface-achtergronden 100%% transparant moeten zijn of doorzichtig zwart.
+quickplay.settings.gameLogoScale.name=Hoofdmenuschaal
+quickplay.settings.gameLogoScale.help=Schaal van elk item in het Quickplay hoofdmenu.
+quickplay.settings.reverseScrollingDirection.name=Tegengesteld scrollen
+quickplay.settings.reverseScrollingDirection.help=Draai de richting van het scrollen en slepen beweegt het scherm.
+quickplay.settings.anyKeyClosesGui.name=Elke toets sluit de interfaces
+quickplay.settings.anyKeyClosesGui.help=Quickplay’s hoofdmenu en spelinterfaces zullen sluiten wanneer een toets wordt ingedrukt.
+quickplay.settings.compactMainMenu.name=Compact hoofdmenu
+quickplay.settings.compactMainMenu.help=Of het Quickplay hoofdmenu moet worden samengevoegd om game info the verstoppen tenzij je er overheen beweegt.
+
+quickplay.settings.category.instanceDisplay=Instantieweergave
+quickplay.settings.instanceDisplay.name=Instantieweergave
+quickplay.settings.instanceDisplay.help=Of de huidige serverinstantie op het scherm moet worden weergegeven.
+quickplay.settings.moveInstanceDisplayButton.name=Instantieweergave verplaatsen...
+quickplay.settings.moveInstanceDisplayButton.help=Verander de positie van de instantieweergave op het scherm.
+quickplay.settings.instanceOpacity.name=Dekking instantieweergave
+quickplay.settings.instanceOpacity.help=Dekking van de instantieweergave.
+quickplay.settings.displayInstanceWithChatOpen.name=Over chat weergeven
+quickplay.settings.displayInstanceWithChatOpen.help=Of de instantieweergave moet worden weergegeven, zelfs wanneer de chat open is.
+quickplay.settings.instanceDisplayScale.name=Schaal
+quickplay.settings.instanceDisplayScale.help=Schaal van de instantieweergave.
+
+quickplay.settings.sendUsageStatsButton.name=Gebruik Statistieken...
+quickplay.settings.sendUsageStatsButton.help=Stuur anonieme gebruikstatistieken om mij te helpen betere mods te maken voor jou!
+quickplay.settings.editKeybinds.name=Keybinds bewerken...
+quickplay.settings.editKeybinds.help=Wijs keybinds toe & verwijder ze door te rechtsklikken op spellen of modussen.
+quickplay.settings.lobbyOneSwap.name=Veranderen naar Lobby één
+quickplay.settings.lobbyOneSwap.help=Wissel automatisch naar lobby één als je een nieuwe lobby toetreedt.
+quickplay.settings.updateNotifications.name=Updatemeldingen
+quickplay.settings.updateNotifications.help=Of je een melding wilt krijgen wanneer een nieuwe versie van Quickplay wordt vrijgegeven (je lijst met spellen zal automatisch worden bijgewerkt, ongeacht deze instelling).
+quickplay.settings.redesignedLobbyCommand.name=Aangepast Lobby-commando
+quickplay.settings.redesignedLobbyCommand.help=Of de aangepaste Quickplay-lobby-commando’s gebruikt moeten worden wanneer mogelijk. Verreist game herstart.
+
+quickplay.settings.category.partyMode=Feest Modus
+quickplay.settings.partyModeDelay.name=Start Vertraging
+quickplay.settings.partyModeDelay.help=Hoeveelheid seconden start randomisatie zou moeten duren.
+quickplay.settings.partyModeGui.name=Start Randomisatie interface
+quickplay.settings.partyModeGui.help=Of een speciale spinner interface geopend zou moeten worden wanneer de gebruiker de party modus start.
+
+quickplay.settings.category.premium=Premium Functies
+quickplay.settings.ingameDailyReward.name=Ingame Dagelijkse Beloning
+quickplay.settings.ingameDailyReward.help=Of het gebruik van dagelijkse beloningen in in-game zouden moeten zijn in plaats van in de browser, zodat je geen webpagina hoeft te openen.
+quickplay.settings.displayOwnGlyph.name=Toon Eigen Glyph
+quickplay.settings.displayOwnGlyph.help=Of je eigen Glyph getoond moet worden boven je hoofd in f5 modus.
+quickplay.config.keybinds.openmain=Open hoofd interface
+quickplay.config.saveerror=Er was een fout bij het opslaan van je configuratie. Instellingen zijn misschien niet opgeslagen!
+quickplay.config.gui.title=Quickplay configuratie
+quickplay.config.gui.version=Versie
+quickplay.config.gui.true=WAAR
+quickplay.config.gui.false=ONWAAR
+quickplay.config.openfolder=Map openen
+quickplay.config.color.gui.sampletext=Voorbeeldtekst
+quickplay.config.color.gui.red=Rood
+quickplay.config.color.gui.green=Groen
+quickplay.config.color.gui.blue=Blauw
+quickplay.config.color.gui.chromaspeed=Chromasnelheid
+quickplay.config.color.gui.chromaspeed.off=UIT
+quickplay.config.color.gui.chromaspeed.slow=TRAAG
+quickplay.config.color.gui.chromaspeed.medium=MIDDEL
+quickplay.config.color.gui.chromaspeed.fast=SNEL
+quickplay.config.color.gui.chromaspeed.insane=KRANKZINNIG
+
+quickplay.gui.main.nogames.header=Oeps!
+quickplay.gui.main.nogames.issue=Het lijkt erop dat ik er niet achter kon komen welke games beschikbaar zijn.
+quickplay.gui.main.nogames.why=Dit gebeurt hoogstwaarschijnlijk als je zojuist de mod hebt geïnstalleerd.
+quickplay.gui.main.nogames.contact=Probeer je game te herstarten, of contact bugfroggy als dit het probleem niet oplost!
+
+quickplay.gui.stats.yes=Ja, stuur statistieken.
+quickplay.gui.stats.no=Nee, verstuur statistieken niet.
+quickplay.gui.stats.title=Stuur anoniem Quickplay gebruik statistieken?
+quickplay.gui.stats.description=Bij het selecteren van “ja” stuur je me anoniem data over jou game en hoe je mijn Minecraft mod gebruikt om te helpen met het fixen van bugs & voor het creëren van betere updates! Deze data omvat maar is niet gelimiteerd tot je Minecraft versie, Forge versie, Java versie. Besturingssysteem versie, Minecraft mode geïnstalleerd, en je Quickplay instellingen. Verwijs naar de downloads discussie voor een volledige lijst van data gecollecteerd. Deze instelling kan later veranderd worden in de configuratie.
+quickplay.gui.stats.token=Je statistieksleutel is %s.
+quickplay.gui.stats.copied=Gekopiëerd naar klembord!
+quickplay.gui.stats.copy=Klik om te kopiëren
+quickplay.gui.stats.privacy=Privacybeleid
+quickplay.gui.stats.privacyerror=Er ging iets verkeerd. %s
+
+quickplay.party.syntax=Ongeldige syntaxis! Typ “%s” om te beginnen!
+quickplay.party.sendingYou=Je wordt naar %s gestuurd...
+quickplay.party.commencing=Quickplay-feestmodus-lanceerreeks starten...
+quickplay.party.nogames=Oei! Feestmodus heeft geen games geselecteerd.
+quickplay.gui.party.randomizing=Een willekeurige spelmodus kiezen...
+quickplay.gui.party.allon=Alles inschakelen
+quickplay.gui.party.alloff=Alles uitschakelen
+quickplay.gui.party.launch=Start!
+
+quickplay.keybinds.illegal=The keybind “%s” is om een of andere reden ongeldig! Probeer hem opnieuw aan te maken.
+quickplay.keybinds.title=Keybinds
+quickplay.keybinds.reset=Keybinds resetten
+quickplay.gui.keybinds.delete=Verwijderen
+quickplay.gui.keybinds.taken=Die toets is al toegewezen aan een Quickplay functie!
+
+quickplay.moveableHudElement.small=KLEIN
+quickplay.moveableHudElement.medium=MIDDEL
+quickplay.moveableHudElement.large=GROOT
+quickplay.moveableHudElement.xlarge=EXTRA GROOT
