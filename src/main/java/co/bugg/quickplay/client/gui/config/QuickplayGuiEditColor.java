@@ -250,7 +250,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
          * @param value Value
          */
         @Override
-        public void onTick(int id, float value) {
+        public void setEntryValue(int id, float value) {
             if ("CHROMA".equals(componentList.get(id).origin)) {
                 color.setChromaSpeed(value);
             } else {
