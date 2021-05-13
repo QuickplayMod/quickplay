@@ -15,7 +15,7 @@ public class Reference {
     /**
      * Version of this forge mod
      */
-    public static final String VERSION = "2.0.4";
+    public static final String VERSION = "2.0.5";
     /**
      * Google Analytics tracking ID
      */

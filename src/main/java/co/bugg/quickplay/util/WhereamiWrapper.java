@@ -71,8 +71,8 @@ public class WhereamiWrapper {
         final String message = event.message.getUnformattedText();
         // Regex for the /whereami response
         // §bYou are currently connected to server §r§6lobby5§r
-        final Pattern pattern = Pattern.compile("^You are currently (?:(?:in |connected to server )" +
-                "(limbo|(?:(?:[A-Za-z]+)?lobby(?:\\d{1,3})|(?:mega|mini)\\d{1,5}[A-Z])))$");
+        final Pattern pattern = Pattern.compile("^(?:\u00a7b)?You are currently (?:in limbo|" +
+                "connected to server (?:\u00a76)?([a-zA-Z]+\\d+[A-Z]?))$");
         final Matcher matcher = pattern.matcher(message);
 
         if(
