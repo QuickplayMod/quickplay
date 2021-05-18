@@ -36,11 +36,19 @@ public class SubCommandDebug extends ACommand {
 
     @Override
     public void run(String[] args) {
-        Quickplay.INSTANCE.isInDebugMode = !Quickplay.INSTANCE.isInDebugMode;
-        Quickplay.INSTANCE.messageBuffer.push(new Message(
-                new ChatComponentText(Quickplay.INSTANCE.isInDebugMode ? "DEBUG ON":"DEBUG OFF").setChatStyle(
-                        new ChatStyle().setColor(Quickplay.INSTANCE.isInDebugMode ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                )));
+        if(args.length > this.getDepth() && args[this.getDepth()].equals("printRegex")) {
+            System.out.println(Quickplay.INSTANCE.regexes.GSON.toJson(Quickplay.INSTANCE.regexes));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(
+                    new ChatComponentText("Printed regexes to console.").setChatStyle(
+                            new ChatStyle().setColor(EnumChatFormatting.AQUA)
+                    )));
+        } else {
+            Quickplay.INSTANCE.isInDebugMode = !Quickplay.INSTANCE.isInDebugMode;
+            Quickplay.INSTANCE.messageBuffer.push(new Message(
+                    new ChatComponentText(Quickplay.INSTANCE.isInDebugMode ? "DEBUG ON":"DEBUG OFF").setChatStyle(
+                            new ChatStyle().setColor(Quickplay.INSTANCE.isInDebugMode ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    )));
+        }
     }
 
     @Override

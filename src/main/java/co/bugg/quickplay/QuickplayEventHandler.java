@@ -100,10 +100,9 @@ public class QuickplayEventHandler {
     }
 
     /**
-     * Regex pattern for the daily reward message
+     * Regex pattern for the daily reward message is sent to the client by the Quickplay servers through the translation system.
      */
-    final Pattern pattern = Pattern.compile("^\\n" + Quickplay.INSTANCE.translator.get("quickplay.hypixelStrings.claimReward") +
-            ": https?://rewards\\.hypixel\\.net/claim-reward/([a-zA-Z0-9]{0,12})\\n$");
+    final Pattern pattern = Pattern.compile(Quickplay.INSTANCE.regexes.get("dailyReward"));
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
@@ -167,8 +166,9 @@ public class QuickplayEventHandler {
                 lowerChestInventoryField.setAccessible(true);
                 IInventory inventory = (IInventory) lowerChestInventoryField.get(chest);
 
-                String menuTitle = Quickplay.INSTANCE.translator.get("quickplay.hypixelStrings.gameMenu");
-                if(inventory.getDisplayName().getUnformattedText().equals(menuTitle)) {
+                String menuTitleRegex = Quickplay.INSTANCE.regexes.get("compassTitle");
+                Pattern p = Pattern.compile(menuTitleRegex);
+                if(p.matcher(inventory.getDisplayName().getUnformattedText()).find()) {
                     new TickDelay(() -> {
                         Minecraft.getMinecraft().thePlayer.closeScreen();
                         Minecraft.getMinecraft().displayGuiScreen(

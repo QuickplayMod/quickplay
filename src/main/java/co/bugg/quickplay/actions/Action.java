@@ -90,6 +90,10 @@ public class Action {
         actionIdToActionClass.put((short) 51, SetClientSettingsAction.class);
         actionIdToActionClass.put((short) 52, DeleteGlyphAction.class);
         actionIdToActionClass.put((short) 53, RemoveGlyphAction.class);
+        actionIdToActionClass.put((short) 54, SetRegexAction.class);
+        actionIdToActionClass.put((short) 55, AlterRegexAction.class);
+        actionIdToActionClass.put((short) 56, DeleteRegexAction.class);
+        actionIdToActionClass.put((short) 57, RemoveRegexAction.class);
     }
 
     /**
@@ -124,6 +128,11 @@ public class Action {
         // Get the ID
         short id = in.getShort();
         // From that ID, find the Action class and instantiate it, if possible.
+        final Class<? extends Action> actionClass = actionIdToActionClass.get(id);
+        if(actionClass == null) {
+            System.out.println("WARNING: Received action with ID which does not exist.");
+            return null;
+        }
         final Action action = actionIdToActionClass.get(id).newInstance();
         // Move forward 2 bytes
         in.position(2);

@@ -248,6 +248,10 @@ public class Quickplay {
      * Translation handler for Quickplay.
      */
     public ConfigTranslations translator;
+    /**
+     * Regular expression handler for Quickplay.
+     */
+    public ConfigRegexes regexes;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -332,6 +336,29 @@ public class Quickplay {
             try {
                 // Write the default config that we just made to save it
                 this.translator.save();
+            } catch (IOException e1) {
+                // File couldn't be saved
+                e1.printStackTrace();
+                this.sendExceptionRequest(e1); // TODO replace
+                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
+                        "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            }
+        }
+    }
+    /**
+     * Loads cached regular expressions from minecraft installation folder.
+     * If not present, creates new file.
+     */
+    private void loadRegexes() {
+        try {
+            this.regexes = (ConfigRegexes) AConfiguration.load("regex.json", ConfigRegexes.class);
+        } catch (IOException | JsonSyntaxException e) {
+            e.printStackTrace();
+            this.assetFactory.createDirectories();
+            this.regexes = new ConfigRegexes();
+            try {
+                // Write the default config that we just made to save it
+                this.regexes.save();
             } catch (IOException e1) {
                 // File couldn't be saved
                 e1.printStackTrace();
@@ -432,6 +459,7 @@ public class Quickplay {
 
             this.loadSettings();
             this.loadTranslations();
+            this.loadRegexes();
             this.loadUsageStats();
             this.loadKeybinds();
             this.socket = new SocketClient(new URI(Reference.BACKEND_SOCKET_URI));
