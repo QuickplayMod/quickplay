@@ -3,7 +3,6 @@ package co.bugg.quickplay.actions.clientbound;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
@@ -39,12 +38,6 @@ public class SetTranslationAction extends Action {
         final String lang = this.getPayloadObjectAsString(1);
         final String val = this.getPayloadObjectAsString(2);
 
-        Quickplay.INSTANCE.translator.set(key, lang, val);
-        try {
-            Quickplay.INSTANCE.translator.save();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Quickplay.INSTANCE.sendExceptionRequest(e);
-        }
+        Quickplay.INSTANCE.elementController.setTranslation(key, lang, val);
     }
 }

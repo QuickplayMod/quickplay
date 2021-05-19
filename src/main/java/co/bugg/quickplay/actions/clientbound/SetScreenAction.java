@@ -87,7 +87,7 @@ public class SetScreenAction extends Action {
                 }
             }
 
-            Quickplay.INSTANCE.screenMap.put(key, screen);
+            Quickplay.INSTANCE.elementController.putElement(screen);
         } catch (JsonSyntaxException | BufferUnderflowException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);

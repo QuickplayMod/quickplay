@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -52,6 +53,13 @@ public class QuickplayEventHandler {
                 Quickplay.INSTANCE.messageBuffer.push(new Message(
                         new QuickplayChatComponentTranslation("quickplay.failedToConnect")
                                 .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                // Failed to connect to Quickplay backend -- Load gamelist from cache
+                try {
+                    Quickplay.INSTANCE.elementController = ElementController.loadCache();
+                } catch (FileNotFoundException fileNotFoundException) {
+                    System.out.println("Failed to load cached elements.");
+                    fileNotFoundException.printStackTrace();
+                }
             }
         });
     }
@@ -102,7 +110,7 @@ public class QuickplayEventHandler {
     /**
      * Regex pattern for the daily reward message is sent to the client by the Quickplay servers through the translation system.
      */
-    final Pattern pattern = Pattern.compile(Quickplay.INSTANCE.regexes.get("dailyReward"));
+    final Pattern pattern = Pattern.compile(Quickplay.INSTANCE.elementController.getRegularExpression("dailyReward").value);
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
@@ -140,7 +148,7 @@ public class QuickplayEventHandler {
                 Quickplay.INSTANCE.hypixelInstanceWatcher.getCurrentLocation() != null &&
                 Quickplay.INSTANCE.hypixelInstanceWatcher.getCurrentLocation().server.contains("lobby")
         ) {
-            Screen mainScreen = Quickplay.INSTANCE.screenMap.get("MAIN");
+            Screen mainScreen = Quickplay.INSTANCE.elementController.getScreen("MAIN");
             if(mainScreen == null) {
                 return;
             }
@@ -166,13 +174,13 @@ public class QuickplayEventHandler {
                 lowerChestInventoryField.setAccessible(true);
                 IInventory inventory = (IInventory) lowerChestInventoryField.get(chest);
 
-                String menuTitleRegex = Quickplay.INSTANCE.regexes.get("compassTitle");
+                String menuTitleRegex = Quickplay.INSTANCE.elementController.getRegularExpression("compassTitle").value;
                 Pattern p = Pattern.compile(menuTitleRegex);
                 if(p.matcher(inventory.getDisplayName().getUnformattedText()).find()) {
                     new TickDelay(() -> {
                         Minecraft.getMinecraft().thePlayer.closeScreen();
                         Minecraft.getMinecraft().displayGuiScreen(
-                                new QuickplayGuiScreen(Quickplay.INSTANCE.screenMap.get("MAIN")));
+                                new QuickplayGuiScreen(Quickplay.INSTANCE.elementController.getScreen("MAIN")));
                     }, 1);
                 }
 

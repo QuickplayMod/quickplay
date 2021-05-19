@@ -2,6 +2,7 @@ package co.bugg.quickplay.client.command;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
+import com.google.gson.Gson;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
@@ -36,10 +37,10 @@ public class SubCommandDebug extends ACommand {
 
     @Override
     public void run(String[] args) {
-        if(args.length > this.getDepth() && args[this.getDepth()].equals("printRegex")) {
-            System.out.println(Quickplay.INSTANCE.regexes.GSON.toJson(Quickplay.INSTANCE.regexes));
+        if(args.length > this.getDepth() && args[this.getDepth()].equals("printController")) {
+            System.out.println(new Gson().toJson(Quickplay.INSTANCE.elementController));
             Quickplay.INSTANCE.messageBuffer.push(new Message(
-                    new ChatComponentText("Printed regexes to console.").setChatStyle(
+                    new ChatComponentText("Printed element controller to console.").setChatStyle(
                             new ChatStyle().setColor(EnumChatFormatting.AQUA)
                     )));
         } else {

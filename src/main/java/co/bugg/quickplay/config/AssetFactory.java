@@ -41,6 +41,11 @@ public class AssetFactory {
      */
     public static final String gamelistCacheFile = rootDirectory + "cached_gamelist.json";
     /**
+     * File path to the Quickplay elements cache
+     * Relative to Minecraft root
+     */
+    public static final String elementsCacheFile = rootDirectory + "element-cache";
+    /**
      * Directory to all Quickplay configurations
      * Relative to Minecraft root
      */

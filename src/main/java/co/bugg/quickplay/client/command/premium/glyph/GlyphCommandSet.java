@@ -21,7 +21,7 @@ public class GlyphCommandSet extends GlyphCommand {
         super(
                 parent,
                 Collections.singletonList("set"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.glyph.set.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.premium.glyph.set.help"),
                 "<imageURL>",
                 true,
                 true,

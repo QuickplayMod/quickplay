@@ -5,9 +5,8 @@ import co.bugg.quickplay.util.Location;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-public class Screen {
+public class Screen extends Element {
 
-    public final String key;
     public final String[] availableOn;
     public final String[] buttonKeys;
     public final ScreenType screenType;
@@ -27,7 +26,7 @@ public class Screen {
                   final boolean visible, final boolean adminOnly, final Location hypixelLocrawRegex,
                   final String hypixelRankRegex, final String hypixelPackageRankRegex,
                   final boolean hypixelBuildTeamOnly, final boolean hypixelBuildTeamAdminOnly) {
-        this.key = key;
+        super(key, 1);
         this.availableOn = availableOn;
         this.buttonKeys = buttonKeys;
         this.screenType = screenType;

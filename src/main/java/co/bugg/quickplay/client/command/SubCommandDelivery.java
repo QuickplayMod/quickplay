@@ -23,7 +23,7 @@ public class SubCommandDelivery extends ACommand {
         super(
                 parent,
                 Collections.singletonList("delivery"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.delivery.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.delivery.help"),
                 "",
                 true,
                 true,

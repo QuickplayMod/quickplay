@@ -147,17 +147,9 @@ public class Quickplay {
     @Deprecated
     public List<Game> gameList = new ArrayList<>();
     /**
-     * Map of screens, mapping their key to the screen object.
+     * Controller of Quickplay elements
      */
-    public Map<String, Screen> screenMap = new HashMap<>();
-    /**
-     * Map of buttons, mapping their key to the button object.
-     */
-    public Map<String, Button> buttonMap = new HashMap<>();
-    /**
-     * Map of aliased actions, mapping their key to the aliased action object.
-     */
-    public Map<String, AliasedAction> aliasedActionMap = new HashMap<>();
+    public ElementController elementController = new ElementController();
     /**
      * InstanceWatcher that constantly watches for what Hypixel server instance the client is on
      */
@@ -244,14 +236,14 @@ public class Quickplay {
      * Session key used for Premium-related resource requests
      */
     public String sessionKey;
-    /**
-     * Translation handler for Quickplay.
-     */
-    public ConfigTranslations translator;
-    /**
-     * Regular expression handler for Quickplay.
-     */
-    public ConfigRegexes regexes;
+//    /**
+//     * Translation handler for Quickplay.
+//     */
+//    public ConfigTranslations translator;
+//    /**
+//     * Regular expression handler for Quickplay.
+//     */
+//    public ConfigRegexes regexes;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -322,52 +314,52 @@ public class Quickplay {
         }
     }
 
-    /**
-     * Loads cached translations from minecraft installation folder.
-     * If not present, creates new file.
-     */
-    private void loadTranslations() {
-        try {
-            this.translator = (ConfigTranslations) AConfiguration.load("lang.json", ConfigTranslations.class);
-        } catch (IOException | JsonSyntaxException e) {
-            e.printStackTrace();
-            this.assetFactory.createDirectories();
-            this.translator = new ConfigTranslations();
-            try {
-                // Write the default config that we just made to save it
-                this.translator.save();
-            } catch (IOException e1) {
-                // File couldn't be saved
-                e1.printStackTrace();
-                this.sendExceptionRequest(e1); // TODO replace
-                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
-                        "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
-            }
-        }
-    }
-    /**
-     * Loads cached regular expressions from minecraft installation folder.
-     * If not present, creates new file.
-     */
-    private void loadRegexes() {
-        try {
-            this.regexes = (ConfigRegexes) AConfiguration.load("regex.json", ConfigRegexes.class);
-        } catch (IOException | JsonSyntaxException e) {
-            e.printStackTrace();
-            this.assetFactory.createDirectories();
-            this.regexes = new ConfigRegexes();
-            try {
-                // Write the default config that we just made to save it
-                this.regexes.save();
-            } catch (IOException e1) {
-                // File couldn't be saved
-                e1.printStackTrace();
-                this.sendExceptionRequest(e1); // TODO replace
-                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
-                        "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
-            }
-        }
-    }
+//    /**
+//     * Loads cached translations from minecraft installation folder.
+//     * If not present, creates new file.
+//     */
+//    private void loadTranslations() {
+//        try {
+//            this.translator = (ConfigTranslations) AConfiguration.load("lang.json", ConfigTranslations.class);
+//        } catch (IOException | JsonSyntaxException e) {
+//            e.printStackTrace();
+//            this.assetFactory.createDirectories();
+//            this.translator = new ConfigTranslations();
+//            try {
+//                // Write the default config that we just made to save it
+//                this.translator.save();
+//            } catch (IOException e1) {
+//                // File couldn't be saved
+//                e1.printStackTrace();
+//                this.sendExceptionRequest(e1); // TODO replace
+//                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
+//                        "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+//            }
+//        }
+//    }
+//    /**
+//     * Loads cached regular expressions from minecraft installation folder.
+//     * If not present, creates new file.
+//     */
+//    private void loadRegexes() {
+//        try {
+//            this.regexes = (ConfigRegexes) AConfiguration.load("regex.json", ConfigRegexes.class);
+//        } catch (IOException | JsonSyntaxException e) {
+//            e.printStackTrace();
+//            this.assetFactory.createDirectories();
+//            this.regexes = new ConfigRegexes();
+//            try {
+//                // Write the default config that we just made to save it
+//                this.regexes.save();
+//            } catch (IOException e1) {
+//                // File couldn't be saved
+//                e1.printStackTrace();
+//                this.sendExceptionRequest(e1); // TODO replace
+//                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
+//                        "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+//            }
+//        }
+//    }
 
     /**
      * Loads usage stats config from minecraft installation folder.
@@ -458,8 +450,6 @@ public class Quickplay {
             this.resourcePack = this.assetFactory.registerResourcePack();
 
             this.loadSettings();
-            this.loadTranslations();
-            this.loadRegexes();
             this.loadUsageStats();
             this.loadKeybinds();
             this.socket = new SocketClient(new URI(Reference.BACKEND_SOCKET_URI));
@@ -662,7 +652,7 @@ public class Quickplay {
      */
     public void launchPartyMode() {
         // If there are no buttons known to Quickplay, then just tell the user he has no games selected.
-        if(this.buttonMap == null || this.buttonMap.size() <= 0) {
+        if(this.elementController == null || this.elementController.buttonMap == null || this.elementController.buttonMap.size() <= 0) {
             this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
         }
@@ -671,7 +661,7 @@ public class Quickplay {
         // If the user has no games enabled in their config, then we assume they have all games enabled. This means
         // that when more games are added in the future, they'll automatically be enabled.
         if(this.settings.enabledButtonsForPartyMode == null || this.settings.enabledButtonsForPartyMode.size() <= 0) {
-            enabledButtons = new HashSet<>(this.buttonMap.keySet());
+            enabledButtons = new HashSet<>(this.elementController.buttonMap.keySet());
         } else {
             enabledButtons = new HashSet<>(this.settings.enabledButtonsForPartyMode);
         }
@@ -698,7 +688,7 @@ public class Quickplay {
                         buttonKey = enabledButtons.stream().skip(random.nextInt(enabledButtons.size()))
                                 .findFirst().orElse(null);
                     }
-                    button = this.buttonMap.get(buttonKey);
+                    button = this.elementController.getButton(buttonKey);
 
                     // If the randomly selected button can't be used in party mode, remove it from our list and try again.
                     // If there are no more buttons to pick, then stop and send an error to the user.
@@ -718,9 +708,9 @@ public class Quickplay {
                     e.printStackTrace();
                 }
 
-                String translatedGame = Quickplay.INSTANCE.translator.get(button.translationKey);
+                String translatedGame = Quickplay.INSTANCE.elementController.translate(button.translationKey);
                 if(button.partyModeScopeTranslationKey != null && button.partyModeScopeTranslationKey.length() > 0) {
-                    translatedGame = Quickplay.INSTANCE.translator.get(button.partyModeScopeTranslationKey) + " - " +
+                    translatedGame = Quickplay.INSTANCE.elementController.translate(button.partyModeScopeTranslationKey) + " - " +
                             translatedGame;
                 }
                 this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.sendingYou",

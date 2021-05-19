@@ -23,7 +23,7 @@ public class SubCommandWiki extends ACommand {
         super(
                 parent,
                 Collections.singletonList("wiki"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.wiki.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.wiki.help"),
                 "",
                 true,
                 true,

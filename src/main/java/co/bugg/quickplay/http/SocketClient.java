@@ -1,5 +1,6 @@
 package co.bugg.quickplay.http;
 
+import co.bugg.quickplay.ElementController;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.actions.serverbound.InitializeClientAction;
@@ -24,6 +25,7 @@ import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.BufferUnderflowException;
@@ -87,6 +89,13 @@ public class SocketClient extends WebSocketClient {
                     new QuickplayChatComponentTranslation("quickplay.failedToConnect")
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
             ));
+            // Failed to connect to Quickplay backend -- Load gamelist from cache
+            try {
+                Quickplay.INSTANCE.elementController = ElementController.loadCache();
+            } catch (FileNotFoundException fileNotFoundException) {
+                System.out.println("Failed to load cached elements.");
+                fileNotFoundException.printStackTrace();
+            }
         }
 
         // If keybinds need to be converted on socket connect, then send a migrate keybinds action.

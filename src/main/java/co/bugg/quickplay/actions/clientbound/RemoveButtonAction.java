@@ -29,6 +29,6 @@ public class RemoveButtonAction extends Action {
 
     @Override
     public void run() {
-        Quickplay.INSTANCE.buttonMap.remove(this.getPayloadObjectAsString(0));
+        Quickplay.INSTANCE.elementController.removeButton(this.getPayloadObjectAsString(0));
     }
 }

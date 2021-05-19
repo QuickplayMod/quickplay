@@ -69,7 +69,7 @@ public class SetAliasedActionAction extends Action {
                     adminOnly, hypixelLocrawRegex, hypixelRankRegex, hypixelPackageRankRegex, hypixelBuildTeamOnly,
                     hypixelBuildTeamAdminOnly);
 
-            Quickplay.INSTANCE.aliasedActionMap.put(key, aliasedAction);
+            Quickplay.INSTANCE.elementController.putElement(aliasedAction);
         } catch (JsonSyntaxException | BufferUnderflowException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);

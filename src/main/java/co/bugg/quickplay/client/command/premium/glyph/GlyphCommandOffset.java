@@ -19,7 +19,7 @@ public class GlyphCommandOffset extends GlyphCommand {
         super(
                 parent,
                 Collections.singletonList("offset"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.glyph.offset.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.premium.glyph.offset.help"),
                 "<number>",
                 true,
                 true,

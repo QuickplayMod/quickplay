@@ -3,7 +3,6 @@ package co.bugg.quickplay.actions.clientbound;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
@@ -31,12 +30,6 @@ public class RemoveRegexAction extends Action {
     @Override
     public void run() {
         String key = this.getPayloadObjectAsString(0);
-        Quickplay.INSTANCE.regexes.remove(key);
-        try {
-            Quickplay.INSTANCE.regexes.save();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Quickplay.INSTANCE.sendExceptionRequest(e);
-        }
+        Quickplay.INSTANCE.elementController.removeRegularExpression(key);
     }
 }

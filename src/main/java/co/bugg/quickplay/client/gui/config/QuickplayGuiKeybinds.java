@@ -46,7 +46,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     /**
      * The display text of the reset button
      */
-    public final String resetButtonText = Quickplay.INSTANCE.translator.get("quickplay.keybinds.reset");
+    public final String resetButtonText = Quickplay.INSTANCE.elementController.translate("quickplay.keybinds.reset");
     /**
      * The color of keybinds on buttons when they are not being edited
      */
@@ -89,23 +89,23 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         // Header
         this.componentList.add(new QuickplayGuiString(null, buttonId, width / 2,
                 topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
-                Quickplay.INSTANCE.translator.get("quickplay.keybinds.title"), true, true));
+                Quickplay.INSTANCE.elementController.translate("quickplay.keybinds.title"), true, true));
         // Subheader
         this.componentList.add(new QuickplayGuiString(null, buttonId, width / 2,
                 topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
-                Quickplay.INSTANCE.translator.get("quickplay.keybinds.subtitle"), true, true, true));
+                Quickplay.INSTANCE.elementController.translate("quickplay.keybinds.subtitle"), true, true, true));
 
         for(QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds) {
             if(keybind == null || keybind.target == null) {
                 continue;
             }
-            final Button button = Quickplay.INSTANCE.buttonMap.get(keybind.target);
+            final Button button = Quickplay.INSTANCE.elementController.getButton(keybind.target);
             if(button == null) {
                 continue;
             }
             final QuickplayGuiComponent component = new QuickplayGuiButton(keybind, buttonId, width / 2 - buttonWidth / 2,
                     topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
-                    Quickplay.INSTANCE.translator.get(button.translationKey), true);
+                    Quickplay.INSTANCE.elementController.translate(button.translationKey), true);
             formatComponentString(component, false);
             this.componentList.add(component);
         }
@@ -139,7 +139,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
 
             if (drawTakenPopup) {
                 final List<String> hoverText = new ArrayList<>();
-                hoverText.add(Quickplay.INSTANCE.translator.get("quickplay.gui.keybinds.taken"));
+                hoverText.add(Quickplay.INSTANCE.elementController.translate("quickplay.gui.keybinds.taken"));
                 drawHoveringText(hoverText, mouseX, mouseY);
             }
 
@@ -147,7 +147,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         } else {
             // Quickplay is disabled, draw error message
             this.drawCenteredString(this.fontRendererObj,
-                    Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    Quickplay.INSTANCE.elementController.translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
                     this.width / 2, this.height / 2, 0xffffff);
         }
 
@@ -162,12 +162,12 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         for(QuickplayGuiComponent component : componentList) {
             if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(this, mouseX, mouseY)) {
                 final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
-                final String trueStr = Quickplay.INSTANCE.translator.get("quickplay.config.gui.true");
-                final String falseStr = Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
+                final String trueStr = Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.true");
+                final String falseStr = Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.false");
                 contextMenu = new QuickplayGuiContextMenu(
                     Arrays.asList(
-                        Quickplay.INSTANCE.translator.get("quickplay.gui.keybinds.delete"),
-                        Quickplay.INSTANCE.translator.get("quickplay.gui.keybinds.requireHolding", keybind.requiresPressTimer ? trueStr : falseStr)
+                        Quickplay.INSTANCE.elementController.translate("quickplay.gui.keybinds.delete"),
+                        Quickplay.INSTANCE.elementController.translate("quickplay.gui.keybinds.requireHolding", keybind.requiresPressTimer ? trueStr : falseStr)
                     ), component, -1, mouseX, mouseY) {
 
                     @Override
@@ -287,8 +287,8 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     public void formatComponentString(QuickplayGuiComponent component, boolean selected) {
         if(component.origin instanceof QuickplayKeybind) {
             final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
-            final Button button = Quickplay.INSTANCE.buttonMap.get(keybind.target);
-            final String title = button == null ? "null" : Quickplay.INSTANCE.translator.get(button.translationKey);
+            final Button button = Quickplay.INSTANCE.elementController.getButton(keybind.target);
+            final String title = button == null ? "null" : Quickplay.INSTANCE.elementController.translate(button.translationKey);
             if(selected) {
                 component.displayString = keybindPrependedEditingText + title + keybindNameSeparator +
                         keybindEditingColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET +

@@ -28,7 +28,7 @@ public class SubCommandDebugScreen extends ACommand {
         super(
                 parent,
                 Collections.singletonList("ds"),
-                 Quickplay.INSTANCE.translator.get("DEBUG - REMOVE"),
+                 Quickplay.INSTANCE.elementController.translate("DEBUG - REMOVE"),
                 "",
                 false,
                 true,
@@ -46,7 +46,7 @@ public class SubCommandDebugScreen extends ACommand {
         }
         final String finalScr = scr;
         QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-            Screen screenObj = Quickplay.INSTANCE.screenMap.get(finalScr);
+            Screen screenObj = Quickplay.INSTANCE.elementController.getScreen(finalScr);
             if(screenObj == null || !screenObj.passesPermissionChecks()) {
                 Quickplay.INSTANCE.messageBuffer.push(new Message(
                         new QuickplayChatComponentTranslation("quickplay.screenOpenFail")
@@ -54,7 +54,7 @@ public class SubCommandDebugScreen extends ACommand {
                         , false, false));
                 return;
             }
-            Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiScreen(Quickplay.INSTANCE.screenMap.get(finalScr)));
+            Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiScreen(Quickplay.INSTANCE.elementController.getScreen(finalScr)));
         });
     }
 

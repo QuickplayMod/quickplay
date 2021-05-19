@@ -148,7 +148,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
         this.currentColumn = 0;
         this.currentRow = 0;
 
-        this.copyright = Quickplay.INSTANCE.translator.get("quickplay.gui.copyright", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        this.copyright = Quickplay.INSTANCE.elementController.translate("quickplay.gui.copyright", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         // Change the window Y padding if it's set
         // TODO test this
@@ -161,12 +161,12 @@ public class QuickplayGuiScreen extends QuickplayGui {
             if (screen.buttonKeys.length > 0) {
                 // Calculate the average width of all strings & what the longest one is
                 for (final String buttonKey : this.screen.buttonKeys) {
-                    final Button button = Quickplay.INSTANCE.buttonMap.get(buttonKey);
+                    final Button button = Quickplay.INSTANCE.elementController.getButton(buttonKey);
                     // Skip buttons which won't be rendered in this context.
                     if(button == null || !button.passesPermissionChecks()) {
                         continue;
                     }
-                    final int stringWidth = this.fontRendererObj.getStringWidth(Quickplay.INSTANCE.translator.get(button.translationKey));
+                    final int stringWidth = this.fontRendererObj.getStringWidth(Quickplay.INSTANCE.elementController.translate(button.translationKey));
                     if (stringWidth > this.longestStringWidth) {
                         this.longestStringWidth = stringWidth;
                     }
@@ -225,12 +225,12 @@ public class QuickplayGuiScreen extends QuickplayGui {
             this.columnZeroX = 0;
         }
 
-        this.favoriteString = Quickplay.INSTANCE.translator.get("quickplay.gui.favorite");
+        this.favoriteString = Quickplay.INSTANCE.elementController.translate("quickplay.gui.favorite");
 
         // Add buttons to the component list in the proper grid
         int nextButtonId = 0;
         for(String buttonKey : this.screen.buttonKeys) {
-            final Button button = Quickplay.INSTANCE.buttonMap.get(buttonKey);
+            final Button button = Quickplay.INSTANCE.elementController.getButton(buttonKey);
             // Skip buttons which won't be rendered in this context.
             if(button == null || !button.passesPermissionChecks()) {
                 continue;
@@ -239,7 +239,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
             if(this.screen.screenType == ScreenType.BUTTONS) {
                 this.componentList.add(new QuickplayGuiButton(button, nextButtonId, columnZeroX + (buttonWidth + buttonMargins) * currentColumn,
                         scrollContentMargins / 2 + (buttonHeight + buttonMargins) * currentRow,
-                        buttonWidth, buttonHeight, Quickplay.INSTANCE.translator.get(button.translationKey), true));
+                        buttonWidth, buttonHeight, Quickplay.INSTANCE.elementController.translate(button.translationKey), true));
             } else {
                 // Create invisible button                                                                                                                                                                                              // Width can't be affected by scaling                       // Texture is of the game icon, although it's not rendered (opacity is 0 in drawScreen)
                 this.componentList.add(new QuickplayGuiButton(button, nextButtonId, this.columnZeroX + this.currentColumn * itemWidth,
@@ -261,7 +261,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
         // Add back button if there are back button actions for this screen.
         if(this.screen.backButtonActions != null && this.screen.backButtonActions.length > 0) {
             this.componentList.add(new QuickplayGuiButton(null, nextButtonId, 3, 3, 100, 20,
-                    Quickplay.INSTANCE.translator.get("quickplay.gui.back"), false));
+                    Quickplay.INSTANCE.elementController.translate("quickplay.gui.back"), false));
         }
 
         setScrollingValues();
@@ -300,7 +300,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
                     GlStateManager.scale(stringScale, stringScale, stringScale);
                     final int color = component.mouseHovering(this, mouseX, mouseY) && contextMenu == null ?
                             hoverColor.getColor().getRGB() : staticColor.getColor().getRGB();
-                    drawString(mc.fontRendererObj, Quickplay.INSTANCE.translator.get(button.translationKey),
+                    drawString(mc.fontRendererObj, Quickplay.INSTANCE.elementController.translate(button.translationKey),
                             (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale),
                             (int) ((((scrollAdjustedY + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale),
                             color & 0xFFFFFF | (int) (opacity * 255) << 24);
@@ -323,7 +323,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
             // If hovering & in compact mode, draw hover text
             if(compact && component.origin instanceof Button && component.mouseHovering(this, mouseX, mouseY)) {
                 final Button button = (Button) component.origin;
-                drawHoveringText(new ArrayList<>(Collections.singletonList(Quickplay.INSTANCE.translator.get(button.translationKey))),
+                drawHoveringText(new ArrayList<>(Collections.singletonList(Quickplay.INSTANCE.elementController.translate(button.translationKey))),
                         mouseX, mouseY);
             }
         }
@@ -398,7 +398,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
             // Draw screen name if it's set
             if(this.screen.translationKey != null && this.screen.translationKey.length() > 0) {
                 GlStateManager.scale(stringScale, stringScale, stringScale);
-                drawCenteredString(this.fontRendererObj, Quickplay.INSTANCE.translator.get(this.screen.translationKey),
+                drawCenteredString(this.fontRendererObj, Quickplay.INSTANCE.elementController.translate(this.screen.translationKey),
                         (int) ((this.width / 2) / stringScale),
                         (int) ((30 + this.gameImgSize * mainLogoMultiplier  - this.scrollPixel) / stringScale),
                         hoverColor.getColor().getRGB());
@@ -414,7 +414,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
         } else {
             // Quickplay is disabled, draw error message
             this.drawCenteredString(this.fontRendererObj,
-                    Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    Quickplay.INSTANCE.elementController.translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
                     this.width / 2, this.height / 2, 0xffffff);
         }
 
@@ -487,7 +487,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
             // The only component with a null origin is the back button, at the moment.
             for(int i = 0; i < this.screen.backButtonActions.length; i++) {
                 final String actionKey = this.screen.backButtonActions[i];
-                final AliasedAction action = Quickplay.INSTANCE.aliasedActionMap.get(actionKey);
+                final AliasedAction action = Quickplay.INSTANCE.elementController.getAliasedAction(actionKey);
                 if(action == null) {
                     System.out.println("WARN: Aliased action " + actionKey + " is not found.");
                     continue;

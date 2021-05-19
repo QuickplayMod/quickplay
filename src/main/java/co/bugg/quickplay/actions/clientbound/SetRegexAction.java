@@ -1,9 +1,9 @@
 package co.bugg.quickplay.actions.clientbound;
 
 import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.RegularExpression;
 import co.bugg.quickplay.actions.Action;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
@@ -33,14 +33,9 @@ public class SetRegexAction extends Action {
 
     @Override
     public void run() {
-        String key = this.getPayloadObjectAsString(0);
-        String value = this.getPayloadObjectAsString(1);
-        Quickplay.INSTANCE.regexes.set(key, value);
-        try {
-            Quickplay.INSTANCE.regexes.save();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Quickplay.INSTANCE.sendExceptionRequest(e);
-        }
+        final String key = this.getPayloadObjectAsString(0);
+        final String value = this.getPayloadObjectAsString(1);
+        final RegularExpression regex = new RegularExpression(key, value);
+        Quickplay.INSTANCE.elementController.putElement(regex);
     }
 }

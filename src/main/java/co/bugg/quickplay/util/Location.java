@@ -2,10 +2,12 @@ package co.bugg.quickplay.util;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
+
 /**
  * Class matching the response of the /locraw message.
  */
-public class Location {
+public class Location implements Serializable {
     public String server = null;
     public String gametype = null;
     public String mode = null;

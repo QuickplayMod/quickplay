@@ -49,7 +49,7 @@ public class MoveableHudElementEditor extends QuickplayGui {
         } else {
             // Quickplay is disabled, draw error message
             this.drawCenteredString(this.fontRendererObj,
-                    Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    Quickplay.INSTANCE.elementController.translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
                     this.width / 2, this.height / 2, 0xffffff);
         }
 

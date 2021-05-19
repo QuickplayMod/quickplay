@@ -29,6 +29,6 @@ public class RemoveAliasedActionAction extends Action {
 
     @Override
     public void run() {
-        Quickplay.INSTANCE.aliasedActionMap.remove(this.getPayloadObjectAsString(0));
+        Quickplay.INSTANCE.elementController.removeAliasedAction(this.getPayloadObjectAsString(0));
     }
 }

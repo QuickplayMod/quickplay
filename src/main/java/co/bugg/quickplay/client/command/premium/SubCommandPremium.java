@@ -21,7 +21,7 @@ public class SubCommandPremium extends ACommand {
         super(
                 parent,
                 Collections.singletonList("premium"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.premium.help"),
                 "help",
                 true,
                 true,

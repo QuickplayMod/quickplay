@@ -36,7 +36,7 @@ public class OpenScreenAction extends Action {
 
     @Override
     public void run() {
-        final Screen screen = Quickplay.INSTANCE.screenMap.get(this.getPayloadObjectAsString(0));
+        final Screen screen = Quickplay.INSTANCE.elementController.getScreen(this.getPayloadObjectAsString(0));
         if(screen == null || !screen.passesPermissionChecks()) {
             Quickplay.INSTANCE.messageBuffer.push(new Message(
                     new QuickplayChatComponentTranslation("quickplay.screenOpenFail")

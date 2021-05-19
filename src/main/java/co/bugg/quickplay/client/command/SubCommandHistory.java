@@ -25,7 +25,7 @@ public class SubCommandHistory extends ACommand {
         super(
                 parent,
                 Collections.singletonList("history"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.history.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.history.help"),
                 "[count]",
                 true,
                 true,

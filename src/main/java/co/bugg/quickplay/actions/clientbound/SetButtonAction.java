@@ -91,7 +91,7 @@ public class SetButtonAction extends Action {
                 }
             }
 
-            Quickplay.INSTANCE.buttonMap.put(key, button);
+            Quickplay.INSTANCE.elementController.putElement(button);
         } catch (JsonSyntaxException | BufferUnderflowException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);

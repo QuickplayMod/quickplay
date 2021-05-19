@@ -23,7 +23,7 @@ public class SubCommandLimbo extends ACommand {
         super(
                 parent,
                 Collections.singletonList("limbo"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.limbo.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.limbo.help"),
                 "",
                 true,
                 true,

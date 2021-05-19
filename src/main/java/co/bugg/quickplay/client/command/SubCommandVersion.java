@@ -24,7 +24,7 @@ public class SubCommandVersion extends ACommand {
         super(
                 parent,
                 Arrays.asList("version", "v"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.version.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.version.help"),
                 "",
                 false,
                 true,

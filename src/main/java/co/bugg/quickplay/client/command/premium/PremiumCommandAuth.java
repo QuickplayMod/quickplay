@@ -17,7 +17,7 @@ public class PremiumCommandAuth extends ACommand {
         super(
                 parent,
                 Arrays.asList("auth", "login"),
-                Quickplay.INSTANCE.translator.get(""),
+                Quickplay.INSTANCE.elementController.translate(""),
                 "",
                 false,
                 true,

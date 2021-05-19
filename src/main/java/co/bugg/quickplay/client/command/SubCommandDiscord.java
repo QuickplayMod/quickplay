@@ -27,7 +27,7 @@ public class SubCommandDiscord extends ACommand {
         super(
                 parent,
                 Collections.singletonList("discord"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.discord.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.discord.help"),
                 "",
                 true,
                 true,

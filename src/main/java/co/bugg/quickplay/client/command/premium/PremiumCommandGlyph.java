@@ -16,7 +16,7 @@ public class PremiumCommandGlyph extends ACommand {
         super(
                 parent,
                 Arrays.asList("glyph", "icon"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.glyph.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.premium.glyph.help"),
                 "",
                 true,
                 true,

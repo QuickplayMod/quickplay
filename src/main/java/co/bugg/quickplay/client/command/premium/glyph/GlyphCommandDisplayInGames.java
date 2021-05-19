@@ -20,7 +20,7 @@ public class GlyphCommandDisplayInGames extends GlyphCommand {
         super(
                 parent,
                 Arrays.asList("ingame", "displayingame"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.glyph.ingame.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.premium.glyph.ingame.help"),
                 "<true|false>",
                 true,
                 true,

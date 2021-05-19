@@ -6,8 +6,7 @@ import co.bugg.quickplay.util.Location;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-public class AliasedAction {
-    public final String key;
+public class AliasedAction extends Element {
     public final String[] availableOn;
     public final Action action;
     public final boolean visible;
@@ -22,7 +21,7 @@ public class AliasedAction {
                          final boolean adminOnly, final Location hypixelLocrawRegex, final String hypixelRankRegex,
                          final String hypixelPackageRankRegex, final boolean hypixelBuildTeamOnly,
                          final boolean hypixelBuildTeamAdminOnly) {
-        this.key = key;
+        super(key, 3);
         this.availableOn = availableOn;
         this.action = action;
         this.visible = visible;

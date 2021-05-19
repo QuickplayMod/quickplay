@@ -27,14 +27,14 @@ public class DailyRewardGuiLoading extends QuickplayGui {
 
         // "Loading..."
         GL11.glScaled(loadingScale, loadingScale, loadingScale);
-        drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.loading"),
+        drawCenteredString(fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.loading"),
                 (int) (width / 2 / loadingScale), (int) ((height / 2 - fontRendererObj.FONT_HEIGHT) / loadingScale) - 5,
                 0xFFFFFFFF);
         GL11.glScaled(1 / loadingScale, 1 / loadingScale, 1 / loadingScale);
 
         // "Please allow up to 5 seconds..."
         GL11.glScaled(subScale, subScale, subScale);
-        drawCenteredString(fontRendererObj, Quickplay.INSTANCE.translator.get("quickplay.premium.ingameReward.loading.sub"),
+        drawCenteredString(fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.loading.sub"),
                 (int) (width / 2 / subScale), (int) ((height / 2) / subScale) + 5, 0xFFFFFFFF);
         GL11.glScaled(1 / subScale, 1 / subScale, 1 / subScale);
 

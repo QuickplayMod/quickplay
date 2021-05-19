@@ -63,7 +63,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
     public void initGui() {
         super.initGui();
 
-        if(Quickplay.INSTANCE.buttonMap == null) {
+        if(Quickplay.INSTANCE.elementController == null) {
             // close the GUI and send an error
             Minecraft.getMinecraft().displayGuiScreen(null);
             Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
@@ -77,13 +77,13 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                 Quickplay.INSTANCE.settings.enabledButtonsForPartyMode.size() > 0) {
             this.buttonSet = new HashSet<>(Quickplay.INSTANCE.settings.enabledButtonsForPartyMode);
         } else {
-            this.buttonSet = new HashSet<>(Quickplay.INSTANCE.buttonMap.keySet());
+            this.buttonSet = new HashSet<>(Quickplay.INSTANCE.elementController.buttonMap.keySet());
         }
 
 
         // Filter out buttons which are not found / don't pass permission checks / aren't visible to party mode
         for(String buttonKey : new HashSet<>(this.buttonSet)) {
-            Button button = Quickplay.INSTANCE.buttonMap.get(buttonKey);
+            Button button = Quickplay.INSTANCE.elementController.getButton(buttonKey);
             if(button == null || !button.visibleInPartyMode || !button.passesPermissionChecks()) {
                 this.buttonSet.remove(buttonKey);
             }
@@ -100,7 +100,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
         this.randomizingTextHeight = (int) (this.height * (this.height > 350 ? 0.4 : 0.3));
 
         int buttonId = 0;
-        final String randomizingString = Quickplay.INSTANCE.translator.get("quickplay.gui.party.randomizing");
+        final String randomizingString = Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.randomizing");
         this.componentList.add(new QuickplayGuiString(null, buttonId++, this.width / 2, this.randomizingTextHeight,
                 this.fontRendererObj.getStringWidth(randomizingString), this.fontRendererObj.FONT_HEIGHT, randomizingString,
                 true, false));
@@ -125,13 +125,13 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                         if(Minecraft.getMinecraft().currentScreen == this) {
                             final int nextSelectedModeIndex = random.nextInt(this.buttonSet.size());
                             this.currentButton = this.buttonSet.stream().skip(nextSelectedModeIndex).findFirst().orElse(null);
-                            Button button = Quickplay.INSTANCE.buttonMap.get(this.currentButton);
-                            this.currentButtonDisplayText = Quickplay.INSTANCE.translator
-                                    .get(button.translationKey);
+                            Button button = Quickplay.INSTANCE.elementController.getButton(this.currentButton);
+                            this.currentButtonDisplayText = Quickplay.INSTANCE.elementController
+                                    .translate(button.translationKey);
                             // If this button has a specific scope then we prepend that scope to the button's text, and separate with dash.
                             if(button.partyModeScopeTranslationKey != null && button.partyModeScopeTranslationKey.length() > 0) {
-                                this.currentButtonDisplayText = Quickplay.INSTANCE.translator.
-                                        get(button.partyModeScopeTranslationKey) + " - " + this.currentButtonDisplayText;
+                                this.currentButtonDisplayText = Quickplay.INSTANCE.elementController
+                                        .translate(button.partyModeScopeTranslationKey) + " - " + this.currentButtonDisplayText;
                             }
 
                             // Play sound
@@ -152,13 +152,13 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                 } else {
                     final int nextSelectedModeIndex = random.nextInt(this.buttonSet.size());
                     this.currentButton = this.buttonSet.stream().skip(nextSelectedModeIndex).findFirst().orElse(null);
-                    Button button = Quickplay.INSTANCE.buttonMap.get(this.currentButton);
-                    this.currentButtonDisplayText = Quickplay.INSTANCE.translator
-                            .get(button.translationKey);
+                    Button button = Quickplay.INSTANCE.elementController.getButton(this.currentButton);
+                    this.currentButtonDisplayText = Quickplay.INSTANCE.elementController
+                            .translate(button.translationKey);
                     // If this button has a specific scope then we prepend that scope to the button's text, and separate with dash.
                     if(button.partyModeScopeTranslationKey != null && button.partyModeScopeTranslationKey.length() > 0) {
-                        this.currentButtonDisplayText = Quickplay.INSTANCE.translator.
-                                get(button.partyModeScopeTranslationKey) + " - " + this.currentButtonDisplayText;
+                        this.currentButtonDisplayText = Quickplay.INSTANCE.elementController
+                                .translate(button.partyModeScopeTranslationKey) + " - " + this.currentButtonDisplayText;
                     }
                 }
 
@@ -184,7 +184,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                 // Finally, if this GUI is still open, send the mode command & close GUI
                 if(Minecraft.getMinecraft().currentScreen == this) {
                     Minecraft.getMinecraft().displayGuiScreen(null);
-                    Quickplay.INSTANCE.buttonMap.get(this.currentButton).run();
+                    Quickplay.INSTANCE.elementController.getButton(this.currentButton).run();
                 }
             } catch(InterruptedException e) {
                 e.printStackTrace();

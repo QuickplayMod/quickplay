@@ -3,6 +3,7 @@ package co.bugg.quickplay.actions;
 import co.bugg.quickplay.actions.clientbound.*;
 import co.bugg.quickplay.actions.serverbound.*;
 
+import java.io.Serializable;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -29,12 +30,12 @@ import java.util.*;
  * Actions can also be sent to the web server, providing context to actions/events occurring on the client,
  * such as exceptions, connection status, button presses, etc.
  */
-public class Action {
+public class Action implements Serializable {
 
     /**
      * A map mapping action IDs to their classes
      */
-    private static final Map<Short, Class<? extends Action>> actionIdToActionClass = new HashMap<>();
+    private static final transient Map<Short, Class<? extends Action>> actionIdToActionClass = new HashMap<>();
     static {
         actionIdToActionClass.put((short) 0, Action.class);
         actionIdToActionClass.put((short) 1, EnableModAction.class);
@@ -104,7 +105,7 @@ public class Action {
      * The items in the payload, stored as raw ByteBuffers.
      * @see this#getPayloadObjectAsString(int)
      */
-    private final List<ByteBuffer> payloadObjs;
+    private final List<byte[]> payloadObjs;
 
     public Action () {
         this.id = 0;
@@ -168,10 +169,11 @@ public class Action {
      * @return The payload item, or null if it does not exist.
      */
     public ByteBuffer getPayloadObject(int index) {
-        final ByteBuffer obj = this.payloadObjs.get(index);
-        if(obj == null) {
+        final byte[] bytes = this.payloadObjs.get(index);
+        if(bytes == null) {
             return null;
         }
+        final ByteBuffer obj = ByteBuffer.wrap(this.payloadObjs.get(index));
         obj.rewind();
         return obj;
     }
@@ -215,7 +217,8 @@ public class Action {
         ByteBuffer body = ByteBuffer.allocate(2);
         body.putShort(this.id);
 
-        for (ByteBuffer payload : this.payloadObjs) {
+        for (byte[] bytes : this.payloadObjs) {
+            ByteBuffer payload = ByteBuffer.wrap(bytes);
             ByteBuffer payloadSizeBuf = ByteBuffer.allocate(4);
             int payloadSize = payload.rewind().remaining();
             int bodySize = body.rewind().remaining();
@@ -236,7 +239,7 @@ public class Action {
      * @param payload The payload item to add.
      */
     public void addPayload(ByteBuffer payload) {
-        this.payloadObjs.add(payload);
+        this.payloadObjs.add(payload.array());
     }
 
     /**

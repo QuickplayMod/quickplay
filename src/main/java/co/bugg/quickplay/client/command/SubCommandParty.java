@@ -22,7 +22,7 @@ public class SubCommandParty extends ACommand {
         super(
                 parent,
                 Collections.singletonList("party"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.party.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.party.help"),
                 "[launch]",
                 true,
                 true,

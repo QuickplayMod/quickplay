@@ -19,7 +19,7 @@ public class GlyphCommandHeight extends GlyphCommand {
         super(
                 parent,
                 Collections.singletonList("height"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.glyph.height.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.premium.glyph.height.help"),
                 "<number>",
                 true,
                 true,

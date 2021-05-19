@@ -29,6 +29,6 @@ public class RemoveScreenAction extends Action {
 
     @Override
     public void run() {
-        Quickplay.INSTANCE.screenMap.remove(this.getPayloadObjectAsString(0));
+        Quickplay.INSTANCE.elementController.removeScreen(this.getPayloadObjectAsString(0));
     }
 }

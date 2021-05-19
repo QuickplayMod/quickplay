@@ -18,7 +18,7 @@ public class GlyphCommandReset extends GlyphCommand {
         super(
                 parent,
                 Collections.singletonList("reset"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.glyph.reset.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.premium.glyph.reset.help"),
                 "",
                 true,
                 true,

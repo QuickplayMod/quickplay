@@ -17,7 +17,7 @@ public class PremiumCommandTransfer extends ACommand {
         super(
                 parent,
                 Collections.singletonList("transfer"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.transfer.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.premium.transfer.help"),
                 "",
                 true,
                 true,

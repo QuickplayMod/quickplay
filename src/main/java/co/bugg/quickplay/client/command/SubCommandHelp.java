@@ -14,7 +14,7 @@ public class SubCommandHelp extends BasicHelpCommand {
     public SubCommandHelp(ACommand parent) {
         super(
                 parent,
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.help.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.help.help"),
                 true,
                 true,
                 100.0,

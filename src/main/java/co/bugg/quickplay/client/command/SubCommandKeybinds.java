@@ -22,7 +22,7 @@ public class SubCommandKeybinds extends ACommand {
         super(
                 parent,
                 Collections.singletonList("keybinds"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.keybinds.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.keybinds.help"),
                 "",
                 true,
                 true,

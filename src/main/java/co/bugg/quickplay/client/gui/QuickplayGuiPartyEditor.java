@@ -31,7 +31,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
      */
     Set<String> enabledButtons = new HashSet<>();
     /**
-     * Set of all buttons in the list, i.e. copy of Quickplay#buttonMap.keySet()
+     * Set of all buttons in the list, i.e. copy of ElementController#buttonMap.keySet()
      * Includes buttons which may not be drawn for reasons such as the user not having permission.
      */
     Set<String> allButtons = new HashSet<>();
@@ -75,14 +75,15 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         super.initGui();
         this.topOfButtons = Math.min((int) (height * 0.2), 80);
 
-        if(Quickplay.INSTANCE.buttonMap == null || Quickplay.INSTANCE.buttonMap.size() <= 0) {
+        if(Quickplay.INSTANCE.elementController == null || Quickplay.INSTANCE.elementController.buttonMap == null ||
+                Quickplay.INSTANCE.elementController.buttonMap.size() <= 0) {
             Minecraft.getMinecraft().displayGuiScreen(null);
             Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
                     .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
             return;
         }
 
-        this.allButtons = new HashSet<>(Quickplay.INSTANCE.buttonMap.keySet());
+        this.allButtons = new HashSet<>(Quickplay.INSTANCE.elementController.buttonMap.keySet());
         // If no buttons are specifically "enabled", then the default assumption is that all buttons are enabled.
         if(Quickplay.INSTANCE.settings.enabledButtonsForPartyMode == null ||
                 Quickplay.INSTANCE.settings.enabledButtonsForPartyMode.size() <= 0) {
@@ -106,8 +107,8 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         // Convert the set of button keys into an alphabetically sorted list of button display titles
         final List<String> allButtonsAsSortedList = new ArrayList<>(this.allButtons);
         allButtonsAsSortedList.sort((a,b) -> {
-            Button buttonA = Quickplay.INSTANCE.buttonMap.get(a);
-            Button buttonB = Quickplay.INSTANCE.buttonMap.get(b);
+            Button buttonA = Quickplay.INSTANCE.elementController.getButton(a);
+            Button buttonB = Quickplay.INSTANCE.elementController.getButton(b);
 
             if(buttonA == null) {
                 return 1;
@@ -115,23 +116,23 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
                 return -1;
             }
 
-            String buttonATitle = Quickplay.INSTANCE.translator.get(buttonA.translationKey);
+            String buttonATitle = Quickplay.INSTANCE.elementController.translate(buttonA.translationKey);
             // Prepend party mode scope translations if they're present
             if(buttonA.partyModeScopeTranslationKey != null && buttonA.partyModeScopeTranslationKey.length() > 0) {
-                buttonATitle = Quickplay.INSTANCE.translator.get(buttonA.partyModeScopeTranslationKey) + " - " +
+                buttonATitle = Quickplay.INSTANCE.elementController.translate(buttonA.partyModeScopeTranslationKey) + " - " +
                         buttonATitle;
             }
-            String buttonBTitle = Quickplay.INSTANCE.translator.get(buttonB.translationKey);
+            String buttonBTitle = Quickplay.INSTANCE.elementController.translate(buttonB.translationKey);
             // Prepend party mode scope translations if they're present
             if(buttonB.partyModeScopeTranslationKey != null && buttonB.partyModeScopeTranslationKey.length() > 0) {
-                buttonBTitle = Quickplay.INSTANCE.translator.get(buttonB.partyModeScopeTranslationKey) + " - " +
+                buttonBTitle = Quickplay.INSTANCE.elementController.translate(buttonB.partyModeScopeTranslationKey) + " - " +
                         buttonBTitle;
             }
             return buttonATitle.compareTo(buttonBTitle);
         });
 
         for(String buttonKey : allButtonsAsSortedList) {
-            Button button = Quickplay.INSTANCE.buttonMap.get(buttonKey);
+            Button button = Quickplay.INSTANCE.elementController.getButton(buttonKey);
             if(button == null || !button.visibleInPartyMode) {
                 continue;
             }
@@ -149,12 +150,12 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
 
             // Display-string for whether this mode is currently enabled or not
             final String trueOrFalse = isButtonEnabled ?
-                    EnumChatFormatting.GREEN + Quickplay.INSTANCE.translator.get("quickplay.config.gui.true") :
-                    EnumChatFormatting.RED + Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
-            String buttonText = Quickplay.INSTANCE.translator.get(button.translationKey) + ": " + trueOrFalse;
+                    EnumChatFormatting.GREEN + Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.true") :
+                    EnumChatFormatting.RED + Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.false");
+            String buttonText = Quickplay.INSTANCE.elementController.translate(button.translationKey) + ": " + trueOrFalse;
             // If this button has a specific scope then we prepend that scope to the button's text, and separate with dash.
             if(button.partyModeScopeTranslationKey != null && button.partyModeScopeTranslationKey.length() > 0) {
-                buttonText = Quickplay.INSTANCE.translator.get(button.partyModeScopeTranslationKey) + " - " +
+                buttonText = Quickplay.INSTANCE.elementController.translate(button.partyModeScopeTranslationKey) + " - " +
                         buttonText;
             }
             // If a button doesn't pass the Hypixel location checks (all other permission checks passed), then
@@ -171,21 +172,21 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
 
         // Add launch, "All On" and "All Off" buttons
         this.componentList.add(new QuickplayGuiButton(null, -1, this.width / 2  - (this.topButtonWidth + this.topButtonMargins) * 2 + this.topButtonMargins / 2, 10,
-                this.topButtonWidth, this.buttonHeight, Quickplay.INSTANCE.translator.get("quickplay.gui.party.launch"),
+                this.topButtonWidth, this.buttonHeight, Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.launch"),
                 false)); // Launch
         this.componentList.add(new QuickplayGuiButton(null, -2,
                 this.width / 2 - this.topButtonWidth - this.topButtonMargins / 2,
-                10, this.topButtonWidth, 20, Quickplay.INSTANCE.translator.get("quickplay.gui.party.allon"),
+                10, this.topButtonWidth, 20, Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.allon"),
                 false)); // All on
         this.componentList.add(new QuickplayGuiButton(null, -3,
                 this.width / 2 + this.topButtonMargins / 2, 10, this.topButtonWidth, 20,
-                Quickplay.INSTANCE.translator.get("quickplay.gui.party.alloff"), false)); // All off
+                Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.alloff"), false)); // All off
 
-        String visibilityToggleText = Quickplay.INSTANCE.translator.get("quickplay.gui.party.showAll");
+        String visibilityToggleText = Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.showAll");
         if(this.shownButtons == ShownButtonsMode.ENABLED_ONLY) {
-            visibilityToggleText = Quickplay.INSTANCE.translator.get("quickplay.gui.party.showEnabled");
+            visibilityToggleText = Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.showEnabled");
         } else if(this.shownButtons == ShownButtonsMode.DISABLED_ONLY) {
-            visibilityToggleText = Quickplay.INSTANCE.translator.get("quickplay.gui.party.showDisabled");
+            visibilityToggleText = Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.showDisabled");
         }
         this.componentList.add(new QuickplayGuiButton(null, -4,
                 this.width / 2 + this.topButtonWidth + this.topButtonMargins * 3 / 2, 10, this.topButtonWidth, 20,
@@ -226,7 +227,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         } else {
             // Quickplay is disabled, draw error message
             this.drawCenteredString(this.fontRendererObj,
-                    Quickplay.INSTANCE.translator.get("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    Quickplay.INSTANCE.elementController.translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
                     this.width / 2, this.height / 2, 0xffffff);
         }
 
@@ -237,7 +238,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             if(component instanceof QuickplayGuiButton && component.mouseHovering(this, mouseX, mouseY) &&
                     component.displayString.startsWith(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC)) {
                 this.drawHoveringText(Collections.singletonList(
-                        Quickplay.INSTANCE.translator.get("quickplay.party.thisModeNotAvailable")), mouseX, mouseY);
+                        Quickplay.INSTANCE.elementController.translate("quickplay.party.thisModeNotAvailable")), mouseX, mouseY);
                 break;
             }
         }
@@ -261,11 +262,11 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
                 if (isEnabled) {
                     this.enabledButtons.remove(component.origin);
                     component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.RED +
-                            Quickplay.INSTANCE.translator.get("quickplay.config.gui.false");
+                            Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.false");
                 } else {
                     this.enabledButtons.add((String) component.origin);
                     component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.GREEN +
-                            Quickplay.INSTANCE.translator.get("quickplay.config.gui.true");
+                            Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.true");
                 }
             }
         } else if(component.id == -4) {

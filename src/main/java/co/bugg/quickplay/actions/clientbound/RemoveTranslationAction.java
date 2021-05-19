@@ -31,7 +31,7 @@ public class RemoveTranslationAction extends Action {
 
     @Override
     public void run() {
-        Quickplay.INSTANCE.translator
-                .remove(this.getPayloadObjectAsString(0), this.getPayloadObjectAsString(1));
+        Quickplay.INSTANCE.elementController
+                .removeTranslation(this.getPayloadObjectAsString(0), this.getPayloadObjectAsString(1));
     }
 }

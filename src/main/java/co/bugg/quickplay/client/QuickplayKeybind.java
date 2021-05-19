@@ -154,7 +154,7 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
         if(this.target == null || this.target.length() <= 0) {
             return;
         }
-        final Button button = Quickplay.INSTANCE.buttonMap.get(this.target);
+        final Button button = Quickplay.INSTANCE.elementController.getButton(this.target);
         if(button == null || button.actionKeys == null || button.actionKeys.length <= 0) {
             return;
         }

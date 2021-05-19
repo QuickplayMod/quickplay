@@ -1,5 +1,6 @@
 package co.bugg.quickplay.client.command;
 
+import co.bugg.quickplay.ElementController;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.serverbound.InitializeClientAction;
 import co.bugg.quickplay.actions.serverbound.SetClientSettingsAction;
@@ -9,6 +10,7 @@ import co.bugg.quickplay.util.ServerUnavailableException;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +29,7 @@ public class SubCommandReload extends ACommand {
         super(
                 parent,
                 Collections.singletonList("reload"),
-                 Quickplay.INSTANCE.translator.get("Reload the Quickplay backend connection and game list."),
+                 Quickplay.INSTANCE.elementController.translate("Reload the Quickplay backend connection and game list."),
                 "",
                 false,
                 true,
@@ -63,6 +65,13 @@ public class SubCommandReload extends ACommand {
                         new QuickplayChatComponentTranslation("quickplay.failedToConnect")
                                 .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
                 ));
+                // Failed to connect to Quickplay backend -- Load gamelist from cache
+                try {
+                    Quickplay.INSTANCE.elementController = ElementController.loadCache();
+                } catch (FileNotFoundException fileNotFoundException) {
+                    System.out.println("Failed to load cached elements.");
+                    fileNotFoundException.printStackTrace();
+                }
             }
         });
     }

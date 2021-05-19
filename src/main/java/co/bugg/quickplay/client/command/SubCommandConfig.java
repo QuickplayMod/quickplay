@@ -22,7 +22,7 @@ public class SubCommandConfig extends ACommand {
         super(
                 parent,
                 Arrays.asList("config", "settings"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.config.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.config.help"),
                 "",
                 true,
                 true,

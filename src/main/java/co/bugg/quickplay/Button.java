@@ -5,8 +5,7 @@ import co.bugg.quickplay.util.Location;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-public class Button {
-    public final String key;
+public class Button extends Element {
     public final String[] availableOn;
     public final String[] actionKeys;
     public final String imageURL;
@@ -26,7 +25,7 @@ public class Button {
                   final Location hypixelLocrawRegex, final String hypixelRankRegex, final String hypixelPackageRankRegex,
                   final boolean hypixelBuildTeamOnly, final boolean hypixelBuildTeamAdminOnly, final boolean visibleInPartyMode,
                   final String partyModeScopeTranslationKey) {
-        this.key = key;
+        super(key, 2);
         this.availableOn = availableOn;
         this.actionKeys = actionKeys;
         this.imageURL = imageURL;
@@ -170,7 +169,7 @@ public class Button {
             if (actionKey == null || actionKey.length() <= 0) {
                 continue;
             }
-            AliasedAction aliasedAction = Quickplay.INSTANCE.aliasedActionMap.get(actionKey);
+            AliasedAction aliasedAction = Quickplay.INSTANCE.elementController.getAliasedAction(actionKey);
             if (aliasedAction == null) {
                 System.out.println("WARN: Aliased action " + actionKey + " is not found.");
                 continue;

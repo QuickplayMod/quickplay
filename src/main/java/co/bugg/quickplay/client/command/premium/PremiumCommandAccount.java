@@ -21,7 +21,7 @@ public class PremiumCommandAccount extends ACommand {
         super(
                 parent,
                 Collections.singletonList("account"),
-                Quickplay.INSTANCE.translator.get("quickplay.commands.quickplay.premium.account.help"),
+                Quickplay.INSTANCE.elementController.translate("quickplay.commands.quickplay.premium.account.help"),
                 "",
                 true,
                 true,
