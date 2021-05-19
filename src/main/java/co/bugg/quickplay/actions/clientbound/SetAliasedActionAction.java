@@ -43,6 +43,10 @@ public class SetAliasedActionAction extends Action {
             final ByteBuffer builtAction = this.getPayloadObject(2);
             final Action action = Action.from(builtAction);
 
+            if(action == null) {
+                return;
+            }
+
             final String availableOnJson = this.getPayloadObjectAsString(1);
             final String[] availableOnArr = gson.fromJson(availableOnJson, String[].class);
 

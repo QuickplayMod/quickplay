@@ -124,6 +124,9 @@ public class SocketClient extends WebSocketClient {
     public void onMessage(ByteBuffer bytes) {
         try {
             final Action action = Action.from(bytes);
+            if(action == null) {
+                return;
+            }
             if(Quickplay.INSTANCE.isInDebugMode) {
                 System.out.println("DEBUG > " + action.getClass().getName() + " received.");
             }
