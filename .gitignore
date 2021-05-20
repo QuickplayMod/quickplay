@@ -1,7 +1,8 @@
-gradlew
-gradlew.bat
-.idea
-.gradle
-build
-run
-gradle/wrapper
+*/gradlew
+*/gradlew.bat
+*/.idea
+*/.gradle
+*/build
+*/run
+*/gradle/wrapper
+*.iml

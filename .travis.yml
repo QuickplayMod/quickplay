@@ -6,8 +6,8 @@ before_install:
   - wget "https://raw.githubusercontent.com/MinecraftForge/ForgeGradle/FG_2.3/gradlew"
   - chmod +x ./gradlew
   
-install: ./gradlew setupCIWorkspace
-script: ./gradlew build
+install: ./quickplay_1.8.9/gradlew setupCIWorkspace
+script: ./quickplay_1.8.9/gradlew build
 notifications:
   email: false
 before_cache:
