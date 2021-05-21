@@ -6,9 +6,10 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.elements.Button;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.io.IOException;
@@ -78,8 +79,8 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         if(Quickplay.INSTANCE.elementController == null || Quickplay.INSTANCE.elementController.buttonMap == null ||
                 Quickplay.INSTANCE.elementController.buttonMap.size() <= 0) {
             Minecraft.getMinecraft().displayGuiScreen(null);
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
+                    .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             return;
         }
 
@@ -308,8 +309,8 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         }
         // You cannot disable all buttons, one button must always be enabled.
         else if(this.enabledButtons.size() < 1) {
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.mustSelectOneGame")
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD))));
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.mustSelectOneGame")
+                    .setStyle(new ChatStyleWrapper().apply(Formatting.GOLD))));
             return;
         } else {
             Quickplay.INSTANCE.settings.enabledButtonsForPartyMode = this.enabledButtons;
@@ -318,7 +319,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             Quickplay.INSTANCE.settings.save();
         } catch (IOException e) {
             e.printStackTrace();
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.config.saveError")));
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.config.saveError")));
         }
     }
 }

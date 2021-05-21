@@ -34,7 +34,7 @@ public class MessageBuffer extends ABuffer {
             if(!(obj instanceof Message)) {
                 return;
             }
-            player.addChatMessage(((Message) obj).getMessage());
+            player.addChatMessage(((Message) obj).getMessage().get());
         }
     }
 

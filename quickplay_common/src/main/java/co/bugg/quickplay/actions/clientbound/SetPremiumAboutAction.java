@@ -2,10 +2,10 @@ package co.bugg.quickplay.actions.clientbound;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
-import com.google.gson.Gson;
-import net.minecraft.util.IChatComponent;
+import co.bugg.quickplay.wrappers.chat.IChatComponentWrapper;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * ID: 16
@@ -22,15 +22,14 @@ public class SetPremiumAboutAction extends Action {
      * Create a new SetPremiumAboutAction.
      * @param component Chat component to set the about text to.
      */
-    public SetPremiumAboutAction(IChatComponent component) {
+    public SetPremiumAboutAction(IChatComponentWrapper component) {
         super();
         this.id = 16;
-        this.addPayload(ByteBuffer.wrap(new Gson().toJson(component).getBytes()));
+        this.addPayload(ByteBuffer.wrap(IChatComponentWrapper.serialize(component).getBytes(StandardCharsets.UTF_8)));
     }
 
     @Override
     public void run() {
-        Quickplay.INSTANCE.premiumAbout = IChatComponent.Serializer
-                .jsonToComponent(this.getPayloadObjectAsString(0));
+        Quickplay.INSTANCE.premiumAbout = IChatComponentWrapper.deserialize(this.getPayloadObjectAsString(0));
     }
 }

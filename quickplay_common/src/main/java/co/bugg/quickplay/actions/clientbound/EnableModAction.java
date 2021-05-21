@@ -25,7 +25,7 @@ public class EnableModAction extends Action {
         } catch (URISyntaxException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.failedToEnable"),
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.failedToEnable"),
                     true, true));
         }
     }

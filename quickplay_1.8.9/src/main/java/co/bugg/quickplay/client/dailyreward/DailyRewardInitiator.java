@@ -6,10 +6,10 @@ import co.bugg.quickplay.actions.serverbound.GetDailyRewardAction;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerUnavailableException;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreenBook;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -49,9 +49,9 @@ public class DailyRewardInitiator {
             Quickplay.INSTANCE.socket.sendAction(new GetDailyRewardAction(code));
         } catch (ServerUnavailableException e) {
             e.printStackTrace();
-            Quickplay.INSTANCE.messageBuffer.push(new Message(
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                     new QuickplayChatComponentTranslation("quickplay.failedToConnect")
-                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                            .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
         }
     }
 }

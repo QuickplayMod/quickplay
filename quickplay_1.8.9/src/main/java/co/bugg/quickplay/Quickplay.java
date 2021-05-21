@@ -19,6 +19,10 @@ import co.bugg.quickplay.util.analytics.GoogleAnalytics;
 import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
+import co.bugg.quickplay.wrappers.MinecraftWrapper;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
+import co.bugg.quickplay.wrappers.chat.IChatComponentWrapper;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
@@ -26,9 +30,6 @@ import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.command.ICommand;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,6 +59,10 @@ public class Quickplay {
 
     @Mod.Instance
     public static Quickplay INSTANCE = new Quickplay();
+    /**
+     * Wrapper for Minecraft's main class.
+     */
+    public MinecraftWrapper minecraft = new MinecraftWrapper();
     /**
      * Whether the mod is currently enabled
      */
@@ -113,14 +118,6 @@ public class Quickplay {
      */
     public final List<ICommand> commands = new ArrayList<>();
     /**
-     * Buffer for sending messages to the client
-     */
-    public MessageBuffer messageBuffer;
-    /**
-     * Buffer for sending chat messages to the server
-     */
-    public ChatBuffer chatBuffer;
-    /**
      * Factory for creating HTTP requests
      * TODO remove
      */
@@ -168,7 +165,7 @@ public class Quickplay {
      * Help menu for Quickplay Premium
      * retrieved from the <code>enable</code> endpoint on mod enable from the content field <code>premiumInfo</code>
      */
-    public IChatComponent premiumAbout = null;
+    public IChatComponentWrapper premiumAbout = null;
     /**
      * List of all player glyphs, which contains the URL to the glyph as well as the owner's UUID
      */
@@ -220,13 +217,13 @@ public class Quickplay {
         // if the mod is disabled - this allows for
         // communicating important information about why
         // the mod is currently disabled, or how to fix.
-        this.messageBuffer = (MessageBuffer) new MessageBuffer(100).start();
+        this.minecraft.messageBuffer = (MessageBuffer) new MessageBuffer(100).start();
         try {
             this.enable();
         } catch (URISyntaxException e) {
             e.printStackTrace();
             this.sendExceptionRequest(e);
-            this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.failedToEnable"),
+            this.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.failedToEnable"),
                     true, true));
         }
     }
@@ -269,8 +266,8 @@ public class Quickplay {
                 // File couldn't be saved
                 e1.printStackTrace();
                 this.sendExceptionRequest(e1); // TODO replace
-                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
-                        "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                this.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation(
+                        "quickplay.config.saveError").setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             }
         }
     }
@@ -305,9 +302,9 @@ public class Quickplay {
                 e.printStackTrace();
             }
             // Tell user about migration
-            this.messageBuffer.push(new Message(
+            this.minecraft.sendLocalMessage(new Message(
                     new QuickplayChatComponentTranslation("quickplay.keybinds.migrating")
-                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY))));
+                            .setStyle(new ChatStyleWrapper().apply(Formatting.GRAY))));
             // Keybinds are set to default temporarily. The user's instructed not to modify their keybinds until
             // migration is complete, as that would trigger a save.
             Quickplay.INSTANCE.keybinds = new ConfigKeybinds(true);
@@ -320,9 +317,9 @@ public class Quickplay {
                     e.printStackTrace();
                 }
                 if(ConfigKeybinds.checkForConversionNeeded("keybinds.json")) {
-                    Quickplay.INSTANCE.messageBuffer.push(new Message(
+                    Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                             new QuickplayChatComponentTranslation("quickplay.keybinds.migratingFailedServerOffline")
-                                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
+                                    .setStyle(new ChatStyleWrapper().apply(Formatting.RED))
                             , true));
                 }
             });
@@ -343,8 +340,8 @@ public class Quickplay {
                 // File couldn't be saved
                 e1.printStackTrace();
                 this.sendExceptionRequest(e1); // TODO replace
-                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation(
-                        "quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                this.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation(
+                        "quickplay.config.saveError").setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             }
         }
     }
@@ -392,7 +389,7 @@ public class Quickplay {
             this.registerEventHandler(new GlyphRenderer());
             this.registerEventHandler(new QuickplayEventHandler());
 
-            this.chatBuffer = (ChatBuffer) new ChatBuffer(200, 8, 5000, 1000).start();
+            this.minecraft.chatBuffer = (ChatBuffer) new ChatBuffer(200, 8, 5000, 1000).start();
             this.hypixelInstanceWatcher = new HypixelInstanceWatcher().start();
             this.instanceDisplay = new InstanceDisplay(this.hypixelInstanceWatcher);
 
@@ -449,9 +446,9 @@ public class Quickplay {
                 this.socket = null;
             }
 
-            if(this.chatBuffer != null) {
-                this.chatBuffer.stop();
-                this.chatBuffer = null;
+            if(this.minecraft.chatBuffer != null) {
+                this.minecraft.chatBuffer.stop();
+                this.minecraft.chatBuffer = null;
             }
 
             if(this.hypixelInstanceWatcher != null) {
@@ -472,9 +469,9 @@ public class Quickplay {
      */
     public boolean checkEnabledStatus() {
         if(!this.isEnabled) {
-            IChatComponent message = new QuickplayChatComponentTranslation("quickplay.disabled", this.disabledReason);
-            message.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
-            this.messageBuffer.push(new Message(message, true));
+            IChatComponentWrapper msg = new QuickplayChatComponentTranslation("quickplay.disabled", this.disabledReason);
+            msg.setStyle(new ChatStyleWrapper().apply(Formatting.RED));
+            this.minecraft.sendLocalMessage(new Message(msg, true));
         }
 
         return this.isEnabled;
@@ -510,8 +507,8 @@ public class Quickplay {
     public void launchPartyMode() {
         // If there are no buttons known to Quickplay, then just tell the user he has no games selected.
         if(this.elementController == null || this.elementController.buttonMap == null || this.elementController.buttonMap.size() <= 0) {
-            this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            this.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
+                    .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
         }
 
         Set<String> enabledButtons;
@@ -530,8 +527,8 @@ public class Quickplay {
                 // No GUI, handle randomization in chat
                 // If there is a delay greater than 0 seconds, we send a message so the user knows something happened.
                 if(this.settings.partyModeDelay > 0) {
-                    this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.commencing")
-                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE))));
+                    this.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.commencing")
+                            .setStyle(new ChatStyleWrapper().apply(Formatting.LIGHT_PURPLE))));
                 }
 
                 // Pick a random button from our list of enabled buttons that exists and is visible to party mode.
@@ -552,8 +549,8 @@ public class Quickplay {
                     if(button == null || !button.visibleInPartyMode || !button.passesPermissionChecks()) {
                         enabledButtons.remove(buttonKey);
                         if(enabledButtons.size() == 0) {
-                            this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
-                                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                            this.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
+                                    .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
                             return;
                         }
                     }
@@ -570,13 +567,13 @@ public class Quickplay {
                     translatedGame = Quickplay.INSTANCE.elementController.translate(button.partyModeScopeTranslationKey) + " - " +
                             translatedGame;
                 }
-                this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.sendingYou",
-                        translatedGame).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))));
+                this.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.sendingYou",
+                        translatedGame).setStyle(new ChatStyleWrapper().apply(Formatting.GREEN))));
                 button.run();
             }
         } else {
-            this.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            this.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
+                    .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
         }
     }
 

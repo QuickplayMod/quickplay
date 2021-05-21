@@ -13,13 +13,13 @@ import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerUnavailableException;
 import co.bugg.quickplay.util.analytics.GoogleAnalytics;
 import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
+import co.bugg.quickplay.wrappers.chat.IChatComponentWrapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -57,7 +57,7 @@ public class DailyRewardGui extends QuickplayGui {
     /**
      * Future/thread for swapping the ad texture frame
      */
-    public Future adTextureFrameFuture;
+    public Future<?> adTextureFrameFuture;
     /**
      * Scale of the advertisement texture
      * Dynamic depending on screen height
@@ -760,10 +760,10 @@ public class DailyRewardGui extends QuickplayGui {
                 );
             } catch (ServerUnavailableException e) {
                 e.printStackTrace();
-                IChatComponent msg = new QuickplayChatComponentTranslation(
+                IChatComponentWrapper msg = new QuickplayChatComponentTranslation(
                         "quickplay.premium.ingameReward.menu.claim.serverOffline");
-                msg.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED));
-                Quickplay.INSTANCE.messageBuffer.push(new Message(msg, true));
+                msg.setStyle(new ChatStyleWrapper().apply(Formatting.RED));
+                Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(msg, true));
             }
 
             // Send analytical data

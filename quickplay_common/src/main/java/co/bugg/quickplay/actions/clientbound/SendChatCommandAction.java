@@ -31,6 +31,6 @@ public class SendChatCommandAction extends Action {
     @Override
     public void run() {
         String cmd = "/" + this.getPayloadObjectAsString(0);
-        Quickplay.INSTANCE.chatBuffer.push(cmd);
+        Quickplay.INSTANCE.minecraft.sendRemoteMessage(cmd);
     }
 }

@@ -1,12 +1,12 @@
 package co.bugg.quickplay.util;
 
+import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.wrappers.chat.ChatComponentTextWrapper;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
+import co.bugg.quickplay.wrappers.chat.IChatComponentWrapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 
 import java.nio.CharBuffer;
 
@@ -17,7 +17,7 @@ public class Message {
     /**
      * Base of the message being sent
      */
-    private IChatComponent message;
+    private IChatComponentWrapper message;
     /**
      * Whether the message should be wrapped in "separator bars"
      */
@@ -31,7 +31,7 @@ public class Message {
      * Constructor
      * @param message Message to be sent
      */
-    public Message(IChatComponent message) {
+    public Message(IChatComponentWrapper message) {
         this(message, false, false);
     }
 
@@ -40,7 +40,7 @@ public class Message {
      * @param message Message to be sent
      * @param separators Whether the message should be wrapped in separators
      */
-    public Message(IChatComponent message, boolean separators) {
+    public Message(IChatComponentWrapper message, boolean separators) {
         this(message, separators, false);
     }
 
@@ -50,7 +50,7 @@ public class Message {
      * @param separators Whether the message should be wrapped in separators
      * @param bypassEnabledSetting Whether the message should bypass the mod "enabled" setting
      */
-    public Message(IChatComponent message, boolean separators, boolean bypassEnabledSetting) {
+    public Message(IChatComponentWrapper message, boolean separators, boolean bypassEnabledSetting) {
         this.message = message;
         this.separators = separators;
         this.bypassEnabledSetting = bypassEnabledSetting;
@@ -60,8 +60,8 @@ public class Message {
      * Get a chat message that can be sent, with bars included if applicable
      * @return IChatComponent that can be sent in chat
      */
-    public IChatComponent getMessage() {
-        IChatComponent component = new ChatComponentText("");
+    public IChatComponentWrapper getMessage() {
+        IChatComponentWrapper component = new ChatComponentTextWrapper("");
         if(separators) {
             component.appendSibling(getMessageSeparator()).appendText("\n");
         }
@@ -85,18 +85,17 @@ public class Message {
      * The separators are always the width of the clients chat box (without formatting)
      * @return Separator
      */
-    public static IChatComponent getMessageSeparator() {
+    public static IChatComponentWrapper getMessageSeparator() {
         char separatorChar = '-';
-        final int chatWidth = Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatWidth();
-        final int separatorWidth = Minecraft.getMinecraft().fontRendererObj.getCharWidth(separatorChar);
+        final int chatWidth = Quickplay.INSTANCE.minecraft.getChatWindowWidth();
+        final int separatorWidth = Quickplay.INSTANCE.minecraft.getCharWidth(separatorChar);
 
         final String separatorText = CharBuffer.allocate(chatWidth / separatorWidth).toString().replace('\0', separatorChar);
 
-        final IChatComponent separator = new ChatComponentText(separatorText);
-        final ChatStyle separatorStyle = new ChatStyle();
-        separatorStyle.setColor(EnumChatFormatting.GOLD);
-        separatorStyle.setStrikethrough(true);
-        separator.setChatStyle(separatorStyle);
+        final IChatComponentWrapper separator = new ChatComponentTextWrapper(separatorText);
+        final ChatStyleWrapper separatorStyle = new ChatStyleWrapper();
+        separatorStyle.apply(Formatting.GOLD).apply(Formatting.STRIKETHROUGH);
+        separator.setStyle(separatorStyle);
 
         return separator;
     }
@@ -118,7 +117,7 @@ public class Message {
         }
 
         return new Message(
-                IChatComponent.Serializer.jsonToComponent(obj.get("message").toString()),
+                IChatComponentWrapper.deserialize(obj.get("message").toString()),
                 separators,
                 bypassEnabledSetting
         );

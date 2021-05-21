@@ -5,10 +5,10 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.elements.Button;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -53,7 +53,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
      * Future thread containing the spinning action.
      * Used to avoid two spinners at once if initGui is called twice
      */
-    public Future spinningThreadFuture;
+    public Future<?> spinningThreadFuture;
     /**
      * Number of pixels on each side the background box has for padding
      */
@@ -66,8 +66,8 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
         if(Quickplay.INSTANCE.elementController == null) {
             // close the GUI and send an error
             Minecraft.getMinecraft().displayGuiScreen(null);
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
+                    .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             return;
         }
 
@@ -92,8 +92,8 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
         if(this.buttonSet.size() <= 0) {
             // close the GUI and send an error
             Minecraft.getMinecraft().displayGuiScreen(null);
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
+                    .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             return;
         }
 

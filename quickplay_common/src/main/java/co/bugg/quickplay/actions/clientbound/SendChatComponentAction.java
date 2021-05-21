@@ -36,7 +36,7 @@ public class SendChatComponentAction extends Action {
         try {
             final JsonElement elem = new JsonParser().parse(this.getPayloadObjectAsString(0));
             Message message = Message.fromJson(elem);
-            Quickplay.INSTANCE.messageBuffer.push(message);
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(message);
         } catch (JsonParseException e) {
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);

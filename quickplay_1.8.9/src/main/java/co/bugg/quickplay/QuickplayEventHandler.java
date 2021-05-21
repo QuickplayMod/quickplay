@@ -9,13 +9,13 @@ import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
 import co.bugg.quickplay.elements.ElementController;
 import co.bugg.quickplay.elements.Screen;
 import co.bugg.quickplay.util.*;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -49,12 +49,16 @@ public class QuickplayEventHandler {
         Quickplay.INSTANCE.threadPool.submit(() -> {
             try {
                 // Metadata is currently unused, however it's available in the spec for the future.
-                Quickplay.INSTANCE.socket.sendAction(new ServerJoinedAction(ServerChecker.getCurrentIP(), null));
+                String ip = ServerChecker.getCurrentIP();
+                if(ip == null) {
+                    ip = "";
+                }
+                Quickplay.INSTANCE.socket.sendAction(new ServerJoinedAction(ip, null));
             } catch (ServerUnavailableException e) {
                 e.printStackTrace();
-                Quickplay.INSTANCE.messageBuffer.push(new Message(
+                Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                         new QuickplayChatComponentTranslation("quickplay.failedToConnect")
-                                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                                .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
                 // Failed to connect to Quickplay backend -- Load gamelist from cache
                 try {
                     Quickplay.INSTANCE.elementController = ElementController.loadCache();
@@ -93,6 +97,7 @@ public class QuickplayEventHandler {
     public void onRender(TickEvent.RenderTickEvent event) {
         // handle any runnables that need to be ran with OpenGL context
         if(event.phase == TickEvent.Phase.START && !mainThreadScheduledTasks.isEmpty()) {
+            // TODO optimize
             for(Runnable runnable : (ArrayList<Runnable>) mainThreadScheduledTasks.clone()) {
                 runnable.run();
                 mainThreadScheduledTasks.remove(runnable);

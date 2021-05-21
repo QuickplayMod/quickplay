@@ -136,7 +136,7 @@ public class HypixelInstanceWatcher {
             }
             // Swap if: you're in a lobby & you just joined the server to a lobby or you just left an instance that was not the same type of lobby as this
             if (swapToLobbyOne) {
-                Quickplay.INSTANCE.chatBuffer.push("/swaplobby 1");
+                Quickplay.INSTANCE.minecraft.sendRemoteMessage("/swaplobby 1");
             }
 
         }

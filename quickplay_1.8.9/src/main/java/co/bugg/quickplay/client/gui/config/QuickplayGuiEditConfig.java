@@ -13,9 +13,10 @@ import co.bugg.quickplay.config.AssetFactory;
 import co.bugg.quickplay.config.GuiOption;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -437,7 +438,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                                 Quickplay.INSTANCE.elementController.translate(element.optionInfo.name()), config, this));
                     } else if(element.element.getClass().isEnum()) {
                         // Find out what the next enum in the list is
-                        final List list = Arrays.asList(element.element.getClass().getEnumConstants());
+                        final List<?> list = Arrays.asList(element.element.getClass().getEnumConstants());
                         final int index = list.indexOf(element.element);
                         final int nextIndex = list.size() > index + 1 ? index + 1 : 0;
                         element.element = list.get(nextIndex);
@@ -486,9 +487,9 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
             }
         } catch (IOException | IllegalAccessException | NoSuchFieldException e) {
             System.out.println("Failed to save option " + element.configFieldName + ".");
-            Quickplay.INSTANCE.messageBuffer.push(new Message(
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                     new QuickplayChatComponentTranslation("quickplay.config.saveError")
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                    .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }

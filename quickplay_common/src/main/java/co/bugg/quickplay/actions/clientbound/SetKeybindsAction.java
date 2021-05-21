@@ -7,11 +7,11 @@ import co.bugg.quickplay.config.ConfigKeybinds;
 import co.bugg.quickplay.util.GsonPostProcessorFactory;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -53,15 +53,15 @@ public class SetKeybindsAction extends Action {
         Quickplay.INSTANCE.keybinds.keybinds = gson.fromJson(json, listType);
         try {
             Quickplay.INSTANCE.keybinds.save();
-            Quickplay.INSTANCE.messageBuffer.push(new Message(
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                     new QuickplayChatComponentTranslation("quickplay.keybinds.migratingComplete")
-                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))
+                            .setStyle(new ChatStyleWrapper().apply(Formatting.GREEN))
                     , false));
         } catch (IOException e) {
             e.printStackTrace();
-            Quickplay.INSTANCE.messageBuffer.push(new Message(
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                     new QuickplayChatComponentTranslation("quickplay.config.saveFailed", "keybinds")
-                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                            .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
         }
 
     }

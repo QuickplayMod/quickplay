@@ -7,9 +7,9 @@ import co.bugg.quickplay.client.gui.QuickplayGuiScreen;
 import co.bugg.quickplay.elements.Screen;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.nio.ByteBuffer;
 
@@ -38,16 +38,15 @@ public class OpenScreenAction extends Action {
     public void run() {
         final Screen screen = Quickplay.INSTANCE.elementController.getScreen(this.getPayloadObjectAsString(0));
         if(screen == null || !screen.passesPermissionChecks()) {
-            Quickplay.INSTANCE.messageBuffer.push(new Message(
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                     new QuickplayChatComponentTranslation("quickplay.screenOpenFail")
-                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
+                            .setStyle(new ChatStyleWrapper().apply(Formatting.RED))
                     , false, false));
             return;
         }
 
 
-        QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-            Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiScreen(screen));
-        });
+        QuickplayEventHandler.mainThreadScheduledTasks.add(() ->
+                Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiScreen(screen)));
     }
 }

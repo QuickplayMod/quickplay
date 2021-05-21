@@ -3,10 +3,9 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
-import net.minecraft.client.Minecraft;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Improved Hypixel /hub command
@@ -62,7 +61,7 @@ public class CommandMain extends BaseCommand {
                 // to execute as a client command which would loop infinitely
                 if(Quickplay.INSTANCE.isOnHypixel()) {
                     if(args.length == 0) {
-                        Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand);
+                        Quickplay.INSTANCE.minecraft.sendRemoteMessageDirect("/" + serverCommand);
                     } else {
                         // Two parameters or greater were sent
                         try {
@@ -71,7 +70,7 @@ public class CommandMain extends BaseCommand {
 
                             // If not in main lobby, go to main lobby first
                             if(!Quickplay.INSTANCE.hypixelInstanceWatcher.getCurrentServer().startsWith("lobby")) {
-                                Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand);
+                                Quickplay.INSTANCE.minecraft.sendRemoteMessageDirect("/" + serverCommand);
 
                                 try {
                                     Thread.sleep(1000);
@@ -82,13 +81,13 @@ public class CommandMain extends BaseCommand {
 
 
                             // Swap lobbies after waiting a sec
-                            Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
+                            Quickplay.INSTANCE.minecraft.sendRemoteMessage("/swaplobby " + lobbyNumber);
                         } catch(NumberFormatException e) {
                             // Send usage
-                            Quickplay.INSTANCE.messageBuffer.push(new Message(
+                            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                                     new QuickplayChatComponentTranslation("quickplay.commands.hub.numberexception",
                                             "/" + command + " " + commandSyntax)
-                                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                                            .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
                         }
                     }
 
@@ -98,7 +97,7 @@ public class CommandMain extends BaseCommand {
 
             // Fallback
             final String argsString = String.join(" " , args);
-            Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand + " " + argsString);
+            Quickplay.INSTANCE.minecraft.sendRemoteMessageDirect("/" + serverCommand + " " + argsString);
         });
     }
 }

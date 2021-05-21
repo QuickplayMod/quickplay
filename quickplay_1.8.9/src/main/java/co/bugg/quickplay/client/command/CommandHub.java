@@ -3,10 +3,10 @@ package co.bugg.quickplay.client.command;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Improved Hypixel /hub command
@@ -68,7 +68,7 @@ public class CommandHub extends BaseCommand {
                         // if they sent a lobby number instead of a lobby name
                         try {
                             final int lobbyNumber = Integer.parseInt(args[0]);
-                            Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
+                            Quickplay.INSTANCE.minecraft.sendRemoteMessage("/swaplobby " + lobbyNumber);
                         } catch(NumberFormatException e) {
                             // It's a string so just send them to that lobby instead of lobby number
                             Minecraft.getMinecraft().thePlayer.sendChatMessage("/" + serverCommand + " " + args[0]);
@@ -87,13 +87,13 @@ public class CommandHub extends BaseCommand {
                                 e.printStackTrace();
                             }
                             // Swap lobbies after waiting a sec
-                            Quickplay.INSTANCE.chatBuffer.push("/swaplobby " + lobbyNumber);
+                            Quickplay.INSTANCE.minecraft.sendRemoteMessage("/swaplobby " + lobbyNumber);
                         } catch(NumberFormatException e) {
                             // Send usage
-                            Quickplay.INSTANCE.messageBuffer.push(new Message(
+                            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                                     new QuickplayChatComponentTranslation("quickplay.commands.hub.numberexception",
                                             "/" + command + " " + commandSyntax)
-                                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+                                            .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
                         }
                     }
 

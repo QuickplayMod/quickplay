@@ -48,7 +48,7 @@ public class ReflectionUtil {
      * @throws IllegalAccessException Couldn't access the minecraft version for some reason
      */
     public static String getMCVersion() throws NoSuchFieldException, IllegalAccessException {
-        return (String) getField(ForgeVersion.class, "mcVersion").get(null);
+        return (String) ReflectionUtil.getField(ForgeVersion.class, "mcVersion").get(null);
     }
 
     /**
@@ -59,6 +59,6 @@ public class ReflectionUtil {
      * @throws NoSuchMethodException Forge version method doesn't exist for some reason
      */
     public static String getForgeVersion() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-        return (String) getMethod(ForgeVersion.class, "getVersion").invoke(null);
+        return (String) ReflectionUtil.getMethod(ForgeVersion.class, "getVersion").invoke(null);
     }
 }

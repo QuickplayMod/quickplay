@@ -17,11 +17,11 @@ import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerUnavailableException;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
@@ -459,9 +459,9 @@ public class QuickplayGuiScreen extends QuickplayGui {
         if(component.origin instanceof Button && contextMenu == null) {
             final Button button = (Button) component.origin;
             if(!button.passesPermissionChecks()) {
-                Quickplay.INSTANCE.messageBuffer.push(new Message(
+                Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                         new QuickplayChatComponentTranslation("quickplay.buttonPressFail")
-                                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
+                                .setStyle(new ChatStyleWrapper().apply(Formatting.RED))
                         , false, false));
                 return;
             }

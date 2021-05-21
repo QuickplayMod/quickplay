@@ -5,9 +5,9 @@ import co.bugg.quickplay.elements.Button;
 import co.bugg.quickplay.util.GsonPostProcessorFactory;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
@@ -159,9 +159,9 @@ public class QuickplayKeybind implements Serializable, GsonPostProcessorFactory.
             return;
         }
         if(!button.passesPermissionChecks()) {
-            Quickplay.INSTANCE.messageBuffer.push(new Message(
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                     new QuickplayChatComponentTranslation("quickplay.keybindPressFail")
-                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
+                            .setStyle(new ChatStyleWrapper().apply(Formatting.RED))
                     , false, false));
             return;
         }

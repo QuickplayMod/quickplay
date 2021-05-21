@@ -39,7 +39,7 @@ public class LocationDetector {
         this.cancel = true;
 
         // Send the /locraw command
-        Quickplay.INSTANCE.chatBuffer.push("/locraw");
+        Quickplay.INSTANCE.minecraft.sendRemoteMessage("/locraw");
         // If a /locraw isn't received within 300 ticks (15 seconds), don't cancel the message
         new TickDelay(this::stopCancelling, 300);
         // If a /locraw isn't received within 1200 ticks (60 seconds), stop listening

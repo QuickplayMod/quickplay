@@ -9,10 +9,10 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiSlider;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.awt.*;
 import java.io.IOException;
@@ -200,7 +200,8 @@ public class QuickplayGuiEditColor extends QuickplayGui {
             config.save();
         } catch (IOException e) {
             System.out.println("Failed to save color " + colorName + ".");
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new QuickplayChatComponentTranslation("quickplay.config.saveError").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))));
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.config.saveError")
+                    .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }

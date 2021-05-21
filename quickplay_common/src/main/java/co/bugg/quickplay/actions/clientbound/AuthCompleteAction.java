@@ -4,10 +4,10 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.actions.serverbound.InitializeClientAction;
 import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerUnavailableException;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 
 import java.util.Date;
 
@@ -86,9 +86,9 @@ public class AuthCompleteAction extends Action {
             } catch (ServerUnavailableException | InterruptedException e) {
                 e.printStackTrace();
                 Quickplay.INSTANCE.sendExceptionRequest(e);
-                Quickplay.INSTANCE.messageBuffer.push(new Message(
-                        new ChatComponentTranslation("quickplay.failedToAuth")
-                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)),
+                Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
+                        new QuickplayChatComponentTranslation("quickplay.failedToAuth")
+                        .setStyle(new ChatStyleWrapper().apply(Formatting.RED)),
                         true
                 ));
             }

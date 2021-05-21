@@ -6,10 +6,10 @@ import co.bugg.quickplay.actions.serverbound.AuthMojangEndHandshakeAction;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerUnavailableException;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -123,9 +123,9 @@ public class AuthBeginHandshakeAction extends Action {
                 Quickplay.INSTANCE.socket.sendAction(new AuthMojangEndHandshakeAction(Minecraft.getMinecraft().getSession().getUsername()));
             } catch (IOException | ServerUnavailableException e) {
                 e.printStackTrace();
-                Quickplay.INSTANCE.messageBuffer.push(new Message(
+                Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                         new QuickplayChatComponentTranslation("quickplay.failedToAuth")
-                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))
+                        .setStyle(new ChatStyleWrapper().apply(Formatting.RED))
                 ));
             }
         });
