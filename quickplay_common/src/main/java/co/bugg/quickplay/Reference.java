@@ -16,8 +16,9 @@ public class Reference {
     public static final String MOD_NAME = "Quickplay";
     /**
      * Version of this forge mod
+     * Populated by build script.
      */
-    public static final String VERSION = "2.1.0-beta6";
+    public static final String VERSION = "@VERSION@";
     /**
      * Google Analytics tracking ID
      */

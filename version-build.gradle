@@ -1,0 +1,16 @@
+def p = new Properties()
+file("../version.properties").withInputStream { p.load(it) }
+version = p.getProperty("version")
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+task processSource(type: Sync) {
+    from sourceSets.main.java
+    inputs.property 'version', version
+    filter(ReplaceTokens, tokens: [VERSION: version])
+    into "$buildDir/src"
+}
+
+compileJava {
+    source = processSource.outputs
+}
