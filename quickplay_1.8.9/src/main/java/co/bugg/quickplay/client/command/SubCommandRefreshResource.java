@@ -39,9 +39,9 @@ public class SubCommandRefreshResource extends ACommand {
         if(args.length >= 1) {
             QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
                 // Reload the resource pack
-                Quickplay.INSTANCE.reloadResource(new File(AssetFactory.assetsDirectory + "/" + args[0]),
+                Quickplay.INSTANCE.mod.reloadResource(new File(AssetFactory.assetsDirectory + "/" + args[0]),
                         new ResourceLocationWrapper(Reference.MOD_ID, args[0]));
-                System.out.println("Reloaded resource " + args[0]);
+                Quickplay.LOGGER.info("Reloaded resource " + args[0]);
             });
         }
     }

@@ -38,13 +38,13 @@ public class SubCommandDebug extends ACommand {
     @Override
     public void run(String[] args) {
         if(args.length > this.getDepth() && args[this.getDepth()].equals("printController")) {
-            System.out.println(new Gson().toJson(Quickplay.INSTANCE.elementController));
+            Quickplay.LOGGER.info(new Gson().toJson(Quickplay.INSTANCE.elementController));
             Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                     new ChatComponentTextWrapper("Printed element controller to console.").setStyle(
                             new ChatStyleWrapper().apply(Formatting.AQUA)
                     )));
         } else {
-            Quickplay.INSTANCE.isInDebugMode = !Quickplay.INSTANCE.isInDebugMode;
+            Quickplay.INSTANCE.setDebugMode(!Quickplay.INSTANCE.isInDebugMode);
             Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                     new ChatComponentTextWrapper(Quickplay.INSTANCE.isInDebugMode ? "DEBUG ON":"DEBUG OFF").setStyle(
                             new ChatStyleWrapper().apply(Quickplay.INSTANCE.isInDebugMode ? Formatting.GREEN : Formatting.RED)

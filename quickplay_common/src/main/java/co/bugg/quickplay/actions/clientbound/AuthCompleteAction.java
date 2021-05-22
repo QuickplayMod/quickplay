@@ -100,6 +100,6 @@ public class AuthCompleteAction extends Action {
         Quickplay.INSTANCE.hypixelPackageRank = this.getPayloadObjectAsString(9);
         Quickplay.INSTANCE.isHypixelBuildTeamMember = this.getPayloadObject(10).get(0) != 0;
         Quickplay.INSTANCE.isHypixelBuildTeamAdmin = this.getPayloadObject(11).get(0) != 0;
-        System.out.println("Authenticated with Quickplay backend.");
+        Quickplay.LOGGER.info("Authenticated with Quickplay backend.");
     }
 }

@@ -69,7 +69,7 @@ public class SubCommandReload extends ACommand {
                 try {
                     Quickplay.INSTANCE.elementController = ElementController.loadCache();
                 } catch (FileNotFoundException fileNotFoundException) {
-                    System.out.println("Failed to load cached elements.");
+                    Quickplay.LOGGER.warning("Failed to load cached elements.");
                     fileNotFoundException.printStackTrace();
                 }
             }

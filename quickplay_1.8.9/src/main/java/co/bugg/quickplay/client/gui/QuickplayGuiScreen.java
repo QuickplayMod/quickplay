@@ -494,11 +494,11 @@ public class QuickplayGuiScreen extends QuickplayGui {
                 final String actionKey = this.screen.backButtonActions[i];
                 final AliasedAction action = Quickplay.INSTANCE.elementController.getAliasedAction(actionKey);
                 if(action == null) {
-                    System.out.println("WARN: Aliased action " + actionKey + " is not found.");
+                    Quickplay.LOGGER.warning("Aliased action " + actionKey + " is not found.");
                     continue;
                 }
                 if(!action.passesPermissionChecks()) {
-                    System.out.println("WARN: Aliased action " + actionKey + " does not pass permission checks.");
+                    Quickplay.LOGGER.warning("Aliased action " + actionKey + " does not pass permission checks.");
                     continue;
                 }
                 action.action.run();

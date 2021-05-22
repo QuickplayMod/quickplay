@@ -117,7 +117,7 @@ public class PlayerGlyph {
 
                     // Reload the resource
                     QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-                        Quickplay.INSTANCE.reloadResource(file, new ResourceLocationWrapper(Reference.MOD_ID,
+                        Quickplay.INSTANCE.mod.reloadResource(file, new ResourceLocationWrapper(Reference.MOD_ID,
                                 "glyphs/" + file.getName()));
                         downloading = false;
                     });

@@ -138,6 +138,14 @@ public class QuickplayGuiEditColor extends QuickplayGui {
     public void hookInit() {
         super.hookInit();
 
+
+        Quickplay.LOGGER.finest("This is a finest message.");
+        Quickplay.LOGGER.finer("This is a finer message.");
+        Quickplay.LOGGER.fine("This is a fine message.");
+        Quickplay.LOGGER.info("This is an info message.");
+        Quickplay.LOGGER.warning("This is a warning message.");
+        Quickplay.LOGGER.severe("This is a severe message.");
+
         this.nameTextScale = 1.0;
         this.nameTextY = (int) (this.getHeight() * 0.2);
         this.sampleTextScale = 1.5;
@@ -212,7 +220,7 @@ public class QuickplayGuiEditColor extends QuickplayGui {
         try {
             this.config.save();
         } catch (IOException e) {
-            System.out.println("Failed to save color " + this.colorName + ".");
+            Quickplay.LOGGER.warning("Failed to save color " + this.colorName + ".");
             Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.config.saveError")
                     .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             e.printStackTrace();

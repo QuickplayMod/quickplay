@@ -163,7 +163,7 @@ public class Button extends Element {
 
     public void run() {
         if(this.actionKeys == null) {
-            System.out.println("WARN: Action keys are null for button " + this.key);
+            Quickplay.LOGGER.warning("Action keys are null for button " + this.key);
             return;
         }
         for (String actionKey : this.actionKeys) {
@@ -172,11 +172,11 @@ public class Button extends Element {
             }
             AliasedAction aliasedAction = Quickplay.INSTANCE.elementController.getAliasedAction(actionKey);
             if (aliasedAction == null) {
-                System.out.println("WARN: Aliased action " + actionKey + " is not found.");
+                Quickplay.LOGGER.warning("Aliased action " + actionKey + " is not found.");
                 continue;
             }
             if (!aliasedAction.passesPermissionChecks()) {
-                System.out.println("WARN: Aliased action " + actionKey + " does not pass permission checks.");
+                Quickplay.LOGGER.warning("Aliased action " + actionKey + " does not pass permission checks.");
                 continue;
             }
             if (aliasedAction.action != null) {

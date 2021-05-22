@@ -489,7 +489,7 @@ public class QuickplayGuiEditConfig extends QuickplayGui {
                 this.config.save();
             }
         } catch (IOException | IllegalAccessException | NoSuchFieldException e) {
-            System.out.println("Failed to save option " + element.configFieldName + ".");
+            Quickplay.LOGGER.warning("Failed to save option " + element.configFieldName + ".");
             Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                     new QuickplayChatComponentTranslation("quickplay.config.saveError")
                     .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));

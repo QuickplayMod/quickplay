@@ -72,7 +72,7 @@ public class SocketClient extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        System.out.println("Connected to Quickplay backend.");
+        Quickplay.LOGGER.info("Connected to Quickplay backend.");
         this.connected = true;
         this.lastPing = new Date();
         try {
@@ -93,7 +93,7 @@ public class SocketClient extends WebSocketClient {
             try {
                 Quickplay.INSTANCE.elementController = ElementController.loadCache();
             } catch (FileNotFoundException fileNotFoundException) {
-                System.out.println("Failed to load cached elements.");
+                Quickplay.LOGGER.warning("Failed to load cached elements.");
                 fileNotFoundException.printStackTrace();
             }
         }
@@ -136,9 +136,7 @@ public class SocketClient extends WebSocketClient {
             if(action == null) {
                 return;
             }
-            if(Quickplay.INSTANCE.isInDebugMode) {
-                System.out.println("DEBUG > " + action.getClass().getName() + " received.");
-            }
+            Quickplay.LOGGER.fine(action.getClass().getName() + " received.");
             action.run();
         } catch (BufferUnderflowException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
@@ -155,9 +153,7 @@ public class SocketClient extends WebSocketClient {
         if(action == null) {
             return;
         }
-        if(Quickplay.INSTANCE.isInDebugMode) {
-            System.out.println("DEBUG > " + action.getClass().getName() + " sent.");
-        }
+        Quickplay.LOGGER.fine(action.getClass().getName() + " sent.");
         try {
             this.send(action.build());
         } catch(WebsocketNotConnectedException e) {
@@ -174,7 +170,7 @@ public class SocketClient extends WebSocketClient {
     public void onError(Exception ex) {
         // Don't clutter the logs if we've already established that the connection was lost.
         if(this.connected) {
-            System.out.println("Lost connection to Quickplay backend!");
+            Quickplay.LOGGER.warning("Lost connection to Quickplay backend!");
             ex.printStackTrace();
         }
         Quickplay.INSTANCE.threadPool.submit(this::reconnect);

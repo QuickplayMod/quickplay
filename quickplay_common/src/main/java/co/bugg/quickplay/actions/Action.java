@@ -1,5 +1,6 @@
 package co.bugg.quickplay.actions;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.clientbound.*;
 import co.bugg.quickplay.actions.serverbound.*;
 
@@ -131,7 +132,7 @@ public class Action implements Serializable {
         // From that ID, find the Action class and instantiate it, if possible.
         final Class<? extends Action> actionClass = actionIdToActionClass.get(id);
         if(actionClass == null) {
-            System.out.println("WARNING: Received action with ID which does not exist.");
+            Quickplay.LOGGER.warning("Received action with ID which does not exist.");
             return null;
         }
         final Action action = actionIdToActionClass.get(id).newInstance();

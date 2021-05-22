@@ -89,4 +89,8 @@ public class MinecraftWrapper {
         }
         this.mc.thePlayer.playSound("random.levelup", 1.0f, 0.7f);
     }
+
+    public String getLanguage() {
+        return this.mc.gameSettings.language;
+    }
 }

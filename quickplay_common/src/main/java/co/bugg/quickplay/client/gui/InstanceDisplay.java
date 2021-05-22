@@ -98,7 +98,7 @@ public class InstanceDisplay extends MoveableHudElement {
         try {
             Quickplay.INSTANCE.settings.save();
         } catch (IOException e) {
-            System.out.println("Error saving config!");
+            Quickplay.LOGGER.warning("Error saving config!");
             e.printStackTrace();
         }
     }

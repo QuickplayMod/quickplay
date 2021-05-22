@@ -20,26 +20,12 @@ import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
 import co.bugg.quickplay.wrappers.MinecraftWrapper;
-import co.bugg.quickplay.wrappers.ResourceLocationWrapper;
 import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
 import co.bugg.quickplay.wrappers.chat.Formatting;
 import co.bugg.quickplay.wrappers.chat.IChatComponentWrapper;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.client.renderer.texture.ITextureObject;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.resources.IResourcePack;
-import net.minecraft.command.ICommand;
-import net.minecraftforge.client.ClientCommandHandler;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -47,18 +33,22 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.*;
 
-@Mod(
-        modid = Reference.MOD_ID,
-        name = Reference.MOD_NAME,
-        version = Reference.VERSION,
-        clientSideOnly = true,
-        acceptedMinecraftVersions = "[1.8.8, 1.8.9]"
-)
 public class Quickplay {
 
-    @Mod.Instance
-    public static Quickplay INSTANCE = new Quickplay();
+    /**
+     * Instance of Quickplay
+     */
+    public static final Quickplay INSTANCE = new Quickplay();
+    /**
+     * Quickplay logger
+     */
+    public static final Logger LOGGER = Logger.getLogger("Quickplay");
+    /**
+     * Instance of Forge mod for Quickplay
+     */
+    public QuickplayMod mod;
     /**
      * Wrapper for Minecraft's main class.
      */
@@ -114,10 +104,6 @@ public class Quickplay {
      */
     public final List<Object> eventHandlers = new ArrayList<>();
     /**
-     * A list of all registered commands
-     */
-    public final List<ICommand> commands = new ArrayList<>();
-    /**
      * Factory for creating HTTP requests
      * TODO remove
      */
@@ -171,10 +157,6 @@ public class Quickplay {
      */
     public List<PlayerGlyph> glyphs = new ArrayList<>();
     /**
-     * Quickplay's resource pack
-     */
-    public IResourcePack resourcePack;
-    /**
      * Google Analytics API tracker
      */
     public GoogleAnalytics ga;
@@ -203,16 +185,60 @@ public class Quickplay {
      */
     public String sessionKey;
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
+    /**
+     * Hook into the Forge pre-initialization call.
+     */
+    public void preInit() {
+        final String formatStr = "[%02d:%02d:%02d] [Quickplay/%s]: %s\n";
+        final Calendar calendar = Calendar.getInstance();
+        Quickplay.LOGGER.setUseParentHandlers(false);
+
+        final StreamHandler infoHandler = new StreamHandler(System.out, new SimpleFormatter() {
+            @Override
+            public synchronized String format(LogRecord record) {
+                calendar.setTimeInMillis(record.getMillis());
+                return String.format(formatStr, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
+                        calendar.get(Calendar.SECOND), record.getLevel().getLocalizedName(), record.getMessage());
+            }
+        }) {
+            @Override
+            public synchronized void publish(LogRecord record) {
+                super.publish(record);
+                this.flush();
+            }
+        };
+        infoHandler.setLevel(Level.ALL);
+        infoHandler.setFilter(record -> record.getLevel().intValue() < Level.WARNING.intValue());;
+
+        final StreamHandler errHandler = new StreamHandler(System.err, new SimpleFormatter() {
+            @Override
+            public synchronized String format(LogRecord record) {
+                calendar.setTimeInMillis(record.getMillis());
+                return String.format(formatStr, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
+                        calendar.get(Calendar.SECOND), record.getLevel().getLocalizedName(), record.getMessage());
+            }
+        }) {
+            @Override
+            public synchronized void publish(LogRecord record) {
+                super.publish(record);
+                this.flush();
+            }
+        };
+        errHandler.setLevel(Level.WARNING);
+
+        Quickplay.LOGGER.addHandler(infoHandler);
+        Quickplay.LOGGER.addHandler(errHandler);
+
         if(Objects.equals(System.getenv("QUICKPLAY_DEBUG"), "1")) {
-            System.out.println("DEBUG > Quickplay debug mode enabled via environment variable.");
-            this.isInDebugMode = true;
+            this.setDebugMode(true);
+            Quickplay.LOGGER.fine("Quickplay debug mode enabled via environment variable.");
         }
     }
 
-    @EventHandler
-    public void init(FMLInitializationEvent event) {
+    /**
+     * Hook into the Forge initialization call.
+     */
+    public void init() {
         // The message buffer should remain online even
         // if the mod is disabled - this allows for
         // communicating important information about why
@@ -229,24 +255,25 @@ public class Quickplay {
     }
 
     /**
-     * Register a specific object as an event handler
-     * @param handler Object to register
+     * Register an event handler with both Forge and Quickplay.
+     * @param handler Handler to register.
      */
     public void registerEventHandler(Object handler) {
         if(!this.eventHandlers.contains(handler)) {
             this.eventHandlers.add(handler);
         }
-        MinecraftForge.EVENT_BUS.register(handler);
+        this.mod.registerEventHandler(handler);
     }
 
     /**
-     * Unregister a specific object as an event handler
-     * @param handler Object to unregister
+     * Unregister an event handler which is registered both with Forge and Quickplay.
+     * @param handler Handler to unregister.
      */
     public void unregisterEventHandler(Object handler) {
-        eventHandlers.remove(handler);
-        MinecraftForge.EVENT_BUS.unregister(handler);
+        this.eventHandlers.remove(handler);
+        this.mod.unregisterEventHandler(handler);
     }
+
 
     /**
      * Loads settings config from minecraft installation folder.
@@ -284,6 +311,7 @@ public class Quickplay {
         }
     }
 
+
     /**
      * Loads keybinds config from minecraft installation folder.
      * If using an outdated format (i.e. format from prior to 2.1.0), sends MigrateKeybindsAction to the server. Also
@@ -307,7 +335,7 @@ public class Quickplay {
                             .setStyle(new ChatStyleWrapper().apply(Formatting.GRAY))));
             // Keybinds are set to default temporarily. The user's instructed not to modify their keybinds until
             // migration is complete, as that would trigger a save.
-            Quickplay.INSTANCE.keybinds = new ConfigKeybinds(true);
+            this.keybinds = new ConfigKeybinds(true);
 
             // If migration isn't complete after 30 seconds, it's assumed the migration failed.
             this.threadPool.submit(() -> {
@@ -317,7 +345,7 @@ public class Quickplay {
                     e.printStackTrace();
                 }
                 if(ConfigKeybinds.checkForConversionNeeded("keybinds.json")) {
-                    Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
+                    this.minecraft.sendLocalMessage(new Message(
                             new QuickplayChatComponentTranslation("quickplay.keybinds.migratingFailedServerOffline")
                                     .setStyle(new ChatStyleWrapper().apply(Formatting.RED))
                             , true));
@@ -358,7 +386,7 @@ public class Quickplay {
 
             this.assetFactory.createDirectories();
             this.assetFactory.dumpOldCache();
-            this.resourcePack = this.assetFactory.registerResourcePack();
+            this.mod.resourcePack = this.assetFactory.registerResourcePack();
 
             this.loadSettings();
             this.loadUsageStats();
@@ -393,41 +421,22 @@ public class Quickplay {
             this.hypixelInstanceWatcher = new HypixelInstanceWatcher().start();
             this.instanceDisplay = new InstanceDisplay(this.hypixelInstanceWatcher);
 
-            this.commands.add(new CommandQuickplay());
+            this.mod.commands.add(new CommandQuickplay());
 
             if(this.settings.redesignedLobbyCommand) {
                 // Register lobby commands
-                this.commands.add(new CommandHub("l"));
-                this.commands.add(new CommandHub("lobby"));
-                this.commands.add(new CommandHub("hub"));
-                this.commands.add(new CommandHub("spawn"));
-                this.commands.add(new CommandHub("leave"));
-                this.commands.add(new CommandMain("main"));
+                this.mod.commands.add(new CommandHub("l"));
+                this.mod.commands.add(new CommandHub("lobby"));
+                this.mod.commands.add(new CommandHub("hub"));
+                this.mod.commands.add(new CommandHub("spawn"));
+                this.mod.commands.add(new CommandHub("leave"));
+                this.mod.commands.add(new CommandMain("main"));
             }
             // Copy of the lobby command that doesn't override server commands
             // Used for "Go to Lobby" buttons
-            this.commands.add(new CommandHub("quickplaylobby", "lobby"));
-            this.commands.forEach(ClientCommandHandler.instance::registerCommand);
+            this.mod.commands.add(new CommandHub("quickplaylobby", "lobby"));
+            this.mod.registerCommands();
         }
-    }
-
-    /**
-     * Create the Google Analytics instance with customized settings for this Quickplay instance
-     */
-    public void createGoogleAnalytics() {
-        this.ga = GoogleAnalyticsFactory.create(Reference.ANALYTICS_TRACKING_ID, usageStats.statsToken.toString(),
-                Reference.MOD_NAME, Reference.VERSION);
-        final AnalyticsRequest defaultRequest = ga.getDefaultRequest();
-
-        defaultRequest.setLanguage(String.valueOf(Minecraft.getMinecraft().gameSettings.language).toLowerCase());
-
-        final GraphicsDevice screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        defaultRequest.setScreenResolution(screen.getDisplayMode().getWidth() + "x" + screen.getDisplayMode().getHeight());
-
-        // Determine User-Agent/OS
-        // Example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36
-        final String systemDetails = System.getProperty("os.name") + " " + System.getProperty("os.version") + "; " + System.getProperty("os.arch");
-        defaultRequest.setUserAgent("Mozilla/5.0 (" + systemDetails + ") " + Reference.MOD_NAME + " " + Reference.VERSION);
     }
 
     /**
@@ -478,30 +487,6 @@ public class Quickplay {
     }
 
     /**
-     * Send an exception request to Quickplay backend for error reporting
-     * @param e Exception that occurred
-     */
-    public void sendExceptionRequest(Exception e) {
-        if(this.usageStats != null && this.usageStats.sendUsageStats) {
-            this.threadPool.submit(() -> {
-                try {
-                    this.socket.sendAction(new ExceptionThrownAction(e));
-                } catch (ServerUnavailableException serverUnavailableException) {
-                    serverUnavailableException.printStackTrace();
-                }
-                if(this.ga != null) {
-                    try {
-                        this.ga.createException().setExceptionDescription(e.getMessage()).send();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-
-        }
-    }
-
-    /**
      * Start a party mode session by randomizing selected games & then executing the command
      */
     public void launchPartyMode() {
@@ -522,7 +507,7 @@ public class Quickplay {
 
         if(enabledButtons.size() > 0) {
             if(this.settings.partyModeGui) {
-                Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiPartySpinner());
+                this.minecraft.openGui(new QuickplayGuiPartySpinner());
             } else {
                 // No GUI, handle randomization in chat
                 // If there is a delay greater than 0 seconds, we send a message so the user knows something happened.
@@ -562,9 +547,9 @@ public class Quickplay {
                     e.printStackTrace();
                 }
 
-                String translatedGame = Quickplay.INSTANCE.elementController.translate(button.translationKey);
+                String translatedGame = this.elementController.translate(button.translationKey);
                 if(button.partyModeScopeTranslationKey != null && button.partyModeScopeTranslationKey.length() > 0) {
-                    translatedGame = Quickplay.INSTANCE.elementController.translate(button.partyModeScopeTranslationKey) + " - " +
+                    translatedGame = this.elementController.translate(button.partyModeScopeTranslationKey) + " - " +
                             translatedGame;
                 }
                 this.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.sendingYou",
@@ -578,18 +563,55 @@ public class Quickplay {
     }
 
     /**
-     * Reload the provided resourceLocation with the provided file
-     * @param file The file of the newly changed resource
-     * @param resourceLocation The resourceLocation to change/set
+     * Send an exception request to Quickplay backend for error reporting
+     * @param e Exception that occurred
      */
-    public void reloadResource(File file, ResourceLocationWrapper resourceLocation) {
-        if (file != null && file.exists()) {
+    public void sendExceptionRequest(Exception e) {
+        if(this.usageStats != null && this.usageStats.sendUsageStats) {
+            this.threadPool.submit(() -> {
+                try {
+                    this.socket.sendAction(new ExceptionThrownAction(e));
+                } catch (ServerUnavailableException serverUnavailableException) {
+                    serverUnavailableException.printStackTrace();
+                }
+                if(this.ga != null) {
+                    try {
+                        this.ga.createException().setExceptionDescription(e.getMessage()).send();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
 
-            TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-            texturemanager.deleteTexture(resourceLocation.get());
-            ITextureObject object = new ThreadDownloadImageData(file, null, resourceLocation.get(), null);
-            texturemanager.loadTexture(resourceLocation.get(), object);
         }
+    }
+
+    public void setDebugMode(boolean state) {
+        this.isInDebugMode = state;
+        if(state) {
+            Quickplay.LOGGER.setLevel(Level.ALL);
+        } else {
+            Quickplay.LOGGER.setLevel(Level.INFO);
+        }
+    }
+
+    /**
+     * Create the Google Analytics instance with customized settings for this Quickplay instance
+     */
+    public void createGoogleAnalytics() {
+        this.ga = GoogleAnalyticsFactory.create(Reference.ANALYTICS_TRACKING_ID, usageStats.statsToken.toString(),
+                Reference.MOD_NAME, Reference.VERSION);
+        final AnalyticsRequest defaultRequest = ga.getDefaultRequest();
+
+        defaultRequest.setLanguage(String.valueOf(this.minecraft.getLanguage()).toLowerCase());
+
+        final GraphicsDevice screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        defaultRequest.setScreenResolution(screen.getDisplayMode().getWidth() + "x" + screen.getDisplayMode().getHeight());
+
+        // Determine User-Agent/OS
+        // Example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36
+        final String systemDetails = System.getProperty("os.name") + " " + System.getProperty("os.version") + "; " + System.getProperty("os.arch");
+        defaultRequest.setUserAgent("Mozilla/5.0 (" + systemDetails + ") " + Reference.MOD_NAME + " " + Reference.VERSION);
     }
 
     /**

@@ -44,16 +44,21 @@ public class ElementController implements Serializable {
                 "Clica no link para visitares o nosso site e reivindicares a recompensa|" +
                 "Clique no link para visitar o nosso site e reivindicar sua recompensa|" +
                 "Haz clic en el link para visitar nuestra web y recoger tu recompensa|" +
-                "点击链接访问我们的网站并领取奖励|" +
-                "點擊該網址來進入我們的網站並領取獎勵|" +
+                "\u70b9\u51fb\u94fe\u63a5\u8bbf\u95ee\u6211\u4eec\u7684\u7f51\u7ad9\u5e76\u9886\u53d6\u5956\u52b1|" +
+                "\u9ede\u64ca\u8a72\u7db2\u5740\u4f86\u9032\u5165\u6211\u5011\u7684\u7db2\u7ad9\u4e26\u9818\u53d6\u734e\u52f5|" +
                 "Klik de link om onze website te bezoeken, en je beloning te verkrijgen|" +
                 "Cliquez sur le lien pour visiter notre site et réclamer votre récompense|" +
                 "Klicke den Link, um unsere Webseite zu besuchen und deine Belohnung abzuholen|" +
                 "Clicca il link per visitare il sito e riscattare la tua ricompensa|" +
-                "リンクをクリックしてウェブサイトにアクセスし、報酬を獲得してください|" +
-                "저희의 웹 사이트에 방문하고 보상을 수령하려면 링크를 클릭하세요|" +
+                "\u30ea\u30f3\u30af\u3092\u30af\u30ea\u30c3\u30af\u3057\u3066\u30a6\u30a7\u30d6\u30b5\u30a4\u30c8\u306b" +
+                "\u30a2\u30af\u30bb\u30b9\u3057\u3001\u5831\u916c\u3092\u7372\u5f97\u3057\u3066\u304f\u3060\u3055\u3044|" +
+                "\uc800\ud76c\uc758 \uc6f9 \uc0ac\uc774\ud2b8\uc5d0 \ubc29\ubb38\ud558\uace0 \ubcf4\uc0c1\uc744 " +
+                "\uc218\ub839\ud558\ub824\uba74 \ub9c1\ud06c\ub97c \ud074\ub9ad\ud558\uc138\uc694|" +
                 "Kliknij link, aby odwiedzić naszą stronę internetową i odebrać swoją nagrodę|" +
-                "Нажмите на ссылку, чтобы перейти на наш сайт и забрать свою награду)" +
+                "\u041d\u0430\u0436\u043c\u0438\u0442\u0435 \u043d\u0430 \u0441\u0441\u044b\u043b\u043a\u0443\u002c " +
+                "\u0447\u0442\u043e\u0431\u044b \u043f\u0435\u0440\u0435\u0439\u0442\u0438 \u043d\u0430 \u043d\u0430\u0448 " +
+                "\u0441\u0430\u0439\u0442 \u0438 \u0437\u0430\u0431\u0440\u0430\u0442\u044c \u0441\u0432\u043e\u044e " +
+                "\u043d\u0430\u0433\u0440\u0430\u0434\u0443)" +
                 ": (?:https?://rewards\\.hypixel\\.net/claim-reward/([a-zA-Z0-9]{0,12}))\\n$"));
 
         // Default value for compass title regex. Will be replaced by the web server if it's online & available.
@@ -87,7 +92,7 @@ public class ElementController implements Serializable {
             File cacheFile = new File(AssetFactory.elementsCacheFile);
             Files.write(Base64.getEncoder().encode(byteOutputStream.toByteArray()), cacheFile);
         } catch (IOException e) {
-            System.out.println("Error while attempting to save element controller cache!");
+            Quickplay.LOGGER.warning("Error while attempting to save element controller cache!");
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         } finally {

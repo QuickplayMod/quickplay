@@ -102,7 +102,7 @@ public class AssetFactory {
         // If the file already exists, no need to download again.
         // If the icon needs to be reset, use RefreshCacheAction.
         if(!file.exists()) {
-            System.out.println("Saving file " + file.getPath());
+            Quickplay.LOGGER.info("Saving file " + file.getPath());
             try {
 
                 HttpGet get = new HttpGet(url.toURI());
@@ -123,7 +123,7 @@ public class AssetFactory {
                     os.close();
                     response.close();
                 } else {
-                    System.out.println("Can't save file " + file.getPath());
+                    Quickplay.LOGGER.warning("Can't save file " + file.getPath());
                 }
 
             } catch (IOException | URISyntaxException e) {
@@ -135,7 +135,7 @@ public class AssetFactory {
         final ResourceLocationWrapper resourceLocation = new ResourceLocationWrapper(Reference.MOD_ID, file.getName());
 
         QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-            Quickplay.INSTANCE.reloadResource(file, resourceLocation);
+            Quickplay.INSTANCE.mod.reloadResource(file, resourceLocation);
         });
 
         return resourceLocation;
@@ -239,7 +239,7 @@ public class AssetFactory {
             }
             Files.write(mcmetaFile.toPath(), mcmetaFileContents.getBytes());
         } catch(IOException e) {
-            System.out.println("Failed to generate mcmeta file! Mod may or may not work properly.");
+            Quickplay.LOGGER.warning("Failed to generate mcmeta file! Mod may or may not work properly.");
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
@@ -273,8 +273,8 @@ public class AssetFactory {
 
             return resourcePack;
         } catch (IllegalAccessException | NoSuchFieldException e) {
-            System.out.println("Disabling the mod, as we can't add our custom resource pack.");
-            System.out.println("Please report this to @bugfroggy, providing this error log and this list: " +
+            Quickplay.LOGGER.severe("Disabling the mod, as we can't add our custom resource pack.");
+            Quickplay.LOGGER.severe("Please report this to @bugfroggy, providing this error log and this list: " +
                     Arrays.toString(Minecraft.class.getDeclaredFields()));
             Quickplay.INSTANCE.disable("Failed to load resources!");
             e.printStackTrace();

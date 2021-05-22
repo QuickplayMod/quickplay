@@ -159,7 +159,7 @@ public class GlyphRenderer {
 
         final ResourceLocation resource = new ResourceLocation(Reference.MOD_ID, "glyphs/" +
                 Hashing.sha1().hashString(glyph.path.toString(), StandardCharsets.UTF_8).toString() + ".png");
-        if(Quickplay.INSTANCE.resourcePack.resourceExists(resource) && !glyph.downloading) {
+        if(Quickplay.INSTANCE.mod.resourcePack.resourceExists(resource) && !glyph.downloading) {
             // Glyph height and offset are forced to 20 and 0 respectively if the user is in-game
             final float glyphHeight = isInGame ? 20 : (float) glyph.height.doubleValue();
             final float glyphOffset = isInGame ? 0 :  glyph.yOffset;

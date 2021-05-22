@@ -311,7 +311,9 @@ public class DailyRewardGui extends QuickplayGui {
 
                 // Draw header
                 GlStateManagerWrapper.scale(this.headerScale);
-                this.drawCenteredString("(╯°□°)╯︵ ┻━┻", (int) (this.getWidth() / 2 / this.headerScale),
+                // Table flip
+                this.drawCenteredString("\u0028\u256f\u00b0\u25a1\u00b0\u0029\u256f\ufe35 \u253b\u2501\u253b",
+                        (int) (this.getWidth() / 2 / this.headerScale),
                         (int) (this.getHeight() * 0.2 / this.headerScale),
                         Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
                 GlStateManagerWrapper.scale(1 / this.headerScale);

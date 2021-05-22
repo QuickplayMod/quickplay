@@ -31,7 +31,7 @@ public class ResetConfigAction extends Action {
             Quickplay.INSTANCE.settings.save();
             Quickplay.INSTANCE.keybinds.save();
         } catch (IOException e) {
-            System.out.println("Failed to save file while overwriting settings");
+            Quickplay.LOGGER.warning("Failed to save file while overwriting settings");
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }

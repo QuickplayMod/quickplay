@@ -1,5 +1,7 @@
 package co.bugg.quickplay.util.analytics;
 
+import co.bugg.quickplay.Quickplay;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -115,7 +117,7 @@ public class AnalyticsRequest {
                 builder.append(line);
             }
 
-            System.out.println(builder.toString());
+            Quickplay.LOGGER.fine(builder.toString());
         }
 
         if(connection.getResponseCode() != 200) {

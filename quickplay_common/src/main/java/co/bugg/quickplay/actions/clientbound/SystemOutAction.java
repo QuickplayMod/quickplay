@@ -1,5 +1,6 @@
 package co.bugg.quickplay.actions.clientbound;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 
 import java.nio.ByteBuffer;
@@ -24,6 +25,6 @@ public class SystemOutAction extends Action {
 
     @Override
     public void run() {
-        System.out.println(this.getPayloadObjectAsString(0));
+        Quickplay.LOGGER.info(this.getPayloadObjectAsString(0));
     }
 }

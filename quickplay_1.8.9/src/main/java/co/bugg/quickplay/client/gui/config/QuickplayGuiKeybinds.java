@@ -282,7 +282,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
             } catch (IOException e) {
                 e.printStackTrace();
                 Quickplay.INSTANCE.sendExceptionRequest(e);
-                System.out.println("Failed to save keybinds.");
+                Quickplay.LOGGER.warning("Failed to save keybinds.");
                 Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
                         new QuickplayChatComponentTranslation("quickplay.config.saveError")
                                 .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
