@@ -4,7 +4,7 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.config.AssetFactory;
-import net.minecraft.util.ResourceLocation;
+import co.bugg.quickplay.wrappers.ResourceLocationWrapper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class SubCommandRefreshResource extends ACommand {
             QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
                 // Reload the resource pack
                 Quickplay.INSTANCE.reloadResource(new File(AssetFactory.assetsDirectory + "/" + args[0]),
-                        new ResourceLocation(Reference.MOD_ID, args[0]));
+                        new ResourceLocationWrapper(Reference.MOD_ID, args[0]));
                 System.out.println("Reloaded resource " + args[0]);
             });
         }

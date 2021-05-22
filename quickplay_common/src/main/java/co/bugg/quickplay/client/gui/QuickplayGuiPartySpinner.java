@@ -5,10 +5,9 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.elements.Button;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.GlStateManagerWrapper;
 import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
 import co.bugg.quickplay.wrappers.chat.Formatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -60,12 +59,12 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
     public int boxPadding = 20;
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void hookInit() {
+        super.hookInit();
 
         if(Quickplay.INSTANCE.elementController == null) {
             // close the GUI and send an error
-            Minecraft.getMinecraft().displayGuiScreen(null);
+            Quickplay.INSTANCE.minecraft.openGui(null);
             Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
                     .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             return;
@@ -82,8 +81,8 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
 
         // Filter out buttons which are not found / don't pass permission checks / aren't visible to party mode
-        for(String buttonKey : new HashSet<>(this.buttonSet)) {
-            Button button = Quickplay.INSTANCE.elementController.getButton(buttonKey);
+        for(final String buttonKey : new HashSet<>(this.buttonSet)) {
+            final Button button = Quickplay.INSTANCE.elementController.getButton(buttonKey);
             if(button == null || !button.visibleInPartyMode || !button.passesPermissionChecks()) {
                 this.buttonSet.remove(buttonKey);
             }
@@ -91,22 +90,22 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
         if(this.buttonSet.size() <= 0) {
             // close the GUI and send an error
-            Minecraft.getMinecraft().displayGuiScreen(null);
+            Quickplay.INSTANCE.minecraft.openGui(null);
             Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
                     .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             return;
         }
 
-        this.randomizingTextHeight = (int) (this.height * (this.height > 350 ? 0.4 : 0.3));
+        this.randomizingTextHeight = (int) (this.getHeight() * (this.getHeight() > 350 ? 0.4 : 0.3));
 
         int buttonId = 0;
         final String randomizingString = Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.randomizing");
-        this.componentList.add(new QuickplayGuiString(null, buttonId++, this.width / 2, this.randomizingTextHeight,
-                this.fontRendererObj.getStringWidth(randomizingString), this.fontRendererObj.FONT_HEIGHT, randomizingString,
+        this.componentList.add(new QuickplayGuiString(null, buttonId++, this.getWidth() / 2, this.randomizingTextHeight,
+                this.getStringWidth(randomizingString), this.getFontHeight(), randomizingString,
                 true, false));
 
-        if (spinningThreadFuture == null) {
-            startSpinner();
+        if (this.spinningThreadFuture == null) {
+            this.startSpinner();
         }
     }
 
@@ -122,10 +121,10 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                 if(this.spinnerDelay > 0) {
                     // While less than 100% of the spinnerDelay has passed
                     while (startedAt > System.currentTimeMillis() - this.spinnerDelay * 1000) {
-                        if(Minecraft.getMinecraft().currentScreen == this) {
+                        if(Quickplay.INSTANCE.minecraft.isCurrentScreen(this)) {
                             final int nextSelectedModeIndex = random.nextInt(this.buttonSet.size());
                             this.currentButton = this.buttonSet.stream().skip(nextSelectedModeIndex).findFirst().orElse(null);
-                            Button button = Quickplay.INSTANCE.elementController.getButton(this.currentButton);
+                            final Button button = Quickplay.INSTANCE.elementController.getButton(this.currentButton);
                             this.currentButtonDisplayText = Quickplay.INSTANCE.elementController
                                     .translate(button.translationKey);
                             // If this button has a specific scope then we prepend that scope to the button's text, and separate with dash.
@@ -135,7 +134,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                             }
 
                             // Play sound
-                            this.mc.thePlayer.playSound("liquid.lavapop", 1.0f, 2.0f);
+                            Quickplay.INSTANCE.minecraft.playLavaPop();
 
                             // Sleep for 1/5th of the length this spinner has been running
                             // This creates a fast spinning speed to start that slows down over time
@@ -152,7 +151,7 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                 } else {
                     final int nextSelectedModeIndex = random.nextInt(this.buttonSet.size());
                     this.currentButton = this.buttonSet.stream().skip(nextSelectedModeIndex).findFirst().orElse(null);
-                    Button button = Quickplay.INSTANCE.elementController.getButton(this.currentButton);
+                    final Button button = Quickplay.INSTANCE.elementController.getButton(this.currentButton);
                     this.currentButtonDisplayText = Quickplay.INSTANCE.elementController
                             .translate(button.translationKey);
                     // If this button has a specific scope then we prepend that scope to the button's text, and separate with dash.
@@ -164,11 +163,11 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
 
                 // After spinning complete, start finalization
                 // Play dingy sound
-                this.mc.thePlayer.playSound("random.levelup", 1.0f, 0.7f);
+                Quickplay.INSTANCE.minecraft.playLevelup();
                 final String textToFlash = this.currentButtonDisplayText;
                 // While less than 100% of the spinnerDelay and finalization period combined has passed
                 while (startedAt > System.currentTimeMillis() - (this.spinnerDelay + this.finalizationLength) * 1000) {
-                    if(Minecraft.getMinecraft().currentScreen == this) {
+                    if(Quickplay.INSTANCE.minecraft.isCurrentScreen(this)) {
                         if (this.currentButtonDisplayText.equals(textToFlash)) {
                             this.currentButtonDisplayText = "";
                         } else {
@@ -182,8 +181,8 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
                 }
 
                 // Finally, if this GUI is still open, send the mode command & close GUI
-                if(Minecraft.getMinecraft().currentScreen == this) {
-                    Minecraft.getMinecraft().displayGuiScreen(null);
+                if(Quickplay.INSTANCE.minecraft.isCurrentScreen(this)) {
+                    Quickplay.INSTANCE.minecraft.openGui(null);
                     Quickplay.INSTANCE.elementController.getButton(this.currentButton).run();
                 }
             } catch(InterruptedException e) {
@@ -193,29 +192,29 @@ public class QuickplayGuiPartySpinner extends QuickplayGui {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
+    public void hookRender(int mouseX, int mouseY, float partialTicks) {
+        GlStateManagerWrapper.pushMatrix();
+        GlStateManagerWrapper.enableBlend();
 
-        drawDefaultBackground();
+        this.drawDefaultBackground();
 
         // draw background box
-        drawRect(0, this.randomizingTextHeight - this.boxPadding, this.width,
-                (int) (this.randomizingTextHeight + this.fontRendererObj.FONT_HEIGHT * this.spinnerScale * 3 + this.boxPadding),
+        QuickplayGui.drawRect(0, this.randomizingTextHeight - this.boxPadding, this.getWidth(),
+                (int) (this.randomizingTextHeight + this.getFontHeight() * this.spinnerScale * 3 + this.boxPadding),
                 (int) (this.opacity * 255 * 0.5) << 24);
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.hookRender(mouseX, mouseY, partialTicks);
 
         // Draw spinner
         if(this.opacity > 0) {
-            GlStateManager.scale(this.spinnerScale, this.spinnerScale, this.spinnerScale);
-            drawCenteredString(this.fontRendererObj, this.currentButtonDisplayText, (int) (this.width / 2 / this.spinnerScale),
-                    (int) ((this.randomizingTextHeight + this.fontRendererObj.FONT_HEIGHT * this.spinnerScale * 2) / this.spinnerScale),
+            GlStateManagerWrapper.scale(this.spinnerScale);
+            this.drawCenteredString(this.currentButtonDisplayText, (int) (this.width / 2 / this.spinnerScale),
+                    (int) ((this.randomizingTextHeight + this.getFontHeight() * this.spinnerScale * 2) / this.spinnerScale),
                     Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
-            GlStateManager.scale(1 / this.spinnerScale, 1 / this.spinnerScale, 1 / this.spinnerScale);
+            GlStateManagerWrapper.scale(1 / this.spinnerScale);
         }
 
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
+        GlStateManagerWrapper.disableBlend();
+        GlStateManagerWrapper.popMatrix();
     }
 }

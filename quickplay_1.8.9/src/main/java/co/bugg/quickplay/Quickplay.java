@@ -20,6 +20,7 @@ import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
 import co.bugg.quickplay.util.buffer.ChatBuffer;
 import co.bugg.quickplay.util.buffer.MessageBuffer;
 import co.bugg.quickplay.wrappers.MinecraftWrapper;
+import co.bugg.quickplay.wrappers.ResourceLocationWrapper;
 import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
 import co.bugg.quickplay.wrappers.chat.Formatting;
 import co.bugg.quickplay.wrappers.chat.IChatComponentWrapper;
@@ -30,7 +31,6 @@ import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.command.ICommand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -582,13 +582,13 @@ public class Quickplay {
      * @param file The file of the newly changed resource
      * @param resourceLocation The resourceLocation to change/set
      */
-    public void reloadResource(File file, ResourceLocation resourceLocation) {
+    public void reloadResource(File file, ResourceLocationWrapper resourceLocation) {
         if (file != null && file.exists()) {
 
             TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-            texturemanager.deleteTexture(resourceLocation);
-            ITextureObject object = new ThreadDownloadImageData(file, null, resourceLocation, null);
-            texturemanager.loadTexture(resourceLocation, object);
+            texturemanager.deleteTexture(resourceLocation.get());
+            ITextureObject object = new ThreadDownloadImageData(file, null, resourceLocation.get(), null);
+            texturemanager.loadTexture(resourceLocation.get(), object);
         }
     }
 

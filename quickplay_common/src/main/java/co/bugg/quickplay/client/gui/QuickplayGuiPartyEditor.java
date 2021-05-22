@@ -6,11 +6,9 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.elements.Button;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.GlStateManagerWrapper;
 import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
 import co.bugg.quickplay.wrappers.chat.Formatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.io.IOException;
 import java.util.*;
@@ -72,13 +70,13 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
     public int topButtonMargins = 5;
 
     @Override
-    public void initGui() {
-        super.initGui();
-        this.topOfButtons = Math.min((int) (height * 0.2), 80);
+    public void hookInit() {
+        super.hookInit();
+        this.topOfButtons = Math.min((int) (this.getHeight() * 0.2), 80);
 
         if(Quickplay.INSTANCE.elementController == null || Quickplay.INSTANCE.elementController.buttonMap == null ||
                 Quickplay.INSTANCE.elementController.buttonMap.size() <= 0) {
-            Minecraft.getMinecraft().displayGuiScreen(null);
+            Quickplay.INSTANCE.minecraft.openGui(null);
             Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.party.noGames")
                     .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             return;
@@ -151,8 +149,8 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
 
             // Display-string for whether this mode is currently enabled or not
             final String trueOrFalse = isButtonEnabled ?
-                    EnumChatFormatting.GREEN + Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.true") :
-                    EnumChatFormatting.RED + Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.false");
+                    Formatting.GREEN + Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.true") :
+                    Formatting.RED + Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.false");
             String buttonText = Quickplay.INSTANCE.elementController.translate(button.translationKey) + ": " + trueOrFalse;
             // If this button has a specific scope then we prepend that scope to the button's text, and separate with dash.
             if(button.partyModeScopeTranslationKey != null && button.partyModeScopeTranslationKey.length() > 0) {
@@ -162,25 +160,25 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             // If a button doesn't pass the Hypixel location checks (all other permission checks passed), then
             // the button still displays, but it's made clear to the user that the button won't work in the current location.
             if(!button.passesPermissionChecks()) {
-                buttonText = EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + buttonText;
+                buttonText = Formatting.GRAY + "" + Formatting.ITALIC + buttonText;
             }
 
-            this.componentList.add(new QuickplayGuiButton(buttonKey, buttonId, this.width / 2 - this.buttonWidth / 2,
+            this.componentList.add(new QuickplayGuiButton(buttonKey, buttonId, this.getWidth() / 2 - this.buttonWidth / 2,
                     this.topOfButtons + (this.buttonHeight + this.buttonYMargins) * buttonId, this.buttonWidth, this.buttonHeight,
                     buttonText, true));
             buttonId++;
         }
 
         // Add launch, "All On" and "All Off" buttons
-        this.componentList.add(new QuickplayGuiButton(null, -1, this.width / 2  - (this.topButtonWidth + this.topButtonMargins) * 2 + this.topButtonMargins / 2, 10,
+        this.componentList.add(new QuickplayGuiButton(null, -1, this.getWidth() / 2  - (this.topButtonWidth + this.topButtonMargins) * 2 + this.topButtonMargins / 2, 10,
                 this.topButtonWidth, this.buttonHeight, Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.launch"),
                 false)); // Launch
         this.componentList.add(new QuickplayGuiButton(null, -2,
-                this.width / 2 - this.topButtonWidth - this.topButtonMargins / 2,
+                this.getWidth() / 2 - this.topButtonWidth - this.topButtonMargins / 2,
                 10, this.topButtonWidth, 20, Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.allon"),
                 false)); // All on
         this.componentList.add(new QuickplayGuiButton(null, -3,
-                this.width / 2 + this.topButtonMargins / 2, 10, this.topButtonWidth, 20,
+                this.getWidth() / 2 + this.topButtonMargins / 2, 10, this.topButtonWidth, 20,
                 Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.alloff"), false)); // All off
 
         String visibilityToggleText = Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.showAll");
@@ -190,7 +188,7 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             visibilityToggleText = Quickplay.INSTANCE.elementController.translate("quickplay.gui.party.showDisabled");
         }
         this.componentList.add(new QuickplayGuiButton(null, -4,
-                this.width / 2 + this.topButtonWidth + this.topButtonMargins * 3 / 2, 10, this.topButtonWidth, 20,
+                this.getWidth() / 2 + this.topButtonWidth + this.topButtonMargins * 3 / 2, 10, this.topButtonWidth, 20,
                 visibilityToggleText, false)); // Visibility toggle
 
     }
@@ -207,15 +205,15 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
+    public void hookRender(int mouseX, int mouseY, float partialTicks) {
+        GlStateManagerWrapper.pushMatrix();
+        GlStateManagerWrapper.enableBlend();
 
         this.drawDefaultBackground();
         this.updateOpacity();
 
         if(Quickplay.INSTANCE.isEnabled) {
-            drawScrollbar(this.width / 2 + this.buttonWidth / 2 + 3);
+            drawScrollbar(this.getWidth() / 2 + this.buttonWidth / 2 + 3);
 
             //Override super.drawScreen(mouseX, mouseY, partialTicks);
             for (QuickplayGuiComponent component : this.componentList) {
@@ -227,17 +225,16 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             }
         } else {
             // Quickplay is disabled, draw error message
-            this.drawCenteredString(this.fontRendererObj,
-                    Quickplay.INSTANCE.elementController.translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
-                    this.width / 2, this.height / 2, 0xffffff);
+            this.drawCenteredString(Quickplay.INSTANCE.elementController.translate("quickplay.disabled",
+                    Quickplay.INSTANCE.disabledReason), this.getWidth() / 2, this.getHeight() / 2, 0xffffff);
         }
 
         // Draw hovering text if the user's hovering over a button which is not usable in the current location
         for(QuickplayGuiComponent component : this.componentList) {
             // For the sake of simplicity we can just check if a string begins with the gray & italic formatting codes
             // to determine if a button is "disabled" in the users current location.
-            if(component instanceof QuickplayGuiButton && component.mouseHovering(this, mouseX, mouseY) &&
-                    component.displayString.startsWith(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC)) {
+            if(component instanceof QuickplayGuiButton && component.isMouseHovering(this, mouseX, mouseY) &&
+                    component.displayString.startsWith(Formatting.GRAY + "" + Formatting.ITALIC)) {
                 this.drawHoveringText(Collections.singletonList(
                         Quickplay.INSTANCE.elementController.translate("quickplay.party.thisModeNotAvailable")), mouseX, mouseY);
                 break;
@@ -245,8 +242,8 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
         }
 
 
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
+        GlStateManagerWrapper.disableBlend();
+        GlStateManagerWrapper.popMatrix();
     }
 
     @Override
@@ -262,11 +259,11 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
                 // If the mode is toggled on remove it, otherwise add it
                 if (isEnabled) {
                     this.enabledButtons.remove(component.origin);
-                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.RED +
+                    component.displayString = nameWithoutToggleStatus + ": " + Formatting.RED +
                             Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.false");
                 } else {
                     this.enabledButtons.add((String) component.origin);
-                    component.displayString = nameWithoutToggleStatus + ": " + EnumChatFormatting.GREEN +
+                    component.displayString = nameWithoutToggleStatus + ": " + Formatting.GREEN +
                             Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.true");
                 }
             }
@@ -293,14 +290,14 @@ public class QuickplayGuiPartyEditor extends QuickplayGui {
             this.addButtons();
         } else if(component.id == -1) {
             // Launch!
-            Minecraft.getMinecraft().displayGuiScreen(null);
+            Quickplay.INSTANCE.minecraft.openGui(null);
             Quickplay.INSTANCE.threadPool.submit(Quickplay.INSTANCE::launchPartyMode);
         }
     }
 
     @Override
-    public void onGuiClosed() {
-        super.onGuiClosed();
+    public void hookClosed() {
+        super.hookClosed();
 
         // If everything is enabled, assume the default is wanted. We set enabledButtonsForPartyMode to null so future
         // buttons added are enabled by default.

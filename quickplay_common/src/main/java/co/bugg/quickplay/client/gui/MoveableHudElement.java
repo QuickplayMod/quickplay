@@ -1,8 +1,7 @@
 package co.bugg.quickplay.client.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
+import co.bugg.quickplay.Quickplay;
+import co.bugg.quickplay.wrappers.ScaledResolutionWrapper;
 
 import java.io.Serializable;
 
@@ -10,7 +9,7 @@ import java.io.Serializable;
  * Element that can be moved across the player's HUD
  * Moveable with {@link MoveableHudElementEditor}
  */
-public abstract class MoveableHudElement extends Gui implements Serializable {
+public abstract class MoveableHudElement extends QuickplayGui implements Serializable {
 
     /**
      * Width of the screen
@@ -27,13 +26,13 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
     /**
      * Minecraft's resolution calculator
      */
-    public ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
+    public ScaledResolutionWrapper scaledResolution = new ScaledResolutionWrapper(Quickplay.INSTANCE.minecraft);
 
     /**
      * Edit this element in the {@link MoveableHudElementEditor}
      */
     public void edit() {
-        Minecraft.getMinecraft().displayGuiScreen(new MoveableHudElementEditor(this));
+        Quickplay.INSTANCE.minecraft.openGui(new MoveableHudElementEditor(this));
     }
 
     /**
@@ -51,9 +50,8 @@ public abstract class MoveableHudElement extends Gui implements Serializable {
      */
     public void render(double x, double y, double opacity) {
         this.opacity = opacity;
-        scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
-        screenWidth = scaledResolution.getScaledWidth();
-        screenHeight = scaledResolution.getScaledHeight();
+        this.screenWidth = scaledResolution.getScaledWidth();
+        this.screenHeight = scaledResolution.getScaledHeight();
     }
 
     /**

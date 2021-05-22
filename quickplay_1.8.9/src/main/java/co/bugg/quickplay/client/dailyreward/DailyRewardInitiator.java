@@ -3,6 +3,7 @@ package co.bugg.quickplay.client.dailyreward;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.actions.serverbound.GetDailyRewardAction;
+import co.bugg.quickplay.client.gui.dailyreward.DailyRewardGuiLoading;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerUnavailableException;

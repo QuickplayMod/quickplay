@@ -9,8 +9,11 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiContextMenu;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.config.ConfigKeybinds;
 import co.bugg.quickplay.elements.Button;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.EnumChatFormatting;
+import co.bugg.quickplay.util.Message;
+import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.GlStateManagerWrapper;
+import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
+import co.bugg.quickplay.wrappers.chat.Formatting;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -50,11 +53,11 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     /**
      * The color of keybinds on buttons when they are not being edited
      */
-    public final EnumChatFormatting keybindColor = EnumChatFormatting.YELLOW;
+    public final Formatting keybindColor = Formatting.YELLOW;
     /**
      * The color of keybinds when the keybind is currently selected & being edited
      */
-    public final EnumChatFormatting keybindEditingColor = EnumChatFormatting.GOLD;
+    public final Formatting keybindEditingColor = Formatting.GOLD;
     /**
      * The separating characters between a keybind's name and the key it's mapped to
      */
@@ -79,23 +82,23 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     public boolean drawTakenPopup;
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void hookInit() {
+        super.hookInit();
 
-        topOfButtons = (int) (height * 0.1);
+        this.topOfButtons = (int) (this.getHeight() * 0.1);
 
         int buttonId = 0;
 
         // Header
-        this.componentList.add(new QuickplayGuiString(null, buttonId, width / 2,
-                topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
+        this.componentList.add(new QuickplayGuiString(null, buttonId, this.getWidth() / 2,
+                this.topOfButtons + (this.buttonHeight + this.buttonMargins) * buttonId++, this.buttonWidth, this.buttonHeight,
                 Quickplay.INSTANCE.elementController.translate("quickplay.keybinds.title"), true, true));
         // Subheader
-        this.componentList.add(new QuickplayGuiString(null, buttonId, width / 2,
-                topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
+        this.componentList.add(new QuickplayGuiString(null, buttonId, this.getWidth() / 2,
+                this.topOfButtons + (this.buttonHeight + this.buttonMargins) * buttonId++, this.buttonWidth, this.buttonHeight,
                 Quickplay.INSTANCE.elementController.translate("quickplay.keybinds.subtitle"), true, true, true));
 
-        for(QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds) {
+        for(final QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds) {
             if(keybind == null || keybind.target == null) {
                 continue;
             }
@@ -103,18 +106,18 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
             if(button == null) {
                 continue;
             }
-            final QuickplayGuiComponent component = new QuickplayGuiButton(keybind, buttonId, width / 2 - buttonWidth / 2,
-                    topOfButtons + (buttonHeight + buttonMargins) * buttonId++, buttonWidth, buttonHeight,
+            final QuickplayGuiComponent component = new QuickplayGuiButton(keybind, buttonId, this.getWidth() / 2 - this.buttonWidth / 2,
+                    this.topOfButtons + (this.buttonHeight + this.buttonMargins) * buttonId++, this.buttonWidth, this.buttonHeight,
                     Quickplay.INSTANCE.elementController.translate(button.translationKey), true);
-            formatComponentString(component, false);
+            this.formatComponentString(component, false);
             this.componentList.add(component);
         }
 
         // Reset button
-        this.componentList.add(new QuickplayGuiButton(null, buttonId, width - buttonMargins - resetButtonWidth,
-                height - buttonMargins - buttonHeight, resetButtonWidth, buttonHeight, resetButtonText, false));
+        this.componentList.add(new QuickplayGuiButton(null, buttonId, this.getWidth() - this.buttonMargins - this.resetButtonWidth,
+                this.getHeight() - this.buttonMargins - this.buttonHeight, this.resetButtonWidth, this.buttonHeight, this.resetButtonText, false));
 
-        setScrollingValues();
+        this.setScrollingValues();
     }
 
     @Override
@@ -122,52 +125,53 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
         super.setScrollingValues();
         // TODO there's a weird bug here that causes items to fall off the screen on large screens. Resolved it
         //  temporarily by increasing scrollContentMargins but that can make things look silly depending on screen size
-        scrollContentMargins = (int) (height * 0.15);
+        this.scrollContentMargins = (int) (this.getHeight() * 0.15);
         // Apply this change by recalculating scroll height
-        scrollContentHeight = calcScrollHeight();
+        this.scrollContentHeight = this.calcScrollHeight();
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
+    public void hookRender(int mouseX, int mouseY, float partialTicks) {
+        GlStateManagerWrapper.pushMatrix();
+        GlStateManagerWrapper.enableBlend();
 
-        drawDefaultBackground();
+        this.drawDefaultBackground();
 
         if(Quickplay.INSTANCE.isEnabled) {
-            super.drawScreen(mouseX, mouseY, partialTicks);
+            super.hookRender(mouseX, mouseY, partialTicks);
 
-            if (drawTakenPopup) {
+            if (this.drawTakenPopup) {
                 final List<String> hoverText = new ArrayList<>();
                 hoverText.add(Quickplay.INSTANCE.elementController.translate("quickplay.gui.keybinds.taken"));
-                drawHoveringText(hoverText, mouseX, mouseY);
+                this.drawHoveringText(hoverText, mouseX, mouseY);
             }
 
-            drawScrollbar(width / 2 + buttonWidth / 2 + 3);
+            this.drawScrollbar(this.getWidth() / 2 + this.buttonWidth / 2 + 3);
         } else {
             // Quickplay is disabled, draw error message
-            this.drawCenteredString(this.fontRendererObj,
-                    Quickplay.INSTANCE.elementController.translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
-                    this.width / 2, this.height / 2, 0xffffff);
+            this.drawCenteredString(Quickplay.INSTANCE.elementController
+                            .translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.getWidth() / 2, this.getHeight() / 2, 0xffffff);
         }
 
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
+        GlStateManagerWrapper.disableBlend();
+        GlStateManagerWrapper.popMatrix();
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+    public boolean hookMouseClicked(int mouseX, int mouseY, int mouseButton) {
+        super.hookMouseClicked(mouseX, mouseY, mouseButton);
 
-        for(QuickplayGuiComponent component : componentList) {
-            if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.mouseHovering(this, mouseX, mouseY)) {
+        for(final QuickplayGuiComponent component : this.componentList) {
+            if(mouseButton == 1 && component.origin instanceof QuickplayKeybind && component.isMouseHovering(this, mouseX, mouseY)) {
                 final QuickplayKeybind keybind = (QuickplayKeybind) component.origin;
                 final String trueStr = Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.true");
                 final String falseStr = Quickplay.INSTANCE.elementController.translate("quickplay.config.gui.false");
-                contextMenu = new QuickplayGuiContextMenu(
+                this.contextMenu = new QuickplayGuiContextMenu(
                     Arrays.asList(
                         Quickplay.INSTANCE.elementController.translate("quickplay.gui.keybinds.delete"),
-                        Quickplay.INSTANCE.elementController.translate("quickplay.gui.keybinds.requireHolding", keybind.requiresPressTimer ? trueStr : falseStr)
+                        Quickplay.INSTANCE.elementController.translate("quickplay.gui.keybinds.requireHolding",
+                                keybind.requiresPressTimer ? trueStr : falseStr)
                     ), component, -1, mouseX, mouseY) {
 
                     @Override
@@ -197,22 +201,23 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                         }
                     }
                 };
-                this.addComponent(contextMenu);
+                this.addComponent(this.contextMenu);
                 break;
             }
         }
+        return false;
     }
 
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
         if(component.origin instanceof QuickplayKeybind) {
-            if(selectedComponent != null) {
-                formatComponentString(selectedComponent, false);
+            if(this.selectedComponent != null) {
+                this.formatComponentString(this.selectedComponent, false);
             }
-            selectedComponent = component;
-            formatComponentString(component, true);
-        } else if(component.displayString.equals(resetButtonText)) {
+            this.selectedComponent = component;
+            this.formatComponentString(component, true);
+        } else if(component.displayString.equals(this.resetButtonText)) {
             try {
                 // Unsubscribe all keybinds
                 for(QuickplayKeybind keybind : Quickplay.INSTANCE.keybinds.keybinds)
@@ -221,7 +226,7 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
                 // Create a new keybind list
                 Quickplay.INSTANCE.keybinds = new ConfigKeybinds(true);
                 Quickplay.INSTANCE.keybinds.save();
-                initGui();
+                this.hookInit();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -229,20 +234,20 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        closeContextMenu();
-        if(selectedComponent != null) {
-            final QuickplayKeybind keybind = (QuickplayKeybind) selectedComponent.origin;
+    public boolean hookKeyTyped(char typedChar, int keyCode) {
+        this.closeContextMenu();
+        if(this.selectedComponent != null) {
+            final QuickplayKeybind keybind = (QuickplayKeybind) this.selectedComponent.origin;
             if(Quickplay.INSTANCE.keybinds.keybinds.stream().anyMatch(keybind1 -> keybind1.key == keyCode && keybind != keybind1)) {
                 // Key is already taken so cancel, draw a popup telling them, and hide it in 3 seconds
-                drawTakenPopup = true;
+                this.drawTakenPopup = true;
                 Quickplay.INSTANCE.threadPool.submit(() -> {
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    drawTakenPopup = false;
+                    this.drawTakenPopup = false;
                 });
             } else {
                 if (keyCode == Keyboard.KEY_ESCAPE) {
@@ -266,16 +271,26 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
             }
 
             try {
-                formatComponentString(selectedComponent, false);
+                this.formatComponentString(this.selectedComponent, false);
             } catch(IllegalArgumentException e) {
                 e.printStackTrace();
                 Quickplay.INSTANCE.sendExceptionRequest(e);
             }
-            selectedComponent = null;
-            Quickplay.INSTANCE.keybinds.save();
+            this.selectedComponent = null;
+            try {
+                Quickplay.INSTANCE.keybinds.save();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Quickplay.INSTANCE.sendExceptionRequest(e);
+                System.out.println("Failed to save keybinds.");
+                Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
+                        new QuickplayChatComponentTranslation("quickplay.config.saveError")
+                                .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
+            }
         } else {
-            super.keyTyped(typedChar, keyCode);
+            super.hookKeyTyped(typedChar, keyCode);
         }
+        return false;
     }
 
     /**
@@ -290,12 +305,12 @@ public class QuickplayGuiKeybinds extends QuickplayGui {
             final Button button = Quickplay.INSTANCE.elementController.getButton(keybind.target);
             final String title = button == null ? "null" : Quickplay.INSTANCE.elementController.translate(button.translationKey);
             if(selected) {
-                component.displayString = keybindPrependedEditingText + title + keybindNameSeparator +
-                        keybindEditingColor + Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET +
-                        keybindAppendedEditingText;
+                component.displayString = this.keybindPrependedEditingText + title + this.keybindNameSeparator +
+                        this.keybindEditingColor + Keyboard.getKeyName(keybind.key) + Formatting.RESET +
+                        this.keybindAppendedEditingText;
             } else {
                 component.displayString = title + keybindNameSeparator + keybindColor +
-                        Keyboard.getKeyName(keybind.key) + EnumChatFormatting.RESET;
+                        Keyboard.getKeyName(keybind.key) + Formatting.RESET;
             }
         } else {
             throw new IllegalArgumentException("The GUI component provided does not have a QuickplayKeybind as it's origin!");

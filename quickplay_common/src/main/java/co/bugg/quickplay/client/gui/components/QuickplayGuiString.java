@@ -3,7 +3,7 @@ package co.bugg.quickplay.client.gui.components;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.QuickplayGui;
-import net.minecraft.client.renderer.GlStateManager;
+import co.bugg.quickplay.wrappers.GlStateManagerWrapper;
 
 /**
  * A simple, static string that is built into a component
@@ -60,41 +60,42 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
         if(opacity > 0) {
-            final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
+            final int scrollAdjustedY = this.scrollable ? this.y - gui.scrollPixel : y;
             final QuickplayColor color = this.secondaryColor ?
                     Quickplay.INSTANCE.settings.secondaryColor : Quickplay.INSTANCE.settings.primaryColor;
 
-            GlStateManager.pushMatrix();
-            GlStateManager.enableBlend();
-            if (centered) {
-                drawCenteredString(gui.mc.fontRendererObj, displayString, x, scrollAdjustedY,
+            GlStateManagerWrapper.pushMatrix();
+            GlStateManagerWrapper.enableBlend();
+            if (this.centered) {
+                this.drawCenteredString(this.displayString, this.x, scrollAdjustedY,
                         (color.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             } else {
-                drawString(gui.mc.fontRendererObj, displayString, x, scrollAdjustedY,
+                this.drawString(this.displayString, this.x, scrollAdjustedY,
                         (color.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             }
-            GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
+            GlStateManagerWrapper.disableBlend();
+            GlStateManagerWrapper.popMatrix();
         }
     }
 
     @Override
-    public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY) {
-        return (mouseX > x - width / 2 && mouseX < (x + width / 2)) && (mouseY > y && mouseY < (y + height));
+    public boolean isMouseHovering(QuickplayGui gui, int mouseX, int mouseY) {
+        return (mouseX > this.x - this.width / 2 && mouseX < (this.x + this.width / 2)) &&
+                (mouseY > this.y && mouseY < (this.y + this.height));
     }
 
     @Override
-    public void mouseReleased(QuickplayGui gui1, int mouseX, int mouseY) {
+    public void hookMouseReleased(QuickplayGui gui1, int mouseX, int mouseY) {
 
     }
 
     @Override
-    public boolean keyTyped(char keyTyped, int keyCode) {
+    public boolean hookKeyTyped(char keyTyped, int keyCode) {
         return false;
     }
 
     @Override
-    public boolean mouseClicked(QuickplayGui gui, int mouseX, int mouseY, int mouseButton) {
+    public boolean hookMouseClicked(QuickplayGui gui, int mouseX, int mouseY, int mouseButton) {
         return false;
     }
 }

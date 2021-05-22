@@ -3,12 +3,12 @@ package co.bugg.quickplay.config;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Reference;
+import co.bugg.quickplay.wrappers.ResourceLocationWrapper;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.FolderResourcePack;
 import net.minecraft.client.resources.IResourcePack;
-import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -80,10 +80,10 @@ public class AssetFactory {
      * @param urls List of URLs to download from
      * @return List of ResourceLocations for all icons
      */
-    public List<ResourceLocation> loadIcons(List<URL> urls) {
+    public List<ResourceLocationWrapper> loadIcons(List<URL> urls) {
         createDirectories();
 
-        List<ResourceLocation> resourceLocations = new ArrayList<>();
+        List<ResourceLocationWrapper> resourceLocations = new ArrayList<>();
 
         for(URL url : urls) {
             resourceLocations.add(this.loadIcon(url));
@@ -97,7 +97,7 @@ public class AssetFactory {
      * @param url URL of the icon to download.
      * @return ResourceLocation for the icon.
      */
-    public ResourceLocation loadIcon(URL url) {
+    public ResourceLocationWrapper loadIcon(URL url) {
         File file = getIconFile(url);
         // If the file already exists, no need to download again.
         // If the icon needs to be reset, use RefreshCacheAction.
@@ -132,7 +132,7 @@ public class AssetFactory {
             }
         }
 
-        final ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, file.getName());
+        final ResourceLocationWrapper resourceLocation = new ResourceLocationWrapper(Reference.MOD_ID, file.getName());
 
         QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
             Quickplay.INSTANCE.reloadResource(file, resourceLocation);

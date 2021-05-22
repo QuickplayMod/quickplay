@@ -3,7 +3,7 @@ package co.bugg.quickplay.actions.clientbound;
 import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.client.dailyreward.DailyRewardAppData;
 import co.bugg.quickplay.client.dailyreward.DailyRewardGui;
-import co.bugg.quickplay.client.dailyreward.DailyRewardGuiLoading;
+import co.bugg.quickplay.client.gui.dailyreward.DailyRewardGuiLoading;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;

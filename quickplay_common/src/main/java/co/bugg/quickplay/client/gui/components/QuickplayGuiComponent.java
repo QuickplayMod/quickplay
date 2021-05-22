@@ -1,12 +1,11 @@
 package co.bugg.quickplay.client.gui.components;
 
 import co.bugg.quickplay.client.gui.QuickplayGui;
-import net.minecraft.client.gui.Gui;
 
 /**
  * Basic component class for almost all Quickplay GUI elements
  */
-public abstract class QuickplayGuiComponent extends Gui {
+public abstract class QuickplayGuiComponent extends QuickplayGui {
 
     /**
      * Width of this component
@@ -101,7 +100,7 @@ public abstract class QuickplayGuiComponent extends Gui {
      * @param mouseY The Y position of the mouse
      * @return By default, Whether the X and Y positions of the mouse are within the width & height of this component.
      */
-    public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY) {
+    public boolean isMouseHovering(QuickplayGui gui, int mouseX, int mouseY) {
         final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
         return (mouseX >= x && mouseX < (x + width)) && (mouseY >= scrollAdjustedY && mouseY < (scrollAdjustedY + height));
     }
@@ -112,7 +111,7 @@ public abstract class QuickplayGuiComponent extends Gui {
      * @param mouseX The X position of the mouse when the mouse was released
      * @param mouseY the Y position of the mouse when the mouse was released
      */
-    public abstract void mouseReleased(QuickplayGui gui, int mouseX, int mouseY);
+    public abstract void hookMouseReleased(QuickplayGui gui, int mouseX, int mouseY);
 
     /**
      * Called whenever a key is typed in a QuickplayGui on all elements in componentList
@@ -120,7 +119,7 @@ public abstract class QuickplayGuiComponent extends Gui {
      * @param keyCode LWJGL key code
      * @return Whether the key press should be cancelled (true to cancel)
      */
-    public abstract boolean keyTyped(char keyTyped, int keyCode);
+    public abstract boolean hookKeyTyped(char keyTyped, int keyCode);
 
     /**
      * Called whenever a mouse is pressed in a QuickplayGui on all elements in componentList
@@ -130,5 +129,5 @@ public abstract class QuickplayGuiComponent extends Gui {
      * @param mouseButton mouse button clicked
      * @return Whether the click should be cancelled (true to cancel)
      */
-    public abstract boolean mouseClicked(QuickplayGui gui, int mouseX, int mouseY, int mouseButton);
+    public abstract boolean hookMouseClicked(QuickplayGui gui, int mouseX, int mouseY, int mouseButton);
 }

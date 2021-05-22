@@ -1,6 +1,7 @@
 package co.bugg.quickplay.client.dailyreward;
 
 import co.bugg.quickplay.Reference;
+import co.bugg.quickplay.wrappers.ResourceLocationWrapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
@@ -63,9 +64,10 @@ public class DailyRewardOption {
     public String getFormattedAmount() {
         if(amount != 0) {
             final DecimalFormat formatter = new DecimalFormat("#,###");
-            return formatter.format(amount);
-        } else
+            return formatter.format(this.amount);
+        } else {
             return "";
+        }
     }
 
     /**
@@ -74,16 +76,18 @@ public class DailyRewardOption {
      * @return Translated rarity
      */
     public String translateRarity(JsonObject i18n) {
-        if(i18n == null)
+        if(i18n == null) {
             return this.rarity;
+        }
 
-        String str = String.valueOf(rarity).toLowerCase();
+        String str = String.valueOf(this.rarity).toLowerCase();
         final JsonElement obj =  i18n.get("rarity." + str);
 
-        if(obj != null)
+        if(obj != null) {
             str = obj.getAsString();
-        if(str != null && gameType != null) {
-            str = str.replace("{$game}", gameType);
+        }
+        if(str != null && this.gameType != null) {
+            str = str.replace("{$game}", this.gameType);
         }
         return str;
     }
@@ -94,24 +98,25 @@ public class DailyRewardOption {
      * @return Translated reward name
      */
     public String translateReward(JsonObject i18n) {
-        if(i18n == null)
+        if(i18n == null) {
             return this.reward;
+        }
 
         String str = this.reward;
-        if(reward.equals("add_vanity")) {
+        if(this.reward.equals("add_vanity")) {
             final String[] splitKey = key.split("_");
             final JsonElement obj = i18n.get("vanity." + splitKey[0] + "_" + splitKey[1]);
             if(obj != null)
                 str = obj.getAsString();
         } else {
-            str = reward.toLowerCase();
+            str = this.reward.toLowerCase();
             final JsonElement obj = i18n.get("type." + str);
             if(obj != null)
                 str = obj.getAsString();
         }
 
-        if(str != null && gameType != null) {
-            str = str.replace("{$game}", gameType);
+        if(str != null && this.gameType != null) {
+            str = str.replace("{$game}", this.gameType);
         }
         return str;
     }
@@ -129,8 +134,8 @@ public class DailyRewardOption {
         String str = "";
         boolean defaultStr = false; // Whether default string should be grabbed instead of vanity string
 
-        if(reward.equals("add_vanity")) {
-            final String[] splitKey = key.split("_");
+        if(this.reward.equals("add_vanity")) {
+            final String[] splitKey = this.key.split("_");
 
             String vanityKey = null;
             switch(splitKey[0]) {
@@ -156,14 +161,14 @@ public class DailyRewardOption {
             defaultStr = true;
 
         if(defaultStr) {
-            str = reward.toLowerCase();
+            str = this.reward.toLowerCase();
             final JsonElement obj = i18n.get("type." + str + ".description");
             if(obj != null)
                 str = obj.getAsString();
         }
 
-        if( gameType != null) {
-            str = str.replace("{$game}", gameType);
+        if(this.gameType != null) {
+            str = str.replace("{$game}", this.gameType);
         }
         return str;
     }
@@ -181,16 +186,16 @@ public class DailyRewardOption {
 
         String str = "";
 
-        if(reward.equals("add_vanity")) {
-            final String[] splitKey = key.split("_");
+        if(this.reward.equals("add_vanity")) {
+            final String[] splitKey = this.key.split("_");
             if(splitKey.length > 2) { // Subtype info
                 final JsonElement obj = i18n.get("vanity.armor." + splitKey[2]);
                 if(obj != null)
                     str = obj.getAsString();
             }
         } else {
-            if(packageInfo != null) {
-                str = packageInfo.toLowerCase();
+            if(this.packageInfo != null) {
+                str = this.packageInfo.toLowerCase();
                 str = str.replace("specialoccasion_reward_card_skull_", "housing.skull.");
 
                 final JsonElement obj = i18n.get(str);
@@ -199,8 +204,8 @@ public class DailyRewardOption {
             }
         }
 
-        if(str != null && gameType != null) {
-            str = str.replace("{$game}", gameType);
+        if(str != null && this.gameType != null) {
+            str = str.replace("{$game}", this.gameType);
         }
         return str;
     }
@@ -209,20 +214,21 @@ public class DailyRewardOption {
      * "Show" the option/card in GUIs by setting {@link #hidden} to false and playing the proper sound
      */
     public void show() {
-        hidden = false;
-        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation(Reference.MOD_ID,"card.turn." + String.valueOf(rarity).toLowerCase()), 1.0F));
+        this.hidden = false;
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord
+                .create(new ResourceLocation(Reference.MOD_ID,"card.turn." + String.valueOf(this.rarity).toLowerCase()), 1.0F));
     }
 
     /**
      * Get the texture for this reward option based off of its rarity & hidden state
      * @return The appropriate texture
      */
-    public ResourceLocation getTexture() {
+    public ResourceLocationWrapper getTexture() {
         String path;
-        if(hidden)
+        if(this.hidden)
             path = "textures/card-back.png";
         else {
-            switch(String.valueOf(rarity).toLowerCase()) {
+            switch(String.valueOf(this.rarity).toLowerCase()) {
                 default:
                 case "common":
                     path = "textures/card-common.png";
@@ -239,6 +245,6 @@ public class DailyRewardOption {
             }
         }
 
-        return new ResourceLocation(Reference.MOD_ID, path);
+        return new ResourceLocationWrapper(Reference.MOD_ID, path);
     }
 }

@@ -2,8 +2,7 @@ package co.bugg.quickplay.client.gui;
 
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.HypixelInstanceWatcher;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import co.bugg.quickplay.wrappers.GlStateManagerWrapper;
 
 import java.io.IOException;
 
@@ -42,30 +41,30 @@ public class InstanceDisplay extends MoveableHudElement {
         super.render(x, y, opacity);
 
         final String instance = this.source.getCurrentServer();
-        final int stringHeight = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
-        final int stringWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(instance);
+        final int stringHeight = this.getFontHeight();
+        final int stringWidth = this.getStringWidth(instance);
 
         final double scale = Quickplay.INSTANCE.settings.instanceDisplayScale.getScale();
-        final int scaledX = (int) (x * screenWidth / scale);
-        final int scaledY = (int) (y * screenHeight / scale);
+        final int scaledX = (int) (x * this.screenWidth / scale);
+        final int scaledY = (int) (y * this.screenHeight / scale);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(scale, scale, scale);
+        GlStateManagerWrapper.pushMatrix();
+        GlStateManagerWrapper.scale(scale);
 
-        drawRect((scaledX - this.backgroundHorizontalPadding - stringWidth / 2),
+        QuickplayGui.drawRect((scaledX - this.backgroundHorizontalPadding - stringWidth / 2),
                 (scaledY - this.backgroungVerticalPadding),
                 /* -1 due to a padding issue I don't understand it but it's uneven without. */
                 (scaledX + stringWidth + this.backgroundHorizontalPadding - stringWidth / 2 - 1),
                 (scaledY + stringHeight + this.backgroungVerticalPadding),
-                0x000000 | (int) (opacity * 100 * 0.5) << 24);
-        GlStateManager.enableBlend();
+                0x000000 | (int) (this.opacity * 100 * 0.5) << 24);
+        GlStateManagerWrapper.enableBlend();
 
-        drawCenteredString(Minecraft.getMinecraft().fontRendererObj, instance, scaledX, scaledY,
-                Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        this.drawCenteredString(instance, scaledX, scaledY, Quickplay.INSTANCE.settings.primaryColor
+                .getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
 
-        GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
+        GlStateManagerWrapper.scale(1 / scale);
+        GlStateManagerWrapper.disableBlend();
+        GlStateManagerWrapper.popMatrix();
     }
 
     @Override

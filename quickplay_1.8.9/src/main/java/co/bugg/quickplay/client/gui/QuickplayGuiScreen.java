@@ -17,12 +17,11 @@ import co.bugg.quickplay.games.Game;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerUnavailableException;
+import co.bugg.quickplay.wrappers.GlStateManagerWrapper;
+import co.bugg.quickplay.wrappers.ResourceLocationWrapper;
 import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
 import co.bugg.quickplay.wrappers.chat.Formatting;
 import com.google.common.hash.Hashing;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -146,14 +145,15 @@ public class QuickplayGuiScreen extends QuickplayGui {
     }
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void hookInit() {
+        super.hookInit();
 
         // Reset column/row number used for determining button positions
         this.currentColumn = 0;
         this.currentRow = 0;
 
-        this.copyright = Quickplay.INSTANCE.elementController.translate("quickplay.gui.copyright", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        this.copyright = Quickplay.INSTANCE.elementController.translate("quickplay.gui.copyright",
+                String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         // Change the window Y padding if it's set
         // TODO test this
@@ -163,7 +163,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
 
         // Strings aren't rendered in compact mode so forget about this
         if(!this.compact) {
-            if (screen.buttonKeys.length > 0) {
+            if (this.screen.buttonKeys.length > 0) {
                 // Calculate the average width of all strings & what the longest one is
                 for (final String buttonKey : this.screen.buttonKeys) {
                     final Button button = Quickplay.INSTANCE.elementController.getButton(buttonKey);
@@ -171,7 +171,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
                     if(button == null || !button.passesPermissionChecks()) {
                         continue;
                     }
-                    final int stringWidth = this.fontRendererObj.getStringWidth(Quickplay.INSTANCE.elementController.translate(button.translationKey));
+                    final int stringWidth = this.getStringWidth(Quickplay.INSTANCE.elementController.translate(button.translationKey));
                     if (stringWidth > this.longestStringWidth) {
                         this.longestStringWidth = stringWidth;
                     }
@@ -195,7 +195,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
             this.scrollContentMargins += this.gameImgSize / 2;
         }
         if(this.screen.translationKey != null && this.screen.translationKey.length() > 0) {
-            this.scrollContentMargins += this.fontRendererObj.FONT_HEIGHT * this.stringScale + 10;
+            this.scrollContentMargins += this.getFontHeight() * this.stringScale + 10;
         }
 
         final int itemWidth = (int) ((this.gameImgSize * this.scaleMultiplier) +
@@ -203,20 +203,20 @@ public class QuickplayGuiScreen extends QuickplayGui {
 
         // Calculate column count
         if(this.screen.screenType == ScreenType.BUTTONS) {
-            windowPadding = (int) (width * (width > 500 ? 0.25 : 0.15));
-            columnCount = (int) Math.floor((double) (width - windowPadding) / (buttonWidth + buttonMargins));
+            this.windowPadding = (int) (this.getWidth() * (this.getWidth() > 500 ? 0.25 : 0.15));
+            this.columnCount = (int) Math.floor((double) (this.getWidth() - this.windowPadding) / (this.buttonWidth + this.buttonMargins));
             if(this.columnCount <= 0) {
                 this.columnCount = 1;
-                buttonWidth = width - buttonMargins * 2;
+                this.buttonWidth = this.getWidth() - this.buttonMargins * 2;
             }
         } else {
-            this.columnCount = (int) Math.floor((double) (this.width - this.windowXPadding) / itemWidth);
+            this.columnCount = (int) Math.floor((double) (this.getWidth() - this.windowXPadding) / itemWidth);
             if(this.columnCount <= 0) {
                 this.columnCount = 1;
             }
         }
-        if(columnCount > this.screen.buttonKeys.length) {
-            columnCount = this.screen.buttonKeys.length;
+        if(this.columnCount > this.screen.buttonKeys.length) {
+            this.columnCount = this.screen.buttonKeys.length;
         }
 
         // Calculate X location of the furthest left column (i.e. column zero)
@@ -234,7 +234,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
 
         // Add buttons to the component list in the proper grid
         int nextButtonId = 0;
-        for(String buttonKey : this.screen.buttonKeys) {
+        for(final String buttonKey : this.screen.buttonKeys) {
             final Button button = Quickplay.INSTANCE.elementController.getButton(buttonKey);
             // Skip buttons which won't be rendered in this context.
             if(button == null || !button.passesPermissionChecks()) {
@@ -242,14 +242,15 @@ public class QuickplayGuiScreen extends QuickplayGui {
             }
 
             if(this.screen.screenType == ScreenType.BUTTONS) {
-                this.componentList.add(new QuickplayGuiButton(button, nextButtonId, columnZeroX + (buttonWidth + buttonMargins) * currentColumn,
-                        scrollContentMargins / 2 + (buttonHeight + buttonMargins) * currentRow,
-                        buttonWidth, buttonHeight, Quickplay.INSTANCE.elementController.translate(button.translationKey), true));
+                this.componentList.add(new QuickplayGuiButton(button, nextButtonId, this.columnZeroX +
+                        (this.buttonWidth + this.buttonMargins) * this.currentColumn,
+                        this.scrollContentMargins / 2 + (this.buttonHeight + this.buttonMargins) * this.currentRow,
+                        this.buttonWidth, this.buttonHeight, Quickplay.INSTANCE.elementController.translate(button.translationKey), true));
             } else {
                 // Create invisible button                                                                                                                                                                                              // Width can't be affected by scaling                       // Texture is of the game icon, although it's not rendered (opacity is 0 in drawScreen)
                 this.componentList.add(new QuickplayGuiButton(button, nextButtonId, this.columnZeroX + this.currentColumn * itemWidth,
                         (int) ((this.gameImgSize * this.scaleMultiplier + this.BoxYPadding) * this.currentRow + this.scrollContentMargins / 2),
-                        (int) (itemWidth / this.scaleMultiplier), this.gameImgSize, "", new ResourceLocation(Reference.MOD_ID,
+                        (int) (itemWidth / this.scaleMultiplier), this.gameImgSize, "", new ResourceLocationWrapper(Reference.MOD_ID,
                         Hashing.md5().hashString(button.imageURL, StandardCharsets.UTF_8).toString() + ".png"),
                         0, 0, this.scaleMultiplier, true));
             }
@@ -269,7 +270,7 @@ public class QuickplayGuiScreen extends QuickplayGui {
                     Quickplay.INSTANCE.elementController.translate("quickplay.gui.back"), false));
         }
 
-        setScrollingValues();
+        this.setScrollingValues();
     }
 
     /**
@@ -284,59 +285,58 @@ public class QuickplayGuiScreen extends QuickplayGui {
     private void drawImagesScreen(int mouseX, int mouseY, float partialTicks, QuickplayColor staticColor, QuickplayColor hoverColor) {
 
         // Draw images & strings for all the games buttons
-        for(final QuickplayGuiComponent component : componentList) {
+        for(final QuickplayGuiComponent component : this.componentList) {
             if(component.origin instanceof Button) {
-                final int scrollAdjustedY = component.scrollable ? component.y - scrollPixel : component.y;
-                GlStateManager.color(1, 1, 1);
+                final int scrollAdjustedY = component.scrollable ? component.y - this.scrollPixel : component.y;
+                GlStateManagerWrapper.color(1, 1, 1);
                 final Button button = (Button) component.origin;
                 // Draw icon
-                GlStateManager.color(1, 1, 1, opacity);
-                GlStateManager.scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
-                Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID,
+                GlStateManagerWrapper.color(1, 1, 1, this.opacity);
+                GlStateManagerWrapper.scale(this.scaleMultiplier);
+                Quickplay.INSTANCE.minecraft.bindTexture(new ResourceLocationWrapper(Reference.MOD_ID,
                         Hashing.md5().hashString(button.imageURL,
                                 StandardCharsets.UTF_8).toString() + ".png"));
-                drawTexturedModalRect((int) (component.x / scaleMultiplier), (int) (scrollAdjustedY / scaleMultiplier),
-                        0, 0, gameImgSize, gameImgSize);
-                GlStateManager.scale(1 / scaleMultiplier, 1 / scaleMultiplier, 1 / scaleMultiplier);
+                this.drawTexturedModalRect((int) (component.x / this.scaleMultiplier), (int) (scrollAdjustedY / this.scaleMultiplier),
+                        0, 0, this.gameImgSize, this.gameImgSize);
+                GlStateManagerWrapper.scale(1 / this.scaleMultiplier);
 
-                if(!compact && opacity > 0) {
+                if(!this.compact && this.opacity > 0) {
 
                     // Draw text
-                    GlStateManager.scale(stringScale, stringScale, stringScale);
-                    final int color = component.mouseHovering(this, mouseX, mouseY) && contextMenu == null ?
+                    GlStateManagerWrapper.scale(this.stringScale);
+                    final int color = component.isMouseHovering(this, mouseX, mouseY) && this.contextMenu == null ?
                             hoverColor.getColor().getRGB() : staticColor.getColor().getRGB();
-                    drawString(mc.fontRendererObj, Quickplay.INSTANCE.elementController.translate(button.translationKey),
-                            (int) ((component.x + gameImgSize * scaleMultiplier + stringLeftMargins) / stringScale),
-                            (int) ((((scrollAdjustedY + component.height / 2)) - fontRendererObj.FONT_HEIGHT / 2) / stringScale),
-                            color & 0xFFFFFF | (int) (opacity * 255) << 24);
-                    GlStateManager.scale(1 / stringScale, 1 / stringScale, 1 / stringScale);
+                    this.drawString(Quickplay.INSTANCE.elementController.translate(button.translationKey),
+                            (int) ((component.x + this.gameImgSize * this.scaleMultiplier + this.stringLeftMargins) / this.stringScale),
+                            (int) ((((scrollAdjustedY + component.height / 2)) - this.getFontHeight() / 2) / this.stringScale),
+                            color & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                    GlStateManagerWrapper.scale(1 / this.stringScale);
                 }
             }
         }
 
-        GlStateManager.enableBlend();
+        GlStateManagerWrapper.enableBlend();
 
-        drawScrollbar(width - scrollbarWidth - 5);
+        drawScrollbar(this.getWidth() - this.scrollbarWidth - 5);
 
         // OVERRIDE
-        //super.drawScreen(mouseX, mouseY, partialTicks);
-        for (QuickplayGuiComponent component : componentList) {
+        //super.hookRender(mouseX, mouseY, partialTicks);
+        for (QuickplayGuiComponent component : this.componentList) {
             if(component instanceof QuickplayGuiContextMenu || component.origin == null) {
-                component.draw(this, mouseX, mouseY, opacity);
+                component.draw(this, mouseX, mouseY, this.opacity);
             }
 
             // If hovering & in compact mode, draw hover text
-            if(compact && component.origin instanceof Button && component.mouseHovering(this, mouseX, mouseY)) {
+            if(this.compact && component.origin instanceof Button && component.isMouseHovering(this, mouseX, mouseY)) {
                 final Button button = (Button) component.origin;
-                drawHoveringText(new ArrayList<>(Collections.singletonList(Quickplay.INSTANCE.elementController.translate(button.translationKey))),
+                this.drawHoveringText(new ArrayList<>(Collections.singletonList(Quickplay.INSTANCE.elementController.translate(button.translationKey))),
                         mouseX, mouseY);
             }
         }
 
-        if(opacity > 0) {
-            drawCenteredString(fontRendererObj, copyright, width / 2,
-                    height - fontRendererObj.FONT_HEIGHT - copyrightMargins,
-                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        if(this.opacity > 0) {
+            this.drawCenteredString(this.copyright, this.getWidth() / 2, this.height - this.getFontHeight() - this.copyrightMargins,
+                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
         }
     }
 
@@ -353,42 +353,41 @@ public class QuickplayGuiScreen extends QuickplayGui {
         //final int bottomOfBox = (int) (Math.ceil((double) game.modes.size() / columnCount) * (buttonHeight + buttonMargins) - buttonMargins + scrollFadeLine + backgroundBoxPadding);
         //drawRect(columnZeroRowZeroX - backgroundBoxPadding, topOfBackgroundBox, rightOfBox, bottomOfBox, (int) (opacity * 255 * 0.5) << 24);
 
-        // Modified super.drawScreen()
-        for (QuickplayGuiComponent component : componentList) {
-            if(opacity > 0) {
-                component.draw(this, mouseX, mouseY, opacity);
+        // Modified super.hookRender()
+        for (final QuickplayGuiComponent component : this.componentList) {
+            if(this.opacity > 0) {
+                component.draw(this, mouseX, mouseY, this.opacity);
             }
         }
 
-        drawScrollbar(width - scrollbarWidth - 5);
+        this.drawScrollbar(this.getWidth() - this.scrollbarWidth - 5);
 
-        if(opacity > 0) {
-            drawCenteredString(fontRendererObj, copyright, width / 2, height - fontRendererObj.FONT_HEIGHT - copyrightMargins,
-                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+        if(this.opacity > 0) {
+            this.drawCenteredString(this.copyright, this.getWidth() / 2, this.getHeight() - this.getFontHeight() - this.copyrightMargins,
+                    Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
         }
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
+    public void hookRender(int mouseX, int mouseY, float partialTicks) {
+        GlStateManagerWrapper.pushMatrix();
+        GlStateManagerWrapper.enableBlend();
 
         this.drawDefaultBackground();
         this.updateOpacity();
 
         if(Quickplay.INSTANCE.isEnabled) {
-            double mainLogoMultiplier = this.scaleMultiplier / 1.5;
+            final double mainLogoMultiplier = this.scaleMultiplier / 1.5;
             // Draw screen logo if it's set
             if(this.screen.imageURL != null && this.screen.imageURL.length() > 0) {
-                GlStateManager.color(1, 1, 1, opacity);
-                GlStateManager.scale(mainLogoMultiplier, mainLogoMultiplier, mainLogoMultiplier);
-                Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID,
-                        Hashing.md5().hashString(this.screen.imageURL,
-                                StandardCharsets.UTF_8).toString() + ".png"));
-                drawTexturedModalRect((int) ((this.width / 2 - this.gameImgSize / 2 * mainLogoMultiplier) / mainLogoMultiplier),
+                GlStateManagerWrapper.color(1, 1, 1, this.opacity);
+                GlStateManagerWrapper.scale(mainLogoMultiplier);
+                Quickplay.INSTANCE.minecraft.bindTexture(new ResourceLocationWrapper(Reference.MOD_ID,
+                        Hashing.md5().hashString(this.screen.imageURL, StandardCharsets.UTF_8).toString() + ".png"));
+                this.drawTexturedModalRect((int) ((this.width / 2 - this.gameImgSize / 2 * mainLogoMultiplier) / mainLogoMultiplier),
                         (int) ((20 - this.scrollPixel) / mainLogoMultiplier),
                         0, 0, this.gameImgSize, this.gameImgSize);
-                GlStateManager.scale(1 / mainLogoMultiplier, 1 / mainLogoMultiplier, 1 / mainLogoMultiplier);
+                GlStateManagerWrapper.scale(1 / mainLogoMultiplier);
 
             }
 
@@ -402,13 +401,13 @@ public class QuickplayGuiScreen extends QuickplayGui {
 
             // Draw screen name if it's set
             if(this.screen.translationKey != null && this.screen.translationKey.length() > 0) {
-                GlStateManager.scale(stringScale, stringScale, stringScale);
-                drawCenteredString(this.fontRendererObj, Quickplay.INSTANCE.elementController.translate(this.screen.translationKey),
-                        (int) ((this.width / 2) / stringScale),
-                        (int) ((30 + this.gameImgSize * mainLogoMultiplier  - this.scrollPixel) / stringScale),
+                GlStateManagerWrapper.scale(this.stringScale);
+                this.drawCenteredString(Quickplay.INSTANCE.elementController.translate(this.screen.translationKey),
+                        (int) ((this.getWidth() / 2) / this.stringScale),
+                        (int) ((30 + this.gameImgSize * mainLogoMultiplier  - this.scrollPixel) / this.stringScale),
                         hoverColor.getColor().getRGB());
 
-                GlStateManager.scale(1 / stringScale, 1 / stringScale, 1 / stringScale);
+                GlStateManagerWrapper.scale(1 / this.stringScale);
             }
 
             if(this.screen.screenType == ScreenType.IMAGES) {
@@ -418,23 +417,24 @@ public class QuickplayGuiScreen extends QuickplayGui {
             }
         } else {
             // Quickplay is disabled, draw error message
-            this.drawCenteredString(this.fontRendererObj,
-                    Quickplay.INSTANCE.elementController.translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
-                    this.width / 2, this.height / 2, 0xffffff);
+            this.drawCenteredString(Quickplay.INSTANCE.elementController
+                    .translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.getWidth() / 2, this.getHeight() / 2, 0xffffff);
         }
 
 
 
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
+        GlStateManagerWrapper.disableBlend();
+        GlStateManagerWrapper.popMatrix();
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        super.keyTyped(typedChar, keyCode);
+    public boolean hookKeyTyped(char typedChar, int keyCode) {
+        super.hookKeyTyped(typedChar, keyCode);
         if(Quickplay.INSTANCE.settings.anyKeyClosesGui) {
-            Minecraft.getMinecraft().displayGuiScreen(null);
+            Quickplay.INSTANCE.minecraft.openGui(null);
         }
+        return false;
     }
 
     @Override
@@ -443,20 +443,20 @@ public class QuickplayGuiScreen extends QuickplayGui {
         // We only want top, so cut in half and add 30 for bottom
         this.scrollContentMargins = this.scrollContentMargins / 2 + 30;
         // Calculate the height of the scrollable content
-        scrollContentHeight = calcScrollHeight();
+        this.scrollContentHeight = calcScrollHeight();
         // Increase scroll speed & amount
-        scrollMultiplier = 5;
-        scrollDelay = 1;
+        this.scrollMultiplier = 5;
+        this.scrollDelay = 1;
         // Top & bottom of thee scroll frame
-        scrollFrameBottom = height;
-        scrollFrameTop = 0;
+        this.scrollFrameBottom = this.getHeight();
+        this.scrollFrameTop = 0;
     }
 
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
 
         super.componentClicked(component);
-        if(component.origin instanceof Button && contextMenu == null) {
+        if(component.origin instanceof Button && this.contextMenu == null) {
             final Button button = (Button) component.origin;
             if(!button.passesPermissionChecks()) {
                 Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(
@@ -507,27 +507,28 @@ public class QuickplayGuiScreen extends QuickplayGui {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+    public boolean hookMouseClicked(int mouseX, int mouseY, int mouseButton) {
+        super.hookMouseClicked(mouseX, mouseY, mouseButton);
 
         if(mouseButton != 1) {
-            return;
+            return false;
         }
-        for(QuickplayGuiComponent component : this.componentList) {
+        for(final QuickplayGuiComponent component : this.componentList) {
             if(component instanceof QuickplayGuiContextMenu) {
                 continue;
             }
-            if(!component.mouseHovering(this, mouseX, mouseY)) {
+            if(!component.isMouseHovering(this, mouseX, mouseY)) {
                 continue;
             }
 
             this.contextMenu = new QuickplayGuiContextMenu(Collections.singletonList(this.favoriteString), component, -1, mouseX, mouseY) {
                 @Override
                 public void optionSelected(int index) {
-                    closeContextMenu();
+                    QuickplayGuiScreen.this.closeContextMenu();
                     if (index == 0) {
                         if (component.origin instanceof Button) {    // Open key binding GUI & add new keybind
-                            Button button = (Button) component.origin;
+                            final Button button = (Button) component.origin;
+                            // FIXME not common
                             Quickplay.INSTANCE.keybinds.keybinds.add(new QuickplayKeybind(Keyboard.KEY_NONE, button.key));
                         }
                         try {
@@ -536,14 +537,13 @@ public class QuickplayGuiScreen extends QuickplayGui {
                             e.printStackTrace();
                             Quickplay.INSTANCE.sendExceptionRequest(e);
                         }
-                        Minecraft.getMinecraft().displayGuiScreen(new QuickplayGuiKeybinds());
+                        Quickplay.INSTANCE.minecraft.openGui(new QuickplayGuiKeybinds());
                     }
                 }
             };
             this.addComponent(contextMenu);
             break;
         }
-
-
+        return false;
     }
 }

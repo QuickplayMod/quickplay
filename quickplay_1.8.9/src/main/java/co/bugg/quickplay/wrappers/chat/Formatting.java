@@ -37,4 +37,9 @@ public enum Formatting implements Serializable {
     public EnumChatFormatting convert() {
         return EnumChatFormatting.getValueByName(this.name);
     }
+
+    @Override
+    public String toString() {
+        return this.convert().toString();
+    }
 }

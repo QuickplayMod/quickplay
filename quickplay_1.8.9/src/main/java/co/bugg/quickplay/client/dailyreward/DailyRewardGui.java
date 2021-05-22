@@ -13,6 +13,8 @@ import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
 import co.bugg.quickplay.util.ServerUnavailableException;
 import co.bugg.quickplay.util.analytics.GoogleAnalytics;
 import co.bugg.quickplay.util.analytics.GoogleAnalyticsFactory;
+import co.bugg.quickplay.wrappers.GlStateManagerWrapper;
+import co.bugg.quickplay.wrappers.ResourceLocationWrapper;
 import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
 import co.bugg.quickplay.wrappers.chat.Formatting;
 import co.bugg.quickplay.wrappers.chat.IChatComponentWrapper;
@@ -23,7 +25,6 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.io.IOException;
@@ -135,7 +136,8 @@ public class DailyRewardGui extends QuickplayGui {
         this.securityToken = securityToken;
         this.appData = appData;
         this.i18n = i18n;
-        this.hypixelAnalytics = gaToken != null && gaToken.length() > 0 ? GoogleAnalyticsFactory.create(gaToken, Minecraft.getMinecraft().getSession().getPlayerID(), Reference.MOD_NAME, Reference.VERSION) : null;
+        this.hypixelAnalytics = gaToken != null && gaToken.length() > 0 ? GoogleAnalyticsFactory
+                .create(gaToken, Quickplay.INSTANCE.minecraft.getUuid().toString(), Reference.MOD_NAME, Reference.VERSION) : null;
 
         if(appData != null && appData.rewards == null) {
             appData.error = "Something went wrong... Perhaps your Quickplay is outdated. Contact bugfroggy on Discord. (0x02)";
@@ -144,13 +146,14 @@ public class DailyRewardGui extends QuickplayGui {
 
         // Get initial ad display length. Will be set to 0 later if ad is skippable
         // Default of 30 seconds if duration isn't available for some reason
-        if (appData != null && appData.ad != null && appData.ad.getAsJsonObject().get("duration") != null)
-            totalAdTime = appData.ad.getAsJsonObject().get("duration").getAsInt() * 1000;
-        else
-            totalAdTime = 30000;
+        if (appData != null && appData.ad != null && appData.ad.getAsJsonObject().get("duration") != null) {
+            this.totalAdTime = appData.ad.getAsJsonObject().get("duration").getAsInt() * 1000;
+        } else {
+            this.totalAdTime = 30000;
+        }
 
-        adTimerBarAnimation = new Animation(totalAdTime);
-        Quickplay.INSTANCE.threadPool.submit(() -> adTimerBarAnimation.start());
+        this.adTimerBarAnimation = new Animation(this.totalAdTime);
+        Quickplay.INSTANCE.threadPool.submit(() -> this.adTimerBarAnimation.start());
 
         // Send analytical data
         if(Quickplay.INSTANCE.ga != null) {
@@ -165,11 +168,11 @@ public class DailyRewardGui extends QuickplayGui {
             });
         }
         // Send Hypixel analytical data
-        if(hypixelAnalytics != null) {
+        if(this.hypixelAnalytics != null) {
             Quickplay.INSTANCE.threadPool.submit(() -> {
                 try {
                     // Whether the player has a rank or not
-                    hypixelAnalytics.createEvent("Ranked", ((appData != null && appData.skippable) ? "Yes" : "No"))
+                    this.hypixelAnalytics.createEvent("Ranked", ((appData != null && appData.skippable) ? "Yes" : "No"))
                             .send();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -179,209 +182,263 @@ public class DailyRewardGui extends QuickplayGui {
     }
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void hookInit() {
+        super.hookInit();
 
         // Hack to fix this issue: https://www.minecraftforge.net/forum/topic/36866-189mouse-not-showing-up-in-gui/
         Mouse.setGrabbed(false);
 
-        if(appData != null) {
+        if(this.appData != null) {
             // Set scaling
-            adScale = height > 300 ? 0.7 : 0.4;
-            headerScale = height > 300 ? 2.5 : 2.0;
+            this.adScale = this.getHeight() > 300 ? 0.7 : 0.4;
+            this.headerScale = this.getHeight() > 300 ? 2.5 : 2.0;
 
             // Set ad time to 0 if ad is skippable or there is an error
-            if (((appData.skippable && !forceAds) || appData.error != null) && adTimerBarAnimation != null) {
-                adTimerBarAnimation.stop();
-                adTimerBarAnimation.progress = 1;
+            if (((this.appData.skippable && !DailyRewardGui.forceAds) || this.appData.error != null) && this.adTimerBarAnimation != null) {
+                this.adTimerBarAnimation.stop();
+                this.adTimerBarAnimation.progress = 1;
             }
 
-            updateState();
+            this.updateState();
 
             int currentId = 0;
-            if (currentState == State.ADROLL) {
+            if (this.currentState == State.ADROLL) {
                 // Start swapping ad frames (if necessary)
                 // Cancel the previous thread if it exists
-                if (adTextureFrameFuture != null)
-                    adTextureFrameFuture.cancel(true);
+                if (this.adTextureFrameFuture != null)
+                    this.adTextureFrameFuture.cancel(true);
                 // Start a new thread
-                adTextureFrameFuture = Quickplay.INSTANCE.threadPool.submit(() -> {
-                    while (Minecraft.getMinecraft().currentScreen == this && currentState == State.ADROLL) {
+                this.adTextureFrameFuture = Quickplay.INSTANCE.threadPool.submit(() -> {
+                    while (Minecraft.getMinecraft().currentScreen == this && this.currentState == State.ADROLL) {
                         try {
-                            Thread.sleep(adFrameLength);
+                            Thread.sleep(DailyRewardGui.adFrameLength);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                             break;
                         }
-                        switchAdFrame();
+                        this.switchAdFrame();
                     }
                 });
-                this.componentList.add(new QuickplayGuiString(storeUrl, currentId++, width / 2, (int) (height / 2 + adTextureSize / 2 * adScale), width, 20, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.adroll.clickToVisit"), true, false));
-            } else if (currentState == State.MENU) {
+                this.componentList.add(new QuickplayGuiString(DailyRewardGui.storeUrl, currentId++, this.getWidth() / 2,
+                        (int) (this.getHeight() / 2 + DailyRewardGui.adTextureSize / 2 * this.adScale), this.getWidth(), 20,
+                        Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.adroll.clickToVisit"),
+                        true, false));
+            } else if (this.currentState == State.MENU) {
 
                 int currentCard = 0;
-                final int cardCount = appData.rewards.length;
+                final int cardCount = this.appData.rewards.length;
                 // Offset by half when card count is even - Otherwise just by missing width
-                final int xOffset = (cardCount % 2 == 0 ? (cardWidth / 2) + (256 - cardWidth) / 2 : (256 - cardWidth) / 2);
-                for (DailyRewardOption option : appData.rewards) {
-                    this.componentList.add(new QuickplayGuiButton(option, currentId++, (int) ((width / 2 - (cardWidth + 36) * cardScale / 2) + ((currentCard - cardCount / 2) * (cardWidth * cardScale + cardMargins))) + xOffset, (int) (height / 2 - cardHeight * cardScale / 2), cardWidth, cardHeight, null, option.getTexture(), 0, 0, cardScale, false));
+                final int xOffset = (cardCount % 2 == 0 ? (this.cardWidth / 2) + (256 - this.cardWidth) / 2 : (256 - this.cardWidth) / 2);
+                for (final DailyRewardOption option : this.appData.rewards) {
+                    this.componentList.add(new QuickplayGuiButton(option, currentId++,
+                            (int) ((this.getWidth() / 2 - (this.cardWidth + 36) * this.cardScale / 2) + ((currentCard - cardCount / 2)
+                                    * (this.cardWidth * this.cardScale + this.cardMargins))) + xOffset,
+                            (int) (this.getHeight() / 2 - this.cardHeight * this.cardScale / 2),
+                            this.cardWidth, this.cardHeight, null, option.getTexture(), 0, 0,
+                            this.cardScale, false));
+
                     currentCard++;
                 }
-            } else if (currentState == State.CLAIMED) {
+            } else if (this.currentState == State.CLAIMED) {
                 // Start animation
                 Quickplay.INSTANCE.threadPool.submit(() -> {
-                    claimedInitAnimation.start();
+                    this.claimedInitAnimation.start();
                 });
                 // Play claim sound
+                // TODO generalize
                 Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation(Reference.MOD_ID, "card.pick"), 1.0F));
                 // Add share button
                 final int sharedWidth = 100;
                 final int sharedHeight = 20;
-                this.componentList.add(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/shared/" + appData.id, currentId++, width / 2 - sharedWidth / 2, (int) (height / 2 + cardHeight / 2 * cardScale) + 5, sharedWidth, sharedHeight, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.claimed.share"), false));
+                this.componentList.add(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/shared/" +
+                        this.appData.id, currentId++, this.getWidth() / 2 - sharedWidth / 2,
+                        (int) (this.getHeight() / 2 + this.cardHeight / 2 * this.cardScale) + 5,
+                        sharedWidth, sharedHeight, Quickplay.INSTANCE.elementController
+                            .translate("quickplay.premium.ingameReward.claimed.share"), false));
             }
 
             // Open link button
-            if (appData.id != null && (currentState == State.MENU || currentState == State.ADROLL || currentState == State.ERROR)) {
+            if (this.appData.id != null &&
+                    (this.currentState == State.MENU || this.currentState == State.ADROLL || this.currentState == State.ERROR)) {
                 final int linkButtonWidth = 100;
                 final int linkButtonHeight = 20;
                 final int linkButtonMargins = 3;
-                this.componentList.add(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/" + appData.id, currentId++, width - linkButtonWidth - linkButtonMargins, height - linkButtonHeight - linkButtonMargins, linkButtonWidth, linkButtonHeight, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.openLink"), false));
+                this.componentList.add(new QuickplayGuiButton("https://rewards.hypixel.net/claim-reward/" + this.appData.id,
+                        currentId++, this.getWidth() - linkButtonWidth - linkButtonMargins,
+                        this.getHeight() - linkButtonHeight - linkButtonMargins, linkButtonWidth, linkButtonHeight,
+                        Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.openLink"), false));
             }
         }
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void hookRender(int mouseX, int mouseY, float partialTicks) {
 
         // Maintain the current GUI state
-        if(updateState()) {
-            initGui();
+        if(this.updateState()) {
+            this.hookInit();
         }
 
-        if(adFadeAnimation != null && adFadeAnimation.started) {
-            adFadeAnimation.updateFrame();
+        if(this.adFadeAnimation != null && this.adFadeAnimation.started) {
+            this.adFadeAnimation.updateFrame();
         }
-        if(adTimerBarAnimation != null && adTimerBarAnimation.started) {
-            adTimerBarAnimation.updateFrame();
+        if(this.adTimerBarAnimation != null && this.adTimerBarAnimation.started) {
+            this.adTimerBarAnimation.updateFrame();
         }
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManagerWrapper.pushMatrix();
+        GlStateManagerWrapper.enableBlend();
 
-        drawDefaultBackground();
+        this.drawDefaultBackground();
 
         if(Quickplay.INSTANCE.isEnabled) {
             // Draw legal notes
             final double legalScale = 1.0;
-            GL11.glScaled(legalScale, legalScale, legalScale);
-            final String[] legalLines = fontRendererObj.listFormattedStringToWidth(Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.hypixelProperty"), (int) (width * 0.9 / legalScale)).toArray(new String[0]);
-            int legalLineHeight = height > 300 ? 22 : 5;
-            for (String line : legalLines) {
-                drawCenteredString(fontRendererObj, line, (int) (width / 2 / legalScale), legalLineHeight, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                legalLineHeight += fontRendererObj.FONT_HEIGHT;
+            GlStateManagerWrapper.scale(legalScale);
+            final String[] legalLines = this.listFormattedStringToWidth(Quickplay.INSTANCE.elementController
+                    .translate("quickplay.premium.ingameReward.hypixelProperty"),
+                    (int) (this.getWidth() * 0.9 / legalScale)).toArray(new String[0]);
+            int legalLineHeight = this.getHeight() > 300 ? 22 : 5;
+            for (final String line : legalLines) {
+                this.drawCenteredString(line, (int) (this.getWidth() / 2 / legalScale), legalLineHeight,
+                        Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                legalLineHeight += this.getFontHeight();
             }
-            GL11.glScaled(1 / legalScale, 1 / legalScale, 1 / legalScale);
+            GlStateManagerWrapper.scale(1 / legalScale);
 
-            if (currentState == State.ERROR) {
+            if (this.currentState == State.ERROR) {
 
                 // Draw header
-                GL11.glScaled(headerScale, headerScale, headerScale);
-                drawCenteredString(fontRendererObj, "(╯°□°)╯︵ ┻━┻", (int) (width / 2 / headerScale), (int) (height * 0.2 / headerScale), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
+                GlStateManagerWrapper.scale(this.headerScale);
+                this.drawCenteredString("(╯°□°)╯︵ ┻━┻", (int) (this.getWidth() / 2 / this.headerScale),
+                        (int) (this.getHeight() * 0.2 / this.headerScale),
+                        Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                GlStateManagerWrapper.scale(1 / this.headerScale);
 
                 // Draw error text
-                final String[] errorLines = fontRendererObj.listFormattedStringToWidth(appData.error, (int) (width * 0.9)).toArray(new String[0]);
-                int lineHeight = (int) (height * 0.2 + fontRendererObj.FONT_HEIGHT * headerScale) + 20;
+                final String[] errorLines = this.listFormattedStringToWidth(this.appData.error, (int) (this.getWidth() * 0.9)).toArray(new String[0]);
+                int lineHeight = (int) (this.getHeight() * 0.2 + this.getFontHeight() * this.headerScale) + 20;
                 for (String line : errorLines) {
-                    drawCenteredString(fontRendererObj, line, width / 2, lineHeight, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                    lineHeight += fontRendererObj.FONT_HEIGHT;
+                    this.drawCenteredString(line, this.getWidth() / 2, lineHeight,
+                            Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                    lineHeight += this.getFontHeight();
                 }
 
-                super.drawScreen(mouseX, mouseY, partialTicks);
-            } else if (currentState == State.ADROLL) {
+                super.hookRender(mouseX, mouseY, partialTicks);
+            } else if (this.currentState == State.ADROLL) {
 
                 // Draw header
-                GL11.glScaled(headerScale, headerScale, headerScale);
-                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.adroll.header"), (int) (width / 2 / headerScale), (int) ((height / 2 - adTextureSize / 2 * adScale) / headerScale - 5 - fontRendererObj.FONT_HEIGHT), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
+                GlStateManagerWrapper.scale(this.headerScale);
+                this.drawCenteredString(Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.adroll.header"),
+                        (int) (this.getWidth() / 2 / this.headerScale),
+                        (int) ((this.getHeight() / 2 - DailyRewardGui.adTextureSize / 2 * this.adScale)
+                                / this.headerScale - 5 - this.getFontHeight()),
+                        Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+               GlStateManagerWrapper.scale(1 / this.headerScale);
 
                 // Draw remaining time text
                 final double remainingTimeScale = 1.5;
-                GL11.glScaled(remainingTimeScale, remainingTimeScale, remainingTimeScale);
-                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingamereward.remaining", String.valueOf(((Number) Math.ceil((totalAdTime * (1 - adTimerBarAnimation.progress)) / 1000)).intValue())), (int) (width / 2 / remainingTimeScale), (int) (legalLineHeight / remainingTimeScale) + 2, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                GL11.glScaled(1 / remainingTimeScale, 1 / remainingTimeScale, 1 / remainingTimeScale);
+                GlStateManagerWrapper.scale(remainingTimeScale);
+                this.drawCenteredString(Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingamereward.remaining",
+                        String.valueOf(((Number) Math.ceil((this.totalAdTime * (1 - this.adTimerBarAnimation.progress)) / 1000)).intValue())),
+                        (int) (this.getWidth() / remainingTimeScale), (int) (legalLineHeight / remainingTimeScale) + 2,
+                        Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                GlStateManagerWrapper.scale(1 / remainingTimeScale);
 
                 // Draw description text
-                final String[] descriptionLines = fontRendererObj.listFormattedStringToWidth(Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.adroll.text"), (int) (width * 0.9)).toArray(new String[0]);
-                int lineHeight = (int) (height / 2 + adTextureSize / 2 * adScale) + fontRendererObj.FONT_HEIGHT + 5;
-                for (String line : descriptionLines) {
-                    drawCenteredString(fontRendererObj, line, width / 2, lineHeight, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                    lineHeight += fontRendererObj.FONT_HEIGHT;
+                final String[] descriptionLines = this.listFormattedStringToWidth(Quickplay.INSTANCE.elementController
+                        .translate("quickplay.premium.ingameReward.adroll.text"), (int) (this.getWidth() * 0.9)).toArray(new String[0]);
+                int lineHeight = (int) (this.getHeight() / 2 + DailyRewardGui.adTextureSize / 2 * this.adScale) + this.getFontHeight() + 5;
+                for (final String line : descriptionLines) {
+                    this.drawCenteredString(line, this.getWidth() / 2, lineHeight,
+                            Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                    lineHeight += this.getFontHeight();
                 }
 
                 // Draw VIP advertisement to skip
-                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.adroll.skipAd"), width / 2, lineHeight + 5, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                this.drawCenteredString(Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.adroll.skipAd"),
+                        this.getWidth() / 2, lineHeight + 5,
+                        Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
 
                 // Draw ad loading bar
-                if (adTimerBarAnimation != null) {
-                    drawRect(0, 0, (int) (width * adTimerBarAnimation.progress), adTimerBarHeight, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                if (this.adTimerBarAnimation != null) {
+                    QuickplayGui.drawRect(0, 0, (int) (this.getWidth() * this.adTimerBarAnimation.progress), DailyRewardGui.adTimerBarHeight,
+                            Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
                 }
 
                 // Draw the advertisement texture
-                GL11.glScaled(adScale, adScale, adScale);
+                GlStateManagerWrapper.scale(this.adScale);
                 // Draw the current frame if necessary (if it's not faded out)
-                if (adFadeAnimation != null && adFadeAnimation.progress < 1) {
-                    GL11.glEnable(GL11.GL_BLEND);
-                    final float currentFrameOpacity = (float) (1 - adFadeAnimation.progress);
-                    GL11.glColor4f(1, 1, 1, currentFrameOpacity);
-                    mc.getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, currentFrame.getTextureLocation()));
-                    drawTexturedModalRect((float) ((width / 2 / adScale - adTextureSize / 2)), (float) ((height / 2 / adScale - adTextureSize / 2)), 0, 0, adTextureSize, adTextureSize);
+                if (this.adFadeAnimation != null && this.adFadeAnimation.progress < 1) {
+                    GlStateManagerWrapper.enableBlend();
+                    final float currentFrameOpacity = (float) (1 - this.adFadeAnimation.progress);
+                    GlStateManagerWrapper.color(1, 1, 1, currentFrameOpacity);
+                    Quickplay.INSTANCE.minecraft.bindTexture(new ResourceLocationWrapper(Reference.MOD_ID,
+                            this.currentFrame.getTextureLocation()));
+                    this.drawTexturedModalRect((float) ((this.getWidth() / 2 / this.adScale - DailyRewardGui.adTextureSize / 2)),
+                            (float) ((this.getHeight() / 2 / this.adScale - DailyRewardGui.adTextureSize / 2)),
+                            0, 0, DailyRewardGui.adTextureSize, DailyRewardGui.adTextureSize);
                 }
                 // Draw the next frame if necessary (if it's fading in)
-                if (adFadeAnimation != null && adFadeAnimation.progress > 0) {
-                    GL11.glEnable(GL11.GL_BLEND);
-                    final float nextFrameOpacity = (float) adFadeAnimation.progress;
-                    GL11.glColor4f(1, 1, 1, nextFrameOpacity);
-                    mc.getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, currentFrame.getNext().getTextureLocation()));
-                    drawTexturedModalRect((float) ((width / 2 / adScale - adTextureSize / 2)), (float) ((height / 2 / adScale - adTextureSize / 2)), 0, 0, adTextureSize, adTextureSize);
+                if (this.adFadeAnimation != null && this.adFadeAnimation.progress > 0) {
+                    GlStateManagerWrapper.enableBlend();
+                    final float nextFrameOpacity = (float) this.adFadeAnimation.progress;
+                    GlStateManagerWrapper.color(1, 1, 1, nextFrameOpacity);
+                    Quickplay.INSTANCE.minecraft.bindTexture(new ResourceLocationWrapper(Reference.MOD_ID,
+                            this.currentFrame.getNext().getTextureLocation()));
+                    this.drawTexturedModalRect((float) ((this.getWidth() / 2 / this.adScale - DailyRewardGui.adTextureSize / 2)),
+                            (float) ((this.getHeight() / 2 / this.adScale - DailyRewardGui.adTextureSize / 2)), 0, 0,
+                            DailyRewardGui.adTextureSize, DailyRewardGui.adTextureSize);
                 }
 
-                GL11.glScaled(1 / adScale, 1 / adScale, 1 / adScale);
+                GlStateManagerWrapper.scale( 1 / this.adScale);
 
-                super.drawScreen(mouseX, mouseY, partialTicks);
+                super.hookRender(mouseX, mouseY, partialTicks);
 
-            } else if (currentState == State.MENU) {
-                if (appData.rewards != null) {
+            } else if (this.currentState == State.MENU) {
+                if (this.appData.rewards != null) {
                     // Draw header
-                    GL11.glScaled(headerScale, headerScale, headerScale);
-                    drawCenteredString(fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.menu.header"), (int) (width / 2 / headerScale), (int) ((height / 2 - adTextureSize / 2 * adScale) / headerScale - 10 - fontRendererObj.FONT_HEIGHT), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                    GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
+                    GlStateManagerWrapper.scale(this.headerScale);
+                    this.drawCenteredString(Quickplay.INSTANCE.elementController
+                            .translate("quickplay.premium.ingameReward.menu.header"),
+                            (int) (this.getWidth() / 2 / this.headerScale),
+                            (int) ((this.getHeight() / 2 - DailyRewardGui.adTextureSize / 2 * this.adScale)
+                                    / this.headerScale - 10 - this.getFontHeight()),
+                            Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                    GlStateManagerWrapper.scale(1 / this.headerScale);
 
                     // Draw daily streak
-                    if (appData.dailyStreak != null && appData.dailyStreak.getAsJsonObject().get("score") != null && appData.dailyStreak.getAsJsonObject().get("highScore") != null) {
+                    if (this.appData.dailyStreak != null &&
+                            this.appData.dailyStreak.getAsJsonObject().get("score") != null &&
+                            this.appData.dailyStreak.getAsJsonObject().get("highScore") != null) {
                         final double dailyStreakScale = 1.2;
-                        final int currentScore = appData.dailyStreak.getAsJsonObject().get("score").getAsInt();
-                        final int highScore = appData.dailyStreak.getAsJsonObject().get("highScore").getAsInt();
+                        final int currentScore = this.appData.dailyStreak.getAsJsonObject().get("score").getAsInt();
+                        final int highScore = this.appData.dailyStreak.getAsJsonObject().get("highScore").getAsInt();
 
-                        GL11.glScaled(dailyStreakScale, dailyStreakScale, dailyStreakScale);
-                        drawCenteredString(fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.menu.streak", String.valueOf(currentScore), String.valueOf(highScore)), (int) (width / 2 / dailyStreakScale), (int) ((height / 2 + cardHeight / 2 * cardScale + 10) / dailyStreakScale), Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                        GL11.glScaled(1 / dailyStreakScale, 1 / dailyStreakScale, 1 / dailyStreakScale);
+                        GlStateManagerWrapper.scale(dailyStreakScale);
+                        this.drawCenteredString(Quickplay.INSTANCE.elementController
+                                .translate("quickplay.premium.ingameReward.menu.streak",
+                                        String.valueOf(currentScore), String.valueOf(highScore)),
+                                (int) (this.getWidth() / 2 / dailyStreakScale),
+                                (int) ((this.getHeight() / 2 + this.cardHeight / 2 * this.cardScale + 10) / dailyStreakScale),
+                                Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                        GlStateManagerWrapper.scale(1 / dailyStreakScale);
                     }
 
                     // Cards are components and are calculated in initGui
-                    super.drawScreen(mouseX, mouseY, partialTicks);
+                    super.hookRender(mouseX, mouseY, partialTicks);
 
                     // Hovering text string - used to postpone hovering string drawing
                     // until the end of the frame to avoid overlapping (#47)
                     String hoverString = null;
                     // Go through cards to draw/update as necessary
-                    for (QuickplayGuiComponent component : componentList) {
+                    for (final QuickplayGuiComponent component : componentList) {
                         if (component instanceof QuickplayGuiButton && component.origin instanceof DailyRewardOption) {
                             final DailyRewardOption option = (DailyRewardOption) component.origin;
 
                             // if hovering & currently hidden then uncover
                             if (option.hidden) {
-                                if (component.mouseHovering(this, mouseX, mouseY)) {
+                                if (component.isMouseHovering(this, mouseX, mouseY)) {
                                     option.show();
 
                                     try {
@@ -397,204 +454,243 @@ public class DailyRewardGui extends QuickplayGui {
                                 }
                             } else {
                                 // Not hidden, draw text & such
-                                int color = getRarityColor(option.rarity);
+                                int color = this.getRarityColor(option.rarity);
 
                                 // Draw chest
                                 final double chestScale = 0.2;
                                 final int chestWidth = 256;
                                 final int chestHeight = 210;
                                 final int chestOffset = 80;
-                                GL11.glColor4f(1, 1, 1, 1);
-                                GL11.glScaled(chestScale, chestScale, chestScale);
-                                GL11.glEnable(GL11.GL_BLEND);
+                                GlStateManagerWrapper.color(1, 1, 1, 1);
+                                GlStateManagerWrapper.scale(chestScale);
+                                GlStateManagerWrapper.enableBlend();
                                 final double chestYMultiplier = 0.23;
-                                mc.getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, "textures/chest-" + (component.mouseHovering(this, mouseX, mouseY) ? "open.png" : "closed.png")));
-                                drawTexturedModalRect((int) ((component.x + (cardWidth * cardScale) / 2) / chestScale) - chestWidth / 2 - chestOffset, (int) ((component.y + cardHeight * cardScale * chestYMultiplier) / chestScale), 0, 0, chestWidth, chestHeight);
-                                GL11.glScaled(1 / chestScale, 1 / chestScale, 1 / chestScale);
+                                Quickplay.INSTANCE.minecraft.bindTexture(new ResourceLocationWrapper(Reference.MOD_ID,
+                                        "textures/chest-" + (component.isMouseHovering(this, mouseX, mouseY) ? "open.png" : "closed.png")));
+                                this.drawTexturedModalRect((int) ((component.x + (this.cardWidth * this.cardScale) / 2) / chestScale)
+                                        - chestWidth / 2 - chestOffset, (int) ((component.y + this.cardHeight * this.cardScale *
+                                        chestYMultiplier) / chestScale),
+                                        0, 0, chestWidth, chestHeight);
+                                GlStateManagerWrapper.scale(1 / chestScale);
 
                                 // Draw amount
                                 final double amountScale = 1.3;
-                                GL11.glScaled(amountScale, amountScale, amountScale);
-                                drawCenteredString(fontRendererObj, option.getFormattedAmount(), (int) ((component.x + 45) / amountScale), (int) ((component.y / amountScale) + cardHeight * cardScale * 0.535), color);
-                                GL11.glScaled(1 / amountScale, 1 / amountScale, 1 / amountScale);
+                                GlStateManagerWrapper.scale(amountScale);
+                                this.drawCenteredString(option.getFormattedAmount(),
+                                        (int) ((component.x + 45) / amountScale),
+                                        (int) ((component.y / amountScale) + this.cardHeight * this.cardScale * 0.535), color);
+                                GlStateManagerWrapper.scale(1 / amountScale);
 
                                 // Draw name
                                 final double titleScale = 1.0;
-                                GL11.glScaled(titleScale, titleScale, titleScale);
-                                final List<String> titleLines = fontRendererObj.listFormattedStringToWidth(option.translateReward(i18n), (int) ((cardWidth - 50) * cardScale));
+                                GlStateManagerWrapper.scale(titleScale);
+                                final List<String> titleLines = this.listFormattedStringToWidth(option.translateReward(this.i18n),
+                                        (int) ((this.cardWidth - 50) * this.cardScale));
                                 int titleLineIndex = 0;
                                 final double nameYMultiplier = titleLines.size() > 1 ? 0.08 : 0.12;
-                                for (String line : titleLines) {
-                                    drawCenteredString(fontRendererObj, line, (int) ((component.x + 45) / titleScale), (int) ((component.y / titleScale) + cardHeight * cardScale * nameYMultiplier) + (titleLineIndex++ * fontRendererObj.FONT_HEIGHT), color);
+                                for (final String line : titleLines) {
+                                    this.drawCenteredString(line, (int) ((component.x + 45) / titleScale),
+                                            (int) ((component.y / titleScale) + this.cardHeight * this.cardScale * nameYMultiplier)
+                                                    + (titleLineIndex++ * this.getFontHeight()), color);
                                 }
-                                GL11.glScaled(1 / titleScale, 1 / titleScale, 1 / titleScale);
+                                GlStateManagerWrapper.scale(1 / titleScale);
 
                                 // Draw package data
-                                if (option.translatePackageInfo(i18n) != null) {
+                                if (option.translatePackageInfo(this.i18n) != null) {
                                     final double packageInfoScale = 0.8;
-                                    GL11.glScaled(packageInfoScale, packageInfoScale, packageInfoScale);
-                                    final List<String> packageInfoLines = fontRendererObj.listFormattedStringToWidth(option.translatePackageInfo(i18n), (int) ((cardWidth - 50) * cardScale));
+                                    GlStateManagerWrapper.scale(packageInfoScale);
+                                    final List<String> packageInfoLines = this.listFormattedStringToWidth(option.translatePackageInfo(this.i18n),
+                                            (int) ((this.cardWidth - 50) * this.cardScale));
                                     int packageInfoLineIndex = 0;
                                     final double packageInfoYMultiplier = packageInfoLines.size() > 1 ? 0.6 : 0.65;
                                     for (String line : packageInfoLines)
-                                        drawCenteredString(fontRendererObj, line, (int) ((component.x + 45) / packageInfoScale), (int) ((component.y / packageInfoScale) + cardHeight * cardScale * packageInfoYMultiplier) + (packageInfoLineIndex++ * fontRendererObj.FONT_HEIGHT), color);
-                                    GL11.glScaled(1 / packageInfoScale, 1 / packageInfoScale, 1 / packageInfoScale);
+                                        this.drawCenteredString(line, (int) ((component.x + 45) / packageInfoScale),
+                                                (int) ((component.y / packageInfoScale) + this.cardHeight * this.cardScale *
+                                                        packageInfoYMultiplier) + (packageInfoLineIndex++ * this.getFontHeight()), color);
+                                    GlStateManagerWrapper.scale(1 / packageInfoScale);
                                 }
 
                                 // Draw rarity
                                 final double rarityScale = 1.0;
-                                GL11.glScaled(rarityScale, rarityScale, rarityScale);
-                                drawCenteredString(fontRendererObj, String.valueOf(option.translateRarity(i18n)), (int) ((component.x + 45) / rarityScale), (int) ((component.y / rarityScale) + cardHeight * cardScale * 0.85), color);
-                                GL11.glScaled(1 / rarityScale, 1 / rarityScale, 1 / rarityScale);
+                                GlStateManagerWrapper.scale(rarityScale);
+                                this.drawCenteredString( String.valueOf(option.translateRarity(this.i18n)),
+                                        (int) ((component.x + 45) / rarityScale), (int) ((component.y / rarityScale) +
+                                                this.cardHeight * this.cardScale * 0.85), color);
+                                GlStateManagerWrapper.scale(1 / rarityScale);
 
                                 // Draw description
-                                if (component.mouseHovering(this, mouseX, mouseY)) {
-                                    hoverString = option.getRewardDescription(i18n);
+                                if (component.isMouseHovering(this, mouseX, mouseY)) {
+                                    hoverString = option.getRewardDescription(this.i18n);
                                 }
                             }
                         }
                     }
                     // Draw hovering text if it's set
                     if (hoverString != null) {
-                        drawHoveringText(Collections.singletonList(hoverString), mouseX, mouseY);
+                        this.drawHoveringText(Collections.singletonList(hoverString), mouseX, mouseY);
                     }
 
                 } else {
-                    appData.error = "Something went wrong... Perhaps your Quickplay is outdated. Contact bugfroggy on Discord. (0x01)";
+                    this.appData.error = "Something went wrong... Perhaps your Quickplay is outdated. Contact bugfroggy on Discord. (0x01)";
                     throw new IllegalStateException("Illegal option data! Null.");
                 }
-            } else if (currentState == State.CLAIMED) {
+            } else if (this.currentState == State.CLAIMED) {
 
-                super.drawScreen(mouseX, mouseY, partialTicks);
+                super.hookRender(mouseX, mouseY, partialTicks);
 
-                if (claimedReward != null) {
-                    final float cardTop = (float) (height / 2 / cardScale - cardHeight / 2);
-                    final float cardLeft = (float) (width / 2 / cardScale - (cardWidth - 36) / 2);
-                    final int color = getRarityColor(claimedReward.rarity);
+                if (this.claimedReward != null) {
+                    final float cardTop = (float) (this.getHeight() / 2 / this.cardScale - this.cardHeight / 2);
+                    final float cardLeft = (float) (this.getWidth() / 2 / this.cardScale - (this.cardWidth - 36) / 2);
+                    final int color = getRarityColor(this.claimedReward.rarity);
 
                     // Draw header
-                    GL11.glScaled(headerScale, headerScale, headerScale);
-                    drawCenteredString(fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.claimed.header"), (int) (width / 2 / headerScale), (int) ((height / 2 - adTextureSize / 2 * adScale) / headerScale - 10 - fontRendererObj.FONT_HEIGHT), Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                    GL11.glScaled(1 / headerScale, 1 / headerScale, 1 / headerScale);
+                    GlStateManagerWrapper.scale(this.headerScale);
+                    this.drawCenteredString( Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.claimed.header"),
+                            (int) (this.getWidth() / 2 / this.headerScale), (int) ((this.getHeight() / 2 -
+                                    DailyRewardGui.adTextureSize / 2 * this.adScale) / this.headerScale - 10 - this.getFontHeight()),
+                            Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                    GlStateManagerWrapper.scale(1 / headerScale);
 
                     // Draw close string
-                    drawCenteredString(fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.claimed.close", Keyboard.getKeyName(Keyboard.KEY_ESCAPE)), width / 2, (int) ((cardTop + cardHeight) * cardScale) + 30, Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+                    this.drawCenteredString(Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.claimed.close",
+                            Keyboard.getKeyName(Keyboard.KEY_ESCAPE)), this.getWidth() / 2, (int) ((cardTop + this.cardHeight) * this.cardScale) + 30,
+                            Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
 
-                    final int optionIndex = Arrays.asList(appData.rewards).indexOf(claimedReward);
+                    final int optionIndex = Arrays.asList(this.appData.rewards).indexOf(this.claimedReward);
                     // Cards are animated. Old cards slide off screen and picked card slides to center
                     // Selected card eases out, other cards ease in
                     // Determine offset for the moving of the card from it's original position
                     double cardAnimationOffset;
-                    if (claimedInitAnimation != null && claimedInitAnimation.progress < 1 && optionIndex >= 0) {
-                        cardAnimationOffset = (optionIndex - 1) * (1 - claimedInitAnimation.progress * (2 - claimedInitAnimation.progress)) * cardWidth;
+                    if (this.claimedInitAnimation != null && this.claimedInitAnimation.progress < 1 && optionIndex >= 0) {
+                        cardAnimationOffset = (optionIndex - 1) * (1 - this.claimedInitAnimation.progress * (2 - this.claimedInitAnimation.progress)) * this.cardWidth;
                     } else {
                         cardAnimationOffset = 0;
                     }
 
                     // Draw card
-                    GL11.glColor4f(1, 1, 1, 1);
-                    GL11.glScaled(cardScale, cardScale, cardScale);
-                    mc.getTextureManager().bindTexture(claimedReward.getTexture());
-                    drawTexturedModalRect((float) (cardLeft + cardAnimationOffset), cardTop, 0, 0, cardWidth, cardHeight);
-                    GL11.glScaled(1 / cardScale, 1 / cardScale, 1 / cardScale);
+                    GlStateManagerWrapper.color(1, 1, 1, 1);
+                    GlStateManagerWrapper.scale(this.cardScale);
+                    Quickplay.INSTANCE.minecraft.bindTexture(claimedReward.getTexture());
+                    this.drawTexturedModalRect((float) (cardLeft + cardAnimationOffset), cardTop, 0, 0, this.cardWidth, this.cardHeight);
+                    GlStateManagerWrapper.scale(1 / this.cardScale);
 
                     // Draw chest
                     final double chestScale = 0.2;
                     final int chestWidth = 256;
                     final int chestHeight = 210;
                     final int chestOffset = 80;
-                    GL11.glColor4f(1, 1, 1, 1);
-                    GL11.glScaled(chestScale, chestScale, chestScale);
-                    GL11.glEnable(GL11.GL_BLEND);
+                    GlStateManagerWrapper.color(1, 1, 1, 1);
+                    GlStateManagerWrapper.scale(chestScale, chestScale, chestScale);
+                    GlStateManagerWrapper.enableBlend();
                     final double chestYMultiplier = 0.23;
-                    mc.getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, "textures/chest-open.png"));
-                    drawTexturedModalRect((float) (((cardLeft + cardWidth / 2 - chestOffset + cardAnimationOffset) * cardScale) / chestScale), (float) ((cardTop + cardHeight * chestYMultiplier) * cardScale / chestScale), 0, 0, chestWidth, chestHeight);
-                    GL11.glScaled(1 / chestScale, 1 / chestScale, 1 / chestScale);
+                    Quickplay.INSTANCE.minecraft.bindTexture(new ResourceLocationWrapper(Reference.MOD_ID, "textures/chest-open.png"));
+                    this.drawTexturedModalRect((float) (((cardLeft + this.cardWidth / 2 - chestOffset + cardAnimationOffset) * this.cardScale) / chestScale),
+                            (float) ((cardTop + this.cardHeight * chestYMultiplier) * this.cardScale / chestScale), 0, 0, chestWidth, chestHeight);
+                    GlStateManagerWrapper.scale(1 / chestScale);
 
                     // Draw amount
                     final double amountScale = 1.3;
-                    GL11.glScaled(amountScale, amountScale, amountScale);
-                    drawCenteredString(fontRendererObj, claimedReward.getFormattedAmount(), (int) ((cardLeft + (cardWidth - 36) / 2 + cardAnimationOffset) * cardScale / amountScale), (int) ((cardTop + cardHeight * 0.69) * cardScale / amountScale), color);
-                    GL11.glScaled(1 / amountScale, 1 / amountScale, 1 / amountScale);
+                    GlStateManagerWrapper.scale(amountScale);
+                    this.drawCenteredString(this.claimedReward.getFormattedAmount(),
+                            (int) ((cardLeft + (this.cardWidth - 36) / 2 + cardAnimationOffset) * this.cardScale / amountScale),
+                            (int) ((cardTop + this.cardHeight * 0.69) * this.cardScale / amountScale), color);
+                    GlStateManagerWrapper.scale(1 / amountScale);
 
                     // Draw name
                     final double titleScale = 1.0;
-                    GL11.glScaled(titleScale, titleScale, titleScale);
-                    final List<String> titleLines = fontRendererObj.listFormattedStringToWidth(claimedReward.translateReward(i18n), (int) ((cardWidth - 50) * cardScale));
+                    GlStateManagerWrapper.scale(titleScale);
+                    final List<String> titleLines = this.listFormattedStringToWidth(this.claimedReward.translateReward(this.i18n),
+                            (int) ((this.cardWidth - 50) * this.cardScale));
                     int titleLineIndex = 0;
                     final double nameYMultiplier = titleLines.size() > 1 ? 0.08 : 0.12;
-                    for (String line : titleLines) {
-                        drawCenteredString(fontRendererObj, line, (int) ((cardLeft + (cardWidth - 36) / 2 + cardAnimationOffset) * cardScale / titleScale), (int) ((cardTop + cardHeight * nameYMultiplier) * cardScale / titleScale) + (titleLineIndex++ * fontRendererObj.FONT_HEIGHT), color);
+                    for (final String line : titleLines) {
+                        this.drawCenteredString(line, (int) ((cardLeft + (this.cardWidth - 36) / 2 + cardAnimationOffset) * this.cardScale / titleScale),
+                                (int) ((cardTop + this.cardHeight * nameYMultiplier) * this.cardScale / titleScale) + (titleLineIndex++ * this.getFontHeight()), color);
                     }
-                    GL11.glScaled(1 / titleScale, 1 / titleScale, 1 / titleScale);
+                    GlStateManagerWrapper.scale(1 / titleScale);
 
                     // Draw package data
-                    if (claimedReward.translatePackageInfo(i18n) != null) {
+                    if (this.claimedReward.translatePackageInfo(this.i18n) != null) {
                         final double packageInfoScale = 0.8;
-                        GL11.glScaled(packageInfoScale, packageInfoScale, packageInfoScale);
-                        final List<String> packageInfoLines = fontRendererObj.listFormattedStringToWidth(claimedReward.translatePackageInfo(i18n), (int) ((cardWidth - 50) * cardScale));
+                        GlStateManagerWrapper.scale(packageInfoScale);
+                        final List<String> packageInfoLines = this.listFormattedStringToWidth(this.claimedReward.translatePackageInfo(this.i18n),
+                                (int) ((this.cardWidth - 50) * this.cardScale));
                         int packageInfoLineIndex = 0;
                         final double packageInfoYMultiplier = packageInfoLines.size() > 1 ? 0.47 : 0.52;
-                        for (String line : packageInfoLines) {
-                            drawCenteredString(fontRendererObj, line, (int) ((cardLeft + (cardWidth - 36) / 2 + cardAnimationOffset) * cardScale / packageInfoScale), (int) ((cardTop + cardHeight * packageInfoYMultiplier) * cardScale / packageInfoScale) + (packageInfoLineIndex++ * fontRendererObj.FONT_HEIGHT), color);
+                        for (final String line : packageInfoLines) {
+                            this.drawCenteredString(line, (int) ((cardLeft + (this.cardWidth - 36) / 2 + cardAnimationOffset) *
+                                            this.cardScale / packageInfoScale),
+                                    (int) ((cardTop + this.cardHeight * packageInfoYMultiplier) * this.cardScale / packageInfoScale)
+                                            + (packageInfoLineIndex++ * this.getFontHeight()), color);
                         }
-                        GL11.glScaled(1 / packageInfoScale, 1 / packageInfoScale, 1 / packageInfoScale);
+                        GlStateManagerWrapper.scale(1 / packageInfoScale);
                     }
 
                     // Draw rarity
                     final double rarityScale = 1.0;
-                    GL11.glScaled(rarityScale, rarityScale, rarityScale);
-                    drawCenteredString(fontRendererObj, String.valueOf(claimedReward.translateRarity(i18n)), (int) ((cardLeft + (cardWidth - 36) / 2 + cardAnimationOffset) * cardScale / rarityScale), (int) ((cardTop + cardHeight * 0.85) * cardScale / rarityScale), color);
-                    GL11.glScaled(1 / rarityScale, 1 / rarityScale, 1 / rarityScale);
+                    GlStateManagerWrapper.scale(rarityScale);
+                    this.drawCenteredString(String.valueOf(this.claimedReward.translateRarity(this.i18n)),
+                            (int) ((cardLeft + (this.cardWidth - 36) / 2 + cardAnimationOffset) * this.cardScale / rarityScale),
+                            (int) ((cardTop + this.cardHeight * 0.85) * this.cardScale / rarityScale), color);
+                    GlStateManagerWrapper.scale(1 / rarityScale);
 
                     // Draw falling cards animation
-                    if (claimedInitAnimation != null && claimedInitAnimation.started && claimedInitAnimation.progress < 1) {
-                        claimedInitAnimation.updateFrame();
-                        final double progress = claimedInitAnimation.progress;
+                    if (this.claimedInitAnimation != null && this.claimedInitAnimation.started && this.claimedInitAnimation.progress < 1) {
+                        this.claimedInitAnimation.updateFrame();
+                        final double progress = this.claimedInitAnimation.progress;
 
-                        mc.getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, "textures/card-back.png"));
+                        Quickplay.INSTANCE.minecraft
+                                .bindTexture(new ResourceLocationWrapper(Reference.MOD_ID, "textures/card-back.png"));
 
-                        GL11.glColor4f(1, 1, 1, 1);
-                        GL11.glScaled(cardScale, cardScale, cardScale);
+                        GlStateManagerWrapper.color(1, 1, 1, 1);
+                        GlStateManagerWrapper.scale(this.cardScale);
 
                         if (optionIndex != 0) {
                             // Draw left card
-                            drawTexturedModalRect((float) (cardLeft - (cardWidth / 2) / cardScale) - cardMargins, (float) (cardTop + height * 0.75 * progress * progress / cardScale), 0, 0, cardWidth, cardHeight);
+                            this.drawTexturedModalRect((float) (cardLeft - (this.cardWidth / 2) / this.cardScale) - this.cardMargins,
+                                    (float) (cardTop + this.getHeight() * 0.75 * progress * progress / this.cardScale),
+                                    0, 0, this.cardWidth, this.cardHeight);
                         }
                         if (optionIndex != 1) {
                             // Draw middle card
-                            drawTexturedModalRect(cardLeft, (float) (cardTop + height * 0.75 * progress * progress / cardScale), 0, 0, cardWidth, cardHeight);
+                            this.drawTexturedModalRect(cardLeft, (float) (cardTop + this.getHeight() * 0.75 * progress * progress / this.cardScale),
+                                    0, 0, this.cardWidth, this.cardHeight);
                         }
                         if (optionIndex != 2) {
                             // Draw right card
-                            drawTexturedModalRect((float) (cardLeft + cardWidth / 2 / cardScale) + cardMargins, (float) (cardTop + height * 0.75 * progress * progress / cardScale), 0, 0, cardWidth, cardHeight);
+                            this.drawTexturedModalRect((float) (cardLeft + this.cardWidth / 2 / this.cardScale) + this.cardMargins,
+                                    (float) (cardTop + this.getHeight() * 0.75 * progress * progress / this.cardScale),
+                                    0, 0, this.cardWidth, this.cardHeight);
                         }
 
-                        GL11.glScaled(1 / cardScale, 1 / cardScale, 1 / cardScale);
+                        GlStateManagerWrapper.scale(1 / cardScale);
                     }
                 }
 
             } else {
                 // State unknown, draw loading text
-                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.loading"), width / 2, height / 2, Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                super.drawScreen(mouseX, mouseY, partialTicks);
+                this.drawCenteredString(Quickplay.INSTANCE.elementController
+                        .translate("quickplay.premium.ingameReward.loading"),
+                        this.getWidth() / 2, this.getHeight() / 2,
+                        Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                super.hookRender(mouseX, mouseY, partialTicks);
             }
 
-            for (QuickplayGuiComponent component : componentList) {
-                if (component.origin.equals(storeUrl) && component.mouseHovering(this, mouseX, mouseY)) {
-                    drawHoveringText(Collections.singletonList(Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.adroll.clickToVisit")), mouseX, mouseY);
+            for (final QuickplayGuiComponent component : this.componentList) {
+                if (component.origin.equals(DailyRewardGui.storeUrl) && component.isMouseHovering(this, mouseX, mouseY)) {
+                    this.drawHoveringText(Collections.singletonList(Quickplay.INSTANCE.elementController
+                            .translate("quickplay.premium.ingameReward.adroll.clickToVisit")), mouseX, mouseY);
                 }
             }
 
         } else {
             // Quickplay is disabled, draw error message
-            this.drawCenteredString(this.fontRendererObj,
-                    Quickplay.INSTANCE.elementController.translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
-                    this.width / 2, this.height / 2, 0xffffff);
+            this.drawCenteredString(Quickplay.INSTANCE.elementController.translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.getWidth() / 2, this.getHeight() / 2, 0xffffff);
         }
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManagerWrapper.disableBlend();
+        GlStateManagerWrapper.popMatrix();
     }
 
     /**
@@ -604,19 +700,21 @@ public class DailyRewardGui extends QuickplayGui {
      * @see #currentState
      */
     public boolean updateState() {
-        final State oldState = currentState;
+        final State oldState = this.currentState;
 
-        if(appData == null || appData.error != null)
-            currentState = State.ERROR;
-        else if((appData.skippable && !forceAds) || (adTimerBarAnimation == null || adTimerBarAnimation.progress >= 1))
-            if(claimedReward == null)
-                currentState = State.MENU;
-            else
-                currentState = State.CLAIMED;
-        else
-            currentState = State.ADROLL;
+        if(this.appData == null || this.appData.error != null) {
+            this.currentState = State.ERROR;
+        } else if((this.appData.skippable && !forceAds) || (this.adTimerBarAnimation == null || this.adTimerBarAnimation.progress >= 1)) {
+            if(this.claimedReward == null) {
+                this.currentState = State.MENU;
+            } else {
+                this.currentState = State.CLAIMED;
+            }
+        } else {
+            this.currentState = State.ADROLL;
+        }
 
-        if(oldState != currentState) {
+        if(oldState != this.currentState) {
             // Send analytical data
             if (Quickplay.INSTANCE.ga != null) {
                 Quickplay.INSTANCE.threadPool.submit(() -> {
@@ -631,7 +729,9 @@ public class DailyRewardGui extends QuickplayGui {
             }
 
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -657,7 +757,7 @@ public class DailyRewardGui extends QuickplayGui {
                 break;
         }
         // Add opacity
-        return color | (int) (opacity * 255) << 24;
+        return color | (int) (this.opacity * 255) << 24;
     }
 
     /**
@@ -665,14 +765,14 @@ public class DailyRewardGui extends QuickplayGui {
      */
     public void switchAdFrame() {
         Quickplay.INSTANCE.threadPool.submit(() -> {
-            if(adFadeAnimation != null) {
-                adFadeAnimation.start();
+            if(this.adFadeAnimation != null) {
+                this.adFadeAnimation.start();
                 // Thread blocked until animation completes
-                adFadeAnimation.stop();
-                adFadeAnimation.progress = 0;
+                this.adFadeAnimation.stop();
+                this.adFadeAnimation.progress = 0;
             }
             // Advance frame regardless of animation
-            currentFrame = currentFrame.getNext();
+            this.currentFrame = this.currentFrame.getNext();
         });
     }
 
@@ -680,9 +780,9 @@ public class DailyRewardGui extends QuickplayGui {
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
         // If the store button
-        if(component.origin.equals(storeUrl)) {
+        if(component.origin.equals(DailyRewardGui.storeUrl)) {
             try {
-                Desktop.getDesktop().browse(new URI(storeUrl));
+                Desktop.getDesktop().browse(new URI(DailyRewardGui.storeUrl));
             } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
                 Quickplay.INSTANCE.sendExceptionRequest(e);
@@ -702,15 +802,18 @@ public class DailyRewardGui extends QuickplayGui {
         }
 
         // If in menu state & the component clicked is a reward
-        if(currentState == State.MENU && appData != null && appData.rewards != null) {
-            final List rewardsList = Arrays.asList(appData.rewards);
+        if(this.currentState == State.MENU && this.appData != null && this.appData.rewards != null) {
+            final List rewardsList = Arrays.asList(this.appData.rewards);
             if(rewardsList.contains(component.origin))
                 claim(rewardsList.indexOf(component.origin));
         }
 
         // If the "Open URL" button or "Share" button
         if(component.origin instanceof String &&
-                (component.displayString.equals(Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.openLink")) || component.displayString.equals(Quickplay.INSTANCE.elementController.translate("quickplay.premium.ingameReward.claimed.share")))) {
+                (component.displayString.equals(Quickplay.INSTANCE.elementController
+                        .translate("quickplay.premium.ingameReward.openLink")) ||
+                        component.displayString.equals(Quickplay.INSTANCE.elementController
+                                .translate("quickplay.premium.ingameReward.claimed.share")))) {
             try {
                 Desktop.getDesktop().browse(new URI((String) component.origin));
             } catch (IOException | URISyntaxException e) {

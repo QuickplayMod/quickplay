@@ -1,8 +1,9 @@
 package co.bugg.quickplay.client.gui.components;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.QuickplayGui;
+import co.bugg.quickplay.wrappers.GlStateManagerWrapper;
 import net.minecraft.client.gui.GuiPageButtonList;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
@@ -78,7 +79,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
      */
     public float getValue()
     {
-        return min + (max - min) * sliderPercentage;
+        return this.min + (this.max - this.min) * this.sliderPercentage;
     }
 
     /**
@@ -87,7 +88,7 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
      * @return The full display string, after formatting
      */
     private String getDisplayString() {
-        return formatHelper == null ? name + ": " + getValue() : formatHelper.getText(id, name, getValue());
+        return this.formatHelper == null ? this.name + ": " + getValue() : this.formatHelper.getText(this.id, this.name, getValue());
     }
 
     // Unused by sliders
@@ -102,34 +103,34 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
         if(opacity > 0) {
             super.draw(gui, mouseX, mouseY, opacity);
 
-            final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
+            final int scrollAdjustedY = this.scrollable ? this.y - gui.scrollPixel : this.y;
 
-            GlStateManager.pushMatrix();
-            GlStateManager.enableBlend();
+            GlStateManagerWrapper.pushMatrix();
+            GlStateManagerWrapper.enableBlend();
 
-            if (isMouseDown) {
+            if (this.isMouseDown) {
                 // Calculate the new slider position
-                calculateSliderPos(mouseX);
+                this.calculateSliderPos(mouseX);
                 // Update the display string
-                displayString = getDisplayString();
+                this.displayString = this.getDisplayString();
                 // Handle input change
-                responder.onTick(id, getValue());
+                this.responder.onTick(this.id, this.getValue());
             }
 
-            GlStateManager.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
-            gui.mc.getTextureManager().bindTexture(buttonTextures);
-            GlStateManager.scale(scale, scale, scale);
-            drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)), scrollAdjustedY,
+            GlStateManagerWrapper.color(1.0F, 1.0F, 1.0F, ((Number) opacity).floatValue());
+            Quickplay.INSTANCE.minecraft.bindTexture(QuickplayGuiSlider.buttonTextures);
+            GlStateManagerWrapper.scale(this.scale);
+            this.drawTexturedModalRect(this.x + (int) (this.sliderPercentage * (float) (this.width - 8)), scrollAdjustedY,
                     0, 66, 4, 20);
-            drawTexturedModalRect(x + (int) (sliderPercentage * (float) (width - 8)) + 4, scrollAdjustedY,
+            this.drawTexturedModalRect(this.x + (int) (this.sliderPercentage * (float) (this.width - 8)) + 4, scrollAdjustedY,
                     196, 66, 4, 20);
             if (opacity > 0) {
-                drawDisplayString(gui, opacity, scrollAdjustedY);
+                this.drawDisplayString(gui, opacity, scrollAdjustedY);
             }
-            GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
+            GlStateManagerWrapper.scale(1 / scale);
 
-            GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
+            GlStateManagerWrapper.disableBlend();
+            GlStateManagerWrapper.popMatrix();
         }
     }
 
@@ -138,30 +139,30 @@ public class QuickplayGuiSlider extends QuickplayGuiButton {
      * @param mouseX The X position of the mouse
      */
     private void calculateSliderPos(int mouseX) {
-        sliderPercentage = (float)(mouseX - (x + 4)) / (float)(width - 8);
+        this.sliderPercentage = (float)(mouseX - (this.x + 4)) / (float)(this.width - 8);
         // Keep the slider percentage between 0 and 1
-        sliderPercentage = sliderPercentage < 0.0f ? 0.0f : Math.min(sliderPercentage, 1.0f);
+        this.sliderPercentage = this.sliderPercentage < 0.0f ? 0.0f : Math.min(this.sliderPercentage, 1.0f);
     }
 
     @Override
-    public boolean mouseHovering(QuickplayGui gui, int mouseX, int mouseY)
+    public boolean isMouseHovering(QuickplayGui gui, int mouseX, int mouseY)
     {
-        if (Mouse.isButtonDown(0) && super.mouseHovering(gui, mouseX, mouseY)) {
-            sliderPercentage = (float)(mouseX - (x / scale + 4)) / (float)(width / scale - 8);
+        if (Mouse.isButtonDown(0) && super.isMouseHovering(gui, mouseX, mouseY)) {
+            this.sliderPercentage = (float)(mouseX - (this.x / this.scale + 4)) / (float)(this.width / this.scale - 8);
             // Slider percentage must be between 0 and 1
-            sliderPercentage = Math.min(Math.max(sliderPercentage, 0.0f), 1.0f);
+            this.sliderPercentage = Math.min(Math.max(this.sliderPercentage, 0.0f), 1.0f);
 
-            displayString = getDisplayString();
-            responder.onTick(id, getValue());
-            isMouseDown = true;
+            this.displayString = getDisplayString();
+            this.responder.onTick(this.id, getValue());
+            this.isMouseDown = true;
             return true;
         } else {
-            return super.mouseHovering(gui, mouseX, mouseY);
+            return super.isMouseHovering(gui, mouseX, mouseY);
         }
     }
 
     @Override
-    public void mouseReleased(QuickplayGui gui, int mouseX, int mouseY)
+    public void hookMouseReleased(QuickplayGui gui, int mouseX, int mouseY)
     {
         this.isMouseDown = false;
     }

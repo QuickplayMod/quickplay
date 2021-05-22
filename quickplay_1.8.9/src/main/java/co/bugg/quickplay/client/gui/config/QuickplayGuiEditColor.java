@@ -9,10 +9,10 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiSlider;
 import co.bugg.quickplay.config.AConfiguration;
 import co.bugg.quickplay.util.Message;
 import co.bugg.quickplay.util.QuickplayChatComponentTranslation;
+import co.bugg.quickplay.wrappers.GlStateManagerWrapper;
 import co.bugg.quickplay.wrappers.chat.ChatStyleWrapper;
 import co.bugg.quickplay.wrappers.chat.Formatting;
 import net.minecraft.client.gui.GuiPageButtonList;
-import net.minecraft.client.renderer.GlStateManager;
 
 import java.awt.*;
 import java.io.IOException;
@@ -98,87 +98,100 @@ public class QuickplayGuiEditColor extends QuickplayGui {
 
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-
-        GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
+    public void hookRender(int mouseX, int mouseY, float partialTicks) {
+        GlStateManagerWrapper.pushMatrix();
+        GlStateManagerWrapper.enableBlend();
 
         /*
          * Draw background
          */
-        drawDefaultBackground();
+        this.drawDefaultBackground();
 
         if(Quickplay.INSTANCE.isEnabled) {
             // Draw text
-            if (opacity > 0) {
-                GlStateManager.scale(nameTextScale, nameTextScale, nameTextScale);
-                drawCenteredString(mc.fontRendererObj, colorName, (int) (width / 2 / nameTextScale),
-                        (int) (nameTextY / nameTextScale), 0xFFFFFF);
-                GlStateManager.scale(1 / nameTextScale, 1 / nameTextScale, 1 / nameTextScale);
+            if (this.opacity > 0) {
+                GlStateManagerWrapper.scale(this.nameTextScale);
+                this.drawCenteredString(this.colorName, (int) (this.getWidth() / 2 / this.nameTextScale),
+                        (int) (this.nameTextY / this.nameTextScale), 0xFFFFFF);
+                GlStateManagerWrapper.scale(1 / this.nameTextScale);
 
-                GlStateManager.scale(sampleTextScale, sampleTextScale, sampleTextScale);
-                drawCenteredString(mc.fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.config.color.gui.sampletext"),
-                        (int) (width / 2 / sampleTextScale), (int) (sampleTextY / sampleTextScale),
-                        color.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                GlStateManager.scale(1 / sampleTextScale, 1 / sampleTextScale, 1 / sampleTextScale);
+                GlStateManagerWrapper.scale(this.sampleTextScale);
+                this.drawCenteredString(Quickplay.INSTANCE.elementController
+                                .translate("quickplay.config.color.gui.sampletext"),
+                        (int) (this.getWidth() / 2 / this.sampleTextScale), (int) (this.sampleTextY / this.sampleTextScale),
+                        this.color.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                GlStateManagerWrapper.scale(1 / this.sampleTextScale);
             }
-            super.drawScreen(mouseX, mouseY, partialTicks);
+            super.hookRender(mouseX, mouseY, partialTicks);
         } else {
             // Quickplay is disabled, draw error message
-            this.drawCenteredString(this.fontRendererObj,
-                    Quickplay.INSTANCE.elementController.translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
-                    this.width / 2, this.height / 2, 0xffffff);
+            this.drawCenteredString(Quickplay.INSTANCE.elementController
+                            .translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.getWidth() / 2, this.getHeight() / 2, 0xffffff);
         }
 
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
+        GlStateManagerWrapper.disableBlend();
+        GlStateManagerWrapper.popMatrix();
     }
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void hookInit() {
+        super.hookInit();
 
-        nameTextScale = 1.0;
-        nameTextY = (int) (height * 0.2);
-        sampleTextScale = 1.5;
-        sampleTextY = (int) (nameTextY + fontRendererObj.FONT_HEIGHT * nameTextScale + 4);
+        this.nameTextScale = 1.0;
+        this.nameTextY = (int) (this.getHeight() * 0.2);
+        this.sampleTextScale = 1.5;
+        this.sampleTextY = (int) (this.nameTextY + this.getFontHeight() * this.nameTextScale + 4);
 
-        int elementWidth = (width > 200 + elementMargins * 2 ? 200 : width - elementMargins * 2);
+        int elementWidth = (this.getWidth() > 200 + QuickplayGuiEditColor.elementMargins * 2 ? 200 :
+                this.getWidth() - QuickplayGuiEditColor.elementMargins * 2);
 
         int nextComponentId = 0;
 
         ColorGuiResponder colorGuiResponder = new ColorGuiResponder();
         ColorFormatHelper formatHelper = new ColorFormatHelper();
 
-        final int sampleTextBottom = (int) (sampleTextY + mc.fontRendererObj.FONT_HEIGHT * sampleTextScale);
+        final int sampleTextBottom = (int) (this.sampleTextY + this.getFontHeight() * this.sampleTextScale);
 
         this.componentList.add(new QuickplayGuiSlider(colorGuiResponder, "RED", nextComponentId,
-                width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
-                * nextComponentId, elementWidth, elementHeight, Quickplay.INSTANCE.elementController.translate("quickplay.config.color.gui.red"),
-                0, 255, color.getColor().getRed(), formatHelper, true));
+                this.getWidth() / 2 - elementWidth / 2, sampleTextBottom + QuickplayGuiEditColor.elementMargins +
+                (QuickplayGuiEditColor.elementHeight + QuickplayGuiEditColor.elementMargins) * nextComponentId,
+                elementWidth, QuickplayGuiEditColor.elementHeight,
+                Quickplay.INSTANCE.elementController.translate("quickplay.config.color.gui.red"),
+                0, 255, this.color.getColor().getRed(), formatHelper, true));
 
         nextComponentId++;
         this.componentList.add(new QuickplayGuiSlider(colorGuiResponder, "GREEN", nextComponentId,
-                width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
-                * nextComponentId, elementWidth, elementHeight, Quickplay.INSTANCE.elementController.translate("quickplay.config.color.gui.green"),
-                0, 255, color.getColor().getGreen(), formatHelper, true));
+                this.getWidth() / 2 - elementWidth / 2, sampleTextBottom + QuickplayGuiEditColor.elementMargins +
+                (QuickplayGuiEditColor.elementHeight + QuickplayGuiEditColor.elementMargins) * nextComponentId,
+                elementWidth, QuickplayGuiEditColor.elementHeight,
+                Quickplay.INSTANCE.elementController.translate("quickplay.config.color.gui.green"),
+                0, 255, this.color.getColor().getGreen(), formatHelper, true));
 
         nextComponentId++;
         this.componentList.add(new QuickplayGuiSlider(colorGuiResponder, "BLUE", nextComponentId,
-                width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
-                * nextComponentId, elementWidth, elementHeight, Quickplay.INSTANCE.elementController.translate("quickplay.config.color.gui.blue"),
-                0, 255, color.getColor().getBlue(), formatHelper, true));
+                this.getWidth() / 2 - elementWidth / 2, sampleTextBottom + QuickplayGuiEditColor.elementMargins +
+                (QuickplayGuiEditColor.elementHeight + QuickplayGuiEditColor.elementMargins) * nextComponentId,
+                elementWidth, QuickplayGuiEditColor.elementHeight,
+                Quickplay.INSTANCE.elementController.translate("quickplay.config.color.gui.blue"),
+                0, 255, this.color.getColor().getBlue(), formatHelper, true));
 
         nextComponentId++;
         this.componentList.add(new QuickplayGuiSlider(colorGuiResponder, "CHROMA", nextComponentId,
-                width / 2 - elementWidth / 2, sampleTextBottom + elementMargins + (elementHeight + elementMargins)
-                * nextComponentId, elementWidth, elementHeight, Quickplay.INSTANCE.elementController.translate("quickplay.config.color.gui.chromaspeed"),
-                0, chromaMaxSpeed, color.getChromaSpeed(), formatHelper, true));
+                this.getWidth() / 2 - elementWidth / 2, sampleTextBottom + QuickplayGuiEditColor.elementMargins +
+                (QuickplayGuiEditColor.elementHeight + QuickplayGuiEditColor.elementMargins) * nextComponentId,
+                elementWidth, QuickplayGuiEditColor.elementHeight,
+                Quickplay.INSTANCE.elementController.translate("quickplay.config.color.gui.chromaspeed"),
+                0, QuickplayGuiEditColor.chromaMaxSpeed, this.color.getChromaSpeed(), formatHelper, true));
 
         nextComponentId++;
-        this.componentList.add(new QuickplayGuiButton("EXIT", nextComponentId, width / 2 - elementWidth / 2,
-                sampleTextBottom + elementMargins + (elementHeight + elementMargins) * nextComponentId, elementWidth,
-                elementHeight, Quickplay.INSTANCE.elementController.translate("quickplay.gui." + (previousGui == null ? "close" : "back")), true));
+        this.componentList.add(new QuickplayGuiButton("EXIT", nextComponentId, this.getWidth() / 2 - elementWidth / 2,
+                sampleTextBottom + QuickplayGuiEditColor.elementMargins +
+                        (QuickplayGuiEditColor.elementHeight + QuickplayGuiEditColor.elementMargins) * nextComponentId,
+                elementWidth,
+                QuickplayGuiEditColor.elementHeight,
+                Quickplay.INSTANCE.elementController
+                        .translate("quickplay.gui." + (this.previousGui == null ? "close" : "back")), true));
     }
 
     @Override
@@ -189,22 +202,23 @@ public class QuickplayGuiEditColor extends QuickplayGui {
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
         if(component.origin.equals("EXIT")) {
-            mc.displayGuiScreen(previousGui);
+            Quickplay.INSTANCE.minecraft.openGui(previousGui);
         }
     }
 
     @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state) {
-        super.mouseReleased(mouseX, mouseY, state);
+    public boolean hookMouseReleased(int mouseX, int mouseY, int state) {
+        super.hookMouseReleased(mouseX, mouseY, state);
         try {
-            config.save();
+            this.config.save();
         } catch (IOException e) {
-            System.out.println("Failed to save color " + colorName + ".");
+            System.out.println("Failed to save color " + this.colorName + ".");
             Quickplay.INSTANCE.minecraft.sendLocalMessage(new Message(new QuickplayChatComponentTranslation("quickplay.config.saveError")
                     .setStyle(new ChatStyleWrapper().apply(Formatting.RED))));
             e.printStackTrace();
             Quickplay.INSTANCE.sendExceptionRequest(e);
         }
+        return true;
     }
 
     /**

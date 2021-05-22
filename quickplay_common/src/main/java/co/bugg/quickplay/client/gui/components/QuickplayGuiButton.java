@@ -1,9 +1,9 @@
 package co.bugg.quickplay.client.gui.components;
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.client.gui.QuickplayGui;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+import co.bugg.quickplay.wrappers.GlStateManagerWrapper;
+import co.bugg.quickplay.wrappers.ResourceLocationWrapper;
 
 /**
  * Quickplay's equivalent to a Minecraft button
@@ -12,7 +12,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     /**
      * Vanilla texture location for Minecraft buttons
      */
-    public static final ResourceLocation buttonTextures = new ResourceLocation("textures/gui/widgets.png");
+    public static final ResourceLocationWrapper buttonTextures = new ResourceLocationWrapper("textures/gui/widgets.png");
     /**
      * Whether this button is enabled or not
      */
@@ -20,7 +20,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     /**
      * Texture location for this button in particular
      */
-    protected ResourceLocation texture = buttonTextures;
+    protected ResourceLocationWrapper texture = QuickplayGuiButton.buttonTextures;
     /**
      * X location corresponding to the left of this button's texture
      * -1 means draw as a vanilla button
@@ -69,7 +69,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
      * @param scrollable Whether this button should be scrollable
      */
     public QuickplayGuiButton(Object origin, int id, int x, int y, int widthIn, int heightIn, String text,
-                              ResourceLocation texture, int textureX, int textureY, double scale, boolean scrollable) {
+                              ResourceLocationWrapper texture, int textureX, int textureY, double scale, boolean scrollable) {
         super(origin, id, x, y, widthIn, heightIn, text, scrollable);
         // Adjust width & height according to scale
         this.width = (int) (widthIn * scale);
@@ -86,38 +86,38 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
         if(opacity > 0) {
-            final int scrollAdjustedY = scrollable ? y - gui.scrollPixel : y;
+            final int scrollAdjustedY = this.scrollable ? this.y - gui.scrollPixel : this.y;
 
-            GlStateManager.pushMatrix();
-            GlStateManager.enableBlend();
-            gui.mc.getTextureManager().bindTexture(texture);
-            GlStateManager.color(1, 1, 1, (float) opacity);
+            GlStateManagerWrapper.pushMatrix();
+            GlStateManagerWrapper.enableBlend();
+            Quickplay.INSTANCE.minecraft.bindTexture(this.texture);
+            GlStateManagerWrapper.color(1, 1, 1, (float) opacity);
 
             // Update whether user is currently hovering over button
-            hovering = this.mouseHovering(gui, mouseX, mouseY);
+            hovering = this.isMouseHovering(gui, mouseX, mouseY);
             // Get the default button texture depending on if mouse is hovering or is enabled
-            int buttonTextureMultiplier = getDefaultButtonTexture(hovering);
+            int buttonTextureMultiplier = this.getDefaultButtonTexture(hovering);
 
             // If default button
-            GlStateManager.scale(scale, scale, scale);
-            if (texture == buttonTextures || textureX < 0 || textureY < 0) {
+            GlStateManagerWrapper.scale(scale);
+            if (this.texture == QuickplayGuiButton.buttonTextures || this.textureX < 0 || this.textureY < 0) {
                 // Draw the different parts of the button
-                drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), 0,
-                        46 + buttonTextureMultiplier * 20, width / 2, height);
-                drawTexturedModalRect((int) (x + width / 2 / scale), (int) (scrollAdjustedY / scale),
-                        200 - width / 2, 46 + buttonTextureMultiplier * 20, width / 2, height);
+                this.drawTexturedModalRect((int) (this.x / this.scale), (int) (scrollAdjustedY / this.scale), 0,
+                        46 + buttonTextureMultiplier * 20, this.width / 2, this.height);
+                this.drawTexturedModalRect((int) (this.x + this.width / 2 / this.scale), (int) (scrollAdjustedY / this.scale),
+                        200 - this.width / 2, 46 + buttonTextureMultiplier * 20, this.width / 2, this.height);
             } else {
-                drawTexturedModalRect((int) (x / scale), (int) (scrollAdjustedY / scale), textureX, textureY,
-                        (int) (width / scale), (int) (height / scale));
+                this.drawTexturedModalRect((int) (this.x / this.scale), (int) (scrollAdjustedY / this.scale), this.textureX, this.textureY,
+                        (int) (this.width / this.scale), (int) (this.height / this.scale));
             }
-            GlStateManager.scale(1/scale, 1/scale, 1/scale);
+            GlStateManagerWrapper.scale(1/scale);
 
             if (opacity > 0) {
-                drawDisplayString(gui, opacity, scrollAdjustedY);
+                this.drawDisplayString(gui, opacity, scrollAdjustedY);
             }
 
-            GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
+            GlStateManagerWrapper.disableBlend();
+            GlStateManagerWrapper.popMatrix();
         }
     }
 
@@ -130,13 +130,14 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
      */
     public void drawDisplayString(QuickplayGui gui, double opacity, int scrollAdjustedY) {
         if(displayString != null && displayString.length() > 0) {
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManagerWrapper.pushMatrix();
+            GlStateManagerWrapper.enableBlend();
 
-            drawCenteredString(gui.mc.fontRendererObj, displayString, x + width / 2, scrollAdjustedY + (height - 8) / 2, getDefaultTextColor(opacity));
+            this.drawCenteredString(this.displayString, this.x + this.width / 2,
+                    scrollAdjustedY + (this.height - 8) / 2, this.getDefaultTextColor(opacity));
 
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManagerWrapper.disableBlend();
+            GlStateManagerWrapper.popMatrix();
         }
     }
 
@@ -147,9 +148,9 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
      */
     public int getDefaultTextColor(double opacity) {
         int color;
-        if (!enabled) {
+        if (!this.enabled) {
             color = 0xA0A0A0;
-        } else if (hovering) {
+        } else if (this.hovering) {
             color = 0xFFFFA0;
         } else {
             color = 0xE0E0E0;
@@ -166,7 +167,7 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
     public int getDefaultButtonTexture(boolean mouseOver) {
         int i = 1;
 
-        if (!enabled) {
+        if (!this.enabled) {
             i = 0;
         } else if (mouseOver) {
             i = 2;
@@ -188,16 +189,16 @@ public class QuickplayGuiButton extends QuickplayGuiComponent {
 
     // We can ignore mouse release events for normal buttons
     @Override
-    public void mouseReleased(QuickplayGui gui, int mouseX, int mouseY) {
+    public void hookMouseReleased(QuickplayGui gui, int mouseX, int mouseY) {
     }
 
     @Override
-    public boolean keyTyped(char keyTyped, int keyCode) {
+    public boolean hookKeyTyped(char keyTyped, int keyCode) {
         return false;
     }
 
     @Override
-    public boolean mouseClicked(QuickplayGui gui, int mouseX, int mouseY, int mouseButton) {
+    public boolean hookMouseClicked(QuickplayGui gui, int mouseX, int mouseY, int mouseButton) {
         return false;
     }
 }

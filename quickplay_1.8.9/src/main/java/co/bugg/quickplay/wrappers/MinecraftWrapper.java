@@ -13,7 +13,7 @@ public class MinecraftWrapper {
     /**
      * Minecraft instance
      */
-    final Minecraft mc;
+    public final Minecraft mc;
     /**
      * Buffer for sending messages to the client
      */
@@ -66,5 +66,27 @@ public class MinecraftWrapper {
 
     public int getChatWindowWidth() {
         return this.mc.ingameGUI.getChatGUI().getChatWidth();
+    }
+
+    public boolean isCurrentScreen(QuickplayGui gui) {
+        return this.mc.currentScreen == gui;
+    }
+
+    public void bindTexture(ResourceLocationWrapper resource) {
+        this.mc.getTextureManager().bindTexture(resource.get());
+    }
+
+    public void playLavaPop() {
+        if(this.mc.thePlayer == null) {
+            return;
+        }
+        this.mc.thePlayer.playSound("liquid.lavapop", 1f, 2f);
+    }
+
+    public void playLevelup() {
+        if(this.mc.thePlayer == null) {
+            return;
+        }
+        this.mc.thePlayer.playSound("random.levelup", 1.0f, 0.7f);
     }
 }

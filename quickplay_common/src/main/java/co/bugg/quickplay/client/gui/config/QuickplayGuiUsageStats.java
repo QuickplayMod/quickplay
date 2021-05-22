@@ -6,8 +6,7 @@ import co.bugg.quickplay.client.gui.components.QuickplayGuiButton;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiComponent;
 import co.bugg.quickplay.client.gui.components.QuickplayGuiString;
 import co.bugg.quickplay.config.ConfigUsageStats;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import co.bugg.quickplay.wrappers.GlStateManagerWrapper;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
@@ -70,74 +69,75 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
     public String[] descriptionLines;
 
     @Override
-    public void initGui() {
-        super.initGui();
-        buttonY = (int) (height * 0.8);
-        this.componentList.add(new QuickplayGuiButton(usageStats, 0, width / 2 - buttonWidth - buttonMargins / 2,
-                buttonY, buttonWidth, buttonHeight, yesText, true));
-        this.componentList.add(new QuickplayGuiButton(usageStats, 1, width / 2 + buttonMargins / 2, buttonY,
-                buttonWidth, buttonHeight, noText, true));
+    public void hookInit() {
+        super.hookInit();
+        this.buttonY = (int) (this.getHeight() * 0.8);
+        this.componentList.add(new QuickplayGuiButton(this.usageStats, 0, this.getWidth() / 2 - this.buttonWidth - this.buttonMargins / 2,
+                this.buttonY, this.buttonWidth, this.buttonHeight, this.yesText, true));
+        this.componentList.add(new QuickplayGuiButton(this.usageStats, 1, this.getWidth() / 2 + this.buttonMargins / 2, this.buttonY,
+                this.buttonWidth, this.buttonHeight, this.noText, true));
 
 
         // Draw the stats token if it's available
         if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.statsToken != null) {
-            tokenText = Quickplay.INSTANCE.elementController.translate("quickplay.gui.stats.token", Quickplay.INSTANCE.usageStats.statsToken.toString());
-            this.componentList.add(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, width / 2,
-                    buttonY - fontRendererObj.FONT_HEIGHT - 3, fontRendererObj.getStringWidth(tokenText),
-                    fontRendererObj.FONT_HEIGHT, tokenText, true, true));
+            this.tokenText = Quickplay.INSTANCE.elementController.translate("quickplay.gui.stats.token", Quickplay.INSTANCE.usageStats.statsToken.toString());
+            this.componentList.add(new QuickplayGuiString(Quickplay.INSTANCE.usageStats.statsToken, 2, this.getWidth() / 2,
+                    this.buttonY - this.getFontHeight() - 3, this.getStringWidth(tokenText),
+                    this.getFontHeight(), this.tokenText, true, true));
         }
-        this.componentList.add(new QuickplayGuiString("https://bugg.co/quickplay/privacy", 3, width / 2,
-                buttonY - (fontRendererObj.FONT_HEIGHT + 3) * 2, fontRendererObj.getStringWidth(privacyText),
-                fontRendererObj.FONT_HEIGHT, privacyText, true, true));
+        this.componentList.add(new QuickplayGuiString("https://bugg.co/quickplay/privacy", 3, this.getWidth() / 2,
+                this.buttonY - (this.getFontHeight() + 3) * 2, this.getStringWidth(this.privacyText),
+                this.getFontHeight(), this.privacyText, true, true));
 
-        descriptionWidth = (int) (width * 0.8);
+        this.descriptionWidth = (int) (this.getWidth() * 0.8);
         final String description = Quickplay.INSTANCE.elementController.translate("quickplay.gui.stats.description");
-        descriptionLines = fontRendererObj.listFormattedStringToWidth(description, descriptionWidth).toArray(new String[0]);
+        this.descriptionLines = this.listFormattedStringToWidth(description, this.descriptionWidth).toArray(new String[0]);
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
+    public void hookRender(int mouseX, int mouseY, float partialTicks) {
+        GlStateManagerWrapper.pushMatrix();
+        GlStateManagerWrapper.enableBlend();
 
-        drawDefaultBackground();
+        this.drawDefaultBackground();
 
         if(Quickplay.INSTANCE.isEnabled) {
-            if (opacity > 0) {
-                final int headerY = (int) (height * 0.1);
-                drawCenteredString(fontRendererObj, Quickplay.INSTANCE.elementController.translate("quickplay.gui.stats.title"), width / 2, headerY,
-                        Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
+            if (this.opacity > 0) {
+                final int headerY = (int) (this.getHeight() * 0.1);
+                this.drawCenteredString(Quickplay.INSTANCE.elementController.translate("quickplay.gui.stats.title"), this.getWidth() / 2, headerY,
+                        Quickplay.INSTANCE.settings.primaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
 
-                int lineHeight = headerY + fontRendererObj.FONT_HEIGHT + 5;
-                for (String line : descriptionLines) {
-                    drawCenteredString(fontRendererObj, line, width / 2, lineHeight,
-                            Quickplay.INSTANCE.settings.secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (opacity * 255) << 24);
-                    lineHeight += fontRendererObj.FONT_HEIGHT;
+                int lineHeight = headerY + this.getFontHeight() + 5;
+                for (String line : this.descriptionLines) {
+                    this.drawCenteredString(line, this.getWidth() / 2, lineHeight, Quickplay.INSTANCE.settings
+                            .secondaryColor.getColor().getRGB() & 0xFFFFFF | (int) (this.opacity * 255) << 24);
+                    lineHeight += this.getFontHeight();
                 }
             }
 
-            super.drawScreen(mouseX, mouseY, partialTicks);
+            super.hookRender(mouseX, mouseY, partialTicks);
 
             // If hovering over the token button
-            Optional<QuickplayGuiComponent> filteredStream = componentList.stream().filter(component -> component.displayString.equals(tokenText)).findFirst();
-            if (tokenText != null && filteredStream.isPresent() && filteredStream.get().mouseHovering(this, mouseX, mouseY)) {
-                drawHoveringText(Collections.singletonList(Quickplay.INSTANCE.elementController.translate("quickplay.gui.stats.copy")), mouseX, mouseY);
+            Optional<QuickplayGuiComponent> filteredStream = this.componentList.stream().filter(component ->
+                    component.displayString.equals(this.tokenText)).findFirst();
+            if (this.tokenText != null && filteredStream.isPresent() && filteredStream.get().isMouseHovering(this, mouseX, mouseY)) {
+                this.drawHoveringText(Collections.singletonList(Quickplay.INSTANCE.elementController.translate("quickplay.gui.stats.copy")), mouseX, mouseY);
             }
         } else {
             // Quickplay is disabled, draw error message
-            this.drawCenteredString(this.fontRendererObj,
-                    Quickplay.INSTANCE.elementController.translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
-                    this.width / 2, this.height / 2, 0xffffff);
+            this.drawCenteredString(Quickplay.INSTANCE.elementController
+                            .translate("quickplay.disabled", Quickplay.INSTANCE.disabledReason),
+                    this.getWidth() / 2, this.getHeight() / 2, 0xffffff);
         }
 
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
+        GlStateManagerWrapper.disableBlend();
+        GlStateManagerWrapper.popMatrix();
     }
 
     @Override
     public void componentClicked(QuickplayGuiComponent component) {
         super.componentClicked(component);
-        if(privacyText != null && privacyText.equals(component.displayString)) {
+        if(this.privacyText != null && this.privacyText.equals(component.displayString)) {
             try {
                 Desktop.getDesktop().browse(new URI((String) component.origin));
             } catch (IOException | URISyntaxException | ClassCastException e) {
@@ -148,14 +148,14 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
                 component.displayString = Quickplay.INSTANCE.elementController.translate("quickplay.gui.stats.privacyerror", url);
             }
             // If the copy to clipboard text is clicked
-        } else if(tokenText != null && tokenText.equals(component.displayString)) {
+        } else if(this.tokenText != null && this.tokenText.equals(component.displayString)) {
             final UUID token = (UUID) component.origin;
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(token.toString()), null);
             component.displayString = Quickplay.INSTANCE.elementController.translate("quickplay.gui.stats.copied");
         } else {
             Quickplay.INSTANCE.promptUserForUsageStats = false;
             Quickplay.INSTANCE.usageStats = new ConfigUsageStats();
-            Quickplay.INSTANCE.usageStats.sendUsageStats = component.displayString.equals(yesText);
+            Quickplay.INSTANCE.usageStats.sendUsageStats = component.displayString.equals(this.yesText);
 
             // Create a new Google Analytics instance in case it wasn't set before
             Quickplay.INSTANCE.createGoogleAnalytics();
@@ -179,7 +179,7 @@ public class QuickplayGuiUsageStats extends QuickplayGui {
                 e.printStackTrace();
                 Quickplay.INSTANCE.sendExceptionRequest(e);
             }
-            Minecraft.getMinecraft().displayGuiScreen(null);
+            Quickplay.INSTANCE.minecraft.openGui(null);
         }
     }
 

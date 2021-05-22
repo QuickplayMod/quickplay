@@ -4,8 +4,8 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.QuickplayEventHandler;
 import co.bugg.quickplay.Reference;
 import co.bugg.quickplay.config.AssetFactory;
+import co.bugg.quickplay.wrappers.ResourceLocationWrapper;
 import com.google.common.hash.Hashing;
-import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -117,7 +117,7 @@ public class PlayerGlyph {
 
                     // Reload the resource
                     QuickplayEventHandler.mainThreadScheduledTasks.add(() -> {
-                        Quickplay.INSTANCE.reloadResource(file, new ResourceLocation(Reference.MOD_ID,
+                        Quickplay.INSTANCE.reloadResource(file, new ResourceLocationWrapper(Reference.MOD_ID,
                                 "glyphs/" + file.getName()));
                         downloading = false;
                     });
