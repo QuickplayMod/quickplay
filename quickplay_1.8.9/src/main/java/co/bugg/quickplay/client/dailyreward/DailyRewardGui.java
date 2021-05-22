@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -432,7 +433,8 @@ public class DailyRewardGui extends QuickplayGui {
                     // until the end of the frame to avoid overlapping (#47)
                     String hoverString = null;
                     // Go through cards to draw/update as necessary
-                    for (final QuickplayGuiComponent component : componentList) {
+                    // FIXME inefficient
+                    for (final QuickplayGuiComponent component : new ArrayList<>(this.componentList)) {
                         if (component instanceof QuickplayGuiButton && component.origin instanceof DailyRewardOption) {
                             final DailyRewardOption option = (DailyRewardOption) component.origin;
 
