@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent;
  * as possible. Buffer is cleared when the player
  * disconnects from a server.
  */
-public class ChatBuffer extends ABuffer {
+public class ChatBuffer extends ABuffer<String> {
 
     /**
      * Constructor
@@ -36,7 +36,7 @@ public class ChatBuffer extends ABuffer {
 
         // Only send a message if the player exists & there is a message to send
         if(size() > 0 && player != null) {
-            String message = (String) pull();
+            String message = this.pull();
 
             // Handle as a command
             if(!message.startsWith("/")) {
@@ -49,20 +49,20 @@ public class ChatBuffer extends ABuffer {
     }
 
     @Override
-    public ABuffer start() {
+    public ABuffer<String> start() {
         Quickplay.INSTANCE.registerEventHandler(this);
         return super.start();
     }
 
     @Override
-    public ABuffer stop() {
+    public ABuffer<String> stop() {
         Quickplay.INSTANCE.unregisterEventHandler(this);
         return super.stop();
     }
 
     @SubscribeEvent
     public void onDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-        clear();
+        this.clear();
     }
 
 

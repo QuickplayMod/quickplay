@@ -8,11 +8,11 @@ import java.util.Date;
 /**
  * Buffers allow for the developer to easily queue data to be pulled at a set interval.
  */
-public abstract class ABuffer implements Runnable {
+public abstract class ABuffer<T> implements Runnable {
     /**
      * Buffer of all the objects
      */
-    private final ArrayList<Object> buffer;
+    private final ArrayList<T> buffer;
     /**
      * Time in milliseconds between {@link #run()} calls when in "burst" mode.
      * Burst mode allows for rapid calls to {@link #run()} in limited quantities.
@@ -66,16 +66,16 @@ public abstract class ABuffer implements Runnable {
      * Peek at the next buffer item without taking it out of the buffer
      * @return The next buffer item
      */
-    public Object peek() {
-        return size() > 0 ? buffer.get(0) : null;
+    public T peek() {
+        return size() > 0 ? this.buffer.get(0) : null;
     }
 
     /**
      * Pull the next buffer item out of the buffer
      * @return The next buffer item
      */
-    public Object pull() {
-        Object returnValue = peek();
+    public T pull() {
+        T returnValue = this.peek();
         if(returnValue != null) {
             this.buffer.remove(0);
         }
@@ -88,7 +88,7 @@ public abstract class ABuffer implements Runnable {
      * @param pushedValue Value to add to the buffer
      * @return this
      */
-    public ABuffer push(Object pushedValue) {
+    public ABuffer<T> push(T pushedValue) {
         this.buffer.add(pushedValue);
         return this;
     }
@@ -97,7 +97,7 @@ public abstract class ABuffer implements Runnable {
      * Empty the buffer of all values
      * @return this
      */
-    public ABuffer clear() {
+    public ABuffer<T> clear() {
         this.buffer.clear();
         return this;
     }
@@ -122,7 +122,7 @@ public abstract class ABuffer implements Runnable {
      * Start looping {@link #run()}
      * @return this
      */
-    public ABuffer start() {
+    public ABuffer<T> start() {
         this.started = true;
         Quickplay.INSTANCE.threadPool.submit(() -> {
             while(!Thread.currentThread().isInterrupted() && this.started) {
@@ -149,7 +149,7 @@ public abstract class ABuffer implements Runnable {
                     }
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {
-                    stop();
+                    this.stop();
                     Thread.currentThread().interrupt();
                     Quickplay.INSTANCE.sendExceptionRequest(e);
                 }
@@ -163,7 +163,7 @@ public abstract class ABuffer implements Runnable {
      * Stop looping {@link #run()}
      * @return this
      */
-    public ABuffer stop() {
+    public ABuffer<T> stop() {
         started = false;
 
         return this;

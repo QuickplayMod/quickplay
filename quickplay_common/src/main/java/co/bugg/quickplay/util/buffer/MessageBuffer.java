@@ -1,16 +1,15 @@
 package co.bugg.quickplay.util.buffer;
 
 
+import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 
 /**
  * Buffer for chat messages sent to the
  * client. Will send any messages in the
  * buffer to the player as soon as possible.
  */
-public class MessageBuffer extends ABuffer {
+public class MessageBuffer extends ABuffer<Message> {
 
     /**
      * Constructor
@@ -26,15 +25,14 @@ public class MessageBuffer extends ABuffer {
      * buffer, whenever possible
      */
     public void run() {
-        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
         // Only send a message if the player exists & there is a message to send
-        if(size() > 0 && player != null) {
-            Object obj = this.pull();
-            if(!(obj instanceof Message)) {
+        if(size() > 0) {
+            final Message obj = this.pull();
+            if(obj == null) {
                 return;
             }
-            player.addChatMessage(((Message) obj).getMessage().get());
+            Quickplay.INSTANCE.minecraft.sendLocalMessage(obj);
         }
     }
 
