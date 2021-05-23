@@ -31,6 +31,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Main event handler for Quickplay
@@ -115,32 +116,33 @@ public class QuickplayEventHandler {
         }
     }
 
-    /**
-     * Regex pattern for the daily reward message is sent to the client by the Quickplay servers through the translation system.
-     */
-    final Pattern pattern = Pattern.compile(Quickplay.INSTANCE.elementController.getRegularExpression("dailyReward").value);
-
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
-
         if(Quickplay.INSTANCE.isOnHypixel() && Quickplay.INSTANCE.settings.ingameDailyReward && Quickplay.INSTANCE.isPremiumClient) {
             // Get & verify link from chat
-            final Matcher matcher = pattern.matcher(event.message.getUnformattedText());
-            if (matcher.find()) {
-                Quickplay.INSTANCE.threadPool.submit(() -> {
-                    new DailyRewardInitiator(matcher.group(1));
+            try {
+                final Pattern pattern = Pattern.compile(Quickplay.INSTANCE.elementController.getRegularExpression("dailyReward").value);
+                final Matcher matcher = pattern.matcher(event.message.getUnformattedText());
+                if (matcher.find()) {
+                    Quickplay.INSTANCE.threadPool.submit(() -> {
+                        new DailyRewardInitiator(matcher.group(1));
 
-                    // Send analytical data
-                    if(Quickplay.INSTANCE.ga != null) {
-                        try {
-                            Quickplay.INSTANCE.ga.createEvent("Daily Reward", "Open Daily Reward")
-                                    .setEventLabel(event.message.getFormattedText())
-                                    .send();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        // Send analytical data
+                        if(Quickplay.INSTANCE.ga != null) {
+                            try {
+                                Quickplay.INSTANCE.ga.createEvent("Daily Reward", "Open Daily Reward")
+                                        .setEventLabel(event.message.getFormattedText())
+                                        .send();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                });
+                    });
+                }
+            } catch(PatternSyntaxException e) {
+                Quickplay.LOGGER.warning("Daily reward regex invalid!");
+                Quickplay.INSTANCE.sendExceptionRequest(e);
+                e.printStackTrace();
             }
         }
     }
@@ -191,6 +193,11 @@ public class QuickplayEventHandler {
                 }
 
             } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+                Quickplay.INSTANCE.sendExceptionRequest(e);
+            } catch (PatternSyntaxException e) {
+                Quickplay.LOGGER.warning("Compass title regex invalid!");
+                Quickplay.INSTANCE.sendExceptionRequest(e);
                 e.printStackTrace();
             }
         }
