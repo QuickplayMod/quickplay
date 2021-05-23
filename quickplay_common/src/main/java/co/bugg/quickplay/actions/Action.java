@@ -51,7 +51,7 @@ public class Action implements Serializable {
         actionIdToActionClass.put((short) 10, OpenGuiAction.class);
         actionIdToActionClass.put((short) 11, OpenScreenAction.class);
         actionIdToActionClass.put((short) 12, RefreshCacheAction.class);
-        actionIdToActionClass.put((short) 13, SetCurrentServerAction.class);
+//        actionIdToActionClass.put((short) 13, SetCurrentServerAction.class);
         actionIdToActionClass.put((short) 14, SetGlyphForUserAction.class);
         actionIdToActionClass.put((short) 15, SetKeybindsAction.class);
         actionIdToActionClass.put((short) 16, SetPremiumAboutAction.class);

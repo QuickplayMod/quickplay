@@ -1,6 +1,5 @@
 package co.bugg.quickplay.actions.clientbound;
 
-import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 
 import java.nio.ByteBuffer;
@@ -17,6 +16,7 @@ import java.nio.ByteBuffer;
  * Payload Order:
  * server name
  */
+@Deprecated
 public class SetCurrentServerAction extends Action {
 
     public SetCurrentServerAction() {}
@@ -33,6 +33,6 @@ public class SetCurrentServerAction extends Action {
 
     @Override
     public void run() {
-        Quickplay.INSTANCE.currentServer = this.getPayloadObjectAsString(0);
+//        Quickplay.INSTANCE.currentServer = this.getPayloadObjectAsString(0);
     }
 }

@@ -11,6 +11,7 @@ import co.bugg.quickplay.client.render.PlayerGlyph;
 import co.bugg.quickplay.config.*;
 import co.bugg.quickplay.elements.Button;
 import co.bugg.quickplay.elements.ElementController;
+import co.bugg.quickplay.elements.RegularExpression;
 import co.bugg.quickplay.http.HttpRequestFactory;
 import co.bugg.quickplay.http.SocketClient;
 import co.bugg.quickplay.util.*;
@@ -34,6 +35,9 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class Quickplay {
 
@@ -67,12 +71,16 @@ public class Quickplay {
      */
     public String disabledReason = null;
     /**
-     * The recognized server that the user is currently on, according to the Quickplay backend.
+     * The recognized server(s) that the user is currently on, according to the Quickplay backend. It's possible for a
+     * user to be on multiple servers at once since some server IP regular expressions may validate for multiple
+     * different servers (e.g. Hypixel Network and Hypixel Alpha Network)
+     *
      * This is used for determining whether certain buttons/actions/screens should be visible/executable at any
-     * given moment or not, under the "availableOn" array. If this is within the "availableOn" array of an item, then
-     * that item should be "usable". If the "availableOn" array is empty, then this value isn't checked for that item.
+     * given moment or not, under the "availableOn" array. If any of these values are located in the "availableOn"
+     * array, then that item should be "usable". If the "availableOn" array is empty, then that item is usable on
+     * all servers, and this isn't checked.
      */
-    public String currentServer = null;
+    public List<String> currentServers = new ArrayList<>();
     /**
      * Hypixel staff rank in the form of e.g. HELPER, ADMIN, YOUTUBER, etc. Used for determining whether some
      * commands which require a rank should be displayed or not. This is modified when
@@ -436,6 +444,19 @@ public class Quickplay {
             // Used for "Go to Lobby" buttons
             this.mod.commands.add(new CommandHub("quickplaylobby", "lobby"));
             this.mod.registerCommands();
+
+            // Infinite loop to check the current server the client is on. This loops in case the server regex changes
+            // after the client has already connected.
+            new Thread(() -> {
+                while(this.isEnabled) {
+                    this.detectCurrentServers();
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
     }
 
@@ -621,9 +642,37 @@ public class Quickplay {
      * @return True if this.currentServer is null or contains "hypixel" (case insensitive)
      */
     public boolean isOnHypixel() {
-        if(this.currentServer == null) {
-            return ServerChecker.getCurrentIP() != null && (this.socket == null || this.socket.isClosed() || this.sessionKey == null);
+        if(this.currentServers == null) {
+            return false;
         }
-        return this.currentServer.toLowerCase().contains("hypixel");
+        return this.currentServers.contains("serverHypixel");
+    }
+
+    /**
+     * Detect what server(s) the client is currently connected to. Called on server join but also at
+     * socket initialization, in case the server regexes have changed.
+     */
+    public void detectCurrentServers() {
+        // Server detection
+        synchronized (this.elementController.lock) {
+            String ip = ServerChecker.getCurrentIP();
+            if(ip == null) {
+                ip = "";
+            }
+            List<String> servers = new ArrayList<>();
+            for(Map.Entry<String, RegularExpression> regex : Quickplay.INSTANCE.elementController.regularExpressionMap.entrySet()) {
+                try {
+                    Pattern p = Pattern.compile(regex.getValue().value);
+                    Matcher m = p.matcher(ip);
+                    if(m.find()) {
+                        servers.add(regex.getKey());
+                    }
+                } catch (PatternSyntaxException e) {
+                    Quickplay.LOGGER.warning("Regular expression received is invalid!");
+                    Quickplay.INSTANCE.sendExceptionRequest(e);
+                }
+            }
+            Quickplay.INSTANCE.currentServers = servers;
+        }
     }
 }

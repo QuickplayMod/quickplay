@@ -3,7 +3,6 @@ package co.bugg.quickplay.elements;
 import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.config.AssetFactory;
 import com.google.common.io.Files;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
 import java.io.*;
@@ -15,6 +14,8 @@ import java.util.Map;
 public class ElementController implements Serializable {
 
     public static final transient String defaultLang = "en_US";
+
+    public transient Object lock = new Object();
 
     /**
      * Map of screens, mapping their key to the screen object.
@@ -66,16 +67,18 @@ public class ElementController implements Serializable {
     }
 
     public void putElement(Element e) {
-        if(e instanceof Screen) {
-            this.screenMap.put(e.key, (Screen) e);
-        } else if(e instanceof Button) {
-            this.buttonMap.put(e.key, (Button) e);
-        } else if(e instanceof AliasedAction) {
-            this.aliasedActionMap.put(e.key, (AliasedAction) e);
-        } else if(e instanceof Translation) {
-            this.translationMap.put(e.key, (Translation) e);
-        } else if(e instanceof RegularExpression) {
-            this.regularExpressionMap.put(e.key, (RegularExpression) e);
+        synchronized (this.lock) {
+            if(e instanceof Screen) {
+                this.screenMap.put(e.key, (Screen) e);
+            } else if(e instanceof Button) {
+                this.buttonMap.put(e.key, (Button) e);
+            } else if(e instanceof AliasedAction) {
+                this.aliasedActionMap.put(e.key, (AliasedAction) e);
+            } else if(e instanceof Translation) {
+                this.translationMap.put(e.key, (Translation) e);
+            } else if(e instanceof RegularExpression) {
+                this.regularExpressionMap.put(e.key, (RegularExpression) e);
+            }
         }
         saveCache();
     }
@@ -161,32 +164,42 @@ public class ElementController implements Serializable {
     }
 
     public void removeScreen(String key) {
-        if(this.screenMap.remove(key) != null) {
-            this.saveCache();
+        synchronized (this.lock) {
+            if(this.screenMap.remove(key) != null) {
+                this.saveCache();
+            }
         }
     }
 
     public void removeButton(String key) {
-        if(this.buttonMap.remove(key) != null) {
-            this.saveCache();
+        synchronized (this.lock) {
+            if(this.buttonMap.remove(key) != null) {
+                this.saveCache();
+            }
         }
     }
 
     public void removeAliasedAction(String key) {
-        if(this.aliasedActionMap.remove(key) != null) {
-            this.saveCache();
+        synchronized (this.lock) {
+            if(this.aliasedActionMap.remove(key) != null) {
+                this.saveCache();
+            }
         }
     }
 
     public void removeTranslation(String key) {
-        if(this.translationMap.remove(key) != null) {
-            this.saveCache();
+        synchronized (this.lock) {
+            if(this.translationMap.remove(key) != null) {
+                this.saveCache();
+            }
         }
     }
 
     public void removeRegularExpression(String key) {
-        if(this.regularExpressionMap.remove(key) != null) {
-            this.saveCache();
+        synchronized (this.lock) {
+            if(this.regularExpressionMap.remove(key) != null) {
+                this.saveCache();
+            }
         }
     }
 
@@ -200,6 +213,7 @@ public class ElementController implements Serializable {
         final Translation translation = this.translationMap.get(key);
 
         if(translation == null) {
+            // FIXME not generalized
             return I18n.format(key, (Object[]) args);
         }
 
@@ -209,6 +223,7 @@ public class ElementController implements Serializable {
             translatedStr = translation.getValueForLanguage(ElementController.defaultLang.toLowerCase());
         }
         if(translatedStr == null) {
+            // FIXME not generalized
             return I18n.format(key, (Object[]) args);
         }
 
@@ -232,7 +247,9 @@ public class ElementController implements Serializable {
             this.putElement(translation);
         }
 
-        translation.setValueForLanguage(lang, val);
+        synchronized (this.lock) {
+            translation.setValueForLanguage(lang, val);
+        }
         this.saveCache();
     }
 
@@ -242,7 +259,9 @@ public class ElementController implements Serializable {
             return;
         }
 
-        translation.removeValueForLanguage(lang);
+        synchronized (this.lock) {
+            translation.removeValueForLanguage(lang);
+        }
         if(translation.values.size() == 0) {
             this.removeTranslation(key);
         } else {
@@ -255,6 +274,12 @@ public class ElementController implements Serializable {
      * @return The language currently used by Minecraft.
      */
     private String getCurrentLangKey() {
-        return Minecraft.getMinecraft().gameSettings.language;
+        return Quickplay.INSTANCE.minecraft.getLanguage();
+    }
+
+    private void readObject(java.io.ObjectInputStream in)
+            throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.lock = new Object();
     }
 }

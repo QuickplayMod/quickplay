@@ -46,6 +46,7 @@ public class QuickplayEventHandler {
 
     @SubscribeEvent
     public void onJoin(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+        Quickplay.INSTANCE.detectCurrentServers();
         Quickplay.INSTANCE.threadPool.submit(() -> {
             try {
                 // Metadata is currently unused, however it's available in the spec for the future.
@@ -148,8 +149,7 @@ public class QuickplayEventHandler {
     public void onPlayerInteract(PlayerInteractEvent event) {
         // If the user's in a Hypixel lobby and interacts with their compass, open the Quickplay main menu GUI if
         // they have that setting enabled.
-        if(Quickplay.INSTANCE.settings.mainMenuHypixelCompass &&
-                Quickplay.INSTANCE.currentServer != null && Quickplay.INSTANCE.isOnHypixel() &&
+        if(Quickplay.INSTANCE.settings.mainMenuHypixelCompass && Quickplay.INSTANCE.isOnHypixel() &&
                 Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem() != null &&
                 Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getUnlocalizedName().equals("item.compass") &&
                 Quickplay.INSTANCE.hypixelInstanceWatcher.getCurrentLocation() != null &&
@@ -169,8 +169,7 @@ public class QuickplayEventHandler {
         // If the user's on Hypixel and they open a GUI which has the title "Game Menu", open the Quickplay main menu
         // GUI if they have that setting enabled. This is a fallback for onPlayerInteract, as there are other ways to
         // open the GUI, however onPlayerInteract looks and behaves much cleaner.
-        if(Quickplay.INSTANCE.settings.mainMenuHypixelCompass &&
-                Quickplay.INSTANCE.currentServer != null && Quickplay.INSTANCE.isOnHypixel()
+        if(Quickplay.INSTANCE.settings.mainMenuHypixelCompass && Quickplay.INSTANCE.isOnHypixel()
                 && event.gui instanceof GuiChest) {
             try {
                 // lowerChestInventory needs to be made available through reflection in order to get the display name.

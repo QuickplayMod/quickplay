@@ -32,7 +32,7 @@ public class MessageBuffer extends ABuffer<Message> {
             if(obj == null) {
                 return;
             }
-            Quickplay.INSTANCE.minecraft.sendLocalMessage(obj);
+            Quickplay.INSTANCE.minecraft.sendLocalMessageDirect(obj);
         }
     }
 

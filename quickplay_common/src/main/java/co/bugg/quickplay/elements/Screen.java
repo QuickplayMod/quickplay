@@ -83,16 +83,14 @@ public class Screen extends Element {
      * @return true if this button is available on the user's current server, false otherwise.
      */
     public boolean passesServerCheck() {
-        // Server checks rely on the socket connection being open at the moment.
-        if(Quickplay.INSTANCE.socket == null || Quickplay.INSTANCE.socket.isClosed() || Quickplay.INSTANCE.socket.isClosing()) {
-            return true;
+        // If this is only available on some servers, but the client isn't on any known servers, this never passes.
+        if(Quickplay.INSTANCE.currentServers == null && this.availableOn.length > 0) {
+            return false;
         }
-
-        // Actions must be available on the current server.
-        if(this.availableOn != null) {
-            synchronized (this.availableOn) {
-                if (Arrays.stream(this.availableOn)
-                        .noneMatch(str -> str.equals(Quickplay.INSTANCE.currentServer) || str.equals("ALL"))) {
+        // Actions must be available on the current server. No availableOn values = available on all servers
+        if(this.availableOn != null && this.availableOn.length > 0) {
+            synchronized (Quickplay.INSTANCE.elementController.lock) {
+                if (Arrays.stream(this.availableOn).noneMatch(str -> Quickplay.INSTANCE.currentServers.contains(str))) {
                     return false;
                 }
             }
@@ -112,11 +110,6 @@ public class Screen extends Element {
 
         if(!this.passesRankChecks()) {
             return false;
-        }
-
-        // The checks following this statement rely on the Quickplay backend in order to operate properly.
-        if(Quickplay.INSTANCE.socket.isClosed() || Quickplay.INSTANCE.socket.isClosing()) {
-            return true;
         }
 
         // Check to make sure all the location-specific requirements on Hypixel match.
@@ -155,10 +148,6 @@ public class Screen extends Element {
             }
         }
 
-        if(!this.passesServerCheck()) {
-            return false;
-        }
-
-        return true;
+        return this.passesServerCheck();
     }
 }
