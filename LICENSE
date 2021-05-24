@@ -1,106 +1,21 @@
-> Copyright Erik Roberts 2019
+MIT License
 
-> Last updated: September 15th, 2019
+Copyright (c) 2021 bugg.co
 
-### 1. Introduction
-This is a legal agreement between you, the end-user, and the developers of
-Quickplay and Quickplay Premium. By using, installing, or purchasing Quickplay,
-Quickplay Premium, or any related services or products, you must agree to and
-abide by the terms outlined by this agreement.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-### 2. Summary
-Quickplay uses a custom license due to the inability to find a desired license
-which already exists. To save readers some of the trouble of reading through
-legal jargon, a summary is provided with key points. The end-user is ALLOWED:
-- to use and install Quickplay on their computer.
-- to use and install Quickplay Premium on their computer, given they paid the
- non-refundable payment of $5.00 USD or more.
-- to transfer their Quickplay Premium service to another account.
-- to redistribute exact copies of this software.
-- to benignly modify this software for personal or educational use.
-- to use portions of this software's code in projects unrelated to Quickplay.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-The end-user is NOT ALLOWED:
-- to bypass any paywalls within Quickplay or Quickplay Premium.
-- to act maliciously with regard to Quickplay or Quickplay Premium.
-- to profit off of Quickplay or Quickplay Premium without permission.
-- to claim this software as your own.
-- to use portions of this software's code in attempt to compete against Quickplay.
-- to use any of Quickplay's APIs or software in a way that they are not intended
-to be used.
-- to violate the law or the rules of the Hypixel Network using Quickplay,
-Quickplay Premium, or either's source code.
-
-It is recommended you read this document in its entirety for more details or if
-you are not sure if something violates the license. If you violate this license
-because you only read the summary then you could be held liable.
-
-### 3. Grant of License
-This agreement covers both Quickplay and Quickplay Premium. By agreeing to this
-agreement, you are granted a limited revocable license to Quickplay and NOT
-Quickplay Premium. A license to Quickplay Premium will be granted with the
-non-refundable payment of $5.00 USD or more. This is a limited non-transferable
-license. Transferring the service to another account does not transfer the
-license and the original purchaser remains the license holder, and is therefore
-responsible for making sure the account this license is associated with abides
-by this agreement. Each license may not be associated with or used by more than
-one account at any given moment. Either of these licenses may be revoked upon
-breach of this agreement or as reasonably seen fit by the developers of Quickplay
-and Quickplay Premium.
-
-### 4. Restrictions
-You may not (a) attempt to decompile, reverse engineer, or decrypt the provided
-(compiled) software. Source code for Quickplay is available on the Quickplay
-Github. (b) attempt to make a profit off of Quickplay, Quickplay Premium, or any
-portion of it that is not within the scope of this software without explicit
-written permission from the developers of Quickplay and Quickplay Premium. (c)
-attempt to bypass any "pay-walls" that exist within Quickplay or Quickplay Premium.
-(d) use the software in any way to directly or indirectly create a substitute or
-competition to the software granted by this license or any other software or services
-created by the developers of Quickplay or Quickplay Premium. (e) use the software
-maliciously or in a way that would violate relevant laws or Hypixel Network rules.
-(f) use the software, API, or interfaces in a way that they are not intended to be
-used without explicit written permission from the developers of Quickplay and
-Quickplay Premium.
-
-### 5. Redistribution
-You may redistribute exact copies of Quickplay and Quickplay Premium, provided you
-clearly publish the relevant copyright information, this license, and do not claim
-the software as your own.
-
-You may not redistribute heavily modified versions of this program or sections of
-this programs code (snippets) that serve the same purpose of the original software
-without explicit written permission from the developers of Quickplay and Quickplay
-Premium. Upon approval, all modifications must be clearly outlined and copyrights
-and licensing rules retained. If your software does not serve as an alternative to
-the original software or any other software or services created by the developers
-of Quickplay or Quickplay Premium, then explicit written permission is unnecessary.
-
-### 6. Termination of License
-Failure to comply with points outlined in this license may result in an automatic
-disabling of the software. You may terminate this agreement by ceasing all use of
-this software and any relevant modifications or snippets. Developers of Quickplay
-and Quickplay Premium reserve the right to terminate this agreement and disable
-your software without notice and for any reasonable reason if deemed necessary.
-
-### 7. Liability
-The developers of Quickplay and Quickplay Premium are not liable for damages
-occurring as a result of use of or inability to use the provided software except
-for what is legally required of them. Damages include, but are not limited to
-(a) profit or revenue loss (b) data loss (c) personal injury or software
-malfunctions (d) loss of access to the provided software.
-
-The developers of Quickplay and Quickplay Premium shall not be monetarily liable
-for more than that spent by the user on the software.
-
-### 8. Warranty
-Quickplay, Quickplay Premium, and all related software and services are provided
-as is. Updates to or bug fixes for this software are not guaranteed. The
-developers of Quickplay and Quickplay Premium are not responsible for misuse of
-this software, and are not required to assist in resolving issues or complications.
-
-### 9. Copyright
-All materials provided by this license are protected under copyright by the
-developers of Quickplay and Quickplay Premium. This license does not grant you
-copyright rights over these materials. Use of this software outside of the guidelines
-outlined in this license is prohibited.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
