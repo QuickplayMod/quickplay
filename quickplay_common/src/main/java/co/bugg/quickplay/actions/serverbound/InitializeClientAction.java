@@ -50,10 +50,17 @@ public class InitializeClientAction extends Action {
     public InitializeClientAction() {
         super();
         this.id = 25;
-        // MC UUID
-        this.addPayload(ByteBuffer.wrap(Minecraft.getMinecraft().getSession().getProfile().getId().toString().getBytes()));
-        // Identifier type
-        this.addPayload(ByteBuffer.wrap(new Gson().toJson(IdentifierTypes.MOJANG).getBytes()));
+        if(Quickplay.INSTANCE.settings.anonymousMode) {
+            // Blank first slot, which would normally contain the identifier
+            this.addPayload(ByteBuffer.wrap("".getBytes()));
+            // Identifier type
+            this.addPayload(ByteBuffer.wrap(new Gson().toJson(IdentifierTypes.ANONYMOUS).getBytes()));
+        } else {
+            // MC UUID
+            this.addPayload(ByteBuffer.wrap(Quickplay.INSTANCE.minecraft.getUuid().toString().getBytes()));
+            // Identifier type
+            this.addPayload(ByteBuffer.wrap(new Gson().toJson(IdentifierTypes.MOJANG).getBytes()));
+        }
         // User agent - Should be updated for implementations into other clients, e.g. Badlion, Hyperium, etc.
         this.addPayload(ByteBuffer.wrap("Quickplay Forge".getBytes()));
         // Quickplay version
@@ -62,7 +69,7 @@ public class InitializeClientAction extends Action {
         this.addPayload(ByteBuffer.wrap(Minecraft.getMinecraft().gameSettings.language.getBytes()));
 
         // Optional data depending on the user's privacy settings.
-        if(Quickplay.INSTANCE.usageStats != null && Quickplay.INSTANCE.usageStats.sendUsageStats) {
+        if(Quickplay.INSTANCE.settings.anonymousStatistics) {
             // Minecraft version
             try {
                 this.addPayload(ByteBuffer.wrap(ReflectionUtil.getMCVersion().getBytes()));

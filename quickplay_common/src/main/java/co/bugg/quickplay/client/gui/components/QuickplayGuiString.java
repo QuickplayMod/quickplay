@@ -17,6 +17,7 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
      * Whether to render the string in the user's secondary color.
      */
     public boolean secondaryColor;
+    public float scale;
 
     /**
      * Constructor
@@ -36,6 +37,7 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
         super(origin, id, x, y, width, height, displayString, scrollable);
         this.secondaryColor = false;
         this.centered = centered;
+        this.scale = 1.0f;
     }
     /**
      * Constructor
@@ -57,6 +59,12 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
         this.secondaryColor = secondaryColor;
     }
 
+    public QuickplayGuiString(Object origin, int id, int x, int y, int width, int height, String displayString,
+                              boolean centered, boolean scrollable, boolean secondaryColor, float scale) {
+        this(origin, id, x, y, width, height, displayString, centered, scrollable, secondaryColor);
+        this.scale = scale;
+    }
+
     @Override
     public void draw(QuickplayGui gui, int mouseX, int mouseY, double opacity) {
         if(opacity > 0) {
@@ -66,13 +74,15 @@ public class QuickplayGuiString extends QuickplayGuiComponent {
 
             GlStateManagerWrapper.pushMatrix();
             GlStateManagerWrapper.enableBlend();
+            GlStateManagerWrapper.scale(this.scale);
             if (this.centered) {
-                this.drawCenteredString(this.displayString, this.x, scrollAdjustedY,
+                this.drawCenteredString(this.displayString, (int) (this.x / this.scale), (int) (scrollAdjustedY / this.scale),
                         (color.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             } else {
-                this.drawString(this.displayString, this.x, scrollAdjustedY,
+                this.drawString(this.displayString, (int) (this.x / this.scale), (int) (scrollAdjustedY / this.scale),
                         (color.getColor().getRGB() & 0xFFFFFF) | ((int) (opacity * 255) << 24));
             }
+            GlStateManagerWrapper.scale(1/this.scale);
             GlStateManagerWrapper.disableBlend();
             GlStateManagerWrapper.popMatrix();
         }

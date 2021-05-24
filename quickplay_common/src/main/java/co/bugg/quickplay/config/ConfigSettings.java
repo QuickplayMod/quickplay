@@ -6,6 +6,7 @@ import co.bugg.quickplay.client.QuickplayColor;
 import co.bugg.quickplay.client.gui.MoveableHudElement;
 import co.bugg.quickplay.client.gui.QuickplayGuiScreen;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiKeybinds;
+import co.bugg.quickplay.client.gui.config.QuickplayGuiPrivacySettings;
 import co.bugg.quickplay.client.gui.config.QuickplayGuiUsageStats;
 import co.bugg.quickplay.util.ServerUnavailableException;
 
@@ -226,7 +227,25 @@ public class ConfigSettings extends AConfiguration implements Serializable {
             helpText = "quickplay.settings.editKeybinds.help"
     )
     public transient final Runnable editKeybinds = () -> Quickplay.INSTANCE.minecraft.openGui(new QuickplayGuiKeybinds());
-
+    /**
+     * Runnable to edit the user's privacy settings.
+     */
+    @GuiOption(
+            name = "quickplay.settings.privacySettings",
+            helpText = "quickplay.settings.privacySettings.help"
+    )
+    public transient final Runnable privacySettings = () -> Quickplay.INSTANCE.minecraft.openGui(new QuickplayGuiPrivacySettings());
+    /**
+     * Whether the client should connect to the Quickplay servers anonymously. This disables some features, and
+     * prevents the client from receiving new future features without updating their .jar.
+     * Edited via {@link QuickplayGuiPrivacySettings}
+     */
+    public boolean anonymousMode = false;
+    /**
+     * Whether the client should send anonymous statistics to the Quickplay servers / Google Analytics
+     * Edited via {@link QuickplayGuiPrivacySettings}
+     */
+    public boolean anonymousStatistics = true;
     /**
      * Opacity of the instance display
      */
