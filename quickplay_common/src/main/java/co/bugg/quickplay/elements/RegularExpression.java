@@ -5,7 +5,7 @@ public class RegularExpression extends Element {
     public String value;
 
     public RegularExpression(String key, String value) {
-        super(key, 5);
+        super(key, ElementType.REGULAR_EXPRESSION.getValue());
         this.value = value;
     }
 }

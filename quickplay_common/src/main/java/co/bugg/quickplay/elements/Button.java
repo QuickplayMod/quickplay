@@ -17,7 +17,7 @@ public class Button extends PermissionBasedElement {
                   final Location hypixelLocrawRegex, final String hypixelRankRegex, final String hypixelPackageRankRegex,
                   final boolean hypixelBuildTeamOnly, final boolean hypixelBuildTeamAdminOnly, final boolean visibleInPartyMode,
                   final String partyModeScopeTranslationKey, final Map<String, String> settingsRegexes) {
-        super(key, 2, availableOn, visible, adminOnly, hypixelLocrawRegex, hypixelRankRegex, hypixelPackageRankRegex,
+        super(key, ElementType.BUTTON.getValue(), availableOn, visible, adminOnly, hypixelLocrawRegex, hypixelRankRegex, hypixelPackageRankRegex,
                 hypixelBuildTeamOnly, hypixelBuildTeamAdminOnly, settingsRegexes);
         this.actionKeys = actionKeys;
         this.imageURL = imageURL;

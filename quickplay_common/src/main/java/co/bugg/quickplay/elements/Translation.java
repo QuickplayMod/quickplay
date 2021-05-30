@@ -7,7 +7,7 @@ public class Translation extends Element {
     public HashMap<String, String> values = new HashMap<>();
 
     public Translation(String key) {
-        super(key, 4);
+        super(key, ElementType.TRANSLATION.getValue());
     }
 
     public void setValueForLanguage(String language, String value) {

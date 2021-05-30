@@ -18,7 +18,7 @@ public class Screen extends PermissionBasedElement {
                   final String hypixelRankRegex, final String hypixelPackageRankRegex,
                   final boolean hypixelBuildTeamOnly, final boolean hypixelBuildTeamAdminOnly,
                   final Map<String, String> settingsRegexes) {
-        super(key, 1, availableOn, visible, adminOnly, hypixelLocrawRegex, hypixelRankRegex,
+        super(key, ElementType.SCREEN.getValue(), availableOn, visible, adminOnly, hypixelLocrawRegex, hypixelRankRegex,
                 hypixelPackageRankRegex, hypixelBuildTeamOnly, hypixelBuildTeamAdminOnly, settingsRegexes);
         this.buttonKeys = buttonKeys;
         this.screenType = screenType;

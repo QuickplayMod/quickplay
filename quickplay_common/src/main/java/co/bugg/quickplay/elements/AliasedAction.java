@@ -12,7 +12,7 @@ public class AliasedAction extends PermissionBasedElement {
                          final boolean adminOnly, final Location hypixelLocrawRegex, final String hypixelRankRegex,
                          final String hypixelPackageRankRegex, final boolean hypixelBuildTeamOnly,
                          final boolean hypixelBuildTeamAdminOnly, final Map<String, String> settingsRegexes) {
-        super(key, 3, availableOn, visible, adminOnly, hypixelLocrawRegex, hypixelRankRegex,
+        super(key, ElementType.ALIASED_ACTION.getValue(), availableOn, visible, adminOnly, hypixelLocrawRegex, hypixelRankRegex,
                 hypixelPackageRankRegex, hypixelBuildTeamOnly, hypixelBuildTeamAdminOnly, settingsRegexes);
         this.action = action;
     }
