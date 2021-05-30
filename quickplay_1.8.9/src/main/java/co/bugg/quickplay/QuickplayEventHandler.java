@@ -1,5 +1,6 @@
 package co.bugg.quickplay;
 
+import co.bugg.quickplay.actions.serverbound.LanguageChangedAction;
 import co.bugg.quickplay.actions.serverbound.ServerJoinedAction;
 import co.bugg.quickplay.actions.serverbound.ServerLeftAction;
 import co.bugg.quickplay.client.dailyreward.DailyRewardInitiator;
@@ -44,6 +45,27 @@ public class QuickplayEventHandler {
      * All items in this list are called before a frame is rendered
      */
     public static ArrayList<Runnable> mainThreadScheduledTasks = new ArrayList<>();
+
+    public String currentLanguage = Quickplay.INSTANCE.minecraft.getLanguage();
+
+    @SubscribeEvent
+    public void onTick(TickEvent.ClientTickEvent event) {
+        final String lang = Quickplay.INSTANCE.minecraft.getLanguage();
+        if(lang == null) {
+            return;
+        }
+
+        if(this.currentLanguage == null || !this.currentLanguage.equals(lang)) {
+            try {
+                Quickplay.LOGGER.info("Language update detected. From: " + this.currentLanguage + " To: " + lang);
+                this.currentLanguage = lang;
+                Quickplay.INSTANCE.socket.sendAction(new LanguageChangedAction(lang));
+            } catch (ServerUnavailableException e) {
+                Quickplay.LOGGER.warning("Failed to notify the Quickplay servers of a language change!");
+                e.printStackTrace();
+            }
+        }
+    }
 
     @SubscribeEvent
     public void onJoin(FMLNetworkEvent.ClientConnectedToServerEvent event) {

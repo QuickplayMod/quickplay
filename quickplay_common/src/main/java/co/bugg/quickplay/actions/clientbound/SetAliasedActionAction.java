@@ -4,11 +4,14 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.elements.AliasedAction;
 import co.bugg.quickplay.util.Location;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import java.lang.reflect.Type;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
+import java.util.Map;
 
 /**
  * ID: 7
@@ -64,10 +67,13 @@ public class SetAliasedActionAction extends Action {
             final boolean hypixelBuildTeamOnly = hypixelBuildTeamOnlyBuf.get() != (byte) 0;
             final ByteBuffer hypixelBuildTeamAdminOnlyBuf = this.getPayloadObject(9);
             final boolean hypixelBuildTeamAdminOnly = hypixelBuildTeamAdminOnlyBuf.get() != (byte) 0;
+            final String settingsRegexesJson = this.getPayloadObjectAsString(10);
+            final Type settingsRegexesType = new TypeToken<Map<String, String>>(){}.getType();
+            final Map<String, String> settingsRegexes = gson.fromJson(settingsRegexesJson, settingsRegexesType);
 
             final AliasedAction aliasedAction = new AliasedAction(key, availableOnArr, action, visible,
                     adminOnly, hypixelLocrawRegex, hypixelRankRegex, hypixelPackageRankRegex, hypixelBuildTeamOnly,
-                    hypixelBuildTeamAdminOnly);
+                    hypixelBuildTeamAdminOnly, settingsRegexes);
 
             Quickplay.INSTANCE.elementController.putElement(aliasedAction);
         } catch (JsonSyntaxException | BufferUnderflowException | IllegalAccessException | InstantiationException e) {

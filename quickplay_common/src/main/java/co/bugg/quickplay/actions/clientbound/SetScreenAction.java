@@ -5,13 +5,16 @@ import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.elements.Screen;
 import co.bugg.quickplay.elements.ScreenType;
 import co.bugg.quickplay.util.Location;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
+import java.util.Map;
 
 /**
  * ID: 9
@@ -73,10 +76,13 @@ public class SetScreenAction extends Action {
             final boolean hypixelBuildTeamOnly = hypixelBuildTeamOnlyBuf.get() != (byte) 0;
             final ByteBuffer hypixelBuildTeamAdminOnlyBuf = this.getPayloadObject(13);
             final boolean hypixelBuildTeamAdminOnly = hypixelBuildTeamAdminOnlyBuf.get() != (byte) 0;
+            final String settingsRegexesJson = this.getPayloadObjectAsString(14);
+            final Type settingsRegexesType = new TypeToken<Map<String, String>>(){}.getType();
+            final Map<String, String> settingsRegexes = gson.fromJson(settingsRegexesJson, settingsRegexesType);
 
             final Screen screen = new Screen(key, screenType, availableOnArr, buttonsArr, backButtonActionsArr,
                     translationKey, imageURL, visible, adminOnly, hypixelLocrawRegex, hypixelRankRegex,
-                    hypixelPackageRankRegex, hypixelBuildTeamOnly, hypixelBuildTeamAdminOnly);
+                    hypixelPackageRankRegex, hypixelBuildTeamOnly, hypixelBuildTeamAdminOnly, settingsRegexes);
 
             // Download the image URL, if it is set
             if(screen.imageURL != null && screen.imageURL.length() > 0) {

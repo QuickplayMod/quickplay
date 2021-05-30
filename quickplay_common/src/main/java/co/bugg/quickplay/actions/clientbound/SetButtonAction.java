@@ -4,13 +4,16 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.actions.Action;
 import co.bugg.quickplay.elements.Button;
 import co.bugg.quickplay.util.Location;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
+import java.util.Map;
 
 /**
  * ID: 8
@@ -77,10 +80,13 @@ public class SetButtonAction extends Action {
             final ByteBuffer visibleInPartyModeBuf = this.getPayloadObject(12);
             final boolean visibleInPartyMode = visibleInPartyModeBuf.get() != (byte) 0;
             final String partyModeScopeTranslationKey = this.getPayloadObjectAsString(13);
+            final String settingsRegexesJson = this.getPayloadObjectAsString(14);
+            final Type settingsRegexesType = new TypeToken<Map<String, String>>(){}.getType();
+            final Map<String, String> settingsRegexes = gson.fromJson(settingsRegexesJson, settingsRegexesType);
 
             final Button button = new Button(key, availableOnArr, actionsArr, imageURL, translationKey, visible,
                     adminOnly, hypixelLocrawRegex, hypixelRankRegex, hypixelPackageRankRegex, hypixelBuildTeamOnly,
-                    hypixelBuildTeamAdminOnly, visibleInPartyMode, partyModeScopeTranslationKey);
+                    hypixelBuildTeamAdminOnly, visibleInPartyMode, partyModeScopeTranslationKey, settingsRegexes);
 
             // Download the image URL, if it is set
             if(button.imageURL != null && button.imageURL.length() > 0) {
