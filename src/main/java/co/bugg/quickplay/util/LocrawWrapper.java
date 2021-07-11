@@ -69,7 +69,7 @@ public class LocrawWrapper {
         }
     }
 
-    @SubscribeEvent(receiveCanceled = true)
+    @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
         final String message = event.getMessage().getUnformattedText();
         // Regex for the /locraw response
