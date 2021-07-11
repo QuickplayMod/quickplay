@@ -13,7 +13,7 @@ import java.util.List;
  * When online Hypixel, enabled instances of
  * this class will watch for what instance the
  * client is on by occasionally executing
- * /whereami
+ * /locraw
  */
 public class InstanceWatcher {
     /**
@@ -27,29 +27,29 @@ public class InstanceWatcher {
      */
     public boolean started = false;
     /**
-     * How often in seconds /whereami should be executed
+     * How often in seconds /locraw should be executed
      */
-    public int whereamiFrequency;
+    public int locrawFrequency;
 
     public InstanceWatcher(int frequency) {
-        whereamiFrequency = frequency;
+        locrawFrequency = frequency;
     }
 
     public int tick;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
-        if(event.phase == TickEvent.Phase.START && tick++ > whereamiFrequency * 20) {
+        if(event.phase == TickEvent.Phase.START && tick++ > locrawFrequency * 20) {
             tick = 0;
-            runWhereami();
+            runLocraw();
         }
     }
 
     @SubscribeEvent
     public void onWorldChange(WorldEvent.Load event) {
         // Run twice, just in case first one doesn't trigger
-        new TickDelay(this::runWhereami, 15);
-        new TickDelay(this::runWhereami, 60);
+        new TickDelay(this::runLocraw, 15);
+        new TickDelay(this::runLocraw, 60);
     }
 
     /**
@@ -59,7 +59,7 @@ public class InstanceWatcher {
     public InstanceWatcher start() {
         Quickplay.INSTANCE.registerEventHandler(this);
         started = true;
-        runWhereami();
+        runLocraw();
         return this;
     }
 
@@ -74,12 +74,12 @@ public class InstanceWatcher {
     }
 
     /**
-     * Send the /whereami message if possible
+     * Send the /locraw message if possible
      * @return this
      */
-    public InstanceWatcher runWhereami() {
+    public InstanceWatcher runLocraw() {
         if(Quickplay.INSTANCE.onHypixel && Quickplay.INSTANCE.enabled) {
-            new WhereamiWrapper((server) -> {
+            new LocrawWrapper((server) -> {
 
                 // Automatic lobby 1 swapper
                 if (Quickplay.INSTANCE.settings.lobbyOneSwap) {

@@ -42,7 +42,7 @@ public class ServerChecker {
 
         final String ip = getCurrentIP();
         if(!ip.equals("singleplayer")) {
-            Pattern hypixelPattern = Pattern.compile("^(?:(?:(?:.*\\.)?hypixel\\.net)|(?:209\\.222\\.115\\.\\d{1,3}))(?::\\d{1,5})?$", Pattern.CASE_INSENSITIVE);
+            Pattern hypixelPattern = Pattern.compile("^(?:.*\\.)?hypixel\\.(?:net|io)(?::\\d{1,5})?$", Pattern.CASE_INSENSITIVE);
             Matcher matcher = hypixelPattern.matcher(ip);
 
             // If the current IP matches the regex above
