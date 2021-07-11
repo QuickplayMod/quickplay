@@ -71,7 +71,7 @@ public class LocrawWrapper {
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
-        final String message = event.message.getUnformattedText();
+        final String message = event.getMessage().getUnformattedText();
         // Regex for the /locraw response
         final Pattern pattern = Pattern.compile("^\\{\"server\":");
         final Matcher matcher = pattern.matcher(message);
