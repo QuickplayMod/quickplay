@@ -78,7 +78,8 @@ public class InstanceWatcher {
      * @return this
      */
     public InstanceWatcher runLocraw() {
-        if(Quickplay.INSTANCE.onHypixel && Quickplay.INSTANCE.enabled) {
+        // Only need to run /locraw again if there isn't already a /locraw in the command queue.
+        if(Quickplay.INSTANCE.onHypixel && Quickplay.INSTANCE.enabled && !Quickplay.INSTANCE.chatBuffer.contains("/locraw")) {
             new LocrawWrapper((server) -> {
 
                 // Automatic lobby 1 swapper

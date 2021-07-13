@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Date;
@@ -40,9 +41,7 @@ public class LocrawWrapper {
         this.listening = true;
         this.cancel = true;
 
-        // Send the /locraw command
         Quickplay.INSTANCE.chatBuffer.push("/locraw");
-        System.out.println("QUICKPLAY DEBUG > Locraw sent! " + new Date().getTime() + " " + this.hashCode());
         // If a /locraw isn't received within 120 ticks (30 seconds), don't cancel the message
         new TickDelay(this::stopCancelling, 600);
         // If a /locraw isn't received within 1200 ticks (60 seconds), stop listening
@@ -54,7 +53,6 @@ public class LocrawWrapper {
      * in, but still listen & call the callback
      */
     public void stopCancelling() {
-        System.out.println("QUICKPLAY DEBUG > Cancelling stopped! " + new Date().getTime() + " " + this.hashCode());
         this.cancel = false;
     }
 
@@ -72,7 +70,8 @@ public class LocrawWrapper {
         }
     }
 
-    @SubscribeEvent(receiveCanceled = true)
+    // Hytilities forces high priority - receiveCancelled seems to cause the message to be uncancelable...
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public void onChat(ClientChatReceivedEvent event) {
         final String message = event.message.getUnformattedText();
         // Regex for the /locraw response
@@ -85,7 +84,6 @@ public class LocrawWrapper {
                 matcher.find() &&
                 listening
         ) {
-            System.out.println("QUICKPLAY DEBUG > Locraw received! " + new Date().getTime() + " " + this.hashCode());
 
             if(this.cancel) {
                 event.setCanceled(true);

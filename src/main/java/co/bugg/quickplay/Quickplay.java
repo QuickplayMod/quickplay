@@ -306,9 +306,15 @@ public class Quickplay {
             registerEventHandler(new GlyphRenderer());
             registerEventHandler(new QuickplayEventHandler());
 
-            chatBuffer = (ChatBuffer) new ChatBuffer(100).start();
-            instanceWatcher = new InstanceWatcher(30).start();
-            instanceDisplay = new InstanceDisplay();
+            if (this.chatBuffer != null) {
+                this.chatBuffer.stop();
+            }
+            this.chatBuffer = (ChatBuffer) new ChatBuffer(750).start();
+            if (this.instanceWatcher != null) {
+                this.instanceWatcher.stop();
+            }
+            this.instanceWatcher = new InstanceWatcher(30).start();
+            this.instanceDisplay = new InstanceDisplay();
 
             commands.add(new CommandQuickplay());
 
