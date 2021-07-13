@@ -109,6 +109,10 @@ public abstract class ABuffer implements Runnable {
         return this;
     }
 
+    public boolean contains(Object obj) {
+        return this.buffer.contains(obj);
+    }
+
     /**
      * Stop looping {@link #run()}
      * @return this
