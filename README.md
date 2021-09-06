@@ -1,5 +1,5 @@
 # Quickplay
-### Current version: v2.0.3
+### Current version: v2.0.7
 > [![Build Status](https://travis-ci.org/bugfroggy/Quickplay2.0.svg?branch=1.8.9)](https://travis-ci.org/bugfroggy/Quickplay2.0)
 
 Website: https://bugg.co/quickplay/
