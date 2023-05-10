@@ -28,7 +28,7 @@ jar {
 
 targetCompatibility = sourceCompatibility = 1.8
 
-version = "2.0.7"
+version = "2.0.8"
 group= "co.bugg.quickplay" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Quickplay-1.12"
 
@@ -49,6 +49,13 @@ minecraft {
     // simply re-run your setup task after changing the mappings to update your workspace.
     mappings = "snapshot_20180313"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
+    }
 }
 
 dependencies {
@@ -73,6 +80,14 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+    // --- MICROSOFT AUTHENTICATION ---
+    // moduleName is based on your mod loader and minecraft version, see the table above
+    // version is the DevAuth version you are adding, check releases on GitHub or the badge above
+    // With loom use the modRuntimeOnly configuration
+    // With archloom and the forge-legacy module use the runtimeOnly configuration to avoid warnings
+    // With ForgeGradle 5, use the runtimeOnly configuration
+    // With ForgeGradle 2, use the implementation configuration as runtimeOnly appears to be broken
+    implementation("me.djtheredstoner:DevAuth-forge-legacy:1.1.0")
 }
 
 processResources
