@@ -10,13 +10,25 @@ import net.minecraftforge.fml.common.ModContainer;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -28,17 +40,35 @@ public class HttpRequestFactory {
     public HttpClient httpClient;
 
     public HttpRequestFactory() {
-        httpClient = newClient();
+        try {
+            httpClient = newClient();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public HttpClient newClient() {
-        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-        connectionManager.setMaxTotal(100);
+    public HttpClient newClient() throws IOException {
 
-        return HttpClients.custom()
-                .setConnectionManager(connectionManager)
-                .setUserAgent("Minecraft Mod " + Reference.MOD_NAME + " - " + Reference.VERSION)
-                .build();
+        try {
+            SSLContext sslCtx = this.createSslContext();
+
+            // noinspection VulnerableCodeUsages -- Does not affect clients
+            final SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslCtx);
+            final PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(
+                    RegistryBuilder.<ConnectionSocketFactory>create()
+                            .register("http", PlainConnectionSocketFactory.getSocketFactory())
+                            .register("https", sslConnectionSocketFactory)
+                            .build()
+            );
+            connectionManager.setMaxTotal(100);
+
+            return HttpClients.custom()
+                    .setConnectionManager(connectionManager)
+                    .setUserAgent("Minecraft Mod " + Reference.MOD_NAME + " - " + Reference.VERSION)
+                    .build();
+        } catch (CertificateException | KeyStoreException | NoSuchAlgorithmException | KeyManagementException e) {
+            throw new IOException("Root CA registration failed", e);
+        }
     }
 
     /**
@@ -151,5 +181,36 @@ public class HttpRequestFactory {
                 Quickplay.INSTANCE.sendExceptionRequest(e);
             }
         }
+    }
+
+    /**
+     * License CC BY-SA 4.0 Jan Novotný and Erik Roberts
+     * <a href="https://blog.novoj.net/posts/2016-02-29-how-to-make-apache-httpclient-trust-lets-encrypt-certificate-authority/">Source</a>
+     * <a href="https://creativecommons.org/licenses/by-sa/4.0/">License</a>
+     */
+    private SSLContext createSslContext() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, KeyManagementException {
+        final KeyStore ks = KeyStore.getInstance("JKS");
+        try(final InputStream is = this.getClass().getClassLoader().getResourceAsStream("certs/cacerts.jks")) {
+            if(is == null) {
+                throw new IOException("CA certificates keystore not found");
+            }
+            ks.load(is, "changeit".toCharArray());
+        }
+
+        final TrustManagerFactory defaultTm = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        final TrustManagerFactory customTm = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+
+        defaultTm.init((KeyStore)null);
+        customTm.init(ks);
+
+        final TrustManager[] trustManagers = new TrustManager[1];
+        trustManagers[0] = new TrustManagerDelegate(
+                (X509TrustManager) customTm.getTrustManagers()[0],
+                (X509TrustManager) defaultTm.getTrustManagers()[0]
+        );
+
+        final SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, trustManagers, new SecureRandom());
+        return sslContext;
     }
 }
