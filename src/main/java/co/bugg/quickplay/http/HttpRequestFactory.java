@@ -190,7 +190,7 @@ public class HttpRequestFactory {
      */
     private SSLContext createSslContext() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, KeyManagementException {
         final KeyStore ks = KeyStore.getInstance("JKS");
-        try(final InputStream is = this.getClass().getClassLoader().getResourceAsStream("certs/cacerts.jks")) {
+        try(final InputStream is = this.getClass().getClassLoader().getResourceAsStream("certs/letsencrypt-ca")) {
             if(is == null) {
                 throw new IOException("CA certificates keystore not found");
             }
