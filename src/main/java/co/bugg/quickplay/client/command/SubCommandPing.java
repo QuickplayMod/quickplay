@@ -4,7 +4,7 @@ import co.bugg.quickplay.Quickplay;
 import co.bugg.quickplay.http.Request;
 import co.bugg.quickplay.http.response.WebResponse;
 import co.bugg.quickplay.util.Message;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +36,13 @@ public class SubCommandPing extends ASubCommand {
             Request req = Quickplay.INSTANCE.requestFactory.newPingRequest();
             WebResponse res = req.execute();
             if(res.ok) {
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentText("Ping request success")));
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentString("Ping request success")));
             } else {
-                Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentText("Ping request failed (Response not ok)")));
+                Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentString("Ping request failed (Response not ok)")));
             }
         } catch(Exception e) {
             e.printStackTrace();
-            Quickplay.INSTANCE.messageBuffer.push(new Message(new ChatComponentText("Ping request failed (Exception caught)")));
+            Quickplay.INSTANCE.messageBuffer.push(new Message(new TextComponentString("Ping request failed (Exception caught)")));
         }
     }
 
