@@ -1,4 +1,4 @@
-package dev.ecr.util;
+package dev.ecr.quickplay.util;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

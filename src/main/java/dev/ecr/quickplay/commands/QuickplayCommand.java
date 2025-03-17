@@ -1,8 +1,8 @@
-package dev.ecr.commands;
+package dev.ecr.quickplay.commands;
 
-import dev.ecr.QuickplayConstants;
-import dev.ecr.gui.QuickplayMainGui;
-import dev.ecr.util.TickDelay;
+import dev.ecr.quickplay.QuickplayConstants;
+import dev.ecr.quickplay.gui.QuickplayMainGui;
+import dev.ecr.quickplay.util.TickDelay;
 import gg.essential.universal.UMinecraft;
 import gg.essential.universal.wrappers.UPlayer;
 import gg.essential.universal.wrappers.message.UTextComponent;
@@ -13,7 +13,12 @@ import net.minecraft.event.HoverEvent;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class QuickplayCommand extends CommandBase {
@@ -50,6 +55,21 @@ public class QuickplayCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
+        ResourceLocation rl = new ResourceLocation(QuickplayConstants.MOD_ID, "generated/schema.json");
+        try(InputStream is = this.getClass().getClassLoader().getResourceAsStream(
+                String.format("assets/%s/%s", rl.getResourceDomain(), rl.getResourcePath())
+        )) {
+            if(is == null) {
+                System.out.println("Null!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                return;
+            }
+            BufferedReader buff = new BufferedReader(new InputStreamReader(is));
+            System.out.println(buff.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         if (args.length == 0) {
             new TickDelay(() -> UMinecraft.setCurrentScreenObj(new QuickplayMainGui()), 1);
             return;
