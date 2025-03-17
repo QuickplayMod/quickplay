@@ -1,7 +1,5 @@
 import org.apache.commons.lang3.SystemUtils
 import java.net.URL
-import java.nio.file.Files
-import java.nio.file.Paths
 
 plugins {
     idea
@@ -25,7 +23,7 @@ val downloadSchema = tasks.register("downloadSchema") {
     doLast {
         file(generatedFolder).mkdirs()
         val schema = URL("http://0.0.0.0:4343/api/v1/gamesSchema").readText()
-        File(generatedFolder, "schema.json").writeText(schema);
+        File(generatedFolder, "schema.json").writeText(schema)
     }
 }
 
