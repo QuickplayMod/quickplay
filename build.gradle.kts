@@ -22,7 +22,7 @@ val generatedFolder = "src/main/resources/assets/${project.property("modid")}/ge
 val downloadSchema = tasks.register("downloadSchema") {
     doLast {
         file(generatedFolder).mkdirs()
-        val schema = URL("http://0.0.0.0:4343/api/v1/gamesSchema").readText()
+        val schema = URL("https://raw.githubusercontent.com/QuickplayMod/backend/refs/heads/master/src/api/v1/games.schema.json").readText()
         File(generatedFolder, "schema.json").writeText(schema)
     }
 }
@@ -116,8 +116,8 @@ val modShadowImpl: Configuration by configurations.creating {
     configurations.modImplementation.get().extendsFrom(this)
 }
 
-val elementaVersion = 676
-val ucVersion = 373
+val elementaVersion = 710
+val ucVersion = 427
 dependencies {
     minecraft("com.mojang:minecraft:1.8.9")
     mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
@@ -128,7 +128,7 @@ dependencies {
 
     shadowImpl("gg.essential:elementa:$elementaVersion")
     modShadowImpl("gg.essential:universalcraft-1.8.9-forge:$ucVersion")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
 }
 
 // Tasks:
